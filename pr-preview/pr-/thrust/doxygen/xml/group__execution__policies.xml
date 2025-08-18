@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__execution__policies" kind="group">
+    <compoundname>execution_policies</compoundname>
+    <title>Parallel Execution Policies</title>
+    <innerclass refid="structthrust_1_1execution__policy" prot="public">thrust::execution_policy</innerclass>
+    <innerclass refid="structthrust_1_1host__execution__policy" prot="public">thrust::host_execution_policy</innerclass>
+    <innerclass refid="structthrust_1_1device__execution__policy" prot="public">thrust::device_execution_policy</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="group__execution__policies_1ga98394c05ebaaac46c17cf0ec970695e0" prot="public" static="yes" mutable="no">
+        <type>const detail::host_t</type>
+        <definition>const detail::host_t thrust::host</definition>
+        <argsstring></argsstring>
+        <name>host</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>thrust::host</computeroutput> is the default parallel execution policy associated with Thrust&apos;s host backend system configured by the <computeroutput>THRUST_HOST_SYSTEM</computeroutput> macro.</para>
+<para>Instead of relying on implicit algorithm dispatch through iterator system tags, users may directly target algorithm dispatch at Thrust&apos;s host system by providing <computeroutput>thrust::host</computeroutput> as an algorithm parameter.</para>
+<para>Explicit dispatch can be useful in avoiding the introduction of data copies into containers such as <computeroutput><ref refid="classthrust_1_1host__vector" kindref="compound">thrust::host_vector</ref></computeroutput>.</para>
+<para>Note that even though <computeroutput>thrust::host</computeroutput> targets the host CPU, it is a parallel execution policy. That is, the order that an algorithm invokes functors or dereferences iterators is not defined.</para>
+<para>The type of <computeroutput>thrust::host</computeroutput> is implementation-defined.</para>
+<para>The following code snippet demonstrates how to use <computeroutput>thrust::host</computeroutput> to explicitly dispatch an invocation of <computeroutput>thrust::for_each</computeroutput> to the host backend system:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/for_each.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;cstdio&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>printf_functor</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printf(&quot;%d\n&quot;,<sp/>x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>vec[]<sp/>=<sp/>{<sp/>0,<sp/>1,<sp/>2<sp/>};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::for_each(thrust::host,<sp/>vec,<sp/>vec<sp/>+<sp/>3,<sp/>printf_functor());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>0<sp/>1<sp/>2<sp/>is<sp/>printed<sp/>to<sp/>standard<sp/>output<sp/>in<sp/>some<sp/>unspecified<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ref refid="structthrust_1_1host__execution__policy" kindref="compound">host_execution_policy</ref> </para>
+</simplesect>
+<simplesect kind="see"><para>thrust::device </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/execution_policy.h" line="291" column="29" bodyfile="thrust/execution_policy.h" bodystart="291" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group__execution__policies_1ga61bff7f6dead1da5c85eaafa9f9f5ded" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr detail::device_t</type>
+        <definition>constexpr detail::device_t thrust::device</definition>
+        <argsstring></argsstring>
+        <name>device</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>thrust::device</computeroutput> is the default parallel execution policy associated with Thrust&apos;s device backend system configured by the <computeroutput>THRUST_DEVICE_SYSTEM</computeroutput> macro.</para>
+<para>Instead of relying on implicit algorithm dispatch through iterator system tags, users may directly target algorithm dispatch at Thrust&apos;s device system by providing <computeroutput>thrust::device</computeroutput> as an algorithm parameter.</para>
+<para>Explicit dispatch can be useful in avoiding the introduction of data copies into containers such as <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">thrust::device_vector</ref></computeroutput> or to avoid wrapping e.g. raw pointers allocated by the CUDA API with types such as <computeroutput><ref refid="classthrust_1_1device__ptr" kindref="compound">thrust::device_ptr</ref></computeroutput>.</para>
+<para>The user must take care to guarantee that the iterators provided to an algorithm are compatible with the device backend system. For example, raw pointers allocated by <computeroutput>std::malloc</computeroutput> typically cannot be dereferenced by a GPU. For this reason, raw pointers allocated by host APIs should not be mixed with a <computeroutput>thrust::device</computeroutput> algorithm invocation when the device backend is CUDA.</para>
+<para>The type of <computeroutput>thrust::device</computeroutput> is implementation-defined.</para>
+<para>The following code snippet demonstrates how to use <computeroutput>thrust::device</computeroutput> to explicitly dispatch an invocation of <computeroutput>thrust::for_each</computeroutput> to the device backend system:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/for_each.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;cstdio&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>printf_functor</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printf(&quot;%d\n&quot;,<sp/>x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec(3);</highlight></codeline>
+<codeline><highlight class="normal">vec[0]<sp/>=<sp/>0;<sp/>vec[1]<sp/>=<sp/>1;<sp/>vec[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::for_each(thrust::device,<sp/>vec.begin(),<sp/>vec.end(),<sp/>printf_functor());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>0<sp/>1<sp/>2<sp/>is<sp/>printed<sp/>to<sp/>standard<sp/>output<sp/>in<sp/>some<sp/>unspecified<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ref refid="structthrust_1_1host__execution__policy" kindref="compound">host_execution_policy</ref> </para>
+</simplesect>
+<simplesect kind="see"><para>thrust::device </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/execution_policy.h" line="339" column="35" bodyfile="thrust/execution_policy.h" bodystart="339" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="group__execution__policies_1ga88184f5729650369507a73899a1c8d32" prot="public" static="yes" mutable="no">
+        <type>const detail::seq_t</type>
+        <definition>const detail::seq_t thrust::seq</definition>
+        <argsstring></argsstring>
+        <name>seq</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>thrust::seq</computeroutput> is an execution policy which requires an algorithm invocation to execute sequentially in the current thread. It can not be configured by a compile-time macro.</para>
+<para>The type of <computeroutput>thrust::seq</computeroutput> is implementation-defined.</para>
+<para>The following code snippet demonstrates how to use <computeroutput>thrust::seq</computeroutput> to explicitly execute an invocation of <computeroutput>thrust::for_each</computeroutput> sequentially:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/for_each.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;vector&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;cstdio&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>printf_functor</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printf(&quot;%d\n&quot;,<sp/>x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">std::vector&lt;int&gt;<sp/>vec(3);</highlight></codeline>
+<codeline><highlight class="normal">vec[0]<sp/>=<sp/>0;<sp/>vec[1]<sp/>=<sp/>1;<sp/>vec[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::for_each(thrust::seq,<sp/>vec.begin(),<sp/>vec.end(),<sp/>printf_functor());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>0<sp/>1<sp/>2<sp/>is<sp/>printed<sp/>to<sp/>standard<sp/>output<sp/>in<sp/>sequential<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>thrust::host </para>
+</simplesect>
+<simplesect kind="see"><para>thrust::device </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/execution_policy.h" line="378" column="28" bodyfile="thrust/execution_policy.h" bodystart="378" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

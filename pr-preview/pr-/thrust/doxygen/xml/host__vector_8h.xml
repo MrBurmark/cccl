@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="host__vector_8h" kind="file" language="C++">
+    <compoundname>host_vector.h</compoundname>
+    <includes local="no">thrust/detail/config.h</includes>
+    <includes local="no">thrust/detail/memory_wrapper.h</includes>
+    <includes local="no">thrust/detail/vector_base.h</includes>
+    <includes local="no">cuda/std/initializer_list</includes>
+    <includes local="no">cuda/std/utility</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="disjoint__pool_8h" local="no">thrust/mr/disjoint_pool.h</includedby>
+    <includedby refid="pool_8h" local="no">thrust/mr/pool.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>thrust/host_vector.h</label>
+        <link refid="host__vector_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>cuda/std/initializer_list</label>
+      </node>
+      <node id="4">
+        <label>thrust/detail/vector_base.h</label>
+      </node>
+      <node id="7">
+        <label>vector</label>
+      </node>
+      <node id="2">
+        <label>thrust/detail/config.h</label>
+      </node>
+      <node id="6">
+        <label>cuda/std/utility</label>
+      </node>
+      <node id="3">
+        <label>thrust/detail/memory_wrapper.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="7">
+        <label>thrust/mr/sync_pool.h</label>
+        <link refid="sync__pool_8h"/>
+      </node>
+      <node id="1">
+        <label>thrust/host_vector.h</label>
+        <link refid="host__vector_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>thrust/mr/disjoint_tls_pool.h</label>
+        <link refid="disjoint__tls__pool_8h"/>
+      </node>
+      <node id="4">
+        <label>thrust/mr/disjoint_sync_pool.h</label>
+        <link refid="disjoint__sync__pool_8h"/>
+      </node>
+      <node id="2">
+        <label>thrust/mr/disjoint_pool.h</label>
+        <link refid="disjoint__pool_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>thrust/mr/tls_pool.h</label>
+        <link refid="tls__pool_8h"/>
+      </node>
+      <node id="5">
+        <label>thrust/mr/pool.h</label>
+        <link refid="pool_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classthrust_1_1host__vector" prot="public">thrust::host_vector</innerclass>
+    <innernamespace refid="namespacethrust">thrust</innernamespace>
+    <briefdescription>
+<para>A dynamically-sizable array of elements which resides in memory accessible to hosts. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>Copyright<sp/>2008-2018<sp/>NVIDIA<sp/>Corporation</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Licensed<sp/>under<sp/>the<sp/>Apache<sp/>License,<sp/>Version<sp/>2.0<sp/>(the<sp/>&quot;License&quot;);</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/>you<sp/>may<sp/>not<sp/>use<sp/>this<sp/>file<sp/>except<sp/>in<sp/>compliance<sp/>with<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>may<sp/>obtain<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>License<sp/>at</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>http://www.apache.org/licenses/LICENSE-2.0</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/>Unless<sp/>required<sp/>by<sp/>applicable<sp/>law<sp/>or<sp/>agreed<sp/>to<sp/>in<sp/>writing,<sp/>software</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/>distributed<sp/>under<sp/>the<sp/>License<sp/>is<sp/>distributed<sp/>on<sp/>an<sp/>&quot;AS<sp/>IS&quot;<sp/>BASIS,</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/>WITHOUT<sp/>WARRANTIES<sp/>OR<sp/>CONDITIONS<sp/>OF<sp/>ANY<sp/>KIND,<sp/>either<sp/>express<sp/>or<sp/>implied.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/>See<sp/>the<sp/>License<sp/>for<sp/>the<sp/>specific<sp/>language<sp/>governing<sp/>permissions<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/>limitations<sp/>under<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/config.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/memory_wrapper.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/vector_base.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/initializer_list&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">THRUST_NAMESPACE_BEGIN</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Alloc<sp/>=<sp/>std::allocator&lt;T&gt;&gt;</highlight></codeline>
+<codeline lineno="61" refid="classthrust_1_1host__vector" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>detail::vector_base&lt;T,<sp/>Alloc&gt;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Parent<sp/>=<sp/>detail::vector_base&lt;T,<sp/>Alloc&gt;;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>size_type<sp/><sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Parent::size_type;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>value_type<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Parent::value_type;</highlight></codeline>
+<codeline lineno="76" refid="classthrust_1_1host__vector_1af9e1fddf29d33a90aaa2e62df3c9a5a3" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1af9e1fddf29d33a90aaa2e62df3c9a5a3" kindref="member">host_vector</ref>()</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent()</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="classthrust_1_1host__vector_1a228ae10c9a5fc01f41470b651e141bbb" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1a228ae10c9a5fc01f41470b651e141bbb" kindref="member">host_vector</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Alloc&amp;<sp/>alloc)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(alloc)</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/>Define<sp/>an<sp/>empty<sp/>destructor<sp/>to<sp/>explicitly<sp/>specify</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/>its<sp/>execution<sp/>space<sp/>qualifier,<sp/>as<sp/>a<sp/>workaround<sp/>for<sp/>nvcc<sp/>warning</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="classthrust_1_1host__vector_1a7cef46b98995be3a9ec382dcc81705fb" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1a7cef46b98995be3a9ec382dcc81705fb" kindref="member">~host_vector</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="classthrust_1_1host__vector_1a1bceef684a895e1d6d4f6b52ba205970" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a1bceef684a895e1d6d4f6b52ba205970" kindref="member">host_vector</ref>(size_type<sp/>n)</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(n)</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="classthrust_1_1host__vector_1adf8aadb4db613dcaa95f609bd0c51cfd" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1adf8aadb4db613dcaa95f609bd0c51cfd" kindref="member">host_vector</ref>(size_type<sp/>n,<sp/>default_init_t)</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(n,<sp/>default_init_t{})</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="classthrust_1_1host__vector_1a1257492282308c1f12fbccdb6d2c2b1e" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1a1257492282308c1f12fbccdb6d2c2b1e" kindref="member">host_vector</ref>(size_type<sp/>n,<sp/>no_init_t)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(n,<sp/>no_init_t{})</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="classthrust_1_1host__vector_1a95c9cbef765da3250b1e84068a2f4307" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a95c9cbef765da3250b1e84068a2f4307" kindref="member">host_vector</ref>(size_type<sp/>n,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Alloc&amp;<sp/>alloc)</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(n,<sp/>alloc)</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="classthrust_1_1host__vector_1aed2dd2ed16ad7251a52cf8c890196e5f" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1aed2dd2ed16ad7251a52cf8c890196e5f" kindref="member">host_vector</ref>(size_type<sp/>n,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>value_type&amp;<sp/>value)</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(n,<sp/>value)</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139" refid="classthrust_1_1host__vector_1a13d8779d380b54211c375b057a9e323b" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a13d8779d380b54211c375b057a9e323b" kindref="member">host_vector</ref>(size_type<sp/>n,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>value_type&amp;<sp/>value,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Alloc&amp;<sp/>alloc)</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(n,<sp/>value,<sp/>alloc)</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="classthrust_1_1host__vector_1adac7cf22f68450cafe52c413b2bd2ac6" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1adac7cf22f68450cafe52c413b2bd2ac6" kindref="member">host_vector</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(v)</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154" refid="classthrust_1_1host__vector_1a20ec0e045a373fc7be70e89eae1a2bbf" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1a20ec0e045a373fc7be70e89eae1a2bbf" kindref="member">host_vector</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/>v,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Alloc&amp;<sp/>alloc)</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(v,<sp/>alloc)</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161" refid="classthrust_1_1host__vector_1a7da7f16ab16f7ccfbe8ba35fae5ef2a8" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1a7da7f16ab16f7ccfbe8ba35fae5ef2a8" kindref="member">host_vector</ref>(<ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(::cuda::std::move(v))</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169" refid="classthrust_1_1host__vector_1ab653bc10e178d4391dd4f8a9f810f6e8" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1ab653bc10e178d4391dd4f8a9f810f6e8" kindref="member">host_vector</ref>(<ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;&amp;<sp/>v,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Alloc&amp;<sp/>alloc)</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(::cuda::std::move(v),<sp/>alloc)</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="classthrust_1_1host__vector_1a6fe5884b06c1b6bef201547d611cc20a" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/><ref refid="classthrust_1_1host__vector_1a6fe5884b06c1b6bef201547d611cc20a" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>Parent::operator=(v);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185" refid="classthrust_1_1host__vector_1a38afb5ed1be9aeb16aa0a82fe7e46385" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/><ref refid="classthrust_1_1host__vector_1a38afb5ed1be9aeb16aa0a82fe7e46385" kindref="member">operator=</ref>(<ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>Parent::operator=(::cuda::std::move(v));</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherAlloc&gt;</highlight></codeline>
+<codeline lineno="195" refid="classthrust_1_1host__vector_1adee69b13deb0730de1b76b90c196e4a9" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1adee69b13deb0730de1b76b90c196e4a9" kindref="member">host_vector</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector&lt;OtherT, OtherAlloc&gt;</ref>&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(v)</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherAlloc&gt;</highlight></codeline>
+<codeline lineno="203" refid="classthrust_1_1host__vector_1a0f3ad55eaca2318afbca78ca9e0be46c" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/><ref refid="classthrust_1_1host__vector_1a0f3ad55eaca2318afbca78ca9e0be46c" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector&lt;OtherT, OtherAlloc&gt;</ref>&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>Parent::operator=(v);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherAlloc&gt;</highlight></codeline>
+<codeline lineno="213" refid="classthrust_1_1host__vector_1a893e61a31c82f7ea50408432b8f72acf" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1a893e61a31c82f7ea50408432b8f72acf" kindref="member">host_vector</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;OtherT,<sp/>OtherAlloc&gt;&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(v)</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherAlloc&gt;</highlight></codeline>
+<codeline lineno="221" refid="classthrust_1_1host__vector_1a20b924a7a7aef3d9390cf521a6e91289" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/><ref refid="classthrust_1_1host__vector_1a20b924a7a7aef3d9390cf521a6e91289" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;OtherT,<sp/>OtherAlloc&gt;&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>Parent::operator=(v);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherAlloc&gt;</highlight></codeline>
+<codeline lineno="233" refid="classthrust_1_1host__vector_1ae57dafd11bad5e4e35a076e89dcd9bf7" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1ae57dafd11bad5e4e35a076e89dcd9bf7" kindref="member">host_vector</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>detail::vector_base&lt;OtherT,<sp/>OtherAlloc&gt;&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(v)</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OtherAlloc&gt;</highlight></codeline>
+<codeline lineno="242" refid="classthrust_1_1host__vector_1a25a31f0e57a1cb49a80e8dcdd9e53c15" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/><ref refid="classthrust_1_1host__vector_1a25a31f0e57a1cb49a80e8dcdd9e53c15" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>detail::vector_base&lt;OtherT,<sp/>OtherAlloc&gt;&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>Parent::operator=(v);</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="251" refid="classthrust_1_1host__vector_1a3c3fe56d53a556599929ff8d8d6f735c" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classthrust_1_1host__vector_1a3c3fe56d53a556599929ff8d8d6f735c" kindref="member">host_vector</ref>(::cuda::std::initializer_list&lt;T&gt;<sp/>il)</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(il)</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight></codeline>
+<codeline lineno="259" refid="classthrust_1_1host__vector_1a1e4e5688491898f01feaf8b06d3aaa6f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classthrust_1_1host__vector_1a1e4e5688491898f01feaf8b06d3aaa6f" kindref="member">host_vector</ref>(::cuda::std::initializer_list&lt;T&gt;<sp/>il,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Alloc&amp;<sp/>alloc)</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(il,<sp/>alloc)</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266" refid="classthrust_1_1host__vector_1acca314ea9b0f505950eb8283e8e690e6" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/><ref refid="classthrust_1_1host__vector_1acca314ea9b0f505950eb8283e8e690e6" kindref="member">operator=</ref>(::cuda::std::initializer_list&lt;T&gt;<sp/>il)</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/>Parent::operator=(il);</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator&gt;</highlight></codeline>
+<codeline lineno="277" refid="classthrust_1_1host__vector_1ab685817dc70c143f7442a169cd0c9c55" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1ab685817dc70c143f7442a169cd0c9c55" kindref="member">host_vector</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last)</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(first,<sp/>last)</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator&gt;</highlight></codeline>
+<codeline lineno="287" refid="classthrust_1_1host__vector_1a23f0d47ddaffcd8860e1fbabe13ed035" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST<sp/><ref refid="classthrust_1_1host__vector_1a23f0d47ddaffcd8860e1fbabe13ed035" kindref="member">host_vector</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Alloc&amp;<sp/>alloc)</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>Parent(first,<sp/>last,<sp/>alloc)</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight><highlight class="comment">//<sp/>declare<sp/>these<sp/>members<sp/>for<sp/>the<sp/>purpose<sp/>of<sp/>Doxygenating<sp/>them</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight><highlight class="comment">//<sp/>they<sp/>actually<sp/>exist<sp/>in<sp/>a<sp/>base<sp/>class</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>_CCCL_DOXYGEN_INVOKED</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"></highlight></codeline>
+<codeline lineno="304" refid="classthrust_1_1host__vector_1a2d817d6313a3d169d964765dc574689e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a2d817d6313a3d169d964765dc574689e" kindref="member">resize</ref>(size_type<sp/>new_size,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>value_type&amp;<sp/>x<sp/>=<sp/>value_type());</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"></highlight></codeline>
+<codeline lineno="310" refid="classthrust_1_1host__vector_1a3ce0eb1ae0ea53bd11e4226bee577619" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a3ce0eb1ae0ea53bd11e4226bee577619" kindref="member">resize</ref>(size_type<sp/>new_size,<sp/>default_init_t);</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"></highlight></codeline>
+<codeline lineno="316" refid="classthrust_1_1host__vector_1acac00f8f826e4cabc18b5df45084a78f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1acac00f8f826e4cabc18b5df45084a78f" kindref="member">resize</ref>(size_type<sp/>new_size,<sp/>no_init_t);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"></highlight></codeline>
+<codeline lineno="320" refid="classthrust_1_1host__vector_1a70301f21db26cd1b11a8a00771e9ee8b" refkind="member"><highlight class="normal"><sp/><sp/>size_type<sp/><ref refid="classthrust_1_1host__vector_1a70301f21db26cd1b11a8a00771e9ee8b" kindref="member">size</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight></codeline>
+<codeline lineno="325" refid="classthrust_1_1host__vector_1a3fc9ddd623780aede6a269dd7bb4b3d5" refkind="member"><highlight class="normal"><sp/><sp/>size_type<sp/><ref refid="classthrust_1_1host__vector_1a3fc9ddd623780aede6a269dd7bb4b3d5" kindref="member">max_size</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"></highlight></codeline>
+<codeline lineno="333" refid="classthrust_1_1host__vector_1afcf6aa5bde464ddfb6e56c3029b5d2c1" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1afcf6aa5bde464ddfb6e56c3029b5d2c1" kindref="member">reserve</ref>(size_type<sp/>n);</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight></codeline>
+<codeline lineno="338" refid="classthrust_1_1host__vector_1a17a70d8adc7a84d3c20ddb1cf2a6ef24" refkind="member"><highlight class="normal"><sp/><sp/>size_type<sp/><ref refid="classthrust_1_1host__vector_1a17a70d8adc7a84d3c20ddb1cf2a6ef24" kindref="member">capacity</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight></codeline>
+<codeline lineno="343" refid="classthrust_1_1host__vector_1a51cd4a0524f8d2850814d0e7b7f1f646" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a51cd4a0524f8d2850814d0e7b7f1f646" kindref="member">shrink_to_fit</ref>();</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight></codeline>
+<codeline lineno="353" refid="classthrust_1_1host__vector_1ae25a73d64d9143934b5611abe2900c11" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="group__system__backends_1ga98af9db6b72cb24c25132a9f5645a4a8" kindref="member">reference</ref><sp/><ref refid="classthrust_1_1host__vector_1ae25a73d64d9143934b5611abe2900c11" kindref="member">operator[]</ref>(size_type<sp/>n);</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"></highlight></codeline>
+<codeline lineno="363" refid="classthrust_1_1host__vector_1a684bad5552c100b32a606d9abaf33845" refkind="member"><highlight class="normal"><sp/><sp/>const_reference<sp/><ref refid="classthrust_1_1host__vector_1a684bad5552c100b32a606d9abaf33845" kindref="member">operator[]</ref>(size_type<sp/>n)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"></highlight></codeline>
+<codeline lineno="369" refid="classthrust_1_1host__vector_1a0afe06f58e531779aad4786232f2992f" refkind="member"><highlight class="normal"><sp/><sp/>iterator<sp/><ref refid="classthrust_1_1host__vector_1a0afe06f58e531779aad4786232f2992f" kindref="member">begin</ref>();</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight></codeline>
+<codeline lineno="375" refid="classthrust_1_1host__vector_1a713b679b84a04180c7ba09b81f8b7ab4" refkind="member"><highlight class="normal"><sp/><sp/>const_iterator<sp/><ref refid="classthrust_1_1host__vector_1a713b679b84a04180c7ba09b81f8b7ab4" kindref="member">begin</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"></highlight></codeline>
+<codeline lineno="381" refid="classthrust_1_1host__vector_1a75a160cde0b8948174a7e8abb42ec4f0" refkind="member"><highlight class="normal"><sp/><sp/>const_iterator<sp/><ref refid="classthrust_1_1host__vector_1a75a160cde0b8948174a7e8abb42ec4f0" kindref="member">cbegin</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"></highlight></codeline>
+<codeline lineno="388" refid="classthrust_1_1host__vector_1a960a8666dc7555066df118bb47a7ec29" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classthrust_1_1reverse__iterator" kindref="compound">reverse_iterator</ref><sp/><ref refid="classthrust_1_1host__vector_1a960a8666dc7555066df118bb47a7ec29" kindref="member">rbegin</ref>();</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"></highlight></codeline>
+<codeline lineno="395" refid="classthrust_1_1host__vector_1a1bf9e66e897569c3d3b7184b4d268ab0" refkind="member"><highlight class="normal"><sp/><sp/>const_reverse_iterator<sp/><ref refid="classthrust_1_1host__vector_1a1bf9e66e897569c3d3b7184b4d268ab0" kindref="member">rbegin</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"></highlight></codeline>
+<codeline lineno="402" refid="classthrust_1_1host__vector_1a6aa9f79776b1aeecc37f70c1321c9774" refkind="member"><highlight class="normal"><sp/><sp/>const_reverse_iterator<sp/><ref refid="classthrust_1_1host__vector_1a6aa9f79776b1aeecc37f70c1321c9774" kindref="member">crbegin</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"></highlight></codeline>
+<codeline lineno="408" refid="classthrust_1_1host__vector_1a3358d67ec0efc18593ed968b4a167924" refkind="member"><highlight class="normal"><sp/><sp/>iterator<sp/><ref refid="classthrust_1_1host__vector_1a3358d67ec0efc18593ed968b4a167924" kindref="member">end</ref>();</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"></highlight></codeline>
+<codeline lineno="414" refid="classthrust_1_1host__vector_1ad7a814ead0e3e6819046926c106da16d" refkind="member"><highlight class="normal"><sp/><sp/>const_iterator<sp/><ref refid="classthrust_1_1host__vector_1ad7a814ead0e3e6819046926c106da16d" kindref="member">end</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="415"><highlight class="normal"></highlight></codeline>
+<codeline lineno="420" refid="classthrust_1_1host__vector_1ad13de13264692940b73997d42ca0bac5" refkind="member"><highlight class="normal"><sp/><sp/>const_iterator<sp/><ref refid="classthrust_1_1host__vector_1ad13de13264692940b73997d42ca0bac5" kindref="member">cend</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="421"><highlight class="normal"></highlight></codeline>
+<codeline lineno="426" refid="classthrust_1_1host__vector_1a5b9890ea9034b8726b1b4de9dc979647" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classthrust_1_1reverse__iterator" kindref="compound">reverse_iterator</ref><sp/><ref refid="classthrust_1_1host__vector_1a5b9890ea9034b8726b1b4de9dc979647" kindref="member">rend</ref>();</highlight></codeline>
+<codeline lineno="427"><highlight class="normal"></highlight></codeline>
+<codeline lineno="432" refid="classthrust_1_1host__vector_1ad0f02f8e0333accd08e0b2d4d69fa653" refkind="member"><highlight class="normal"><sp/><sp/>const_reverse_iterator<sp/><ref refid="classthrust_1_1host__vector_1ad0f02f8e0333accd08e0b2d4d69fa653" kindref="member">rend</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="433"><highlight class="normal"></highlight></codeline>
+<codeline lineno="438" refid="classthrust_1_1host__vector_1a2e1e8725a53a7a4252d22ddc31af232c" refkind="member"><highlight class="normal"><sp/><sp/>const_reverse_iterator<sp/><ref refid="classthrust_1_1host__vector_1a2e1e8725a53a7a4252d22ddc31af232c" kindref="member">crend</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="439"><highlight class="normal"></highlight></codeline>
+<codeline lineno="444" refid="classthrust_1_1host__vector_1ab63ef5ae8ffaf458ec12131baa1dedac" refkind="member"><highlight class="normal"><sp/><sp/>const_reference<sp/><ref refid="classthrust_1_1host__vector_1ab63ef5ae8ffaf458ec12131baa1dedac" kindref="member">front</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="445"><highlight class="normal"></highlight></codeline>
+<codeline lineno="450" refid="classthrust_1_1host__vector_1aa7f91166d3a5085adf9cbc205567d3b7" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="group__system__backends_1ga98af9db6b72cb24c25132a9f5645a4a8" kindref="member">reference</ref><sp/><ref refid="classthrust_1_1host__vector_1aa7f91166d3a5085adf9cbc205567d3b7" kindref="member">front</ref>();</highlight></codeline>
+<codeline lineno="451"><highlight class="normal"></highlight></codeline>
+<codeline lineno="456" refid="classthrust_1_1host__vector_1a47ef8f49810ff1ecc215f9a8843adca9" refkind="member"><highlight class="normal"><sp/><sp/>const_reference<sp/><ref refid="classthrust_1_1host__vector_1a47ef8f49810ff1ecc215f9a8843adca9" kindref="member">back</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"></highlight></codeline>
+<codeline lineno="462" refid="classthrust_1_1host__vector_1a158716f44fb2f679fa525c8fe7a96dcf" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="group__system__backends_1ga98af9db6b72cb24c25132a9f5645a4a8" kindref="member">reference</ref><sp/><ref refid="classthrust_1_1host__vector_1a158716f44fb2f679fa525c8fe7a96dcf" kindref="member">back</ref>();</highlight></codeline>
+<codeline lineno="463"><highlight class="normal"></highlight></codeline>
+<codeline lineno="467" refid="classthrust_1_1host__vector_1ab8b36a333d69fca9fb25365726090605" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classthrust_1_1pointer" kindref="compound">pointer</ref><sp/><ref refid="classthrust_1_1host__vector_1ab8b36a333d69fca9fb25365726090605" kindref="member">data</ref>();</highlight></codeline>
+<codeline lineno="468"><highlight class="normal"></highlight></codeline>
+<codeline lineno="472" refid="classthrust_1_1host__vector_1a1e60ed28274618b8d687cba0d1567cff" refkind="member"><highlight class="normal"><sp/><sp/>const_pointer<sp/><ref refid="classthrust_1_1host__vector_1a1e60ed28274618b8d687cba0d1567cff" kindref="member">data</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="473"><highlight class="normal"></highlight></codeline>
+<codeline lineno="476" refid="classthrust_1_1host__vector_1aa738026fdb573a00f643825a5953d847" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1aa738026fdb573a00f643825a5953d847" kindref="member">clear</ref>();</highlight></codeline>
+<codeline lineno="477"><highlight class="normal"></highlight></codeline>
+<codeline lineno="481" refid="classthrust_1_1host__vector_1a2996c09b5fb90dca316854522720bc43" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a2996c09b5fb90dca316854522720bc43" kindref="member">empty</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="482"><highlight class="normal"></highlight></codeline>
+<codeline lineno="486" refid="classthrust_1_1host__vector_1a9b36b6c3a844347be0a830e46618817e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a9b36b6c3a844347be0a830e46618817e" kindref="member">push_back</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>value_type&amp;<sp/>x);</highlight></codeline>
+<codeline lineno="487"><highlight class="normal"></highlight></codeline>
+<codeline lineno="491" refid="classthrust_1_1host__vector_1ab8a944d474420f3a6f394ce7a83b1d7e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1ab8a944d474420f3a6f394ce7a83b1d7e" kindref="member">pop_back</ref>();</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"></highlight></codeline>
+<codeline lineno="496" refid="classthrust_1_1host__vector_1af919bc85b3c84b9cb4f48991f021bd96" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1af919bc85b3c84b9cb4f48991f021bd96" kindref="member">swap</ref>(<ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/>v);</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"></highlight></codeline>
+<codeline lineno="503" refid="classthrust_1_1host__vector_1accce990014e094ccca55bb5eeeeb34ba" refkind="member"><highlight class="normal"><sp/><sp/>iterator<sp/><ref refid="classthrust_1_1host__vector_1accce990014e094ccca55bb5eeeeb34ba" kindref="member">erase</ref>(iterator<sp/>pos);</highlight></codeline>
+<codeline lineno="504"><highlight class="normal"></highlight></codeline>
+<codeline lineno="511" refid="classthrust_1_1host__vector_1a978f74b0b769af991940328749fc5b2a" refkind="member"><highlight class="normal"><sp/><sp/>iterator<sp/><ref refid="classthrust_1_1host__vector_1a978f74b0b769af991940328749fc5b2a" kindref="member">erase</ref>(iterator<sp/>first,<sp/>iterator<sp/>last);</highlight></codeline>
+<codeline lineno="512"><highlight class="normal"></highlight></codeline>
+<codeline lineno="519" refid="classthrust_1_1host__vector_1a0321a4801e08002f8a5c82aed32afab2" refkind="member"><highlight class="normal"><sp/><sp/>iterator<sp/><ref refid="classthrust_1_1host__vector_1a0321a4801e08002f8a5c82aed32afab2" kindref="member">insert</ref>(iterator<sp/>position,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>x);</highlight></codeline>
+<codeline lineno="520"><highlight class="normal"></highlight></codeline>
+<codeline lineno="527" refid="classthrust_1_1host__vector_1a979ec2d3af510dafb17fbfbb571e2279" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a979ec2d3af510dafb17fbfbb571e2279" kindref="member">insert</ref>(iterator<sp/>position,<sp/>size_type<sp/>n,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>x);</highlight></codeline>
+<codeline lineno="528"><highlight class="normal"></highlight></codeline>
+<codeline lineno="539"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator&gt;</highlight></codeline>
+<codeline lineno="540" refid="classthrust_1_1host__vector_1a9bb7c8e26ee8c10c5721b584081ae065" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1a9bb7c8e26ee8c10c5721b584081ae065" kindref="member">insert</ref>(iterator<sp/>position,<sp/>InputIterator<sp/>first,<sp/>InputIterator<sp/>last);</highlight></codeline>
+<codeline lineno="541"><highlight class="normal"></highlight></codeline>
+<codeline lineno="547" refid="classthrust_1_1host__vector_1abb6485dabf80d726eb362432c0dd10e8" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1abb6485dabf80d726eb362432c0dd10e8" kindref="member">assign</ref>(size_type<sp/>n,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>x);</highlight></codeline>
+<codeline lineno="548"><highlight class="normal"></highlight></codeline>
+<codeline lineno="556"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator&gt;</highlight></codeline>
+<codeline lineno="557" refid="classthrust_1_1host__vector_1ae9aa64df772710a1e501ab06a0d4130b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1ae9aa64df772710a1e501ab06a0d4130b" kindref="member">assign</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last);</highlight></codeline>
+<codeline lineno="558"><highlight class="normal"></highlight></codeline>
+<codeline lineno="562" refid="classthrust_1_1host__vector_1ac3f2f4c636f1bf33d938c3056dc97b43" refkind="member"><highlight class="normal"><sp/><sp/>allocator_type<sp/><ref refid="classthrust_1_1host__vector_1ac3f2f4c636f1bf33d938c3056dc97b43" kindref="member">get_allocator</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="563"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>end<sp/>doxygen-only<sp/>members</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="564"><highlight class="normal"></highlight></codeline>
+<codeline lineno="569" refid="classthrust_1_1host__vector_1ac61a458697d427d9b9557bfaf4daf337" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1host__vector_1ac61a458697d427d9b9557bfaf4daf337" kindref="member">swap</ref>(<ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/>a,<sp/><ref refid="classthrust_1_1host__vector" kindref="compound">host_vector</ref>&amp;<sp/>b)<sp/>noexcept(noexcept(a.swap(b)))</highlight></codeline>
+<codeline lineno="570"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="571"><highlight class="normal"><sp/><sp/><sp/><sp/>a.swap(b);</highlight></codeline>
+<codeline lineno="572"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="573"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="574"><highlight class="normal"></highlight></codeline>
+<codeline lineno="578"><highlight class="normal">THRUST_NAMESPACE_END</highlight></codeline>
+    </programlisting>
+    <location file="thrust/host_vector.h"/>
+  </compounddef>
+</doxygen>

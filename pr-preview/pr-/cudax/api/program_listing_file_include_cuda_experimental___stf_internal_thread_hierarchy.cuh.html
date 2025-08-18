@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>include/cuda/experimental/__stf/internal/thread_hierarchy.cuh &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="include/cuda/experimental/__stf/internal/void_interface.cuh" href="file_include_cuda_experimental___stf_internal_void_interface.cuh.html" />
+    <link rel="prev" title="include/cuda/experimental/__stf/internal/thread_hierarchy.cuh" href="file_include_cuda_experimental___stf_internal_thread_hierarchy.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stf.html">CUDASTF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cudax_api.html">Cudax: Experimental new features API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cudax_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_include.html">include</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_include.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="dir_include_cuda.html">include/cuda</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_include_cuda.html#directories">Directories</a><ul class="current">
+<li class="toctree-l7 current"><a class="reference internal" href="dir_include_cuda_experimental.html">include/cuda/experimental</a><ul class="current">
+<li class="toctree-l8 current"><a class="reference internal" href="dir_include_cuda_experimental.html#directories">Directories</a><ul class="current">
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___container.html">include/cuda/experimental/__container</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___device.html">include/cuda/experimental/__device</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___graph.html">include/cuda/experimental/__graph</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___hierarchy.html">include/cuda/experimental/__hierarchy</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___launch.html">include/cuda/experimental/__launch</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___memory_resource.html">include/cuda/experimental/__memory_resource</a></li>
+<li class="toctree-l9 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a><ul class="current">
+<li class="toctree-l10 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html#directories">Directories</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___stream.html">include/cuda/experimental/__stream</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="dir_include_cuda_experimental.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cudax_api.html">Cudax: Experimental new features API</a> &raquo;</li>
+          <li><a href="dir_include.html">include</a> &raquo;</li>
+          <li><a href="dir_include_cuda.html">include/cuda</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental.html">include/cuda/experimental</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf_internal.html">include/cuda/experimental/__stf/internal</a> &raquo;</li>
+          <li><a href="file_include_cuda_experimental___stf_internal_thread_hierarchy.cuh.html">include/cuda/experimental/__stf/internal/thread_hierarchy.cuh</a> &raquo;</li>
+      <li>include/cuda/experimental/__stf/internal/thread_hierarchy.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="include-cuda-experimental-stf-internal-thread-hierarchy-cuh">
+<h1>include/cuda/experimental/__stf/internal/thread_hierarchy.cuh<a class="headerlink" href="#include-cuda-experimental-stf-internal-thread-hierarchy-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_include_cuda_experimental___stf_internal_thread_hierarchy.cuh.html#thread-hierarchy-8cuh"><span class="std std-ref">include/cuda/experimental/__stf/internal/thread_hierarchy.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">//===----------------------------------------------------------------------===//</span>
+<span class="c1">//</span>
+<span class="c1">// Part of CUDASTF in CUDA C++ Core Libraries,</span>
+<span class="c1">// under the Apache License v2.0 with LLVM Exceptions.</span>
+<span class="c1">// See https://llvm.org/LICENSE.txt for license information.</span>
+<span class="c1">// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span>
+<span class="c1">// SPDX-FileCopyrightText: Copyright (c) 2022-2024 NVIDIA CORPORATION &amp; AFFILIATES.</span>
+<span class="c1">//</span>
+<span class="c1">//===----------------------------------------------------------------------===//</span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__cccl_config&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/cooperative_group_system.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/interpreted_execution_policy.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/slice.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/places/blocked_partition.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/places/cyclic_shape.cuh&gt;</span><span class="cp"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">cuda</span><span class="o">::</span><span class="nn">experimental</span><span class="o">::</span><span class="nn">stf</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">auto</span><span class="p">...</span><span class="w"> </span><span class="n">spec</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">thread_hierarchy</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Depth of this hierarchy (each level has two spec values, `sync` and `width`)</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="p">...)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Also run some checks</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;You must use bool for the odd arguments of thread_hierarchy.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;You must use size_t for the even arguments of thread_hierarchy.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Two spec parameters per depth level</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">sizeof</span><span class="p">...(</span><span class="n">spec</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}(</span><span class="n">spec</span><span class="p">...,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Fetch the inner thread_hierarchy (peels off two template arguments)</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">auto</span><span class="p">...</span><span class="w"> </span><span class="n">subspec</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">inner_t</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="p">...</span><span class="w"> </span><span class="n">subspec</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">inner_t</span><span class="o">&lt;</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">subspec</span><span class="p">...</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thread_hierarchy</span><span class="o">&lt;</span><span class="n">subspec</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// For tag-types</span>
+<span class="w">  </span><span class="n">thread_hierarchy</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">auto</span><span class="p">...</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">thread_hierarchy</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Construct from an outer thread hierarchy (peel off one level)</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">bool</span><span class="w"> </span><span class="n">outer_sync</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">outer_width</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="n">thread_hierarchy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">thread_hierarchy</span><span class="o">&lt;</span><span class="n">outer_sync</span><span class="p">,</span><span class="w"> </span><span class="n">outer_width</span><span class="p">,</span><span class="w"> </span><span class="n">spec</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">outer</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">devid</span><span class="p">(</span><span class="n">outer</span><span class="p">.</span><span class="n">devid</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">launch_config</span><span class="p">(</span><span class="n">outer</span><span class="p">.</span><span class="n">launch_config</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">cg_system</span><span class="p">(</span><span class="n">outer</span><span class="p">.</span><span class="n">cg_system</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">device_tmp</span><span class="p">(</span><span class="n">outer</span><span class="p">.</span><span class="n">device_tmp</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">system_tmp</span><span class="p">(</span><span class="n">outer</span><span class="p">.</span><span class="n">system_tmp</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">each</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">level_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outer</span><span class="p">.</span><span class="n">level_sizes</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="n">mem_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">outer</span><span class="p">.</span><span class="n">mem_sizes</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">thread_hierarchy</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">devid</span><span class="p">,</span><span class="w"> </span><span class="n">interpreted_execution_policy</span><span class="o">&lt;</span><span class="n">spec</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">devid</span><span class="p">(</span><span class="n">devid</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">launch_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">get_config</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// If we may synchronize across multiple devices.</span>
+<span class="w">    </span><span class="n">cg_system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">cg_system</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">get_levels</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">level_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">width</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">width</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">mem_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">get_mem</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="n">i</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">static_width</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">level</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">data</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">spec</span><span class="p">...};</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">level</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">get_config</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">launch_config</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Rank from the root</span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">rank</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">root_level</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_IS_DEVICE</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="c1">// config : ndevs    = launch_config[0]</span>
+<span class="w">       </span><span class="c1">//          nblocks  = launch_config[1]</span>
+<span class="w">       </span><span class="c1">//          nthreads = launch_config[2]</span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nblocks</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nthreads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">       </span><span class="kt">int</span><span class="w"> </span><span class="n">global_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tid</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bid</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nthreads</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">devid</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nblocks</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nthreads</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">       </span><span class="c1">// An entry at level l represents a total of width[level] * width[level+1] ... * width[depth - 1] threads.</span>
+<span class="w">       </span><span class="kt">size_t</span><span class="w"> </span><span class="n">level_effective_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="kt">size_t</span><span class="w"> </span><span class="n">root_level_effective_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">       </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">depth</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">depth</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="p">{</span><span class="w"></span>
+<span class="w">           </span><span class="n">level_effective_size</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">level_sizes</span><span class="p">[</span><span class="n">l</span><span class="p">];</span><span class="w"></span>
+<span class="w">         </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">         </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root_level</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">depth</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="p">{</span><span class="w"></span>
+<span class="w">           </span><span class="n">root_level_effective_size</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">level_sizes</span><span class="p">[</span><span class="n">l</span><span class="p">];</span><span class="w"></span>
+<span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="w">       </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">global_id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">root_level_effective_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="o">/</span><span class="w"> </span><span class="n">level_effective_size</span><span class="p">;),</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;))</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_UNREACHABLE</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">root_level</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">depth</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">root_level</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">level</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;),</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Could have been : return level_prod_size[level]/level_prod_size[root_level];</span>
+<span class="w">        </span><span class="c1">// Divisions are probably more expensive.</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root_level</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">level</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">level_sizes</span><span class="p">[</span><span class="n">l</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">s</span><span class="p">;))</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_UNREACHABLE</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">rank</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">rank</span><span class="p">(</span><span class="n">level</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">sync</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">level</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">level</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">depth</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_IS_DEVICE</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Check that it is legal to synchronize (use a static assertion in the future)</span>
+<span class="w">        </span><span class="n">assert</span><span class="p">(</span><span class="n">may_sync</span><span class="p">(</span><span class="n">level</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// We compute the products of level_sizes and config in reversed order.</span>
+
+<span class="w">        </span><span class="c1">// This is the number of threads to synchronize</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">target_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">level</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">depth</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">target_size</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">level_sizes</span><span class="p">[</span><span class="n">l</span><span class="p">];</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// We then compute the number of threads for each of the different</span>
+<span class="w">        </span><span class="c1">// scopes (system, device, blocks) ... and compare with this number of</span>
+<span class="w">        </span><span class="c1">// threads</span>
+
+<span class="w">        </span><span class="c1">// Test the different config levels</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_scope_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">block_scope_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">cooperative_groups</span><span class="o">::</span><span class="n">this_thread_block</span><span class="p">().</span><span class="n">sync</span><span class="p">();</span><span class="w"></span>
+<span class="w">          </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">device_scope_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_scope_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">device_scope_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">cooperative_groups</span><span class="o">::</span><span class="n">this_grid</span><span class="p">().</span><span class="n">sync</span><span class="p">();</span><span class="w"></span>
+<span class="w">          </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">ndevs</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">system_scope_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device_scope_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ndevs</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">system_scope_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">cg_system</span><span class="p">.</span><span class="n">sync</span><span class="p">(</span><span class="n">devid</span><span class="p">,</span><span class="w"> </span><span class="n">ndevs</span><span class="p">);</span><span class="w"></span>
+<span class="w">          </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Unsupported configuration</span>
+<span class="w">        </span><span class="n">assert</span><span class="p">(</span><span class="mi">0</span><span class="p">);))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Others</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">remove_first_tuple_element</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">Others</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_tuple</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Others</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">shape_t</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">P</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">sub_partitions</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">apply_partition</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">shape_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">P</span><span class="p">,</span><span class="w"> </span><span class="n">sub_partitions</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">s0</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">P</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">pos4</span><span class="p">(</span><span class="n">rank</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span><span class="w"> </span><span class="n">dim4</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)));</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">sans_first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_tuple_indexwise</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">...(</span><span class="n">sub_partitions</span><span class="p">)</span><span class="o">&gt;</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="k">auto</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">...(</span><span class="n">sub_partitions</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">inner</span><span class="p">().</span><span class="n">apply_partition</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span><span class="w"> </span><span class="n">sans_first</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">s0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Default partitioner tuple&lt;blocked, blocked...., blocked, cyclic&gt;</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">shape_t</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">apply_partition</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">shape_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">depth</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">cyclic_partition</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">pos4</span><span class="p">(</span><span class="n">rank</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span><span class="w"> </span><span class="n">dim4</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blocked_partition</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">pos4</span><span class="p">(</span><span class="n">rank</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span><span class="w"> </span><span class="n">dim4</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)));</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">inner</span><span class="p">().</span><span class="n">apply_partition</span><span class="p">(</span><span class="n">s0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">inner</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">inner_t</span><span class="o">&lt;</span><span class="n">spec</span><span class="p">...</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="n">slice</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">storage</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">level</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">level</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">depth</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// We compute the products of level_sizes and config in reversed order.</span>
+
+<span class="w">    </span><span class="c1">// This is the number of threads to synchronize</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">target_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">level</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">depth</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">target_size</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">level_sizes</span><span class="p">[</span><span class="n">l</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// We then compute the number of threads for each of the different</span>
+<span class="w">    </span><span class="c1">// scopes (system, device, blocks) ... and compare with this number of</span>
+<span class="w">    </span><span class="c1">// threads</span>
+
+<span class="w">    </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_IS_DEVICE</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nelems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_sizes</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Test the different config levels</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_scope_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">block_scope_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Use dynamic shared memory</span>
+<span class="w">          </span><span class="k">extern</span><span class="w"> </span><span class="n">__shared__</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">dyn_buffer</span><span class="p">[];</span><span class="w"></span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">make_slice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dyn_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">nelems</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">device_scope_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_scope_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">device_scope_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Use device memory</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">make_slice</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">device_tmp</span><span class="p">),</span><span class="w"> </span><span class="n">nelems</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">ndevs</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">launch_config</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">system_scope_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device_scope_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ndevs</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">system_scope_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Use system memory (managed memory)</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">make_slice</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">system_tmp</span><span class="p">),</span><span class="w"> </span><span class="n">nelems</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}))</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Unsupported configuration : memory must be a scope boundaries</span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="s">&quot;Unsupported configuration : memory must be a scope boundaries&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">make_slice</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_device_tmp</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">device_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_system_tmp</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">system_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_devid</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">devid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// On which device is this running ? (or -1 if host or ignored)</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">devid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// ndevs * nblocks * nthreads</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">launch_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">reserved</span><span class="o">::</span><span class="n">cooperative_group_system</span><span class="w"> </span><span class="n">cg_system</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// width of each level</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="o">&gt;</span><span class="w"> </span><span class="n">level_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// What is the memory associated to each level ?</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="o">&gt;</span><span class="w"> </span><span class="n">mem_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Address of the per-device buffer in device memory, if any</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">device_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Base address for system-wide buffers (managed memory), if any</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">system_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* Special case to work-around spec = &lt;&gt; */</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Idx</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">may_sync_impl</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Idx</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">sync</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="p">...</span><span class="w"> </span><span class="n">remaining</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">may_sync_impl</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="n">Idx</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">...(</span><span class="n">spec</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">level</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Idx</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">sync</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">may_sync_impl</span><span class="o">&lt;</span><span class="n">Idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">remaining</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">level</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* Evaluate at runtime if we can call sync on the specified level */</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">may_sync</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">may_sync_impl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">spec</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">level</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#ifdef UNITTESTED_FILE</span>
+<span class="cp">#  if !defined(CUDASTF_DISABLE_CODE_GENERATION) &amp;&amp; _CCCL_CUDA_COMPILATION()</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">auto</span><span class="p">...</span><span class="w"> </span><span class="n">spec</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">unit_test_thread_hierarchy</span><span class="p">(</span><span class="n">thread_hierarchy</span><span class="o">&lt;</span><span class="n">spec</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Rank within the whole system</span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// device</span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+
+<span class="n">UNITTEST</span><span class="p">(</span><span class="s">&quot;thread hierarchy indexing&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">interpreted_execution_policy</span><span class="o">&lt;</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">add_level</span><span class="p">({</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">hw_scope</span><span class="o">::</span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="mi">2UL</span><span class="p">)});</span><span class="w"></span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">add_level</span><span class="p">({</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">hw_scope</span><span class="o">::</span><span class="n">block</span><span class="p">,</span><span class="w"> </span><span class="mi">8UL</span><span class="p">),</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">hw_scope</span><span class="o">::</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="mi">4UL</span><span class="p">)});</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">h</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">thread_hierarchy</span><span class="o">&lt;</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">static_width</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">static_width</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">get_config</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">reserved</span><span class="o">::</span><span class="n">unit_test_thread_hierarchy</span><span class="o">&lt;&lt;&lt;</span><span class="n">config</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">config</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaDeviceSynchronize</span><span class="p">());</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">auto</span><span class="p">...</span><span class="w"> </span><span class="n">spec</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">unit_test_thread_hierarchy_sync</span><span class="p">(</span><span class="n">thread_hierarchy</span><span class="o">&lt;</span><span class="n">spec</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">h</span><span class="p">.</span><span class="n">sync</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">h</span><span class="p">.</span><span class="n">sync</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+
+<span class="n">UNITTEST</span><span class="p">(</span><span class="s">&quot;thread hierarchy sync&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">interpreted_execution_policy</span><span class="o">&lt;</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 2 levels</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">add_level</span><span class="p">({</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">hw_scope</span><span class="o">::</span><span class="n">block</span><span class="p">,</span><span class="w"> </span><span class="mi">8UL</span><span class="p">)});</span><span class="w"></span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">set_level_sync</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">add_level</span><span class="p">({</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">hw_scope</span><span class="o">::</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="mi">4UL</span><span class="p">)});</span><span class="w"></span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">set_level_sync</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">h</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">thread_hierarchy</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">get_config</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="o">&amp;</span><span class="n">h</span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaLaunchCooperativeKernel</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">unit_test_thread_hierarchy_sync</span><span class="o">&lt;</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">config</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">config</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">args</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaDeviceSynchronize</span><span class="p">());</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">auto</span><span class="p">...</span><span class="w"> </span><span class="n">spec</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">unit_test_thread_hierarchy_inner_sync</span><span class="p">(</span><span class="n">thread_hierarchy</span><span class="o">&lt;</span><span class="n">spec</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">h</span><span class="p">.</span><span class="n">inner</span><span class="p">().</span><span class="n">sync</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">h_inner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">.</span><span class="n">inner</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">h_inner</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+
+<span class="n">UNITTEST</span><span class="p">(</span><span class="s">&quot;thread hierarchy inner sync&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">interpreted_execution_policy</span><span class="o">&lt;</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 2 levels</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">add_level</span><span class="p">({</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">hw_scope</span><span class="o">::</span><span class="n">block</span><span class="p">,</span><span class="w"> </span><span class="mi">8UL</span><span class="p">)});</span><span class="w"></span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">set_level_sync</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">add_level</span><span class="p">({</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">hw_scope</span><span class="o">::</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="mi">4UL</span><span class="p">)});</span><span class="w"></span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">set_level_sync</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">h</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">thread_hierarchy</span><span class="o">&lt;</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">get_config</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">reserved</span><span class="o">::</span><span class="n">unit_test_thread_hierarchy_inner_sync</span><span class="o">&lt;</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;&lt;&lt;&lt;</span><span class="n">config</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">config</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaDeviceSynchronize</span><span class="p">());</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// !defined(CUDASTF_DISABLE_CODE_GENERATION) &amp;&amp; _CCCL_CUDA_COMPILATION()</span>
+<span class="cp">#endif </span><span class="c1">// UNITTESTED_FILE</span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace cuda::experimental::stf</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

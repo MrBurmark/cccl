@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>thrust::device_vector &mdash; thrust 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="thrust::universal_host_pinned_vector" href="typedef_group__containers_1ga4a980d5c4f2e1843c6f2139216dac7fc.html" />
+    <link rel="prev" title="thrust::host_vector" href="classthrust_1_1host__vector.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html#thrust-module">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_process.html">Release Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_build.html">Developer Build</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">Thrust API documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/algorithms.html">Algorithms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api_docs/containers.html">Containers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="classthrust_1_1host__vector.html">thrust::host_vector</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">thrust::device_vector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="typedef_group__containers_1ga4a980d5c4f2e1843c6f2139216dac7fc.html">thrust::universal_host_pinned_vector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="typedef_group__containers_1ga74d92bb13ce59a1fa025cfb8dc4fbaa0.html">thrust::universal_vector</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/function_objects.html">Function Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/memory_management.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/numerics.html">Numerics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/parallel_execution_policies.html">Parallel Execution Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/random.html">Random Number Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/system.html">System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_docs/utility.html">Utility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="thrust_api.html">Thrust: The C++ Parallel Algorithms Library API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">thrust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api.html">Thrust API documentation</a> &raquo;</li>
+          <li><a href="../api_docs/containers.html">Containers</a> &raquo;</li>
+      <li>thrust::device_vector</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="thrust-device-vector">
+<h1>thrust::device_vector<a class="headerlink" href="#thrust-device-vector" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_thrust_device_vector.h.html#device-vector-8h"><span class="std std-ref">thrust/device_vector.h</span></a></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN6thrust13device_vectorE">
+<span id="_CPPv3I00EN6thrust13device_vectorE"></span><span id="_CPPv2I00EN6thrust13device_vectorE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Alloc</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="namespace_thrust.html#_CPPv46thrust" title="thrust"><span class="n"><span class="pre">thrust</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classthrust_1_1device__allocator.html#_CPPv4I0EN6thrust16device_allocatorE" title="thrust::device_allocator"><span class="n"><span class="pre">device_allocator</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector_base</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="namespace_thrust.html#_CPPv46thrust" title="thrust"><span class="n"><span class="pre">thrust</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classthrust_1_1device__allocator.html#_CPPv4I0EN6thrust16device_allocatorE" title="thrust::device_allocator"><span class="n"><span class="pre">device_allocator</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I00EN6thrust13device_vectorE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>A <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> is a container that supports random access to elements, constant time removal of elements at the end, and linear time insertion and removal of elements at the beginning or in the middle. The number of elements in a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> may vary dynamically; memory management is automatic. The memory associated with a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> resides in the memory accessible to devices.</p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://en.cppreference.com/w/cpp/container/vector">https://en.cppreference.com/w/cpp/container/vector</a> </p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="classthrust_1_1device__allocator.html#classthrust_1_1device__allocator"><span class="std std-ref">device_allocator</span></a> </p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="classthrust_1_1host__vector.html#classthrust_1_1host__vector"><span class="std std-ref">host_vector</span></a> </p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>universal_vector </p>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorEv">
+<span id="_CPPv3N6thrust13device_vector13device_vectorEv"></span><span id="_CPPv2N6thrust13device_vector13device_vectorEv"></span><span id="thrust::device_vector::device_vector"></span><span class="target" id="classthrust_1_1device__vector_1a2e54b3b336dbb0439806d5e7dea2bbfc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates an empty <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorERK5Alloc">
+<span id="_CPPv3N6thrust13device_vector13device_vectorERK5Alloc"></span><span id="_CPPv2N6thrust13device_vector13device_vectorERK5Alloc"></span><span id="thrust::device_vector::device_vector__AllocCR"></span><span class="target" id="classthrust_1_1device__vector_1a922ddf17336ac26b25a66bf918bba668"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::Alloc"><span class="n"><span class="pre">Alloc</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">alloc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorERK5Alloc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates an empty <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>alloc</strong> – The allocator to use by this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vectorD0Ev">
+<span id="_CPPv3N6thrust13device_vectorD0Ev"></span><span id="_CPPv2N6thrust13device_vectorD0Ev"></span><span id="thrust::device_vector::~device_vector"></span><span class="target" id="classthrust_1_1device__vector_1a4db89178528a98700e52b2da4063915e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~device_vector</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vectorD0Ev" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The destructor erases the elements. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorE9size_type">
+<span id="_CPPv3N6thrust13device_vector13device_vectorE9size_type"></span><span id="_CPPv2N6thrust13device_vector13device_vectorE9size_type"></span><span id="thrust::device_vector::device_vector__size_type"></span><span class="target" id="classthrust_1_1device__vector_1a7beff53dbac6a3e230f337c6185fe489"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorE9size_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with the given size. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The number of elements to initially create. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorE9size_type14default_init_t">
+<span id="_CPPv3N6thrust13device_vector13device_vectorE9size_type14default_init_t"></span><span id="_CPPv2N6thrust13device_vector13device_vectorE9size_type14default_init_t"></span><span id="thrust::device_vector::device_vector__size_type.default_init_t"></span><span class="target" id="classthrust_1_1device__vector_1aa4620fd8ce3a6bb1ea876a259e2c6791"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="n"><span class="pre">default_init_t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorE9size_type14default_init_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with the given size, performing only default-initialization instead of value-initialization. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The number of elements to initially create. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorE9size_type9no_init_t">
+<span id="_CPPv3N6thrust13device_vector13device_vectorE9size_type9no_init_t"></span><span id="_CPPv2N6thrust13device_vector13device_vectorE9size_type9no_init_t"></span><span id="thrust::device_vector::device_vector__size_type.no_init_t"></span><span class="target" id="classthrust_1_1device__vector_1a43c9239db8b70f46b27a794bd51b0a6d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="n"><span class="pre">no_init_t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorE9size_type9no_init_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with the given size, without initializing elements. It mandates that the element type is trivially default-constructible. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The number of elements to initially create. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorE9size_typeRK5Alloc">
+<span id="_CPPv3N6thrust13device_vector13device_vectorE9size_typeRK5Alloc"></span><span id="_CPPv2N6thrust13device_vector13device_vectorE9size_typeRK5Alloc"></span><span id="thrust::device_vector::device_vector__size_type.AllocCR"></span><span class="target" id="classthrust_1_1device__vector_1a912c8dee68a6384c501e6bf99456b030"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::Alloc"><span class="n"><span class="pre">Alloc</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">alloc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorE9size_typeRK5Alloc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with the given size. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – The number of elements to initially create. </p></li>
+<li><p><strong>alloc</strong> – The allocator to use by this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorE9size_typeRK10value_type">
+<span id="_CPPv3N6thrust13device_vector13device_vectorE9size_typeRK10value_type"></span><span id="_CPPv2N6thrust13device_vector13device_vectorE9size_typeRK10value_type"></span><span id="thrust::device_vector::device_vector__size_type.value_typeCR"></span><span class="target" id="classthrust_1_1device__vector_1a881860f3a5d6236bcf96272c25063bbc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">value_type</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorE9size_typeRK10value_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with copies of an exemplar element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – The number of elements to initially create. </p></li>
+<li><p><strong>value</strong> – An element to copy. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorE9size_typeRK10value_typeRK5Alloc">
+<span id="_CPPv3N6thrust13device_vector13device_vectorE9size_typeRK10value_typeRK5Alloc"></span><span id="_CPPv2N6thrust13device_vector13device_vectorE9size_typeRK10value_typeRK5Alloc"></span><span id="thrust::device_vector::device_vector__size_type.value_typeCR.AllocCR"></span><span class="target" id="classthrust_1_1device__vector_1ad133089105c900807362d111e177c4fd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">value_type</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::Alloc"><span class="n"><span class="pre">Alloc</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">alloc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorE9size_typeRK10value_typeRK5Alloc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor creates a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with copies of an exemplar element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – The number of elements to initially create. </p></li>
+<li><p><strong>value</strong> – An element to copy. </p></li>
+<li><p><strong>alloc</strong> – The allocator to use by this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorERK13device_vector">
+<span id="_CPPv3N6thrust13device_vector13device_vectorERK13device_vector"></span><span id="_CPPv2N6thrust13device_vector13device_vectorERK13device_vector"></span><span id="thrust::device_vector::device_vector__device_vectorCR"></span><span class="target" id="classthrust_1_1device__vector_1acfd63c5f7f9c647f63bdfb144ed5909e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6thrust13device_vector13device_vectorERK13device_vector" title="thrust::device_vector::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorERK13device_vector" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy constructor copies from an exemplar <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorERK13device_vectorRK5Alloc">
+<span id="_CPPv3N6thrust13device_vector13device_vectorERK13device_vectorRK5Alloc"></span><span id="_CPPv2N6thrust13device_vector13device_vectorERK13device_vectorRK5Alloc"></span><span id="thrust::device_vector::device_vector__device_vectorCR.AllocCR"></span><span class="target" id="classthrust_1_1device__vector_1aa904ddd7b4cf8186cf153fe4e60181d9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6thrust13device_vector13device_vectorERK13device_vectorRK5Alloc" title="thrust::device_vector::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::Alloc"><span class="n"><span class="pre">Alloc</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">alloc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorERK13device_vectorRK5Alloc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy constructor copies from an exemplar <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> – The <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> to copy. </p></li>
+<li><p><strong>alloc</strong> – The allocator to use by this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorERR13device_vector">
+<span id="_CPPv3N6thrust13device_vector13device_vectorERR13device_vector"></span><span id="_CPPv2N6thrust13device_vector13device_vectorERR13device_vector"></span><span id="thrust::device_vector::device_vector__device_vectorRR"></span><span class="target" id="classthrust_1_1device__vector_1a0f45898e0f76ce0905fbaa4a39fc5b47"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6thrust13device_vector13device_vectorERR13device_vector" title="thrust::device_vector::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorERR13device_vector" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Move constructor moves from another <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a> to move. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorERR13device_vectorRK5Alloc">
+<span id="_CPPv3N6thrust13device_vector13device_vectorERR13device_vectorRK5Alloc"></span><span id="_CPPv2N6thrust13device_vector13device_vectorERR13device_vectorRK5Alloc"></span><span id="thrust::device_vector::device_vector__device_vectorRR.AllocCR"></span><span class="target" id="classthrust_1_1device__vector_1aad2e0836fec7edf5b42bb144de84ec8f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6thrust13device_vector13device_vectorERR13device_vectorRK5Alloc" title="thrust::device_vector::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::Alloc"><span class="n"><span class="pre">Alloc</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">alloc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorERR13device_vectorRK5Alloc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Move constructor moves from another <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> – The <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a> to move. </p></li>
+<li><p><strong>alloc</strong> – The allocator to use by this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vectoraSERK13device_vector">
+<span id="_CPPv3N6thrust13device_vectoraSERK13device_vector"></span><span id="_CPPv2N6thrust13device_vectoraSERK13device_vector"></span><span id="thrust::device_vector::assign-operator__device_vectorCR"></span><span class="target" id="classthrust_1_1device__vector_1a621cb31b3d7dded45eacf46a6128a393"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vectoraSERK13device_vector" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy assign operator copies another <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with the same type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vectoraSERR13device_vector">
+<span id="_CPPv3N6thrust13device_vectoraSERR13device_vector"></span><span id="_CPPv2N6thrust13device_vectoraSERR13device_vector"></span><span id="thrust::device_vector::assign-operator__device_vectorRR"></span><span class="target" id="classthrust_1_1device__vector_1a056c3275bf2160a696fa5fc7b72c79d7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vectoraSERR13device_vector" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Move assign operator moves from another <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a> to move. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN6thrust13device_vector13device_vectorERK13device_vectorI6OtherT10OtherAllocE">
+<span id="_CPPv3I00EN6thrust13device_vector13device_vectorERK13device_vectorI6OtherT10OtherAllocE"></span><span id="_CPPv2I00EN6thrust13device_vector13device_vectorERK13device_vectorI6OtherT10OtherAllocE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherAlloc</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1a24ed0692f6a9117c1ff0427dcb0bb54c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERK13device_vectorI6OtherT10OtherAllocE" title="thrust::device_vector::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERK13device_vectorI6OtherT10OtherAllocE" title="thrust::device_vector::device_vector::OtherT"><span class="n"><span class="pre">OtherT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERK13device_vectorI6OtherT10OtherAllocE" title="thrust::device_vector::device_vector::OtherAlloc"><span class="n"><span class="pre">OtherAlloc</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERK13device_vectorI6OtherT10OtherAllocE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy constructor copies from an exemplar <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with different type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRK13device_vectorI6OtherT10OtherAllocE">
+<span id="_CPPv3I00EN6thrust13device_vectoraSERK13device_vectorI6OtherT10OtherAllocE"></span><span id="_CPPv2I00EN6thrust13device_vectoraSERK13device_vectorI6OtherT10OtherAllocE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherAlloc</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1aa64d56d971ed4529137bda4383d560e8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRK13device_vectorI6OtherT10OtherAllocE" title="thrust::device_vector::operator=::OtherT"><span class="n"><span class="pre">OtherT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRK13device_vectorI6OtherT10OtherAllocE" title="thrust::device_vector::operator=::OtherAlloc"><span class="n"><span class="pre">OtherAlloc</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRK13device_vectorI6OtherT10OtherAllocE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Assign operator copies from an exemplar <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> with different type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN6thrust13device_vector13device_vectorERKNSt6vectorI6OtherT10OtherAllocEE">
+<span id="_CPPv3I00EN6thrust13device_vector13device_vectorERKNSt6vectorI6OtherT10OtherAllocEE"></span><span id="_CPPv2I00EN6thrust13device_vector13device_vectorERKNSt6vectorI6OtherT10OtherAllocEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherAlloc</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1a043a84319417c285e5e6f751349b22a1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="namespace_std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERKNSt6vectorI6OtherT10OtherAllocEE" title="thrust::device_vector::device_vector::OtherT"><span class="n"><span class="pre">OtherT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERKNSt6vectorI6OtherT10OtherAllocEE" title="thrust::device_vector::device_vector::OtherAlloc"><span class="n"><span class="pre">OtherAlloc</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERKNSt6vectorI6OtherT10OtherAllocEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy constructor copies from an exemplar <code class="docutils literal notranslate"><span class="pre">std::vector</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKNSt6vectorI6OtherT10OtherAllocEE">
+<span id="_CPPv3I00EN6thrust13device_vectoraSERKNSt6vectorI6OtherT10OtherAllocEE"></span><span id="_CPPv2I00EN6thrust13device_vectoraSERKNSt6vectorI6OtherT10OtherAllocEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherAlloc</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1acf29d46628c9ed83f65afb35e2d9a255"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="namespace_std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKNSt6vectorI6OtherT10OtherAllocEE" title="thrust::device_vector::operator=::OtherT"><span class="n"><span class="pre">OtherT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKNSt6vectorI6OtherT10OtherAllocEE" title="thrust::device_vector::operator=::OtherAlloc"><span class="n"><span class="pre">OtherAlloc</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKNSt6vectorI6OtherT10OtherAllocEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Assign operator copies from an exemplar <code class="docutils literal notranslate"><span class="pre">std::vector</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN6thrust13device_vector13device_vectorERKN6detail11vector_baseI6OtherT10OtherAllocEE">
+<span id="_CPPv3I00EN6thrust13device_vector13device_vectorERKN6detail11vector_baseI6OtherT10OtherAllocEE"></span><span id="_CPPv2I00EN6thrust13device_vector13device_vectorERKN6detail11vector_baseI6OtherT10OtherAllocEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherAlloc</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1addb64f006059c2799d1b3f5de688d04d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector_base</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERKN6detail11vector_baseI6OtherT10OtherAllocEE" title="thrust::device_vector::device_vector::OtherT"><span class="n"><span class="pre">OtherT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERKN6detail11vector_baseI6OtherT10OtherAllocEE" title="thrust::device_vector::device_vector::OtherAlloc"><span class="n"><span class="pre">OtherAlloc</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN6thrust13device_vector13device_vectorERKN6detail11vector_baseI6OtherT10OtherAllocEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy construct from a <code class="docutils literal notranslate"><span class="pre">vector_base</span></code> whose element type is convertible to <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><span class="pre">vector_base</span></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKN6detail11vector_baseI6OtherT10OtherAllocEE">
+<span id="_CPPv3I00EN6thrust13device_vectoraSERKN6detail11vector_baseI6OtherT10OtherAllocEE"></span><span id="_CPPv2I00EN6thrust13device_vectoraSERKN6detail11vector_baseI6OtherT10OtherAllocEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OtherAlloc</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1a3b422d7d5f04817e9b22f60cfb6d30c5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector_base</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKN6detail11vector_baseI6OtherT10OtherAllocEE" title="thrust::device_vector::operator=::OtherT"><span class="n"><span class="pre">OtherT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKN6detail11vector_baseI6OtherT10OtherAllocEE" title="thrust::device_vector::operator=::OtherAlloc"><span class="n"><span class="pre">OtherAlloc</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN6thrust13device_vectoraSER13device_vectorRKN6detail11vector_baseI6OtherT10OtherAllocEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Assign a <code class="docutils literal notranslate"><span class="pre">vector_base</span></code> whose element type is convertible to <code class="docutils literal notranslate"><span class="pre">T</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The <code class="docutils literal notranslate"><span class="pre">vector_base</span></code> to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEE">
+<span id="_CPPv3N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEE"></span><span id="_CPPv2N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEE"></span><span id="thrust::device_vector::device_vector__cuda::std::initializer_list:T:"></span><span class="target" id="classthrust_1_1device__vector_1a9331bafdb91577d52d44abba60b2b2c8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">il</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor builds a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> from an intializer_list. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>il</strong> – The intializer_list. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEERK5Alloc">
+<span id="_CPPv3N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEERK5Alloc"></span><span id="_CPPv2N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEERK5Alloc"></span><span id="thrust::device_vector::device_vector__cuda::std::initializer_list:T:.AllocCR"></span><span class="target" id="classthrust_1_1device__vector_1a367fa9ba292a06e628782cbe078b1042"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">il</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::Alloc"><span class="n"><span class="pre">Alloc</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">alloc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13device_vectorEN4cudaSt16initializer_listI1TEERK5Alloc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor builds a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> from an intializer_list. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>il</strong> – The intializer_list. </p></li>
+<li><p><strong>alloc</strong> – The allocator to use by this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vectoraSEN4cudaSt16initializer_listI1TEE">
+<span id="_CPPv3N6thrust13device_vectoraSEN4cudaSt16initializer_listI1TEE"></span><span id="_CPPv2N6thrust13device_vectoraSEN4cudaSt16initializer_listI1TEE"></span><span id="thrust::device_vector::assign-operator__cuda::std::initializer_list:T:"></span><span class="target" id="classthrust_1_1device__vector_1a6db121838fedf49b231a14c8063a1ca1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">il</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vectoraSEN4cudaSt16initializer_listI1TEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Assign an <code class="docutils literal notranslate"><span class="pre">intializer_list</span></code> with a matching element type </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>il</strong> – The intializer_list. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIterator">
+<span id="_CPPv3I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIterator"></span><span id="_CPPv2I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIterator"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1a747dbc07d93a7f8fa58896dcb14744df"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIterator" title="thrust::device_vector::device_vector::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIterator" title="thrust::device_vector::device_vector::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIterator" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor builds a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> from a range. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first</strong> – The beginning of the range. </p></li>
+<li><p><strong>last</strong> – The end of the range. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIteratorRK5Alloc">
+<span id="_CPPv3I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIteratorRK5Alloc"></span><span id="_CPPv2I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIteratorRK5Alloc"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1a3c899659d16a34947d4b67d5cba047be"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_vector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIteratorRK5Alloc" title="thrust::device_vector::device_vector::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIteratorRK5Alloc" title="thrust::device_vector::device_vector::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::Alloc"><span class="n"><span class="pre">Alloc</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">alloc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6thrust13device_vector13device_vectorE13InputIterator13InputIteratorRK5Alloc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This constructor builds a <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> from a range. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first</strong> – The beginning of the range. </p></li>
+<li><p><strong>last</strong> – The end of the range. </p></li>
+<li><p><strong>alloc</strong> – The allocator to use by this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector6resizeE9size_typeRK10value_type">
+<span id="_CPPv3N6thrust13device_vector6resizeE9size_typeRK10value_type"></span><span id="_CPPv2N6thrust13device_vector6resizeE9size_typeRK10value_type"></span><span id="thrust::device_vector::resize__size_type.value_typeCR"></span><span class="target" id="classthrust_1_1device__vector_1acc3779e3af47e1392ac2ca6f9377e2a5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">new_size</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">value_type</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">value_type</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector6resizeE9size_typeRK10value_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Resizes this vector to the specified number of elements. </p>
+<p>
+This method will resize this vector to the specified number of elements. If the number is smaller than this vector’s current size this vector is truncated, otherwise this vector is extended and new elements are populated with given data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_size</strong> – Number of elements this vector should contain. </p></li>
+<li><p><strong>x</strong> – Data with which new elements should be populated. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws</dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="namespace_std.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">length_error</span></span></span> – If n exceeds <a class="reference internal" href="#classthrust_1_1device__vector_1ab941097c8a885638e53c32e2199f372d"><span class="std std-ref">max_size()</span></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector6resizeE9size_type14default_init_t">
+<span id="_CPPv3N6thrust13device_vector6resizeE9size_type14default_init_t"></span><span id="_CPPv2N6thrust13device_vector6resizeE9size_type14default_init_t"></span><span id="thrust::device_vector::resize__size_type.default_init_t"></span><span class="target" id="classthrust_1_1device__vector_1a7bec2bd9c36fd0ffaba4967ea0db78f1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">new_size</span></span>, <span class="n"><span class="pre">default_init_t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector6resizeE9size_type14default_init_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Resizes this vector to the specified number of elements, performing default-initialization instead of value-initialization. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_size</strong> – Number of elements this vector should contain. </p>
+</dd>
+<dt class="field-even">Throws</dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="namespace_std.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">length_error</span></span></span> – If n exceeds <a class="reference internal" href="#classthrust_1_1device__vector_1ab941097c8a885638e53c32e2199f372d"><span class="std std-ref">max_size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector6resizeE9size_type9no_init_t">
+<span id="_CPPv3N6thrust13device_vector6resizeE9size_type9no_init_t"></span><span id="_CPPv2N6thrust13device_vector6resizeE9size_type9no_init_t"></span><span id="thrust::device_vector::resize__size_type.no_init_t"></span><span class="target" id="classthrust_1_1device__vector_1a91e8d5efc38d3cf48e20b3278615d279"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">new_size</span></span>, <span class="n"><span class="pre">no_init_t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector6resizeE9size_type9no_init_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Resizes this vector_base to the specified number of elements, without initializing elements. It mandates that the element type is trivially default-constructible. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_size</strong> – Number of elements this vector_base should contain. </p>
+</dd>
+<dt class="field-even">Throws</dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="namespace_std.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">length_error</span></span></span> – If n exceeds <a class="reference internal" href="#classthrust_1_1device__vector_1ab941097c8a885638e53c32e2199f372d"><span class="std std-ref">max_size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector4sizeEv">
+<span id="_CPPv3NK6thrust13device_vector4sizeEv"></span><span id="_CPPv2NK6thrust13device_vector4sizeEv"></span><span id="thrust::device_vector::sizeC"></span><span class="target" id="classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"></span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector4sizeEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns the number of elements in this vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector8max_sizeEv">
+<span id="_CPPv3NK6thrust13device_vector8max_sizeEv"></span><span id="_CPPv2NK6thrust13device_vector8max_sizeEv"></span><span id="thrust::device_vector::max_sizeC"></span><span class="target" id="classthrust_1_1device__vector_1ab941097c8a885638e53c32e2199f372d"></span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector8max_sizeEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns the <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a> of the largest possible vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The largest possible return value of <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector7reserveE9size_type">
+<span id="_CPPv3N6thrust13device_vector7reserveE9size_type"></span><span id="_CPPv2N6thrust13device_vector7reserveE9size_type"></span><span id="thrust::device_vector::reserve__size_type"></span><span class="target" id="classthrust_1_1device__vector_1a94fb215e30e377ff576495b71c833e2f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserve</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector7reserveE9size_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>If n is less than or equal to <a class="reference internal" href="#classthrust_1_1device__vector_1a2efaad3108bc5f3331257025fd47fbbc"><span class="std std-ref">capacity()</span></a>, this call has no effect. Otherwise, this method is a request for allocation of additional memory. If the request is successful, then <a class="reference internal" href="#classthrust_1_1device__vector_1a2efaad3108bc5f3331257025fd47fbbc"><span class="std std-ref">capacity()</span></a> is greater than or equal to n; otherwise, <a class="reference internal" href="#classthrust_1_1device__vector_1a2efaad3108bc5f3331257025fd47fbbc"><span class="std std-ref">capacity()</span></a> is unchanged. In either case, <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a> is unchanged. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws</dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="namespace_std.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">length_error</span></span></span> – If n exceeds <a class="reference internal" href="#classthrust_1_1device__vector_1ab941097c8a885638e53c32e2199f372d"><span class="std std-ref">max_size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector8capacityEv">
+<span id="_CPPv3NK6thrust13device_vector8capacityEv"></span><span id="_CPPv2NK6thrust13device_vector8capacityEv"></span><span id="thrust::device_vector::capacityC"></span><span class="target" id="classthrust_1_1device__vector_1a2efaad3108bc5f3331257025fd47fbbc"></span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">capacity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector8capacityEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns the number of elements which have been reserved in this vector. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector13shrink_to_fitEv">
+<span id="_CPPv3N6thrust13device_vector13shrink_to_fitEv"></span><span id="_CPPv2N6thrust13device_vector13shrink_to_fitEv"></span><span id="thrust::device_vector::shrink_to_fit"></span><span class="target" id="classthrust_1_1device__vector_1af477b4ffaea01de7df33e1bbbafe6ac6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shrink_to_fit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector13shrink_to_fitEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method shrinks the capacity of this vector to exactly fit its elements. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vectorixE9size_type">
+<span id="_CPPv3N6thrust13device_vectorixE9size_type"></span><span id="_CPPv2N6thrust13device_vectorixE9size_type"></span><span id="thrust::device_vector::subscript-operator__size_type"></span><span class="target" id="classthrust_1_1device__vector_1a58941f0d61aabbd377f39766d8ab4d68"></span><span class="n"><span class="pre">reference</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">[]</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vectorixE9size_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Subscript access to the data contained in this vector_dev. </p>
+<p>
+This operator allows for easy, array-style, data access. Note that data access with this operator is unchecked and out_of_range lookups are not defined. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The index of the element for which data should be accessed. </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Read/write reference to data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vectorixE9size_type">
+<span id="_CPPv3NK6thrust13device_vectorixE9size_type"></span><span id="_CPPv2NK6thrust13device_vectorixE9size_type"></span><span id="thrust::device_vector::subscript-operator__size_typeC"></span><span class="target" id="classthrust_1_1device__vector_1a9bc469ac116ec325cdbdd02acbd58d53"></span><span class="n"><span class="pre">const_reference</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">[]</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vectorixE9size_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Subscript read access to the data contained in this vector_dev. </p>
+<p>
+This operator allows for easy, array-style, data access. Note that data access with this operator is unchecked and out_of_range lookups are not defined. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The index of the element for which data should be accessed. </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Read reference to data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector5beginEv">
+<span id="_CPPv3N6thrust13device_vector5beginEv"></span><span id="_CPPv2N6thrust13device_vector5beginEv"></span><span id="thrust::device_vector::begin"></span><span class="target" id="classthrust_1_1device__vector_1a2a5f6eb657d3040bfc4651378a6ba3ce"></span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector5beginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns an iterator pointing to the beginning of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>mStart </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector5beginEv">
+<span id="_CPPv3NK6thrust13device_vector5beginEv"></span><span id="_CPPv2NK6thrust13device_vector5beginEv"></span><span id="thrust::device_vector::beginC"></span><span class="target" id="classthrust_1_1device__vector_1a3f49814bd4de5b5fec72917cacca7ab0"></span><span class="n"><span class="pre">const_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector5beginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_iterator pointing to the beginning of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>mStart </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector6cbeginEv">
+<span id="_CPPv3NK6thrust13device_vector6cbeginEv"></span><span id="_CPPv2NK6thrust13device_vector6cbeginEv"></span><span id="thrust::device_vector::cbeginC"></span><span class="target" id="classthrust_1_1device__vector_1a38a5b27a601e809ae2b736ee3a1b39c2"></span><span class="n"><span class="pre">const_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector6cbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_iterator pointing to the beginning of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>mStart </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector6rbeginEv">
+<span id="_CPPv3N6thrust13device_vector6rbeginEv"></span><span id="_CPPv2N6thrust13device_vector6rbeginEv"></span><span id="thrust::device_vector::rbegin"></span><span class="target" id="classthrust_1_1device__vector_1a7ba5e5b715b151e75cca35943f9da04e"></span><a class="reference internal" href="classthrust_1_1reverse__iterator.html#_CPPv4I0EN6thrust16reverse_iteratorE" title="thrust::reverse_iterator"><span class="n"><span class="pre">reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector6rbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a <a class="reference internal" href="classthrust_1_1reverse__iterator.html#classthrust_1_1reverse__iterator"><span class="std std-ref">reverse_iterator</span></a> pointing to the beginning of this vector’s reversed sequence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <a class="reference internal" href="classthrust_1_1reverse__iterator.html#classthrust_1_1reverse__iterator"><span class="std std-ref">reverse_iterator</span></a> pointing to the beginning of this vector’s reversed sequence. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector6rbeginEv">
+<span id="_CPPv3NK6thrust13device_vector6rbeginEv"></span><span id="_CPPv2NK6thrust13device_vector6rbeginEv"></span><span id="thrust::device_vector::rbeginC"></span><span class="target" id="classthrust_1_1device__vector_1a1f6853ae15d13be52b2f56cbaaaf4fdf"></span><span class="n"><span class="pre">const_reverse_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector6rbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_reverse_iterator pointing to the beginning of this vector’s reversed sequence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A const_reverse_iterator pointing to the beginning of this vector’s reversed sequence. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector7crbeginEv">
+<span id="_CPPv3NK6thrust13device_vector7crbeginEv"></span><span id="_CPPv2NK6thrust13device_vector7crbeginEv"></span><span id="thrust::device_vector::crbeginC"></span><span class="target" id="classthrust_1_1device__vector_1ac1b1f99a173fe8cf00d7922e21da190e"></span><span class="n"><span class="pre">const_reverse_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">crbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector7crbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_reverse_iterator pointing to the beginning of this vector’s reversed sequence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A const_reverse_iterator pointing to the beginning of this vector’s reversed sequence. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector3endEv">
+<span id="_CPPv3N6thrust13device_vector3endEv"></span><span id="_CPPv2N6thrust13device_vector3endEv"></span><span id="thrust::device_vector::end"></span><span class="target" id="classthrust_1_1device__vector_1abc1b1e3ab2655653555384b88861db03"></span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector3endEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns an iterator pointing to one element past the last of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classthrust_1_1device__vector_1a2a5f6eb657d3040bfc4651378a6ba3ce"><span class="std std-ref">begin()</span></a> + <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector3endEv">
+<span id="_CPPv3NK6thrust13device_vector3endEv"></span><span id="_CPPv2NK6thrust13device_vector3endEv"></span><span id="thrust::device_vector::endC"></span><span class="target" id="classthrust_1_1device__vector_1a959f175082417ba86f39e476fb4c013c"></span><span class="n"><span class="pre">const_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector3endEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_iterator pointing to one element past the last of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classthrust_1_1device__vector_1a2a5f6eb657d3040bfc4651378a6ba3ce"><span class="std std-ref">begin()</span></a> + <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector4cendEv">
+<span id="_CPPv3NK6thrust13device_vector4cendEv"></span><span id="_CPPv2NK6thrust13device_vector4cendEv"></span><span id="thrust::device_vector::cendC"></span><span class="target" id="classthrust_1_1device__vector_1a09074c6375983182b055c5987544b3e9"></span><span class="n"><span class="pre">const_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector4cendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_iterator pointing to one element past the last of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classthrust_1_1device__vector_1a2a5f6eb657d3040bfc4651378a6ba3ce"><span class="std std-ref">begin()</span></a> + <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector4rendEv">
+<span id="_CPPv3N6thrust13device_vector4rendEv"></span><span id="_CPPv2N6thrust13device_vector4rendEv"></span><span id="thrust::device_vector::rend"></span><span class="target" id="classthrust_1_1device__vector_1ae867b375c1b3025b55d4ee4a587e13e6"></span><a class="reference internal" href="classthrust_1_1reverse__iterator.html#_CPPv4I0EN6thrust16reverse_iteratorE" title="thrust::reverse_iterator"><span class="n"><span class="pre">reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector4rendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a <a class="reference internal" href="classthrust_1_1reverse__iterator.html#classthrust_1_1reverse__iterator"><span class="std std-ref">reverse_iterator</span></a> pointing to one element past the last of this vector’s reversed sequence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classthrust_1_1device__vector_1a7ba5e5b715b151e75cca35943f9da04e"><span class="std std-ref">rbegin()</span></a> + <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector4rendEv">
+<span id="_CPPv3NK6thrust13device_vector4rendEv"></span><span id="_CPPv2NK6thrust13device_vector4rendEv"></span><span id="thrust::device_vector::rendC"></span><span class="target" id="classthrust_1_1device__vector_1aba7147fa606a32db18fd764a71753b74"></span><span class="n"><span class="pre">const_reverse_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector4rendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_reverse_iterator pointing to one element past the last of this vector’s reversed sequence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classthrust_1_1device__vector_1a7ba5e5b715b151e75cca35943f9da04e"><span class="std std-ref">rbegin()</span></a> + <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector5crendEv">
+<span id="_CPPv3NK6thrust13device_vector5crendEv"></span><span id="_CPPv2NK6thrust13device_vector5crendEv"></span><span id="thrust::device_vector::crendC"></span><span class="target" id="classthrust_1_1device__vector_1adbba7f43b44f9a9d6fc96cf429d08ed0"></span><span class="n"><span class="pre">const_reverse_iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">crend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector5crendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_reverse_iterator pointing to one element past the last of this vector’s reversed sequence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#classthrust_1_1device__vector_1a7ba5e5b715b151e75cca35943f9da04e"><span class="std std-ref">rbegin()</span></a> + <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector5frontEv">
+<span id="_CPPv3NK6thrust13device_vector5frontEv"></span><span id="_CPPv2NK6thrust13device_vector5frontEv"></span><span id="thrust::device_vector::frontC"></span><span class="target" id="classthrust_1_1device__vector_1a10beb3c49e07bca270275525caad1b6e"></span><span class="n"><span class="pre">const_reference</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">front</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector5frontEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_reference referring to the first element of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The first element of this vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector5frontEv">
+<span id="_CPPv3N6thrust13device_vector5frontEv"></span><span id="_CPPv2N6thrust13device_vector5frontEv"></span><span id="thrust::device_vector::front"></span><span class="target" id="classthrust_1_1device__vector_1adb3a6d4ae647bc31a42b09f154d0e47b"></span><span class="n"><span class="pre">reference</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">front</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector5frontEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a reference pointing to the first element of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The first element of this vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector4backEv">
+<span id="_CPPv3NK6thrust13device_vector4backEv"></span><span id="_CPPv2NK6thrust13device_vector4backEv"></span><span id="thrust::device_vector::backC"></span><span class="target" id="classthrust_1_1device__vector_1a53d42a8eabcd3c421d0c81150c45457e"></span><span class="n"><span class="pre">const_reference</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">back</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector4backEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const reference pointing to the last element of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The last element of this vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector4backEv">
+<span id="_CPPv3N6thrust13device_vector4backEv"></span><span id="_CPPv2N6thrust13device_vector4backEv"></span><span id="thrust::device_vector::back"></span><span class="target" id="classthrust_1_1device__vector_1ae333f51762fe9063a14acb8f9c57298b"></span><span class="n"><span class="pre">reference</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">back</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector4backEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a reference referring to the last element of this vector_dev. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The last element of this vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector4dataEv">
+<span id="_CPPv3N6thrust13device_vector4dataEv"></span><span id="_CPPv2N6thrust13device_vector4dataEv"></span><span id="thrust::device_vector::data"></span><span class="target" id="classthrust_1_1device__vector_1a26fa73fae1cc6c5f5c84680cc47606e0"></span><a class="reference internal" href="classthrust_1_1pointer.html#_CPPv4I0000EN6thrust7pointerE" title="thrust::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector4dataEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a pointer to this vector’s first element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A pointer to the first element of this vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector4dataEv">
+<span id="_CPPv3NK6thrust13device_vector4dataEv"></span><span id="_CPPv2NK6thrust13device_vector4dataEv"></span><span id="thrust::device_vector::dataC"></span><span class="target" id="classthrust_1_1device__vector_1a3b9dff8bf02640f96f9485f875958283"></span><span class="n"><span class="pre">const_pointer</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector4dataEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a const_pointer to this vector’s first element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a const_pointer to the first element of this vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector5clearEv">
+<span id="_CPPv3N6thrust13device_vector5clearEv"></span><span id="_CPPv2N6thrust13device_vector5clearEv"></span><span id="thrust::device_vector::clear"></span><span class="target" id="classthrust_1_1device__vector_1a5381fbc28abf36857abc2cbf480670ff"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector5clearEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method resizes this vector to 0. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector5emptyEv">
+<span id="_CPPv3NK6thrust13device_vector5emptyEv"></span><span id="_CPPv2NK6thrust13device_vector5emptyEv"></span><span id="thrust::device_vector::emptyC"></span><span class="target" id="classthrust_1_1device__vector_1ad6d84e60f053ead08dd37e2421e08075"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">empty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector5emptyEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns true iff <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a> == 0. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>true if <a class="reference internal" href="#classthrust_1_1device__vector_1a23d5746465a7a780ae65d04bac1aad5c"><span class="std std-ref">size()</span></a> == 0; false, otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector9push_backERK10value_type">
+<span id="_CPPv3N6thrust13device_vector9push_backERK10value_type"></span><span id="_CPPv2N6thrust13device_vector9push_backERK10value_type"></span><span id="thrust::device_vector::push_back__value_typeCR"></span><span class="target" id="classthrust_1_1device__vector_1a768fd54edd31e07d4a2078b0bb972fea"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">push_back</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">value_type</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector9push_backERK10value_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method appends the given element to the end of this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – The element to append. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector8pop_backEv">
+<span id="_CPPv3N6thrust13device_vector8pop_backEv"></span><span id="_CPPv2N6thrust13device_vector8pop_backEv"></span><span id="thrust::device_vector::pop_back"></span><span class="target" id="classthrust_1_1device__vector_1a20c9c4f8357a56ef4852da8916a9d6dc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pop_back</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector8pop_backEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method erases the last element of this vector, invalidating all iterators and references to it. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector4swapER13device_vector">
+<span id="_CPPv3N6thrust13device_vector4swapER13device_vector"></span><span id="_CPPv2N6thrust13device_vector4swapER13device_vector"></span><span id="thrust::device_vector::swap__device_vectorR"></span><span class="target" id="classthrust_1_1device__vector_1afbb2ba9fb2d40c551598d12d770d68b6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">swap</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector4swapER13device_vector" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method swaps the contents of this <a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref">device_vector</span></a> with another vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – The vector with which to swap. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector5eraseE8iterator">
+<span id="_CPPv3N6thrust13device_vector5eraseE8iterator"></span><span id="_CPPv2N6thrust13device_vector5eraseE8iterator"></span><span id="thrust::device_vector::erase__iterator"></span><span class="target" id="classthrust_1_1device__vector_1a0bd666527f0130e1a265739ee2c77d13"></span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">erase</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pos</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector5eraseE8iterator" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method removes the element at position pos. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pos</strong> – The position of the element of interest. </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An iterator pointing to the new location of the element that followed the element at position pos. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector5eraseE8iterator8iterator">
+<span id="_CPPv3N6thrust13device_vector5eraseE8iterator8iterator"></span><span id="_CPPv2N6thrust13device_vector5eraseE8iterator8iterator"></span><span id="thrust::device_vector::erase__iterator.iterator"></span><span class="target" id="classthrust_1_1device__vector_1ae799093cda17da5619eeb2baf7f2826a"></span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">erase</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector5eraseE8iterator8iterator" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method removes the range of elements [first,last) from this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first</strong> – The beginning of the range of elements to remove. </p></li>
+<li><p><strong>last</strong> – The end of the range of elements to remove. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An iterator pointing to the new location of the element that followed the last element in the sequence [first,last). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector6insertE8iteratorRK1T">
+<span id="_CPPv3N6thrust13device_vector6insertE8iteratorRK1T"></span><span id="_CPPv2N6thrust13device_vector6insertE8iteratorRK1T"></span><span id="thrust::device_vector::insert__iterator.TCR"></span><span class="target" id="classthrust_1_1device__vector_1ac8e714f6c50e339d66c1a87bf9c3b161"></span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insert</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">position</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector6insertE8iteratorRK1T" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method inserts a single copy of a given exemplar value at the specified position in this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> – The insertion position. </p></li>
+<li><p><strong>x</strong> – The exemplar element to copy &amp; insert. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An iterator pointing to the newly inserted element. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector6insertE8iterator9size_typeRK1T">
+<span id="_CPPv3N6thrust13device_vector6insertE8iterator9size_typeRK1T"></span><span id="_CPPv2N6thrust13device_vector6insertE8iterator9size_typeRK1T"></span><span id="thrust::device_vector::insert__iterator.size_type.TCR"></span><span class="target" id="classthrust_1_1device__vector_1aa74f622e3e5e2b71b28b165cfcfd304e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insert</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">position</span></span>, <span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector6insertE8iterator9size_typeRK1T" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method inserts a copy of an exemplar value to a range at the specified position in this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> – The insertion position </p></li>
+<li><p><strong>n</strong> – The number of insertions to perform. </p></li>
+<li><p><strong>x</strong> – The value to replicate and insert. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6thrust13device_vector6insertEv8iterator13InputIterator13InputIterator">
+<span id="_CPPv3I0EN6thrust13device_vector6insertE8iterator13InputIterator13InputIterator"></span><span id="_CPPv2I0EN6thrust13device_vector6insertE8iterator13InputIterator13InputIterator"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1ac9c97439c55176904543b905de3c9bae"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insert</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">iterator</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">position</span></span>, <a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector6insertEv8iterator13InputIterator13InputIterator" title="thrust::device_vector::insert::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector6insertEv8iterator13InputIterator13InputIterator" title="thrust::device_vector::insert::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6thrust13device_vector6insertEv8iterator13InputIterator13InputIterator" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method inserts a copy of an input range at the specified position in this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> – The insertion position. </p></li>
+<li><p><strong>first</strong> – The beginning of the range to copy. </p></li>
+<li><p><strong>last</strong> – The end of the range to copy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Template Parameters</dt>
+<dd class="field-even"><p><strong>InputIterator</strong> – is a model of &lt;a href=”<a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/input_iterator">https://en.cppreference.com/w/cpp/iterator/input_iterator</a>&gt;Input Iterator, and <code class="docutils literal notranslate"><span class="pre">InputIterator's</span></code> <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector6assignE9size_typeRK1T">
+<span id="_CPPv3N6thrust13device_vector6assignE9size_typeRK1T"></span><span id="_CPPv2N6thrust13device_vector6assignE9size_typeRK1T"></span><span id="thrust::device_vector::assign__size_type.TCR"></span><span class="target" id="classthrust_1_1device__vector_1a4a0728a800ca1da9bcc6c8bfef019372"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assign</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6thrust13device_vector6assignE9size_typeRK1T" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This version of <code class="docutils literal notranslate"><span class="pre">assign</span></code> replicates a given exemplar <code class="docutils literal notranslate"><span class="pre">n</span></code> times into this vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – The number of times to copy <code class="docutils literal notranslate"><span class="pre">x</span></code>. </p></li>
+<li><p><strong>x</strong> – The exemplar element to replicate. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6thrust13device_vector6assignEv13InputIterator13InputIterator">
+<span id="_CPPv3I0EN6thrust13device_vector6assignE13InputIterator13InputIterator"></span><span id="_CPPv2I0EN6thrust13device_vector6assignE13InputIterator13InputIterator"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIterator</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classthrust_1_1device__vector_1aeef38fef5d50d7346b1351b7113ab345"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assign</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector6assignEv13InputIterator13InputIterator" title="thrust::device_vector::assign::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I0EN6thrust13device_vector6assignEv13InputIterator13InputIterator" title="thrust::device_vector::assign::InputIterator"><span class="n"><span class="pre">InputIterator</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6thrust13device_vector6assignEv13InputIterator13InputIterator" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This version of <code class="docutils literal notranslate"><span class="pre">assign</span></code> makes this vector a copy of a given input range. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first</strong> – The beginning of the range to copy. </p></li>
+<li><p><strong>last</strong> – The end of the range to copy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Template Parameters</dt>
+<dd class="field-even"><p><strong>InputIterator</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6thrust13device_vector13get_allocatorEv">
+<span id="_CPPv3NK6thrust13device_vector13get_allocatorEv"></span><span id="_CPPv2NK6thrust13device_vector13get_allocatorEv"></span><span id="thrust::device_vector::get_allocatorC"></span><span class="target" id="classthrust_1_1device__vector_1af23b30004f72dc5a58454d863c8ca054"></span><span class="n"><span class="pre">allocator_type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_allocator</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6thrust13device_vector13get_allocatorEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This method returns a copy of this vector’s allocator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A copy of the allocator used by this vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-friends">Friends</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6thrust13device_vector4swapER13device_vectorR13device_vector">
+<span id="_CPPv3N6thrust13device_vector4swapER13device_vectorR13device_vector"></span><span id="_CPPv2N6thrust13device_vector4swapER13device_vectorR13device_vector"></span><span id="thrust::device_vector::swap__device_vectorR.device_vectorR"></span><span class="target" id="classthrust_1_1device__vector_1a5beb4b2d834cf73eb2ee6beec6ee5178"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">swap</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <a class="reference internal" href="#_CPPv4I00EN6thrust13device_vectorE" title="thrust::device_vector"><span class="n"><span class="pre">device_vector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4N6thrust13device_vector4swapER13device_vectorR13device_vector" title="thrust::device_vector::swap::a"><span class="n"><span class="pre">a</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">swap</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4N6thrust13device_vector4swapER13device_vectorR13device_vector" title="thrust::device_vector::swap::b"><span class="n"><span class="pre">b</span></span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6thrust13device_vector4swapER13device_vectorR13device_vector" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Exchanges the values of two vectors. <code class="docutils literal notranslate"><span class="pre">x</span></code> The first <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> of interest. <code class="docutils literal notranslate"><span class="pre">y</span></code> The second <code class="docutils literal notranslate"><a class="reference internal" href="#classthrust_1_1device__vector"><span class="std std-ref"><span class="pre">device_vector</span></span></a></code> of interest. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

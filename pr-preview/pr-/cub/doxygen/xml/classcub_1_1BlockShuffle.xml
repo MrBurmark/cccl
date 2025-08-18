@@ -1,0 +1,627 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1BlockShuffle" kind="class" language="C++" prot="public">
+    <compoundname>cub::BlockShuffle</compoundname>
+    <innerclass refid="structcub_1_1BlockShuffle_1_1TempStorage" prot="public">cub::BlockShuffle::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_X</declname>
+        <defname>BLOCK_DIM_X</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Y</declname>
+        <defname>BLOCK_DIM_Y</defname>
+        <defval>1</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Z</declname>
+        <defname>BLOCK_DIM_Z</defname>
+        <defval>1</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1a73ad9858e735e0acb612ded3028033dc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockShuffle</definition>
+        <argsstring>()</argsstring>
+        <name>BlockShuffle</name>
+        <briefdescription>
+<para>Collective constructor using a private static allocation of shared memory as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="116" column="5" bodyfile="cub/block/block_shuffle.cuh" bodystart="116" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1ab98f361692d7fdb9134fe4834b0518c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockShuffle</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>BlockShuffle</name>
+        <param>
+          <type><ref refid="structcub_1_1BlockShuffle_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to memory allocation having layout type <ref refid="structcub_1_1BlockShuffle_1_1TempStorage" kindref="compound">TempStorage</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="128" column="5" bodyfile="cub/block/block_shuffle.cuh" bodystart="128" bodyend="131"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Shuffle movement</header>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1a422681d8b676316f830314ee2636c9db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Offset</definition>
+        <argsstring>(T input, T &amp;output, int distance=1)</argsstring>
+        <name>Offset</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>distance</declname>
+          <defval>1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+
+Each *thread*\ :sub:`i` obtains the ``input`` provided by *thread*\ :sub:`i + distance`.
+The offset ``distance`` may be negative.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The input item from the calling thread (*thread*\ :sub:`i`)</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The ``input`` item from the successor (or predecessor) thread
+  *thread*\ :sub:`i + distance` (may be aliased to ``input``).
+  This value is only updated for for *thread*\ :sub:`i` when
+  ``0 &lt;= (i + distance) &lt; BLOCK_THREADS - 1``</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">distance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset distance (may be negative) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="161" column="10" bodyfile="cub/block/block_shuffle.cuh" bodystart="161" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1ae04ff234df30975dc706422c444dcf33" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Rotate</definition>
+        <argsstring>(T input, T &amp;output, unsigned int distance=1)</argsstring>
+        <name>Rotate</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>distance</declname>
+          <defval>1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Each *thread*\ :sub:`i` obtains the ``input`` provided by *thread*\ :sub:`i + distance`.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The ``input`` item from thread
+  *thread*\ :sub:`(i + distance&gt;) % BLOCK_THREADS` (may be aliased to ``input``).
+  This value is not updated for *thread*\ :sub:`BLOCK_THREADS - 1`.</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">distance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset distance (<computeroutput>0 &lt; distance &lt;</computeroutput>BLOCK_THREADS`) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="193" column="10" bodyfile="cub/block/block_shuffle.cuh" bodystart="193" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1ab4020b49d7c735d7c329c4345f16fd15" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Up</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;prev)[ITEMS_PER_THREAD])</argsstring>
+        <name>Up</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>prev</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+The thread block rotates its :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of
+``input`` items, shifting it up by one item.
+
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">prev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The corresponding predecessor items (may be aliased to ``input``).
+  The item ``prev[0]`` is not updated for *thread*\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="227" column="10" bodyfile="cub/block/block_shuffle.cuh" bodystart="227" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1a61266afeaf90406f5df48314c256a80e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Up</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;prev)[ITEMS_PER_THREAD], T &amp;block_suffix)</argsstring>
+        <name>Up</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>prev</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_suffix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+The thread block rotates its :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;`
+of ``input`` items, shifting it up by one item. All threads receive the ``input`` provided by
+*thread*\ :sub:`BLOCK_THREADS - 1`.
+
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">prev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The corresponding predecessor items (may be aliased to ``input``).
+  The item ``prev[0]`` is not updated for *thread*\ :sub:`0`.</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_suffix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The item ``input[ITEMS_PER_THREAD - 1]`` from *thread*\ :sub:`BLOCK_THREADS - 1`, provided to all threads</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="270" column="10" bodyfile="cub/block/block_shuffle.cuh" bodystart="270" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1a013b7a5ef80e7e27526430bc38e88c67" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Down</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;prev)[ITEMS_PER_THREAD])</argsstring>
+        <name>Down</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>prev</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+The thread block rotates its :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;`
+of ``input`` items, shifting it down by one item.
+
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">prev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The corresponding predecessor items (may be aliased to ``input``).
+  The value ``prev[0]`` is not updated for *thread*\ :sub:`BLOCK_THREADS - 1`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="295" column="10" bodyfile="cub/block/block_shuffle.cuh" bodystart="295" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1a669bb0bc988478806a5056954f711799" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Down</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;prev)[ITEMS_PER_THREAD], T &amp;block_prefix)</argsstring>
+        <name>Down</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>prev</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_prefix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+The thread block rotates its :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of input items,
+shifting it down by one item. All threads receive ``input[0]`` provided by *thread*\ :sub:`0`.
+
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">prev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The corresponding predecessor items (may be aliased to ``input``).
+  The value ``prev[0]`` is not updated for *thread*\ :sub:`BLOCK_THREADS - 1`.</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  The item ``input[0]`` from *thread*\ :sub:`0`, provided to all threads</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="337" column="10" bodyfile="cub/block/block_shuffle.cuh" bodystart="337" bodyend="341"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7" prot="private" static="no" strong="no">
+        <type></type>
+        <name>@2</name>
+        <enumvalue id="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7ac3a8632e03b9701ba941d151bd257a1e" prot="private">
+          <name>BLOCK_THREADS</name>
+          <initializer>= BLOCK_DIM_X * BLOCK_DIM_Y * BLOCK_DIM_Z</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7a8175166e3b2cce464bbf5767a3681168" prot="private">
+          <name>LOG_WARP_THREADS</name>
+          <initializer>= detail::log2_warp_threads</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7a4eb5d840ddcecf2995d6985a5518da54" prot="private">
+          <name>WARP_THREADS</name>
+          <initializer>= 1 &lt;&lt; LOG_WARP_THREADS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7a9fea7809e32d61c2877d02e4a4ac6abe" prot="private">
+          <name>WARPS</name>
+          <initializer>= (BLOCK_THREADS + WARP_THREADS - 1) / WARP_THREADS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="80" column="3" bodyfile="cub/block/block_shuffle.cuh" bodystart="81" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockShuffle_1aa0eb62b3ea2f921931f1864ea888a48d" prot="private" static="no">
+        <type>T[BLOCK_THREADS]</type>
+        <definition>using cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::_TempStorage =  T[BLOCK_THREADS]</definition>
+        <argsstring></argsstring>
+        <name>_TempStorage</name>
+        <briefdescription>
+<para>Shared memory storage layout type (last element from each thread&apos;s input) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="90" column="3" bodyfile="cub/block/block_shuffle.cuh" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockShuffle_1a504f3fba342d10655dd8ead123e69100" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+<para>Shared storage reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="99" column="16" bodyfile="cub/block/block_shuffle.cuh" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockShuffle_1a0033f77ab2d682b4f901098f742430b2" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::linear_tid</definition>
+        <argsstring></argsstring>
+        <name>linear_tid</name>
+        <briefdescription>
+<para>Linear thread-id. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="102" column="16" bodyfile="cub/block/block_shuffle.cuh" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcub_1_1BlockShuffle_1a973ccb36c7c575e45063b67e57a6c662" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockShuffle&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::PrivateStorage</definition>
+        <argsstring>()</argsstring>
+        <name>PrivateStorage</name>
+        <briefdescription>
+<para>Internal storage allocator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_shuffle.cuh" line="105" column="18" bodyfile="cub/block/block_shuffle.cuh" bodystart="105" bodyend="109"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+The BlockShuffle class provides :ref:`collective &lt;collective-primitives&gt;`
+methods for shuffling data partitioned across a CUDA thread block.
+
+Overview
+++++++++++++++++
+
+It is commonplace for blocks of threads to rearrange data items between threads.
+The BlockShuffle abstraction allows threads to efficiently shift items either
+(a) up to their successor or
+(b) down to their predecessor</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The data type to be exchanged.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thread block length in threads along the X dimension</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Y dimension (default: 1)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Z dimension (default: 1) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/block/block_shuffle.cuh" line="77" column="1" bodyfile="cub/block/block_shuffle.cuh" bodystart="78" bodyend="344"/>
+    <listofallmembers>
+      <member refid="classcub_1_1BlockShuffle_1aa0eb62b3ea2f921931f1864ea888a48d" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>_TempStorage</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7ac3a8632e03b9701ba941d151bd257a1e" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>BLOCK_THREADS</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a73ad9858e735e0acb612ded3028033dc" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>BlockShuffle</name></member>
+      <member refid="classcub_1_1BlockShuffle_1ab98f361692d7fdb9134fe4834b0518c5" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>BlockShuffle</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a013b7a5ef80e7e27526430bc38e88c67" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>Down</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a669bb0bc988478806a5056954f711799" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>Down</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a0033f77ab2d682b4f901098f742430b2" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>linear_tid</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7a8175166e3b2cce464bbf5767a3681168" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>LOG_WARP_THREADS</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a422681d8b676316f830314ee2636c9db" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>Offset</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a973ccb36c7c575e45063b67e57a6c662" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>PrivateStorage</name></member>
+      <member refid="classcub_1_1BlockShuffle_1ae04ff234df30975dc706422c444dcf33" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>Rotate</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a504f3fba342d10655dd8ead123e69100" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>temp_storage</name></member>
+      <member refid="classcub_1_1BlockShuffle_1ab4020b49d7c735d7c329c4345f16fd15" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>Up</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a61266afeaf90406f5df48314c256a80e" prot="public" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>Up</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7a4eb5d840ddcecf2995d6985a5518da54" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>WARP_THREADS</name></member>
+      <member refid="classcub_1_1BlockShuffle_1a2084d0d708b6e1a1389c164f50e8d6b7a9fea7809e32d61c2877d02e4a4ac6abe" prot="private" virt="non-virtual"><scope>cub::BlockShuffle</scope><name>WARPS</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

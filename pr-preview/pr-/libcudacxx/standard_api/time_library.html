@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time Library &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Type Support Library" href="type_support.html" />
+    <link rel="prev" title="Synchronization Library" href="synchronization_library.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../standard_api.html">Standard API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="c_library.html">C Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts_library.html">Concepts Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="container_library.html">Container Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution_library.html">Execution Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numerics_library.html">Numerics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ranges_library.html">Ranges Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="synchronization_library.html">Synchronization Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Time Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-defined-behavior">Implementation-Defined Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">std::chrono::system_clock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">std::chrono::high_resolution_clock</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#omissions">Omissions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">std::chrono::steady_clock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22">std::chrono::duration I/O Operators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="type_support.html">Type Support Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility_library.html">Utility Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../standard_api.html#standard-library-backports">Standard Library Backports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../standard_api.html#c-feature-availability-summary">C++ Feature Availability Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../standard_api.html#id1">C Feature Availability Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../extended_api.html">Extended API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../standard_api.html">Standard API</a> &raquo;</li>
+      <li>Time Library</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="time-library">
+<span id="libcudacxx-standard-api-time"></span><h1>Time Library<a class="headerlink" href="#time-library" title="Permalink to this headline"></a></h1>
+<p>See the documentation of the standard header <a class="reference external" href="https://en.cppreference.com/w/cpp/header/chrono">&lt;chrono&gt;</a></p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 45%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Header</p></th>
+<th class="head"><p>Content</p></th>
+<th class="head"><p>Availability</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;cuda/std/chrono&gt;</span></code></p></td>
+<td><p>Times, dates, and clocks</p></td>
+<td><p>libcu++ 1.1.0 / CCCL 2.0.0 / CUDA 12.3</p></td>
+</tr>
+</tbody>
+</table>
+<section id="implementation-defined-behavior">
+<h2>Implementation-Defined Behavior<a class="headerlink" href="#implementation-defined-behavior" title="Permalink to this headline"></a></h2>
+<section id="id1">
+<h3><a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/system_clock">std::chrono::system_clock</a><a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<p><a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/system_clock">std::chrono::system_clock</a>
+is a clock that track real-world time. In the C++ Standard, it is
+unspecified whether or not this clock is monotonically increasing. In
+our implementation, it is not.</p>
+<p>To implement
+<a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/system_clock">std::chrono::system_clock</a>,
+we use:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimepreciseasfiletime">GetSystemTimePreciseAsFileTime</a> and
+<a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimeasfiletime">GetSystemTimeAsFileTime</a>
+for host code on Windows.</p></li>
+<li><p><a class="reference external" href="https://man7.org/linux/man-pages/man3/clock_gettime.3.html">clock_gettime(CLOCK_REALTIME, …)</a> and <a class="reference external" href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html">gettimeofday</a>
+for host code on Linux, Android, and QNX.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#special-registers-globaltimer">PTX’s %globaltimer</a> for device code.</p></li>
+</ul>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#special-registers-globaltimer">PTX’s %globaltimer</a>
+is a system clock which also happens to be monotonically increasing on today’s NVIDIA GPUs
+(e.g. it cannot be updated and is not changed when the host system clock changes).
+However, this is not necessarily the case with respect to host threads, where updates of the system clock may occur during the execution of the program.</p>
+<p><a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#special-registers-globaltimer">PTX’s %globaltimer</a>
+is initialized from the host system clock upon device attach; that may be at program start, but it could be earlier (for example, due to CUDA persistence mode).
+Since <a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#special-registers-globaltimer">PTX’s %globaltimer</a> is a system clock,
+it counts real-world time, and thus it has the same tick rate as the host system clock.</p>
+<p>There is potential for logical inconsistencies between the time that host threads and device threads observe from our
+<a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/system_clock">std::chrono::system_clock</a>.
+However, this is perfectly fine; it is an inherent property of system clocks. In fact, it is not even guaranteed that a system clock remain
+consistent between different host threads, or even within the same host thread. This can occur, for example, due to Daylights Savings Time or a
+time zone change.</p>
+<p>The requirements for <a class="reference external" href="https://eel.is/c++draft/time.clock.req">Clock</a> state:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">C1</span></code> denotes a clock type. <code class="docutils literal notranslate"><span class="pre">t1</span></code> and <code class="docutils literal notranslate"><span class="pre">t2</span></code> are values returned by
+<code class="docutils literal notranslate"><span class="pre">C1::now()</span></code> where the call returning <code class="docutils literal notranslate"><span class="pre">t1</span></code> <a class="reference external" href="http://eel.is/c++draft/intro.multithread#def:happens_before">happens before</a>
+the call returning <code class="docutils literal notranslate"><span class="pre">t2</span></code> and both of these calls occur before
+<code class="docutils literal notranslate"><span class="pre">C1::time_point::max()</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">C1::is_steady</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code> if <code class="docutils literal notranslate"><span class="pre">t1</span> <span class="pre">&lt;=</span> <span class="pre">t2</span></code> is always true and the
+time between clock ticks is constant, otherwise <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</div></blockquote>
+<p>The property is true for our <a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/system_clock">std::chrono::system_clock</a>
+within device code, but it is not true for all threads. Therefore, in the NVIDIA C++ Standard Library today,
+the value of the <code class="docutils literal notranslate"><span class="pre">is_steady</span></code> member of
+<a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/system_clock">std::chrono::system_clock</a>
+is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</section>
+<section id="id10">
+<h3><a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/high_resolution_clock">std::chrono::high_resolution_clock</a><a class="headerlink" href="#id10" title="Permalink to this headline"></a></h3>
+<p>The <a class="reference external" href="http://eel.is/c++draft/time.clock.hires">std::chrono::high_resolution_clock specification</a> states:</p>
+<blockquote>
+<div><p>Objects of <code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">high_resolution_clock</span></code> represent clocks with the shortest tick period.
+<code class="docutils literal notranslate"><span class="pre">high_resolution_clock</span></code> may be a synonym for <code class="docutils literal notranslate"><span class="pre">system_clock</span></code> or <code class="docutils literal notranslate"><span class="pre">steady_clock</span></code>.</p>
+</div></blockquote>
+<p>In the NVIDIA C++ Standard Library, <a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/high_resolution_clock">std::chrono::high_resolution_clock</a>
+is an alias for <a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/system_clock">std::chrono::system_clock</a>.
+This means that it counts real-world time and that <code class="docutils literal notranslate"><span class="pre">is_steady</span></code> is false for our
+<a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/high_resolution_clock">std::chrono::high_resolution_clock</a>.</p>
+<p>While our <a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/high_resolution_clock">std::chrono::high_resolution_clock</a>
+is not heterogeneously steady, it is steady within device code, so it is suitable for performance measurement within device code.</p>
+</section>
+</section>
+<section id="omissions">
+<h2>Omissions<a class="headerlink" href="#omissions" title="Permalink to this headline"></a></h2>
+<p>The following facilities in section <a class="reference external" href="https://eel.is/c++draft/time.syn">time.syn</a> of ISO/IEC IS 14882 (the C++ Standard)
+are not available in the NVIDIA C++ Standard Library today:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/steady_clock">std::chrono::steady_clock</a>
+- a monotonically increasing clock.</p></li>
+<li><p><a class="reference external" href="https://eel.is/c++draft/time.duration.io">std::chrono::duration I/O operators</a>.</p></li>
+</ul>
+<section id="id16">
+<h3><a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/steady_clock">std::chrono::steady_clock</a><a class="headerlink" href="#id16" title="Permalink to this headline"></a></h3>
+<p><a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/steady_clock">std::chrono::steady_clock</a>
+is, by definition, a monotonically increasing clock (e.g. <code class="docutils literal notranslate"><span class="pre">is_steady</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>). We do not currently have a heterogeneous steady clock.
+While we have a monotonically increasing clock in host code, and our system clock
+(<a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#special-registers-globaltimer">PTX’s %globaltimer</a>)
+is monotonically increasing in device code, it is not guaranteed that the host clocks and the device clocks are monotonically increasing with
+respect to each other, due to how <a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#special-registers-globaltimer">PTX’s %globaltimer</a>
+is initialized. Additionally, <code class="docutils literal notranslate"><span class="pre">%globaltime</span></code> and the host steady clock may tick at different rates.</p>
+<p>It may be technically possible to synchronize the clocks and to compute and adjust for the difference in tick rates. However, it would be
+challenging to do so, and may introduce substantial overhead in the initialization and access of the heterogeneous clock.</p>
+<p>As such, today we do not provide <a class="reference external" href="https://en.cppreference.com/w/cpp/chrono/steady_clock">std::chrono::steady_clock</a>,
+as we cannot easily provide an efficient implementation that is truly heterogeneous and conforms to the specification.</p>
+</section>
+<section id="id22">
+<h3><a class="reference external" href="https://eel.is/c++draft/time.duration.io">std::chrono::duration I/O Operators</a><a class="headerlink" href="#id22" title="Permalink to this headline"></a></h3>
+<p>Implementing a heterogeneous C++ I/O streams library involves many challenges that we cannot overcome today.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

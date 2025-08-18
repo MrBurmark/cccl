@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::DeviceFor &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::DeviceHistogram" href="structcub_1_1DeviceHistogram.html" />
+    <link rel="prev" title="cub::DeviceCopy" href="structcub_1_1DeviceCopy.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1CachingDeviceAllocator.html">cub::CachingDeviceAllocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceAdjacentDifference.html">cub::DeviceAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceCopy.html">cub::DeviceCopy</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::DeviceFor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceHistogram.html">cub::DeviceHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMemcpy.html">cub::DeviceMemcpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMerge.html">cub::DeviceMerge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMergeSort.html">cub::DeviceMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DevicePartition.html">cub::DevicePartition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRadixSort.html">cub::DeviceRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceReduce.html">cub::DeviceReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRunLengthEncode.html">cub::DeviceRunLengthEncode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceScan.html">cub::DeviceScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedRadixSort.html">cub::DeviceSegmentedRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedReduce.html">cub::DeviceSegmentedReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedSort.html">cub::DeviceSegmentedSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSelect.html">cub::DeviceSelect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceTransform.html">cub::DeviceTransform</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../device_wide.html">Device-Wide Primitives</a> &raquo;</li>
+      <li>cub::DeviceFor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-devicefor">
+<h1>cub::DeviceFor<a class="headerlink" href="#cub-devicefor" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_device_device_for.cuh.html#device-for-8cuh"><span class="std std-ref">cub/device/device_for.cuh</span></a></p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub9DeviceForE">
+<span id="_CPPv3N3cub9DeviceForE"></span><span id="_CPPv2N3cub9DeviceForE"></span><span id="cub::DeviceFor"></span><span class="target" id="structcub_1_1devicefor"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeviceFor</span></span></span><a class="headerlink" href="#_CPPv4N3cub9DeviceForE" title="Permalink to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_tPvR6size_t6ShapeT3OpT12cudaStream_t">
+<span id="_CPPv3I00EN3cub9DeviceFor4BulkEPvR6size_t6ShapeT3OpT12cudaStream_t"></span><span id="_CPPv2I00EN3cub9DeviceFor4BulkEPvR6size_t6ShapeT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShapeT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1af44c63e63626a9492d375c04adbb44d1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Bulk</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_tPvR6size_t6ShapeT3OpT12cudaStream_t" title="cub::DeviceFor::Bulk::ShapeT"><span class="n"><span class="pre">ShapeT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">shape</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_tPvR6size_t6ShapeT3OpT12cudaStream_t" title="cub::DeviceFor::Bulk::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_tPvR6size_t6ShapeT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each index in the provided shape
+The algorithm is similar to
+<a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2300r5.html#design-sender-adaptor-bulk">bulk</a>
+from P2300.</p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+</section>
+<section id="a-simple-example">
+<h2>A Simple Example<a class="headerlink" href="#a-simple-example" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use Bulk to square each element in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">square_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">d_ptr</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_ptr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">d_ptr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">square_t</span><span class="w"> </span><span class="n">op</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">data</span><span class="p">())};</span><span class="w"></span>
+
+<span class="c1">// 1) Get temp storage size</span>
+<span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">{};</span><span class="w"></span>
+<span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">{};</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">Bulk</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// 2) Allocate temp storage</span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">data</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// 3) Perform bulk operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">Bulk</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ShapeT</strong> – is an integral type</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>shape</strong> – <strong>[in]</strong> Shape of the index space to iterate over</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each index in the index space</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub9DeviceFor8ForEachNEPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub9DeviceFor8ForEachNEPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1a07c9a7cf55ff5cd9eb5f7f0ba598ab4e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachN</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachN::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachN::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachN::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id1">
+<h2>Overview<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code></p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>A Simple Example<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEachN</cite> to square each element in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">square_ref_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">square_ref_t</span><span class="w"> </span><span class="n">op</span><span class="p">{};</span><span class="w"></span>
+
+<span class="c1">// 1) Get temp storage size</span>
+<span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">{};</span><span class="w"></span>
+<span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">{};</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachN</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// 2) Allocate temp storage</span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">data</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// 3) Perform for each n operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachN</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>NumItemsT</strong> – is an integral type representing the number of elements to iterate over</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of elements to iterate over</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t">
+<span id="_CPPv3I00EN3cub9DeviceFor7ForEachEPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span id="_CPPv2I00EN3cub9DeviceFor7ForEachEPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1a6f606f4139928ca1d0ac405d49bc630d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEach</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEach::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEach::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEach::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id3">
+<h2>Overview<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code></p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>A Simple Example<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEach</cite> to square each element in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">square_ref_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">square_ref_t</span><span class="w"> </span><span class="n">op</span><span class="p">{};</span><span class="w"></span>
+
+<span class="c1">// 1) Get temp storage size</span>
+<span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">{};</span><span class="w"></span>
+<span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">{};</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEach</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// 2) Allocate temp storage</span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">data</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// 3) Perform for each operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEach</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>last</strong> – <strong>[in]</strong> The end of the sequence</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub9DeviceFor12ForEachCopyNEPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub9DeviceFor12ForEachCopyNEPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1aa96f9b3747acbea6e690e88b413c9754"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachCopyN</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopyN::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopyN::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopyN::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id5">
+<h2>Overview<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>.
+Unlike the <code class="docutils literal notranslate"><span class="pre">ForEachN</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
+This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> to vectorize loads.</p>
+<ul class="simple">
+<li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>A Simple Example<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEachCopyN</cite> to count odd elements in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">odd_count_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">d_count</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">atomicAdd</span><span class="p">(</span><span class="n">d_count</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">odd_count_t</span><span class="w"> </span><span class="n">op</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">count</span><span class="p">.</span><span class="n">data</span><span class="p">())};</span><span class="w"></span>
+
+<span class="c1">// 1) Get temp storage size</span>
+<span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">{};</span><span class="w"></span>
+<span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">{};</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachCopyN</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// 2) Allocate temp storage</span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">data</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// 3) Perform for each n operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachCopyN</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>NumItemsT</strong> – is an integral type representing the number of elements to iterate over</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of elements to iterate over</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to a copy of each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t">
+<span id="_CPPv3I00EN3cub9DeviceFor11ForEachCopyEPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span id="_CPPv2I00EN3cub9DeviceFor11ForEachCopyEPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1a7e998e9134235333fe19ec8ea58ca771"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachCopy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopy::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopy::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopy::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_tPvR6size_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id7">
+<h2>Overview<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code>.
+Unlike the <code class="docutils literal notranslate"><span class="pre">ForEach</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
+This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> to vectorize loads.</p>
+<ul class="simple">
+<li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h2>A Simple Example<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEachCopy</cite> to count odd elements in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">odd_count_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">d_count</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">atomicAdd</span><span class="p">(</span><span class="n">d_count</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">odd_count_t</span><span class="w"> </span><span class="n">op</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">count</span><span class="p">.</span><span class="n">data</span><span class="p">())};</span><span class="w"></span>
+
+<span class="c1">// 1) Get temp storage size</span>
+<span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">{};</span><span class="w"></span>
+<span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">{};</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachCopy</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// 2) Allocate temp storage</span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">data</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// 3) Perform for each n operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachCopy</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>last</strong> – <strong>[in]</strong> The end of the sequence</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to a copy of each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_t6ShapeT3OpT12cudaStream_t">
+<span id="_CPPv3I00EN3cub9DeviceFor4BulkE6ShapeT3OpT12cudaStream_t"></span><span id="_CPPv2I00EN3cub9DeviceFor4BulkE6ShapeT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShapeT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1a6b6756a8319c122381c69f60427bdb14"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Bulk</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_t6ShapeT3OpT12cudaStream_t" title="cub::DeviceFor::Bulk::ShapeT"><span class="n"><span class="pre">ShapeT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">shape</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_t6ShapeT3OpT12cudaStream_t" title="cub::DeviceFor::Bulk::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub9DeviceFor4BulkE11cudaError_t6ShapeT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id9">
+<h2>Overview<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each index in the provided shape
+The algorithm is similar to
+<a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2300r5.html#design-sender-adaptor-bulk">bulk</a>
+from P2300.</p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+</ul>
+</section>
+<section id="id11">
+<h2>A Simple Example<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use Bulk to square each element in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">square_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">d_ptr</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_ptr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">d_ptr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">square_t</span><span class="w"> </span><span class="n">op</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">data</span><span class="p">())};</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">Bulk</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ShapeT</strong> – is an integral type</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>shape</strong> – <strong>[in]</strong> Shape of the index space to iterate over</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each index in the index space</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub9DeviceFor8ForEachNE21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub9DeviceFor8ForEachNE21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1ae72546dbf2526693fbacde1f6ae86fae"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachN</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachN::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachN::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachN::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub9DeviceFor8ForEachNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id12">
+<h2>Overview<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code></p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+</ul>
+</section>
+<section id="id13">
+<h2>A Simple Example<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEachN</cite> to square each element in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">square_ref_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">square_ref_t</span><span class="w"> </span><span class="n">op</span><span class="p">{};</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachN</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>NumItemsT</strong> – is an integral type representing the number of elements to iterate over</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of elements to iterate over</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t">
+<span id="_CPPv3I00EN3cub9DeviceFor7ForEachE21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span id="_CPPv2I00EN3cub9DeviceFor7ForEachE21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1a2b24e7ae82c74e1c31705c960e00fbfb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEach</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEach::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEach::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEach::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub9DeviceFor7ForEachE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id14">
+<h2>Overview<a class="headerlink" href="#id14" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code></p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+</ul>
+</section>
+<section id="id15">
+<h2>A Simple Example<a class="headerlink" href="#id15" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEach</cite> to square each element in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">square_ref_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">square_ref_t</span><span class="w"> </span><span class="n">op</span><span class="p">{};</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEach</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>last</strong> – <strong>[in]</strong> The end of the sequence</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub9DeviceFor12ForEachCopyNE21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub9DeviceFor12ForEachCopyNE21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1ae29dfbe6aff793cebefc8ffee7472cb7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachCopyN</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopyN::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopyN::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopyN::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub9DeviceFor12ForEachCopyNE11cudaError_t21RandomAccessIteratorT9NumItemsT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id16">
+<h2>Overview<a class="headerlink" href="#id16" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>.
+Unlike the <code class="docutils literal notranslate"><span class="pre">ForEachN</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
+This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> to vectorize loads.</p>
+<ul class="simple">
+<li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+</ul>
+</section>
+<section id="id17">
+<h2>A Simple Example<a class="headerlink" href="#id17" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEachCopyN</cite> to count odd elements in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">odd_count_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">d_count</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">atomicAdd</span><span class="p">(</span><span class="n">d_count</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">odd_count_t</span><span class="w"> </span><span class="n">op</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">count</span><span class="p">.</span><span class="n">data</span><span class="p">())};</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachCopyN</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>NumItemsT</strong> – is an integral type representing the number of elements to iterate over</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of elements to iterate over</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to a copy of each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t">
+<span id="_CPPv3I00EN3cub9DeviceFor11ForEachCopyE21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span id="_CPPv2I00EN3cub9DeviceFor11ForEachCopyE21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1a3147cd5dc5b74e6ec1e5d3f963b2f81e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachCopy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopy::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">first</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopy::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">last</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="cub::DeviceFor::ForEachCopy::OpT"><span class="n"><span class="pre">OpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub9DeviceFor11ForEachCopyE11cudaError_t21RandomAccessIteratorT21RandomAccessIteratorT3OpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id18">
+<h2>Overview<a class="headerlink" href="#id18" title="Permalink to this headline"></a></h2>
+<p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code>.
+Unlike the <code class="docutils literal notranslate"><span class="pre">ForEach</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
+This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> to vectorize loads.</p>
+<ul class="simple">
+<li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+</ul>
+</section>
+<section id="id19">
+<h2>A Simple Example<a class="headerlink" href="#id19" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <cite>ForEachCopy</cite> to count odd elements in a device vector.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">odd_count_t</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">d_count</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">atomicAdd</span><span class="p">(</span><span class="n">d_count</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">odd_count_t</span><span class="w"> </span><span class="n">op</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">count</span><span class="p">.</span><span class="n">data</span><span class="p">())};</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachCopy</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – is a model of Random Access Iterator whose value type is convertible to <code class="docutils literal notranslate"><span class="pre">op</span></code>’s argument type.</p></li>
+<li><p><strong>OpT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/unary_function">Unary Function</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>first</strong> – <strong>[in]</strong> The beginning of the sequence</p></li>
+<li><p><strong>last</strong> – <strong>[in]</strong> The end of the sequence</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to a copy of each element in the range</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">0</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tPvR6size_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t">
+<span id="_CPPv3I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsEPvR6size_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t"></span><span id="_CPPv2I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsEPvR6size_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IndexType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Extents</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1ab391677201da5cfabc834052a5c8d661"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachInExtents</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">extents</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tPvR6size_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="cub::DeviceFor::ForEachInExtents::IndexType"><span class="n"><span class="pre">IndexType</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tPvR6size_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="cub::DeviceFor::ForEachInExtents::Extents"><span class="n"><span class="pre">Extents</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">extents</span></span>, <a class="reference internal" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tPvR6size_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="cub::DeviceFor::ForEachInExtents::OpType"><span class="n"><span class="pre">OpType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tPvR6size_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id20">
+<h2>Overview<a class="headerlink" href="#id20" title="Permalink to this headline"></a></h2>
+<p>Iterate through a multi-dimensional extents into</p>
+<ul class="simple">
+<li><p>a single linear index that represents the current iteration</p></li>
+<li><p>indices of each extent dimension</p></li>
+</ul>
+<p>Then apply a function object to the results.</p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+</ul>
+<p><strong>Note</strong>: <code class="docutils literal notranslate"><span class="pre">DeviceFor::ForEachInExtents</span></code> supports integral index type up to 64-bits.</p>
+</section>
+<section id="id21">
+<h2>A Simple Example<a class="headerlink" href="#id21" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <code class="docutils literal notranslate"><span class="pre">ForEachInExtents</span></code> to tabulate a 3D array with its
+coordinates.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">linear_store_3D</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">data_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">span</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_output_raw</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_output_raw</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w">                            </span><span class="n">data_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">extents</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">extents</span><span class="p">{};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w">    </span><span class="n">d_output</span><span class="p">(</span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">extents</span><span class="p">));</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">host_vector</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w">      </span><span class="n">h_output</span><span class="p">(</span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">extents</span><span class="p">));</span><span class="w"></span>
+<span class="k">auto</span><span class="w">                             </span><span class="n">d_output_raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">span</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">d_output</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span><span class="w"></span>
+<span class="w">                                                                        </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">host_vector</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"></span>
+<span class="w">                                        </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"></span>
+<span class="w">                                        </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}};</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachInExtents</span><span class="p">(</span><span class="n">extents</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">=</span><span class="p">]</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_output_raw</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">};</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
+<span class="n">h_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_output</span><span class="p">;</span><span class="w"></span>
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">h_output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">thrust</span><span class="o">::</span><span class="n">fill</span><span class="p">(</span><span class="n">d_output</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">d_output</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">data_t</span><span class="p">{});</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachInExtents</span><span class="p">(</span><span class="n">extents</span><span class="p">,</span><span class="w"> </span><span class="n">linear_store_3D</span><span class="p">{</span><span class="n">d_output_raw</span><span class="p">});</span><span class="w"></span>
+
+<span class="n">h_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_output</span><span class="p">;</span><span class="w"></span>
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">h_output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>IndexType</strong> – is an integral type that represents the extent index space (automatically deduced)</p></li>
+<li><p><strong>Extents</strong> – are the extent sizes for each rank index (automatically deduced)</p></li>
+<li><p><strong>OpType</strong> – is a function object with arity equal to the number of extents + 1 for the linear index (iteration)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>extents</strong> – <strong>[in]</strong> Extents object that represents a multi-dimensional index space</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each linear index (iteration) and multi-dimensional coordinates</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">NULL</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cudaError_t error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t">
+<span id="_CPPv3I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsERKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t"></span><span id="_CPPv2I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsERKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IndexType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Extents</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OpType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicefor_1a86d1a4899437db90d835688a39d707cb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForEachInExtents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">extents</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="cub::DeviceFor::ForEachInExtents::IndexType"><span class="n"><span class="pre">IndexType</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="cub::DeviceFor::ForEachInExtents::Extents"><span class="n"><span class="pre">Extents</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">extents</span></span>, <a class="reference internal" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="cub::DeviceFor::ForEachInExtents::OpType"><span class="n"><span class="pre">OpType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_Dp6size_t0EN3cub9DeviceFor16ForEachInExtentsE11cudaError_tRKN4cudaSt7extentsI9IndexTypeDp7ExtentsEE6OpType12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><section id="id22">
+<h2>Overview<a class="headerlink" href="#id22" title="Permalink to this headline"></a></h2>
+<p>Iterate through a multi-dimensional extents producing</p>
+<ul class="simple">
+<li><p>a single linear index that represents the current iteration</p></li>
+<li><p>list of indices containing the coordinates for each extent dimension</p></li>
+</ul>
+<p>Then apply a function object to each tuple of linear index and multidimensional coordinate list.</p>
+<ul class="simple">
+<li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
+</ul>
+<p><strong>Note</strong>: <code class="docutils literal notranslate"><span class="pre">DeviceFor::ForEachInExtents</span></code> supports integral index type up to 64-bits.</p>
+</section>
+<section id="id23">
+<h2>A Simple Example<a class="headerlink" href="#id23" title="Permalink to this headline"></a></h2>
+<p>The following code snippet demonstrates how to use <code class="docutils literal notranslate"><span class="pre">ForEachInExtents</span></code> to tabulate a 3D array with its
+coordinates.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">linear_store_3D</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">data_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">span</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_output_raw</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_output_raw</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w">                            </span><span class="n">data_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">extents</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">extents</span><span class="p">{};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w">    </span><span class="n">d_output</span><span class="p">(</span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">extents</span><span class="p">));</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">host_vector</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w">      </span><span class="n">h_output</span><span class="p">(</span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="n">extents</span><span class="p">));</span><span class="w"></span>
+<span class="k">auto</span><span class="w">                             </span><span class="n">d_output_raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">span</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="p">{</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">d_output</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span><span class="w"></span>
+<span class="w">                                                                        </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">};</span><span class="w"></span>
+<span class="n">c2h</span><span class="o">::</span><span class="n">host_vector</span><span class="o">&lt;</span><span class="n">data_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"></span>
+<span class="w">                                        </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"></span>
+<span class="w">                                        </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}};</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachInExtents</span><span class="p">(</span><span class="n">extents</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">=</span><span class="p">]</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_output_raw</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">};</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
+<span class="n">h_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_output</span><span class="p">;</span><span class="w"></span>
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">h_output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">thrust</span><span class="o">::</span><span class="n">fill</span><span class="p">(</span><span class="n">d_output</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">d_output</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">data_t</span><span class="p">{});</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceFor</span><span class="o">::</span><span class="n">ForEachInExtents</span><span class="p">(</span><span class="n">extents</span><span class="p">,</span><span class="w"> </span><span class="n">linear_store_3D</span><span class="p">{</span><span class="n">d_output_raw</span><span class="p">});</span><span class="w"></span>
+
+<span class="n">h_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_output</span><span class="p">;</span><span class="w"></span>
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">h_output</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>IndexType</strong> – is an integral type that represents the extent index space (automatically deduced)</p></li>
+<li><p><strong>Extents</strong> – are the extent sizes for each rank index (automatically deduced)</p></li>
+<li><p><strong>OpType</strong> – is a function object with arity equal to the number of extents + 1 for the linear index (iteration)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>extents</strong> – <strong>[in]</strong> Extents object that represents a multi-dimensional index space</p></li>
+<li><p><strong>op</strong> – <strong>[in]</strong> Function object to apply to each linear index (iteration) and multi-dimensional coordinates</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> CUDA stream to launch kernels within. Default stream is <code class="docutils literal notranslate"><span class="pre">NULL</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cudaError_t error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

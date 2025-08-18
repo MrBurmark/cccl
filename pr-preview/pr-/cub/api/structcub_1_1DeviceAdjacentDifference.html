@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::DeviceAdjacentDifference &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::DeviceCopy" href="structcub_1_1DeviceCopy.html" />
+    <link rel="prev" title="cub::CachingDeviceAllocator" href="structcub_1_1CachingDeviceAllocator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1CachingDeviceAllocator.html">cub::CachingDeviceAllocator</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::DeviceAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceCopy.html">cub::DeviceCopy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceFor.html">cub::DeviceFor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceHistogram.html">cub::DeviceHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMemcpy.html">cub::DeviceMemcpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMerge.html">cub::DeviceMerge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMergeSort.html">cub::DeviceMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DevicePartition.html">cub::DevicePartition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRadixSort.html">cub::DeviceRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceReduce.html">cub::DeviceReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRunLengthEncode.html">cub::DeviceRunLengthEncode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceScan.html">cub::DeviceScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedRadixSort.html">cub::DeviceSegmentedRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedReduce.html">cub::DeviceSegmentedReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedSort.html">cub::DeviceSegmentedSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSelect.html">cub::DeviceSelect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceTransform.html">cub::DeviceTransform</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../device_wide.html">Device-Wide Primitives</a> &raquo;</li>
+      <li>cub::DeviceAdjacentDifference</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-deviceadjacentdifference">
+<h1>cub::DeviceAdjacentDifference<a class="headerlink" href="#cub-deviceadjacentdifference" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_device_device_adjacent_difference.cuh.html#device-adjacent-difference-8cuh"><span class="std std-ref">cub/device/device_adjacent_difference.cuh</span></a></p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub24DeviceAdjacentDifferenceE">
+<span id="_CPPv3N3cub24DeviceAdjacentDifferenceE"></span><span id="_CPPv2N3cub24DeviceAdjacentDifferenceE"></span><span id="cub::DeviceAdjacentDifference"></span><span class="target" id="structcub_1_1deviceadjacentdifference"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeviceAdjacentDifference</span></span></span><a class="headerlink" href="#_CPPv4N3cub24DeviceAdjacentDifferenceE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p><p>DeviceAdjacentDifference provides device-wide, parallel operations for
+computing the differences of adjacent elements residing within
+device-accessible memory.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<ul>
+<li><p>DeviceAdjacentDifference calculates the differences of adjacent elements in
+d_input. Because the binary operation could be noncommutative, there
+are two sets of methods. Methods named SubtractLeft subtract left element
+<code class="docutils literal notranslate"><span class="pre">*(i</span> <span class="pre">-</span> <span class="pre">1)</span></code> of input sequence from current element <code class="docutils literal notranslate"><span class="pre">*i</span></code>.
+Methods named <code class="docutils literal notranslate"><span class="pre">SubtractRight</span></code> subtract current element <code class="docutils literal notranslate"><span class="pre">*i</span></code> from the
+right one <code class="docutils literal notranslate"><span class="pre">*(i</span> <span class="pre">+</span> <span class="pre">1)</span></code>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">d_values</span><span class="p">;</span><span class="w"> </span><span class="c1">// [1, 2, 3, 4]</span>
+<span class="c1">//...</span>
+<span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">d_subtract_left_result</span><span class="w">  </span><span class="o">&lt;--</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">d_subtract_right_result</span><span class="w"> </span><span class="o">&lt;--</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">  </span><span class="mi">4</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>For SubtractLeft, if the left element is out of bounds, the iterator is
+assigned to <code class="docutils literal notranslate"><span class="pre">*(result</span> <span class="pre">+</span> <span class="pre">(i</span> <span class="pre">-</span> <span class="pre">first))</span></code> without modification.</p></li>
+<li><p>For SubtractRight, if the right element is out of bounds, the iterator is
+assigned to <code class="docutils literal notranslate"><span class="pre">*(result</span> <span class="pre">+</span> <span class="pre">(i</span> <span class="pre">-</span> <span class="pre">first))</span></code> without modification.</p></li>
+</ul>
+</section>
+<section id="snippet">
+<h2>Snippet<a class="headerlink" href="#snippet" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates how to use <code class="docutils literal notranslate"><span class="pre">DeviceAdjacentDifference</span></code> to
+compute the left difference between adjacent elements.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_adjacent_difference.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 8</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [1, 2, 1, 2, 1, 2, 1, 2]</span>
+<span class="c1">//...</span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractLeft</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractLeft</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_values &lt;-- [1, 1, -1, 1, -1, 1, -1, 1]</span>
+</pre></div>
+</div>
+</section>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t">
+<span id="_CPPv3I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyEPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span id="_CPPv2I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyEPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DifferenceOpT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">minus</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1deviceadjacentdifference_1a59c0d09c0fd8092f9f048bc67ae349d4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SubtractLeftCopy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractLeftCopy::InputIteratorT"><span class="n"><span class="pre">InputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractLeftCopy::OutputIteratorT"><span class="n"><span class="pre">OutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_output</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractLeftCopy::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractLeftCopy::DifferenceOpT"><span class="n"><span class="pre">DifferenceOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">difference_op</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference16SubtractLeftCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Subtracts the left element of each adjacent pair of elements residing within device-accessible memory</p>
+<section id="id1">
+<h2>Overview<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Calculates the differences of adjacent elements in <code class="docutils literal notranslate"><span class="pre">d_input</span></code>.
+That is, <code class="docutils literal notranslate"><span class="pre">*d_input</span></code> is assigned to <code class="docutils literal notranslate"><span class="pre">*d_output</span></code>, and, for each iterator <code class="docutils literal notranslate"><span class="pre">i</span></code> in the
+range <code class="docutils literal notranslate"><span class="pre">[d_input</span> <span class="pre">+</span> <span class="pre">1,</span> <span class="pre">d_input</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>, the result of
+<code class="docutils literal notranslate"><span class="pre">difference_op(*i,</span> <span class="pre">*(i</span> <span class="pre">-</span> <span class="pre">1))</span></code> is assigned to <code class="docutils literal notranslate"><span class="pre">*(d_output</span> <span class="pre">+</span> <span class="pre">(i</span> <span class="pre">-</span> <span class="pre">d_input))</span></code>.</p></li>
+<li><p>Note that the behavior is undefined if the input and output ranges
+overlap in any way.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>Snippet<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates how to use <code class="docutils literal notranslate"><span class="pre">DeviceAdjacentDifference</span></code>
+to compute the difference between adjacent elements.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_adjacent_difference.cuh&gt;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">CustomDifference</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">DataType</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">__host__</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rhs</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">      </span><span class="c1">// e.g., 8</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_input</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [1, 2, 1, 2, 1, 2, 1, 2]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_output</span><span class="p">;</span><span class="w"></span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractLeftCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_input</span><span class="p">,</span><span class="w"> </span><span class="n">d_output</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">CustomDifference</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractLeftCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_input</span><span class="p">,</span><span class="w"> </span><span class="n">d_output</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">CustomDifference</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// d_input  &lt;-- [1, 2, 1, 2, 1, 2, 1, 2]</span>
+<span class="c1">// d_output &lt;-- [1, 1, -1, 1, -1, 1, -1, 1]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>InputIteratorT</strong> – <p><p>is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</a>,
+and <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are objects of <code class="docutils literal notranslate"><span class="pre">InputIteratorT</span></code>’s <code class="docutils literal notranslate"><span class="pre">value_type</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> is defined, and <code class="docutils literal notranslate"><span class="pre">InputIteratorT</span></code>’s <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is convertible to
+a type in <code class="docutils literal notranslate"><span class="pre">OutputIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>, and the return type
+of <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> is convertible to a type in <code class="docutils literal notranslate"><span class="pre">OutputIteratorT</span></code>’s set of
+<code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p>
+</p>
+</p></li>
+<li><p><strong>OutputIteratorT</strong> – <p><p>is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</a>.</p>
+</p>
+</p></li>
+<li><p><strong>DifferenceOpT</strong> – Its <code class="docutils literal notranslate"><span class="pre">result_type</span></code> is convertible to a type in <code class="docutils literal notranslate"><span class="pre">OutputIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p></li>
+<li><p><strong>NumItemsT</strong> – <strong>[inferred]</strong> Type of num_items</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_input</strong> – <strong>[in]</strong> Pointer to the input sequence</p></li>
+<li><p><strong>d_output</strong> – <strong>[out]</strong> Pointer to the output sequence</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items in the input sequence</p></li>
+<li><p><strong>difference_op</strong> – <strong>[in]</strong> The binary function used to compute differences</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub></p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub24DeviceAdjacentDifference12SubtractLeftE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub24DeviceAdjacentDifference12SubtractLeftEPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub24DeviceAdjacentDifference12SubtractLeftEPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DifferenceOpT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">minus</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1deviceadjacentdifference_1a19537d4dd75abaef5a906c4c2a76ab52"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SubtractLeft</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference12SubtractLeftE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractLeft::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference12SubtractLeftE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractLeft::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference12SubtractLeftE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractLeft::DifferenceOpT"><span class="n"><span class="pre">DifferenceOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">difference_op</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference12SubtractLeftE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Subtracts the left element of each adjacent pair of elements residing within device-accessible memory.</p>
+<section id="id3">
+<h2>Overview<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<p>Calculates the differences of adjacent elements in <code class="docutils literal notranslate"><span class="pre">d_input</span></code>. That is, for
+each iterator <code class="docutils literal notranslate"><span class="pre">i</span></code> in the range <code class="docutils literal notranslate"><span class="pre">[d_input</span> <span class="pre">+</span> <span class="pre">1,</span> <span class="pre">d_input</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>, the
+result of <code class="docutils literal notranslate"><span class="pre">difference_op(*i,</span> <span class="pre">*(i</span> <span class="pre">-</span> <span class="pre">1))</span></code> is assigned to
+<code class="docutils literal notranslate"><span class="pre">*(d_input</span> <span class="pre">+</span> <span class="pre">(i</span> <span class="pre">-</span> <span class="pre">d_input))</span></code>.</p>
+</section>
+<section id="id4">
+<h2>Snippet<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates how to use <code class="docutils literal notranslate"><span class="pre">DeviceAdjacentDifference</span></code>
+to compute the difference between adjacent elements.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_adjacent_difference.cuh&gt;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">CustomDifference</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">DataType</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">__host__</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rhs</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., 8</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_data</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [1, 2, 1, 2, 1, 2, 1, 2]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractLeft</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">CustomDifference</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractLeft</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">CustomDifference</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// d_data &lt;-- [1, 1, -1, 1, -1, 1, -1, 1]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – <p><p>is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>,
+<code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code> is mutable. If <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are objects of
+<code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code>’s <code class="docutils literal notranslate"><span class="pre">value_type</span></code>, and <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> is defined, then the
+return type of <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> should be convertible to a type in
+<code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p>
+</p>
+</p></li>
+<li><p><strong>DifferenceOpT</strong> – Its <code class="docutils literal notranslate"><span class="pre">result_type</span></code> is convertible to a type in <code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p></li>
+<li><p><strong>NumItemsT</strong> – <strong>[inferred]</strong> Type of <code class="docutils literal notranslate"><span class="pre">num_items</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_input</strong> – <strong>[inout]</strong> Pointer to the input sequence and the result</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items in the input sequence</p></li>
+<li><p><strong>difference_op</strong> – <strong>[in]</strong> The binary function used to compute differences</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t">
+<span id="_CPPv3I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyEPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span id="_CPPv2I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyEPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DifferenceOpT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">minus</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1deviceadjacentdifference_1a89d8bcdb23d431a024db433133227219"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SubtractRightCopy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractRightCopy::InputIteratorT"><span class="n"><span class="pre">InputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractRightCopy::OutputIteratorT"><span class="n"><span class="pre">OutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_output</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractRightCopy::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractRightCopy::DifferenceOpT"><span class="n"><span class="pre">DifferenceOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">difference_op</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub24DeviceAdjacentDifference17SubtractRightCopyE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Subtracts the right element of each adjacent pair of elements residing within device-accessible memory.</p>
+<section id="id5">
+<h2>Overview<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Calculates the right differences of adjacent elements in <code class="docutils literal notranslate"><span class="pre">d_input</span></code>.
+That is, <code class="docutils literal notranslate"><span class="pre">*(d_input</span> <span class="pre">+</span> <span class="pre">num_items</span> <span class="pre">-</span> <span class="pre">1)</span></code> is assigned to
+<code class="docutils literal notranslate"><span class="pre">*(d_output</span> <span class="pre">+</span> <span class="pre">num_items</span> <span class="pre">-</span> <span class="pre">1)</span></code>, and, for each iterator <code class="docutils literal notranslate"><span class="pre">i</span></code> in the range
+<code class="docutils literal notranslate"><span class="pre">[d_input,</span> <span class="pre">d_input</span> <span class="pre">+</span> <span class="pre">num_items</span> <span class="pre">-</span> <span class="pre">1)</span></code>, the result of
+<code class="docutils literal notranslate"><span class="pre">difference_op(*i,</span> <span class="pre">*(i</span> <span class="pre">+</span> <span class="pre">1))</span></code> is assigned to
+<code class="docutils literal notranslate"><span class="pre">*(d_output</span> <span class="pre">+</span> <span class="pre">(i</span> <span class="pre">-</span> <span class="pre">d_input))</span></code>.</p></li>
+<li><p>Note that the behavior is undefined if the input and output ranges
+overlap in any way.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>Snippet<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates how to use <code class="docutils literal notranslate"><span class="pre">DeviceAdjacentDifference</span></code>
+to compute the difference between adjacent elements.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_adjacent_difference.cuh&gt;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">CustomDifference</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">DataType</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">__host__</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rhs</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., 8</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_input</span><span class="p">;</span><span class="w">      </span><span class="c1">// e.g., [1, 2, 1, 2, 1, 2, 1, 2]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_output</span><span class="p">;</span><span class="w"></span>
+<span class="p">..</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractRightCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_input</span><span class="p">,</span><span class="w"> </span><span class="n">d_output</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">CustomDifference</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractRightCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_input</span><span class="p">,</span><span class="w"> </span><span class="n">d_output</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">CustomDifference</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// d_input &lt;-- [1, 2, 1, 2, 1, 2, 1, 2]</span>
+<span class="c1">// d_data  &lt;-- [-1, 1, -1, 1, -1, 1, -1, 2]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>InputIteratorT</strong> – <p><p>is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</a>,
+and <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are objects of <code class="docutils literal notranslate"><span class="pre">InputIteratorT</span></code>’s <code class="docutils literal notranslate"><span class="pre">value_type</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> is defined, and <code class="docutils literal notranslate"><span class="pre">InputIteratorT</span></code>’s <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is convertible to
+a type in <code class="docutils literal notranslate"><span class="pre">OutputIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>, and the return type
+of <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> is convertible to a type in <code class="docutils literal notranslate"><span class="pre">OutputIteratorT</span></code>’s set of
+<code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p>
+</p>
+</p></li>
+<li><p><strong>OutputIteratorT</strong> – <p><p>is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</a>.</p>
+</p>
+</p></li>
+<li><p><strong>DifferenceOpT</strong> – Its <code class="docutils literal notranslate"><span class="pre">result_type</span></code> is convertible to a type in <code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p></li>
+<li><p><strong>NumItemsT</strong> – <strong>[inferred]</strong> Type of num_items</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_input</strong> – <strong>[in]</strong> Pointer to the input sequence</p></li>
+<li><p><strong>d_output</strong> – <strong>[out]</strong> Pointer to the output sequence</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items in the input sequence</p></li>
+<li><p><strong>difference_op</strong> – <strong>[in]</strong> The binary function used to compute differences.</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub24DeviceAdjacentDifference13SubtractRightE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub24DeviceAdjacentDifference13SubtractRightEPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub24DeviceAdjacentDifference13SubtractRightEPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DifferenceOpT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">minus</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1deviceadjacentdifference_1a63ad064f9d278c59f2bc041db52055f2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SubtractRight</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference13SubtractRightE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractRight::RandomAccessIteratorT"><span class="n"><span class="pre">RandomAccessIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference13SubtractRightE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractRight::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference13SubtractRightE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="cub::DeviceAdjacentDifference::SubtractRight::DifferenceOpT"><span class="n"><span class="pre">DifferenceOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">difference_op</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub24DeviceAdjacentDifference13SubtractRightE11cudaError_tPvR6size_t21RandomAccessIteratorT9NumItemsT13DifferenceOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Subtracts the right element of each adjacent pair of elements residing within device-accessible memory.</p>
+<section id="id9">
+<h2>Overview<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h2>
+<p>Calculates the right differences of adjacent elements in <code class="docutils literal notranslate"><span class="pre">d_input</span></code>.
+That is, for each iterator <code class="docutils literal notranslate"><span class="pre">i</span></code> in the range
+<code class="docutils literal notranslate"><span class="pre">[d_input,</span> <span class="pre">d_input</span> <span class="pre">+</span> <span class="pre">num_items</span> <span class="pre">-</span> <span class="pre">1)</span></code>, the result of
+<code class="docutils literal notranslate"><span class="pre">difference_op(*i,</span> <span class="pre">*(i</span> <span class="pre">+</span> <span class="pre">1))</span></code> is assigned to <code class="docutils literal notranslate"><span class="pre">*(d_input</span> <span class="pre">+</span> <span class="pre">(i</span> <span class="pre">-</span> <span class="pre">d_input))</span></code>.</p>
+</section>
+<section id="id10">
+<h2>Snippet<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates how to use <code class="docutils literal notranslate"><span class="pre">DeviceAdjacentDifference</span></code>
+to compute the difference between adjacent elements.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_adjacent_difference.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">    </span><span class="c1">// e.g., 8</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_data</span><span class="p">;</span><span class="w">      </span><span class="c1">// e.g., [1, 2, 1, 2, 1, 2, 1, 2]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractRight</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceAdjacentDifference</span><span class="o">::</span><span class="n">SubtractRight</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_data  &lt;-- [-1, 1, -1, 1, -1, 1, -1, 2]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RandomAccessIteratorT</strong> – <p><p>is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>,
+<code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code> is mutable. If <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are objects of
+<code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code>’s <cite>value_type</cite>, and <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> is defined, then the
+return type of <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">-</span> <span class="pre">y</span></code> should be convertible to a type in
+<code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p>
+</p>
+</p></li>
+<li><p><strong>DifferenceOpT</strong> – Its <code class="docutils literal notranslate"><span class="pre">result_type</span></code> is convertible to a type in <code class="docutils literal notranslate"><span class="pre">RandomAccessIteratorT</span></code>’s set of <code class="docutils literal notranslate"><span class="pre">value_types</span></code>.</p></li>
+<li><p><strong>NumItemsT</strong> – <strong>[inferred]</strong> Type of num_items</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_input</strong> – <strong>[inout]</strong> Pointer to the input sequence</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items in the input sequence</p></li>
+<li><p><strong>difference_op</strong> – <strong>[in]</strong> The binary function used to compute differences</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

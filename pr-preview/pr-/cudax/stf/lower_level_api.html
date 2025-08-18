@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lower-level API &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cudax: Experimental new features API" href="../api/cudax_api.html" />
+    <link rel="prev" title="Implementation of the matrix class" href="custom_data_interface.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../stf.html">CUDASTF</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#the-sequential-task-flow-stf-programming-model">The Sequential Task Flow (STF) programming model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#getting-started-with-cudastf">Getting started with CUDASTF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#backends-and-contexts">Backends and contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#logical-data">Logical data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../stf.html#tasks">Tasks</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../stf.html#example-of-creating-and-using-multiple-tasks">Example of creating and using multiple tasks</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stf.html#lower-level-task-api">Lower-level task API</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Lower-level API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compatibility-with-cuda-graphs">Compatibility with CUDA graphs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#synchronization">Synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#places">Places</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#parallel-for-construct"><code class="docutils literal notranslate"><span class="pre">parallel_for</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#launch-construct"><code class="docutils literal notranslate"><span class="pre">launch</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#cuda-kernel-construct"><code class="docutils literal notranslate"><span class="pre">cuda_kernel</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#cuda-kernel-chain-construct"><code class="docutils literal notranslate"><span class="pre">cuda_kernel_chain</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#c-types-of-logical-data-and-tasks">C++ Types of logical data and tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#modular-use-of-cudastf">Modular use of CUDASTF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#tools">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#cudastf-reference-card">CUDASTF Reference Card</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/cudax_api.html">Cudax: Experimental new features API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../stf.html">CUDASTF</a> &raquo;</li>
+      <li>Lower-level API</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>– _stf_lower_level_api</p>
+<section id="lower-level-api">
+<h1>Lower-level API<a class="headerlink" href="#lower-level-api" title="Permalink to this headline"></a></h1>
+<p>In some situations, the use of <code class="docutils literal notranslate"><span class="pre">operator-&gt;*()</span></code> on the object returned
+by <code class="docutils literal notranslate"><span class="pre">ctx.task()</span></code> (where <code class="docutils literal notranslate"><span class="pre">ctx</span></code> is a stream or graph context) may not
+be suitable, for example when the number of parameters is not known
+statically. To address such situations, CUDASTF provides a lower-level
+interface for creating tasks, which is described below.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cudastf/stf.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cudastf/__stf/stream/stream_ctx.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cudastf</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">axpy</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nthreads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tid</span><span class="p">;</span><span class="w"> </span><span class="n">ind</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">ind</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nthreads</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">y</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream_ctx</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">X</span><span class="p">[</span><span class="n">N</span><span class="p">],</span><span class="w"> </span><span class="n">Y</span><span class="p">[</span><span class="n">N</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">ind</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">ind</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">X</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">ind</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">Y</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="kt">double</span><span class="p">(</span><span class="n">ind</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">lX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">logical_data</span><span class="p">(</span><span class="n">X</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">lY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">logical_data</span><span class="p">(</span><span class="n">Y</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* Compute Y = Y + alpha X */</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">lX</span><span class="p">.</span><span class="n">read</span><span class="p">(),</span><span class="w"> </span><span class="n">lY</span><span class="p">.</span><span class="n">rw</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">slice</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">slice</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">axpy</span><span class="o">&lt;&lt;&lt;</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get_stream</span><span class="p">()</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">sX</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">sX</span><span class="p">.</span><span class="n">data_handle</span><span class="p">(),</span><span class="w"> </span><span class="n">sY</span><span class="p">.</span><span class="n">data_handle</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ctx</span><span class="p">.</span><span class="n">sync</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ctx.task()</span></code> call returns a task object. This object provides
+access to the local description of the data associated with the task and
+a CUDA stream that can be used to submit work asynchronously. The
+beginning of the task body and its end are delimited by the <code class="docutils literal notranslate"><span class="pre">.start()</span></code>
+and <code class="docutils literal notranslate"><span class="pre">.end()</span></code> calls. Failing to call either of these methods or calling
+them more than once or in the wrong order results in undefined behavior.</p>
+<p>Asynchrony is achieved by using the CUDA stream, which provides a
+mechanism to submit work on the execution place (here, implicitly the
+current CUDA device). CUDA ensures that all kernels synchronized with
+this CUDA stream will only be executed once all prerequisites have been
+fulfilled (e.g., preceding tasks, data transfers, etc.). In addition,
+CUDASTF performs all the necessary synchronization so that future tasks
+will be properly synchronized with the operations enqueued in the CUDA
+stream associated with this task after calling <code class="docutils literal notranslate"><span class="pre">.start()</span></code> and before
+calling <code class="docutils literal notranslate"><span class="pre">.end()</span></code>.</p>
+</section>
+<section id="compatibility-with-cuda-graphs">
+<h1>Compatibility with CUDA graphs<a class="headerlink" href="#compatibility-with-cuda-graphs" title="Permalink to this headline"></a></h1>
+<p>Similarly to the CUDA stream backend with a context of type
+<code class="docutils literal notranslate"><span class="pre">stream_ctx</span></code>, the CUDA graph backend <code class="docutils literal notranslate"><span class="pre">graph_ctx</span></code> also provides a
+low-level interface.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">graph_ctx</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span><span class="w"></span>
+
+<span class="kt">double</span><span class="w"> </span><span class="n">X</span><span class="p">[</span><span class="mi">1024</span><span class="p">],</span><span class="w"> </span><span class="n">Y</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">logical_data</span><span class="p">(</span><span class="n">X</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">logical_data</span><span class="p">(</span><span class="n">Y</span><span class="p">);</span><span class="w"></span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">graph_task</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">task</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">add_deps</span><span class="p">(</span><span class="n">handle_X</span><span class="p">.</span><span class="n">rw</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaGraphNode_t</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaGraphAddEmptyNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get_graph</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">graph_task</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">task</span><span class="p">();</span><span class="w"></span>
+<span class="n">t2</span><span class="p">.</span><span class="n">add_deps</span><span class="p">(</span><span class="n">lX</span><span class="p">.</span><span class="n">read</span><span class="p">(),</span><span class="w"> </span><span class="n">lY</span><span class="p">.</span><span class="n">rw</span><span class="p">());</span><span class="w"></span>
+<span class="n">t2</span><span class="p">.</span><span class="n">start</span><span class="p">();</span><span class="w"></span>
+<span class="n">cudaGraphNode_t</span><span class="w"> </span><span class="n">n2</span><span class="p">;</span><span class="w"></span>
+<span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaGraphAddEmptyNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">n2</span><span class="p">,</span><span class="w"> </span><span class="n">t2</span><span class="p">.</span><span class="n">get_graph</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
+<span class="n">t2</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"></span>
+
+<span class="n">ctx</span><span class="p">.</span><span class="n">sync</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+<p>A task in the CUDA graph backend corresponds to a <em>child graph</em>
+automatically inserted into the CUDA graph associated to a <code class="docutils literal notranslate"><span class="pre">graph_ctx</span></code>
+context. The example above creates 10 tasks that modify logical data
+<code class="docutils literal notranslate"><span class="pre">lX</span></code>, followed by a task that reads <code class="docutils literal notranslate"><span class="pre">lX</span></code> and modifies <code class="docutils literal notranslate"><span class="pre">lY</span></code>. The
+code illustrates how one can add dependencies to a task by using the
+<code class="docutils literal notranslate"><span class="pre">add_deps</span></code> method.</p>
+<p>Similarly to the CUDA stream backend, a task is outlined by a pair of
+calls to the <code class="docutils literal notranslate"><span class="pre">start()</span></code>/<code class="docutils literal notranslate"><span class="pre">end()</span></code> member functions.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

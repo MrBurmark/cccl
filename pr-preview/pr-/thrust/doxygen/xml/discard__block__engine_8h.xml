@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="discard__block__engine_8h" kind="file" language="C++">
+    <compoundname>discard_block_engine.h</compoundname>
+    <includes local="no">thrust/detail/config.h</includes>
+    <includes local="no">thrust/random/detail/random_core_access.h</includes>
+    <includes local="no">cuda/std/cstdint</includes>
+    <includes local="no">iostream</includes>
+    <includes local="no">thrust/random/detail/discard_block_engine.inl</includes>
+    <includedby refid="random_8h" local="no">thrust/random.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>thrust/random/discard_block_engine.h</label>
+        <link refid="discard__block__engine_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>cuda/std/cstdint</label>
+      </node>
+      <node id="2">
+        <label>thrust/detail/config.h</label>
+      </node>
+      <node id="3">
+        <label>thrust/random/detail/random_core_access.h</label>
+      </node>
+      <node id="5">
+        <label>iostream</label>
+      </node>
+      <node id="6">
+        <label>thrust/random/detail/discard_block_engine.inl</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>thrust/random/discard_block_engine.h</label>
+        <link refid="discard__block__engine_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>thrust/random.h</label>
+        <link refid="random_8h"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classthrust_1_1random_1_1discard__block__engine" prot="public">thrust::random::discard_block_engine</innerclass>
+    <innernamespace refid="namespacethrust">thrust</innernamespace>
+    <innernamespace refid="namespacethrust_1_1random">thrust::random</innernamespace>
+    <briefdescription>
+<para>A random number engine which adapts a base engine and produces numbers by discarding all but a contiguous blocks of its values. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>Copyright<sp/>2008-2013<sp/>NVIDIA<sp/>Corporation</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Licensed<sp/>under<sp/>the<sp/>Apache<sp/>License,<sp/>Version<sp/>2.0<sp/>(the<sp/>&quot;License&quot;);</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/>you<sp/>may<sp/>not<sp/>use<sp/>this<sp/>file<sp/>except<sp/>in<sp/>compliance<sp/>with<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>may<sp/>obtain<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>License<sp/>at</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>http://www.apache.org/licenses/LICENSE-2.0</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/>Unless<sp/>required<sp/>by<sp/>applicable<sp/>law<sp/>or<sp/>agreed<sp/>to<sp/>in<sp/>writing,<sp/>software</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/>distributed<sp/>under<sp/>the<sp/>License<sp/>is<sp/>distributed<sp/>on<sp/>an<sp/>&quot;AS<sp/>IS&quot;<sp/>BASIS,</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/>WITHOUT<sp/>WARRANTIES<sp/>OR<sp/>CONDITIONS<sp/>OF<sp/>ANY<sp/>KIND,<sp/>either<sp/>express<sp/>or<sp/>implied.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/>See<sp/>the<sp/>License<sp/>for<sp/>the<sp/>specific<sp/>language<sp/>governing<sp/>permissions<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/>limitations<sp/>under<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/config.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/random/detail/random_core_access.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal">THRUST_NAMESPACE_BEGIN</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">random</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Engine,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>r&gt;</highlight></codeline>
+<codeline lineno="84" refid="classthrust_1_1random_1_1discard__block__engine" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine</ref></highlight></codeline>
+<codeline lineno="85"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>types</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="classthrust_1_1random_1_1discard__block__engine_1a64c1ecf80a6e3d1cadb1c54d9cc205cc" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1a64c1ecf80a6e3d1cadb1c54d9cc205cc" kindref="member">base_type</ref><sp/>=<sp/>Engine;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="classthrust_1_1random_1_1discard__block__engine_1ac66ab26f2900d6c1c21f246941b2257d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1ac66ab26f2900d6c1c21f246941b2257d" kindref="member">result_type</ref><sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>base_type::result_type;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>engine<sp/>characteristics</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="classthrust_1_1random_1_1discard__block__engine_1a7be03bfae99d952bb313c085a629e43c" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>block_size<sp/>=<sp/>p;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107" refid="classthrust_1_1random_1_1discard__block__engine_1aa18e76442cdf222ac27718e2425b6c46" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>used_block<sp/>=<sp/>r;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="classthrust_1_1random_1_1discard__block__engine_1a64cb4e57d056bdf1abe15e49af197ec2" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1ac66ab26f2900d6c1c21f246941b2257d" kindref="member">result_type</ref><sp/>min<sp/>=<sp/>base_type::min;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115" refid="classthrust_1_1random_1_1discard__block__engine_1a548c2a9982f48453ff194d5750732362" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1ac66ab26f2900d6c1c21f246941b2257d" kindref="member">result_type</ref><sp/>max<sp/>=<sp/>base_type::max;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>constructors<sp/>and<sp/>seeding<sp/>functions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122" refid="classthrust_1_1random_1_1discard__block__engine_1a279db76b676fdd3da5734928cdecd4fc" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1a279db76b676fdd3da5734928cdecd4fc" kindref="member">discard_block_engine</ref>();</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130" refid="classthrust_1_1random_1_1discard__block__engine_1acbd1c083f2ce6a3792de7dc835376885" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1acbd1c083f2ce6a3792de7dc835376885" kindref="member">discard_block_engine</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1a64c1ecf80a6e3d1cadb1c54d9cc205cc" kindref="member">base_type</ref>&amp;<sp/>urng);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="classthrust_1_1random_1_1discard__block__engine_1acded289d8e22aaac0a5e84de093e73fe" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1acded289d8e22aaac0a5e84de093e73fe" kindref="member">discard_block_engine</ref>(<ref refid="classthrust_1_1random_1_1discard__block__engine_1ac66ab26f2900d6c1c21f246941b2257d" kindref="member">result_type</ref><sp/>s);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141" refid="classthrust_1_1random_1_1discard__block__engine_1ae29c06f751a18ca67314f62d048e46b2" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1ae29c06f751a18ca67314f62d048e46b2" kindref="member">seed</ref>();</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148" refid="classthrust_1_1random_1_1discard__block__engine_1a1ee7e0ab41bfec8331e7b15e2640cccf" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1a1ee7e0ab41bfec8331e7b15e2640cccf" kindref="member">seed</ref>(<ref refid="classthrust_1_1random_1_1discard__block__engine_1ac66ab26f2900d6c1c21f246941b2257d" kindref="member">result_type</ref><sp/>s);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>generating<sp/>functions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155" refid="classthrust_1_1random_1_1discard__block__engine_1a355d604554beef8dcd3a6c6c64a1b4a8" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1ac66ab26f2900d6c1c21f246941b2257d" kindref="member">result_type</ref><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1a355d604554beef8dcd3a6c6c64a1b4a8" kindref="member">operator()</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163" refid="classthrust_1_1random_1_1discard__block__engine_1aa162a7a6454143c7b6bcf89be4a0f065" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1aa162a7a6454143c7b6bcf89be4a0f065" kindref="member">discard</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>z);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>property<sp/>functions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172" refid="classthrust_1_1random_1_1discard__block__engine_1aef7f1c4b833b02f4d03ed3016f9c4838" refkind="member"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1a64c1ecf80a6e3d1cadb1c54d9cc205cc" kindref="member">base_type</ref>&amp;<sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1aef7f1c4b833b02f4d03ed3016f9c4838" kindref="member">base</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine_1a64c1ecf80a6e3d1cadb1c54d9cc205cc" kindref="member">base_type</ref><sp/>m_e;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>m_n;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">thrust::random::detail::random_core_access;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="group__comparisons_1ga6ee63d156e253d5db817c8bcc6a35bc4" kindref="member">equal</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine</ref>&amp;<sp/>rhs)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>CharT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Traits&gt;</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/>std::basic_ostream&lt;CharT,<sp/>Traits&gt;&amp;<sp/>stream_out(std::basic_ostream&lt;CharT,<sp/>Traits&gt;&amp;<sp/>os)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>CharT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Traits&gt;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>std::basic_istream&lt;CharT,<sp/>Traits&gt;&amp;<sp/>stream_in(std::basic_istream&lt;CharT,<sp/>Traits&gt;&amp;<sp/>is);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal">};<sp/></highlight><highlight class="comment">//<sp/>end<sp/>discard_block_engine</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Engine,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>r&gt;</highlight></codeline>
+<codeline lineno="200"><highlight class="normal">_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="201" refid="group__random__number__engine__adaptors_1ga9de9139fb1d6af485d2a39c0269cbd93" refkind="member"><highlight class="normal"><ref refid="group__random__number__engine__adaptors_1ga9de9139fb1d6af485d2a39c0269cbd93" kindref="member">operator==</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine&lt;Engine, p, r&gt;</ref>&amp;<sp/>lhs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine&lt;Engine, p, r&gt;</ref>&amp;<sp/>rhs);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Engine,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>r&gt;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal">_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210" refid="group__random__number__engine__adaptors_1ga5c1baec0b17d3dc8b39c3d89a851bc14" refkind="member"><highlight class="normal"><ref refid="group__random__number__engine__adaptors_1gab60abe478de48914b40e3b9e2414f5d6" kindref="member">operator!=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine&lt;Engine, p, r&gt;</ref>&amp;<sp/>lhs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine&lt;Engine, p, r&gt;</ref>&amp;<sp/>rhs);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Engine,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>r,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>CharT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Traits&gt;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal">std::basic_ostream&lt;CharT,<sp/>Traits&gt;&amp;</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><ref refid="group__random__number__engine__adaptors_1ga5c1baec0b17d3dc8b39c3d89a851bc14" kindref="member">operator&lt;&lt;</ref>(std::basic_ostream&lt;CharT,<sp/>Traits&gt;&amp;<sp/>os,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine&lt;Engine, p, r&gt;</ref>&amp;<sp/>e);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Engine,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>r,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>CharT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Traits&gt;</highlight></codeline>
+<codeline lineno="227"><highlight class="normal">std::basic_istream&lt;CharT,<sp/>Traits&gt;&amp;</highlight></codeline>
+<codeline lineno="228" refid="group__random__number__engine__adaptors_1ga2b5d8cd6de99cd9d3b191c3e1051e508" refkind="member"><highlight class="normal"><ref refid="group__random__number__engine__adaptors_1ga2b5d8cd6de99cd9d3b191c3e1051e508" kindref="member">operator&gt;&gt;</ref>(std::basic_istream&lt;CharT,<sp/>Traits&gt;&amp;<sp/>is,<sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">discard_block_engine&lt;Engine, p, r&gt;</ref>&amp;<sp/>e);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>random</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight><highlight class="comment">//<sp/>import<sp/>names<sp/>into<sp/>thrust::</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="classthrust_1_1random_1_1discard__block__engine" kindref="compound">random::discard_block_engine</ref>;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal">THRUST_NAMESPACE_END</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/random/detail/discard_block_engine.inl&gt;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="thrust/random/discard_block_engine.h"/>
+  </compounddef>
+</doxygen>

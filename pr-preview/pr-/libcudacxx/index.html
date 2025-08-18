@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>libcu++ &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setup" href="setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#">
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standard_api.html">Standard API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extended_api.html">Extended API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>libcu++</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="libcu">
+<span id="libcudacxx-module"></span><h1>libcu++<a class="headerlink" href="#libcu" title="Permalink to this headline"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">libcu++</span></code> (<code class="docutils literal notranslate"><span class="pre">libcudacxx</span></code>) provides fundamental, idiomatic C++ abstractions that aim to make the lives of CUDA C++
+developers easier.</p>
+<dl class="simple">
+<dt>Specifically, <code class="docutils literal notranslate"><span class="pre">libcu++</span></code> provides:</dt><dd><ul class="simple">
+<li><p>C++ Standard Library features usable in both host and device code</p></li>
+<li><p>Extensions to C++ Standard Library features</p></li>
+<li><p>Fundamental, CUDA-specific programming model abstractions</p></li>
+</ul>
+</dd>
+</dl>
+<section id="c-standard-library-features">
+<h2>C++ Standard Library Features<a class="headerlink" href="#c-standard-library-features" title="Permalink to this headline"></a></h2>
+<p>If you are a C++ developer, then you know the C++ Standard Library (<a class="reference external" href="https://stackoverflow.com/questions/5205491/whats-the-difference-between-stl-and-c-standard-library">sometimes referred to as “The
+STL”</a>)
+as what comes along with your compiler and provides things like <code class="docutils literal notranslate"><span class="pre">std::string</span></code> or <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> or <code class="docutils literal notranslate"><span class="pre">std::atomic</span></code>.
+It provides the fundamental abstractions that C++ developers need to build high quality applications and libraries.</p>
+<p>By default, these abstractions aren’t available when writing CUDA C++ device code because they don’t have the necessary
+<code class="docutils literal notranslate"><span class="pre">__host__</span> <span class="pre">__device__</span></code> decorators, and their implementation may not be suitable for using in and across host and device
+code.</p>
+<p>libcu++ aims to solve this problem by providing an opt-in, incremental, heterogeneous implementation of C++
+Standard Library features:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>Opt-in</strong>: It does not replace the Standard Library provided by your host compiler (aka anything in <code class="docutils literal notranslate"><span class="pre">std::</span></code>)</p></li>
+<li><p><strong>Incremental</strong>: It does not provide a complete C++ Standard Library implementation</p></li>
+<li><p><strong>Heterogeneous</strong>: It works in both host and device code, as well as passing between host and device code.</p></li>
+</ol>
+</div></blockquote>
+<p>If you know how to use things like the <code class="docutils literal notranslate"><span class="pre">&lt;atomic&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;type_traits&gt;</span></code> headers from the C++ Standard Library, then
+you know how to use libcu++.</p>
+<p>All you have to do is add <code class="docutils literal notranslate"><span class="pre">cuda/std/</span></code> to the start of your includes and <code class="docutils literal notranslate"><span class="pre">cuda::</span></code> before any uses of <code class="docutils literal notranslate"><span class="pre">std::</span></code>:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/atomic&gt;</span><span class="cp"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>libcu++ does not provide its own documentation for Standard Library features. Instead, libcu++
+<a class="reference internal" href="standard_api.html#libcudacxx-standard-api"><span class="std std-ref">documents which Standard Library headers</span></a> are made available, and defers documentation of
+individual features within those headers to other sources like <a class="reference external" href="https://en.cppreference.com/w/">cppreference</a>.</p>
+</div>
+</section>
+<section id="c-standard-library-extensions">
+<h2>C++ Standard Library Extensions<a class="headerlink" href="#c-standard-library-extensions" title="Permalink to this headline"></a></h2>
+<p>libcu++ provides CUDA C++ developers with familiar Standard Library utilities to improve productivity and flatten the
+learning curve of learning CUDA. However, there are many aspects of writing high-performance CUDA C++ code that cannot
+be expressed through purely Standard conforming APIs. For these cases, libcu++ also provides <em>extensions</em> of Standard
+Library utilities.</p>
+<p>For example, libcu++ extends <code class="docutils literal notranslate"><span class="pre">atomic&lt;T&gt;</span></code> and other synchronization primitives with the notion of a “thread scope”
+that controls the strength of the memory fence.</p>
+<p>To use utilities that are extensions to Standard Library features, drop the <code class="docutils literal notranslate"><span class="pre">std</span></code>:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/atomic&gt;</span><span class="cp"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>See the <a class="reference internal" href="extended_api.html#libcudacxx-extended-api"><span class="std std-ref">Extended API</span></a> section for more information.</p>
+</section>
+<section id="fundamental-cuda-specific-abstractions">
+<h2>Fundamental CUDA-specific Abstractions<a class="headerlink" href="#fundamental-cuda-specific-abstractions" title="Permalink to this headline"></a></h2>
+<p>Some abstractions that libcu++ provide have no equivalent in the C++ Standard Library, but are otherwise abstractions
+fundamental to the CUDA C++ programming model.</p>
+<p>For example, <a class="reference internal" href="extended_api/asynchronous_operations/memcpy_async.html#libcudacxx-extended-api-asynchronous-operations-memcpy-async"><span class="std std-ref">cuda::memcpy_async</span></a> is a vital abstraction
+for asynchronous data movement between global and shared memory. This abstracts hardware features such as <code class="docutils literal notranslate"><span class="pre">LDGSTS</span></code> on
+Ampere, and the Tensor Memory Accelerator (TMA) on Hopper.</p>
+<p>See the <a class="reference internal" href="extended_api.html#libcudacxx-extended-api"><span class="std std-ref">Extended API</span></a> section for more information.</p>
+</section>
+<section id="summary-std-cuda-and-cuda-std">
+<h2>Summary: <code class="docutils literal notranslate"><span class="pre">std::</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda::</span></code> and <code class="docutils literal notranslate"><span class="pre">cuda::std::</span></code><a class="headerlink" href="#summary-std-cuda-and-cuda-std" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">std::</span></code> / <code class="docutils literal notranslate"><span class="pre">&lt;*&gt;</span></code>: This is your host compiler’s Standard Library that works in <code class="docutils literal notranslate"><span class="pre">__host__</span></code> code only, although you
+can use the <code class="docutils literal notranslate"><span class="pre">--expt-relaxed-constexpr</span></code> flag to use any <code class="docutils literal notranslate"><span class="pre">constexpr</span></code> functions in <code class="docutils literal notranslate"><span class="pre">__device__</span></code> code.
+libcu++ does not replace or interfere with host compiler’s Standard Library.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cuda::std::</span></code> / <code class="docutils literal notranslate"><span class="pre">&lt;cuda/std/*&gt;</span></code>: Conforming implementations of facilities from the Standard Library that work in
+<code class="docutils literal notranslate"><span class="pre">__host__</span></code> and  <code class="docutils literal notranslate"><span class="pre">__device__</span></code> code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cuda::</span></code> / <code class="docutils literal notranslate"><span class="pre">&lt;cuda/*&gt;</span></code>: Conforming extensions to the Standard Library that work in <code class="docutils literal notranslate"><span class="pre">__host__</span></code> and <code class="docutils literal notranslate"><span class="pre">__device__</span></code> code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cuda::device</span></code> / <code class="docutils literal notranslate"><span class="pre">&lt;cuda/device/*&gt;</span></code>: Conforming extensions to the Standard Library that work only in
+<code class="docutils literal notranslate"><span class="pre">__device__</span></code> code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cuda::ptx</span></code>: C++ convenience wrappers for inline PTX that work only in <code class="docutils literal notranslate"><span class="pre">__device__</span></code> code.</p></li>
+</ul>
+<p>Any libcu++ feature that works in <code class="docutils literal notranslate"><span class="pre">__host__</span></code> code also works when being compiled by a non-CUDA compiler (e.g., GCC).</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// Standard C++, __host__ only.</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span><span class="cp"></span>
+<span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// CUDA C++, __host__ __device__.</span>
+<span class="c1">// Strictly conforming to the C++ Standard.</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/atomic&gt;</span><span class="cp"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// CUDA C++, __host__ __device__.</span>
+<span class="c1">// Conforming extensions to the C++ Standard.</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/atomic&gt;</span><span class="cp"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="licensing">
+<h2>Licensing<a class="headerlink" href="#licensing" title="Permalink to this headline"></a></h2>
+<p>libcu++ is an open source project developed on <a class="reference external" href="https://github.com/nvidia/cccl">GitHub</a>. It is NVIDIA’s variant of
+<a class="reference external" href="https://libcxx.llvm.org">LLVM’s libc++</a>. libcu++ is distributed under the <a class="reference external" href="https://llvm.org/LICENSE.txt">Apache License v2.0 with LLVM
+Exceptions</a>.</p>
+</section>
+<section id="conformance">
+<h2>Conformance<a class="headerlink" href="#conformance" title="Permalink to this headline"></a></h2>
+<p>libcu++ aims to be a conforming implementation of the C++ Standard, <a class="reference external" href="https://eel.is/c++draft">ISO/IEC IS 14882</a>,
+Clause 16 through 32.</p>
+</section>
+<section id="abi-evolution">
+<h2>ABI Evolution<a class="headerlink" href="#abi-evolution" title="Permalink to this headline"></a></h2>
+<p>libcu++ does not maintain long-term ABI stability. Promising long-term ABI stability would prevent us from fixing
+mistakes and providing best in class performance. So, we make no such promises.</p>
+<p>Every major CUDA Toolkit release, the ABI will be broken. The life cycle of an ABI version is approximately one year.
+Long-term support for an ABI version ends after approximately two years. Please see the
+<a class="reference internal" href="releases/versioning.html#libcudacxx-releases-versioning"><span class="std std-ref">versioning section</span></a> for more details.</p>
+<p>We recommend that you always recompile your code and dependencies with the latest NVIDIA SDKs and use the latest
+NVIDIA C++ Standard Library ABI. <a class="reference external" href="https://www.youtube.com/watch?v=tISy7EJQPzI&amp;t=1032s">Live at head</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

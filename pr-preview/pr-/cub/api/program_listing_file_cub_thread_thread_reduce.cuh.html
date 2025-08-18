@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub/thread/thread_reduce.cuh &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub/thread/thread_scan.cuh" href="file_cub_thread_thread_scan.cuh.html" />
+    <link rel="prev" title="cub/thread/thread_reduce.cuh" href="file_cub_thread_thread_reduce.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">CUB Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cub_api.html">CUB API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cub_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_cub.html">cub</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_cub.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_block.html">cub/block</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_device.html">cub/device</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_grid.html">cub/grid</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_iterator.html">cub/iterator</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="dir_cub_thread.html">cub/thread</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_cub_thread.html#files">Files</a><ul class="current">
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_load.cuh.html">cub/thread/thread_load.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_operators.cuh.html">cub/thread/thread_operators.cuh</a></li>
+<li class="toctree-l7 current"><a class="reference internal" href="file_cub_thread_thread_reduce.cuh.html">cub/thread/thread_reduce.cuh</a><ul class="current">
+<li class="toctree-l8 current"><a class="current reference internal" href="#">Source file</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_cub_thread_thread_reduce.cuh.html#functions">Functions</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_cub_thread_thread_reduce.cuh.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_scan.cuh.html">cub/thread/thread_scan.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_search.cuh.html">cub/thread/thread_search.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_simd.cuh.html">cub/thread/thread_simd.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_sort.cuh.html">cub/thread/thread_sort.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_store.cuh.html">cub/thread/thread_store.cuh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_warp.html">cub/warp</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="dir_cub.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cub_api.html">CUB API</a> &raquo;</li>
+          <li><a href="dir_cub.html">cub</a> &raquo;</li>
+          <li><a href="dir_cub_thread.html">cub/thread</a> &raquo;</li>
+          <li><a href="file_cub_thread_thread_reduce.cuh.html">cub/thread/thread_reduce.cuh</a> &raquo;</li>
+      <li>cub/thread/thread_reduce.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-thread-thread-reduce-cuh">
+<h1>cub/thread/thread_reduce.cuh<a class="headerlink" href="#cub-thread-thread-reduce-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_cub_thread_thread_reduce.cuh.html#thread-reduce-8cuh"><span class="std std-ref">cub/thread/thread_reduce.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * Copyright (c) 2011, Duane Merrill.  All rights reserved.</span>
+<span class="cm"> * Copyright (c) 2011-2025, NVIDIA CORPORATION.  All rights reserved.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the</span>
+<span class="cm"> * following conditions are met:</span>
+<span class="cm"> *     * Redistributions of source code must retain the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer.</span>
+<span class="cm"> *     * Redistributions in binary form must reproduce the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer in the</span>
+<span class="cm"> *       documentation and/or other materials provided with the distribution.</span>
+<span class="cm"> *     * Neither the name of the NVIDIA CORPORATION nor the</span>
+<span class="cm"> *       names of its contributors may be used to endorse or promote products</span>
+<span class="cm"> *       derived from this software without specific prior written permission.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES,</span>
+<span class="cm"> * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="cm"> * DISCLAIMED. IN NO EVENT SHALL NVIDIA CORPORATION BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,</span>
+<span class="cm"> * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="cm"> * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="cm"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="cm"> * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="cm"> *</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/config.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/detail/array_utils.cuh&gt;</span><span class="c1"> // to_array()</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/detail/type_traits.cuh&gt;</span><span class="c1"> // are_same()</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/detail/unsafe_bitcast.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/thread/thread_load.cuh&gt;</span><span class="c1"> // UnrolledCopy</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/thread/thread_operators.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/thread/thread_simd.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_namespace.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/functional&gt;</span><span class="c1"> // cuda::maximum</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/array&gt;</span><span class="c1"> // array</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/cassert&gt;</span><span class="c1"> // assert</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/cstdint&gt;</span><span class="c1"> // uint16_t</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/functional&gt;</span><span class="c1"> // cuda::std::plus</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/iterator&gt;</span><span class="c1"> // cuda::std::iter_value_t</span><span class="cp"></span>
+
+<span class="cp">#if _CCCL_HAS_NVFP16()</span>
+<span class="cp">#</span><span class="w">  </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cuda_fp16.h&gt;</span><span class="cp"></span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#if _CCCL_HAS_NVBF16()</span>
+<span class="n">_CCCL_DIAG_PUSH</span><span class="w"></span>
+<span class="nf">_CCCL_DIAG_SUPPRESS_CLANG</span><span class="p">(</span><span class="s">&quot;-Wunused-function&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="cp">#</span><span class="w">  </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cuda_bf16.h&gt;</span><span class="cp"></span>
+<span class="n">_CCCL_DIAG_POP</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="n">CUB_NAMESPACE_BEGIN</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">ValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">iter_value_t</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">__accumulator_t</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"> </span><span class="n">ThreadReduce</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);</span><span class="w"></span>
+<span class="c1">// forward declaration</span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * Internal Reduction Implementations</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+<span class="cp">#ifndef _CCCL_DOXYGEN_INVOKED </span><span class="c1">// Do not document</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * Enable SIMD/Tree reduction heuristics (Trait)</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="c1">// TODO: add Blackwell support</span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">// SM90 SIMD</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_sm90_simd_reduction_v</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">// SM80 SIMD</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_sm80_simd_reduction_v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_sm80_simd_reduction_v</span><span class="o">&lt;</span><span class="n">__half</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="p">(</span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">__half</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">is_cuda_std_plus_mul_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">__half</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// defined(_CCCL_HAS_NVFP16)</span>
+
+<span class="cp">#  if _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_sm80_simd_reduction_v</span><span class="o">&lt;</span><span class="n">__nv_bfloat16</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="p">(</span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">__nv_bfloat16</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">is_cuda_std_plus_mul_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">__nv_bfloat16</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">// SM70 SIMD</span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_sm70_simd_reduction_v</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">__half</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_cuda_std_plus_mul_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  else </span><span class="c1">// _CCCL_HAS_NVFP16() ^^^^ / !_CCCL_HAS_NVFP16() vvvv</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_sm70_simd_reduction_v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// !_CCCL_HAS_NVFP16() ^^^^</span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * Enable Ternary Reduction (Trait)</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_ternary_reduction_sm90_v</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="kt">int32_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_ternary_reduction_sm90_v</span><span class="o">&lt;</span><span class="n">__half2</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">__half2</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">SimdMin</span><span class="o">&lt;</span><span class="n">__half</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">SimdMax</span><span class="o">&lt;</span><span class="n">__half</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#  if _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_ternary_reduction_sm90_v</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="o">||</span><span class="w"> </span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">SimdMin</span><span class="o">&lt;</span><span class="n">__nv_bfloat16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">SimdMax</span><span class="o">&lt;</span><span class="n">__nv_bfloat16</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_ternary_reduction_sm50_v</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">4</span><span class="w"></span>
+<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">is_cuda_std_plus_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">is_cuda_std_bitwise_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">);</span><span class="w"></span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * Internal Reduction Algorithms: Sequential, Binary, Ternary</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"> </span><span class="n">ThreadReduceSequential</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">retval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">retval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">(</span><span class="n">retval</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">retval</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"> </span><span class="n">ThreadReduceBinaryTree</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">array</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">to_array</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"> </span><span class="n">ThreadReduceTernaryTree</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">array</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">to_array</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">      </span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"></span>
+<span class="n">ThreadReduceSequentialPartial</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">valid_items</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">retval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">valid_items</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">retval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">(</span><span class="n">retval</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">retval</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * SIMD Reduction</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">ThreadReduceSimd</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">unsafe_bitcast</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">T</span><span class="w">                       </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">iter_value_t</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">SimdReduceOp</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_operator_to_simd_x2_t</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">SimdType</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">length</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">simd_ratio</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">SimdType</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">length_rounded</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">round_down</span><span class="p">(</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">simd_ratio</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">UnpackedType</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">simd_ratio</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">SimdArray</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">SimdType</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">simd_ratio</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">simd_ratio</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Only SIMD size == 2 is supported&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">local_array</span><span class="p">[</span><span class="n">length_rounded</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="n">UnrolledCopy</span><span class="o">&lt;</span><span class="n">length_rounded</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">local_array</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">simd_input</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">unsafe_bitcast</span><span class="o">&lt;</span><span class="n">SimdArray</span><span class="o">&gt;</span><span class="p">(</span><span class="n">local_array</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">simd_reduction</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ThreadReduce</span><span class="p">(</span><span class="n">simd_input</span><span class="p">,</span><span class="w"> </span><span class="n">SimdReduceOp</span><span class="p">{});</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">unpacked_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unsafe_bitcast</span><span class="o">&lt;</span><span class="n">UnpackedType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">simd_reduction</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Create a reversed copy of the SIMD reduction result and apply the SIMD operator.</span>
+<span class="w">  </span><span class="c1">// This avoids redundant instructions for converting to and from 32-bit registers</span>
+<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">unpacked_values_rev</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">unpacked_values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">unpacked_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]};</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">simd_reduction_rev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unsafe_bitcast</span><span class="o">&lt;</span><span class="n">SimdType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">unpacked_values_rev</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">SimdType</span><span class="w"> </span><span class="n">result</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">SimdReduceOp</span><span class="p">{}(</span><span class="n">simd_reduction</span><span class="p">,</span><span class="w"> </span><span class="n">simd_reduction_rev</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// repeat the same optimization for the last element</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">simd_ratio</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="n">tail</span><span class="p">[]</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">input</span><span class="p">[</span><span class="n">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">T</span><span class="p">{}};</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">tail_simd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unsafe_bitcast</span><span class="o">&lt;</span><span class="n">SimdType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">result</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">SimdReduceOp</span><span class="p">{}(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">tail_simd</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">unsafe_bitcast</span><span class="o">&lt;</span><span class="n">UnpackedType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">result</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable_min_max_promotion_v</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * Partial Reduction</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">ValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">iter_value_t</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">__accumulator_t</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"></span>
+<span class="n">ThreadReducePartial</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">valid_items</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">is_fixed_size_random_access_range_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;Input must support the subscript operator[] and have a compile-time size&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">has_binary_call_operator</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;ReductionOp must have the binary call operator: operator(ValueT, ValueT)&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">else</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">PromT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">_If</span><span class="o">&lt;</span><span class="n">enable_min_max_promotion_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">ThreadReduceSequentialPartial</span><span class="o">&lt;</span><span class="n">PromT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="n">valid_items</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * Reduction Interface/Dispatch (public)</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ValueT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"> </span><span class="n">ThreadReduce</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cub</span><span class="o">::</span><span class="nn">detail</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">is_fixed_size_random_access_range_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;Input must support the subscript operator[] and have a compile-time size&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">has_binary_call_operator</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;ReductionOp must have the binary call operator: operator(ValueT, ValueT)&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">PromT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">_If</span><span class="o">&lt;</span><span class="n">enable_min_max_promotion_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// TODO: should be part of the tuning policy</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">((</span><span class="o">!</span><span class="n">is_simd_enabled_cuda_operator</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">is_simd_operator_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="o">||</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">ValueT</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceSequential</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">enable_sm90_simd_reduction_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceSimd</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">enable_sm80_simd_reduction_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_80</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceSimd</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">enable_sm70_simd_reduction_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_70</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceSimd</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">enable_ternary_reduction_sm90_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// with the current tuning policies, SM90/int32/+ uses too many registers (TODO: fix tuning policy)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">((</span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;</span><span class="n">PromT</span><span class="o">&gt;&gt;</span><span class="w"></span>
+<span class="w">                   </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">PromT</span><span class="p">,</span><span class="w"> </span><span class="kt">int32_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">                  </span><span class="c1">// the compiler generates bad code for int8/uint8 and min/max for SM90</span>
+<span class="w">                  </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">is_cuda_minimum_maximum_v</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">PromT</span><span class="p">,</span><span class="w"> </span><span class="kt">int8_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceSequential</span><span class="o">&lt;</span><span class="n">PromT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceTernaryTree</span><span class="o">&lt;</span><span class="n">PromT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">enable_ternary_reduction_sm50_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_50</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceSequential</span><span class="o">&lt;</span><span class="n">PromT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">ThreadReduceBinaryTree</span><span class="o">&lt;</span><span class="n">PromT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Input</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">PrefixT</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">ValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">iter_value_t</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">AccumT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">__accumulator_t</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixT</span><span class="o">&gt;&gt;</span><span class="w"></span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">AccumT</span><span class="w"></span>
+<span class="n">ThreadReduce</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Input</span><span class="o">&amp;</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOp</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixT</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">cub</span><span class="o">::</span><span class="nn">detail</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">is_fixed_size_random_access_range_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;Input must support the subscript operator[] and have a compile-time size&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">has_binary_call_operator</span><span class="o">&lt;</span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">ValueT</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;ReductionOp must have the binary call operator: operator(ValueT, ValueT)&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">static_size_v</span><span class="o">&lt;</span><span class="n">Input</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// copy to a temporary array of type AccumT</span>
+<span class="w">  </span><span class="n">AccumT</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ThreadReduce</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">array</span><span class="p">),</span><span class="w"> </span><span class="n">ReductionOp</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">array</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#endif </span><span class="c1">// !_CCCL_DOXYGEN_INVOKED</span>
+
+<span class="n">CUB_NAMESPACE_END</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

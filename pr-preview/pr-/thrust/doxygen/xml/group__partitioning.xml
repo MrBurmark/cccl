@@ -1,0 +1,2487 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__partitioning" kind="group">
+    <compoundname>partitioning</compoundname>
+    <title>Partitioning</title>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__partitioning_1gad057b6f3f3f7f8098f8e5301843118e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::partition</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, Predicate pred)</argsstring>
+        <name>partition</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition</computeroutput> reorders the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>, such that all of the elements that satisfy <computeroutput>pred</computeroutput> precede the elements that fail to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first,middle)</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[middle, last)</computeroutput>. The return value of <computeroutput>partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para>Note that the relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition</computeroutput>, does guarantee to preserve the relative order.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements which do not satisfy <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::partition(thrust::host,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A,<sp/>A<sp/>+<sp/>N,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partition">https://en.cppreference.com/w/cpp/algorithm/partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="102" column="18" declfile="thrust/partition.h" declline="102" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga26eb205b71250a1d8a1f938c0f697c06" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::partition</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, Predicate pred)</argsstring>
+        <name>partition</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition</computeroutput> reorders the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>, such that all of the elements that satisfy <computeroutput>pred</computeroutput> precede the elements that fail to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first,middle)</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[middle, last)</computeroutput>. The return value of <computeroutput>partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para>Note that the relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition</computeroutput>, does guarantee to preserve the relative order.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements which do not satisfy <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::partition(A,<sp/>A<sp/>+<sp/>N,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partition">https://en.cppreference.com/w/cpp/algorithm/partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="159" column="17" declfile="thrust/partition.h" declline="159" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1gab55221023e3832e8bf61e7616f44032a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::partition</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, InputIterator stencil, Predicate pred)</argsstring>
+        <name>partition</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition</computeroutput> reorders the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> applied to a stencil range <computeroutput>[stencil, stencil + (last - first))</computeroutput>, such that all of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> precede all of the elements whose corresponding stencil element fails to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*stencil_i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil,stencil + (middle - first))</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil + (middle - first), stencil + (last - first))</computeroutput>. The return value of <computeroutput>stable_partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para>Note that the relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition</computeroutput>, does guarantee to preserve the relative order.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements whose stencil elements do not satisfy <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The ranges <computeroutput>[first,last)</computeroutput> and <computeroutput>[stencil, stencil + (last - first))</computeroutput> shall not overlap.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::partition(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>1,<sp/>1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/>0}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>is<sp/>unmodified</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partition">https://en.cppreference.com/w/cpp/algorithm/partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="223" column="18" declfile="thrust/partition.h" declline="223" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga73ee335b49c6ae3dcb019423e268a231" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::partition</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, InputIterator stencil, Predicate pred)</argsstring>
+        <name>partition</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition</computeroutput> reorders the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> applied to a stencil range <computeroutput>[stencil, stencil + (last - first))</computeroutput>, such that all of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> precede all of the elements whose corresponding stencil element fails to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*stencil_i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil,stencil + (middle - first))</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil + (middle - first), stencil + (last - first))</computeroutput>. The return value of <computeroutput>stable_partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para>Note that the relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition</computeroutput>, does guarantee to preserve the relative order.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements whose stencil elements do not satisfy <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The ranges <computeroutput>[first,last)</computeroutput> and <computeroutput>[stencil, stencil + (last - first))</computeroutput> shall not overlap.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::partition(A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>1,<sp/>1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/>0}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>is<sp/>unmodified</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partition">https://en.cppreference.com/w/cpp/algorithm/partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="287" column="17" declfile="thrust/partition.h" declline="287" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1gaadff8bf21b036950ce2655c5824bb817" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::partition_copy</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>partition_copy</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition_copy</computeroutput> differs from <computeroutput>partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>. All of the elements that satisfy <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements that fail to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input range shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>partition_copy</computeroutput> to separate a sequence into two output sequences of even and odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::partition_copy(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>evens,<sp/>odds,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="note"><para>The relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition_copy</computeroutput>, does guarantee to preserve the relative order.</para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="363" column="15" declfile="thrust/partition.h" declline="363" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga0f82333b8621aaf56285efabdaf3a037" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::partition_copy</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>partition_copy</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition_copy</computeroutput> differs from <computeroutput>partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>. All of the elements that satisfy <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements that fail to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input range shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>partition_copy</computeroutput> to separate a sequence into two output sequences of even and odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::partition_copy(A,<sp/>A<sp/>+<sp/>N,<sp/>evens,<sp/>odds,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="note"><para>The relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition_copy</computeroutput>, does guarantee to preserve the relative order.</para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="435" column="14" declfile="thrust/partition.h" declline="435" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga25663b8a98cd8c50376e48bc3d3b9a42" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::partition_copy</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 first, InputIterator1 last, InputIterator2 stencil, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>partition_copy</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition_copy</computeroutput> differs from <computeroutput>partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> which is applied to a range of stencil elements. All of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements whose stencil element fails to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>partition_copy</computeroutput> to separate a sequence into two output sequences of even and odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition_copy(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>evens,<sp/>odds,<sp/>::cuda::std::identity{});</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>remains<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="note"><para>The relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition_copy</computeroutput>, does guarantee to preserve the relative order.</para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="510" column="15" declfile="thrust/partition.h" declline="510" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1gaa082297920f8ff77bb5d670b1a86946d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::partition_copy</definition>
+        <argsstring>(InputIterator1 first, InputIterator1 last, InputIterator2 stencil, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>partition_copy</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition_copy</computeroutput> differs from <computeroutput>partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> which is applied to a range of stencil elements. All of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements whose stencil element fails to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>partition_copy</computeroutput> to separate a sequence into two output sequences of even and odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition_copy(A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>evens,<sp/>odds,<sp/>::cuda::std::identity{});</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>remains<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="note"><para>The relative order of elements in the two reordered sequences is not necessarily the same as it was in the original sequence. A different algorithm, <computeroutput>stable_partition_copy</computeroutput>, does guarantee to preserve the relative order.</para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="584" column="14" declfile="thrust/partition.h" declline="584" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga9184a73d9481374d7868f6bf9d61add7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::stable_partition</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, Predicate pred)</argsstring>
+        <name>stable_partition</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition</computeroutput> is much like <computeroutput>partition</computeroutput> : it reorders the elements in the range <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>, such that all of the elements that satisfy <computeroutput>pred</computeroutput> precede all of the elements that fail to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first,middle)</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[middle, last)</computeroutput>. The return value of <computeroutput>stable_partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para><computeroutput>stable_partition</computeroutput> differs from <computeroutput>partition</computeroutput> in that <computeroutput>stable_partition</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, and <computeroutput>stencil_x</computeroutput> and <computeroutput>stencil_y</computeroutput> are the stencil elements in corresponding positions within <computeroutput>[stencil, stencil + (last - first))</computeroutput>, and <computeroutput>pred(stencil_x) == pred(stencil_y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements which do not satisfy pred.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>stable_partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition(thrust::host,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A,<sp/>A<sp/>+<sp/>N,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/stable_partition">https://en.cppreference.com/w/cpp/algorithm/stable_partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="652" column="18" declfile="thrust/partition.h" declline="652" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1gaa462d317fb80b65e671a3690aa8be372" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::stable_partition</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, Predicate pred)</argsstring>
+        <name>stable_partition</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition</computeroutput> is much like <computeroutput>partition</computeroutput> : it reorders the elements in the range <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>, such that all of the elements that satisfy <computeroutput>pred</computeroutput> precede all of the elements that fail to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first,middle)</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>i</computeroutput> in the range <computeroutput>[middle, last)</computeroutput>. The return value of <computeroutput>stable_partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para><computeroutput>stable_partition</computeroutput> differs from <computeroutput>partition</computeroutput> in that <computeroutput>stable_partition</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, and <computeroutput>stencil_x</computeroutput> and <computeroutput>stencil_y</computeroutput> are the stencil elements in corresponding positions within <computeroutput>[stencil, stencil + (last - first))</computeroutput>, and <computeroutput>pred(stencil_x) == pred(stencil_y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements which do not satisfy pred.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>stable_partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition(A,<sp/>A<sp/>+<sp/>N,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/stable_partition">https://en.cppreference.com/w/cpp/algorithm/stable_partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="712" column="17" declfile="thrust/partition.h" declline="712" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1gac31350c1f5f917b7b205a3a226bfe00e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::stable_partition</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, InputIterator stencil, Predicate pred)</argsstring>
+        <name>stable_partition</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition</computeroutput> is much like <computeroutput>partition:</computeroutput> it reorders the elements in the range <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> applied to a stencil range <computeroutput>[stencil, stencil + (last - first))</computeroutput>, such that all of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> precede all of the elements whose corresponding stencil element fails to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*stencil_i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil,stencil + (middle - first))</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil + (middle - first), stencil + (last - first))</computeroutput>. The return value of <computeroutput>stable_partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para><computeroutput>stable_partition</computeroutput> differs from <computeroutput>partition</computeroutput> in that <computeroutput>stable_partition</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, such that <computeroutput>pred(x) == pred(y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements whose stencil elements do not satisfy <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[first, last)</computeroutput> shall not overlap with the range <computeroutput>[stencil, stencil + (last - first))</computeroutput>.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>stable_partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>1,<sp/>1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/>0}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>is<sp/>unmodified</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/stable_partition">https://en.cppreference.com/w/cpp/algorithm/stable_partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="778" column="18" declfile="thrust/partition.h" declline="778" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga12fbf51ebfc80fd049ed0cbde2dd8ff8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::stable_partition</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, InputIterator stencil, Predicate pred)</argsstring>
+        <name>stable_partition</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition</computeroutput> is much like <computeroutput>partition:</computeroutput> it reorders the elements in the range <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> applied to a stencil range <computeroutput>[stencil, stencil + (last - first))</computeroutput>, such that all of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> precede all of the elements whose corresponding stencil element fails to satisfy it. The postcondition is that, for some iterator <computeroutput>middle</computeroutput> in the range <computeroutput>[first, last)</computeroutput>, <computeroutput>pred(*stencil_i)</computeroutput> is <computeroutput>true</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil,stencil + (middle - first))</computeroutput> and <computeroutput>false</computeroutput> for every iterator <computeroutput>stencil_i</computeroutput> in the range <computeroutput>[stencil + (middle - first), stencil + (last - first))</computeroutput>. The return value of <computeroutput>stable_partition</computeroutput> is <computeroutput>middle</computeroutput>.</para>
+<para><computeroutput>stable_partition</computeroutput> differs from <computeroutput>partition</computeroutput> in that <computeroutput>stable_partition</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, such that <computeroutput>pred(x) == pred(y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator referring to the first element of the second partition, that is, the sequence of the elements whose stencil elements do not satisfy <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator</computeroutput> is mutable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[first, last)</computeroutput> shall not overlap with the range <computeroutput>[stencil, stencil + (last - first))</computeroutput>.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>stable_partition</computeroutput> to reorder a sequence so that even numbers precede odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition(A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>1,<sp/>1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/>0}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>is<sp/>unmodified</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/stable_partition">https://en.cppreference.com/w/cpp/algorithm/stable_partition</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition_copy</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="844" column="17" declfile="thrust/partition.h" declline="844" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga9ccfecfb316693a59ae0f812af16214d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::stable_partition_copy</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>stable_partition_copy</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>stable_partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>. All of the elements that satisfy <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements that fail to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>partition_copy</computeroutput> in that <computeroutput>stable_partition_copy</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, such that <computeroutput>pred(x) == pred(y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition_copy</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput> in the output.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>stable_partition_copy</computeroutput> to reorder a sequence so that even numbers precede odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition_copy(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>evens,<sp/>odds,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="922" column="15" declfile="thrust/partition.h" declline="922" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga29776c7e55f0beffbcb587b2f3de204f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::stable_partition_copy</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>stable_partition_copy</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>stable_partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput>. All of the elements that satisfy <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements that fail to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>partition_copy</computeroutput> in that <computeroutput>stable_partition_copy</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, such that <computeroutput>pred(x) == pred(y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition_copy</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput> in the output.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>stable_partition_copy</computeroutput> to reorder a sequence so that even numbers precede odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition_copy(A,<sp/>A<sp/>+<sp/>N,<sp/>evens,<sp/>odds,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="996" column="14" declfile="thrust/partition.h" declline="996" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga9b2be7549737deb0afcfade4edd262a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::stable_partition_copy</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 first, InputIterator1 last, InputIterator2 stencil, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>stable_partition_copy</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>stable_partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> which is applied to a range of stencil elements. All of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements whose stencil element fails to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>partition_copy</computeroutput> in that <computeroutput>stable_partition_copy</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, such that <computeroutput>pred(x) == pred(y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition_copy</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput> in the output.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>stable_partition_copy</computeroutput> to reorder a sequence so that even numbers precede odd numbers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition_copy(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>evens,<sp/>odds,<sp/>::cuda::std::identity{});</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>remains<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="1073" column="15" declfile="thrust/partition.h" declline="1073" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__partitioning_1ga2be93491492ec034aab994b104ee2c3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::stable_partition_copy</definition>
+        <argsstring>(InputIterator1 first, InputIterator1 last, InputIterator2 stencil, OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred)</argsstring>
+        <name>stable_partition_copy</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>out_true</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>out_false</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>stable_partition</computeroutput> only in that the reordered sequence is written to different output sequences, rather than in place.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> copies the elements <computeroutput>[first, last)</computeroutput> based on the function object <computeroutput>pred</computeroutput> which is applied to a range of stencil elements. All of the elements whose corresponding stencil element satisfies <computeroutput>pred</computeroutput> are copied to the range beginning at <computeroutput>out_true</computeroutput> and all the elements whose stencil element fails to satisfy it are copied to the range beginning at <computeroutput>out_false</computeroutput>.</para>
+<para><computeroutput>stable_partition_copy</computeroutput> differs from <computeroutput>partition_copy</computeroutput> in that <computeroutput>stable_partition_copy</computeroutput> is guaranteed to preserve relative order. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements in <computeroutput>[first, last)</computeroutput>, such that <computeroutput>pred(x) == pred(y)</computeroutput>, and if <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, then it will still be true after <computeroutput>stable_partition_copy</computeroutput> that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput> in the output.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the sequence to reorder. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the stencil sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out_false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination of the resulting sequence of elements which fail to satisfy <computeroutput>pred</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the sequence <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> p such that <computeroutput>p.first</computeroutput> is the end of the output range beginning at <computeroutput>out_true</computeroutput> and <computeroutput>p.second</computeroutput> is the end of the output range beginning at <computeroutput>out_false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1</computeroutput> and <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_types</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap with either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>stable_partition_copy</computeroutput> to reorder a sequence so that even numbers precede odd numbers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>S[]<sp/>=<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result[10];</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>sizeof(A)/sizeof(int);</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*evens<sp/>=<sp/>result;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*odds<sp/><sp/>=<sp/>result<sp/>+<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">thrust::stable_partition_copy(A,<sp/>A<sp/>+<sp/>N,<sp/>S,<sp/>evens,<sp/>odds,<sp/>::cuda::std::identity{});</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>A<sp/>remains<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>S<sp/>remains<sp/>{0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/><sp/>1}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>is<sp/>now<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>evens<sp/>points<sp/>to<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10}</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>odds<sp/>points<sp/>to<sp/>{1,<sp/>3,<sp/>5,<sp/>7,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2569.pdf</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>partition_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="1149" column="14" declfile="thrust/partition.h" declline="1149" declcolumn="14"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

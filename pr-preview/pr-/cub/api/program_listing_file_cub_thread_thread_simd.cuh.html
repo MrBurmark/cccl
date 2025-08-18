@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub/thread/thread_simd.cuh &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub/thread/thread_sort.cuh" href="file_cub_thread_thread_sort.cuh.html" />
+    <link rel="prev" title="cub/thread/thread_simd.cuh" href="file_cub_thread_thread_simd.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">CUB Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cub_api.html">CUB API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cub_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_cub.html">cub</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_cub.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_block.html">cub/block</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_device.html">cub/device</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_grid.html">cub/grid</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_iterator.html">cub/iterator</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="dir_cub_thread.html">cub/thread</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_cub_thread.html#files">Files</a><ul class="current">
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_load.cuh.html">cub/thread/thread_load.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_operators.cuh.html">cub/thread/thread_operators.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_reduce.cuh.html">cub/thread/thread_reduce.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_scan.cuh.html">cub/thread/thread_scan.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_search.cuh.html">cub/thread/thread_search.cuh</a></li>
+<li class="toctree-l7 current"><a class="reference internal" href="file_cub_thread_thread_simd.cuh.html">cub/thread/thread_simd.cuh</a><ul class="current">
+<li class="toctree-l8 current"><a class="current reference internal" href="#">Source file</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_cub_thread_thread_simd.cuh.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_sort.cuh.html">cub/thread/thread_sort.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_thread_thread_store.cuh.html">cub/thread/thread_store.cuh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_warp.html">cub/warp</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="dir_cub.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cub_api.html">CUB API</a> &raquo;</li>
+          <li><a href="dir_cub.html">cub</a> &raquo;</li>
+          <li><a href="dir_cub_thread.html">cub/thread</a> &raquo;</li>
+          <li><a href="file_cub_thread_thread_simd.cuh.html">cub/thread/thread_simd.cuh</a> &raquo;</li>
+      <li>cub/thread/thread_simd.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-thread-thread-simd-cuh">
+<h1>cub/thread/thread_simd.cuh<a class="headerlink" href="#cub-thread-thread-simd-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_cub_thread_thread_simd.cuh.html#thread-simd-8cuh"><span class="std std-ref">cub/thread/thread_simd.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.</span>
+<span class="c1">// SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="cm">/******************************************************************************</span>
+<span class="cm"> * Simple functor operators</span>
+<span class="cm"> ******************************************************************************/</span><span class="w"></span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/config.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/thread/thread_operators.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/functional&gt;</span><span class="c1"> // cuda::maximum, cuda::minimum</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/cstdint&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/type_traits&gt;</span><span class="c1"> // cuda::std::common_type</span><span class="cp"></span>
+
+<span class="cp">#if _CCCL_HAS_NVFP16()</span>
+<span class="cp">#</span><span class="w">  </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cuda_fp16.h&gt;</span><span class="cp"></span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#if _CCCL_HAS_NVBF16()</span>
+<span class="n">_CCCL_DIAG_PUSH</span><span class="w"></span>
+<span class="nf">_CCCL_DIAG_SUPPRESS_CLANG</span><span class="p">(</span><span class="s">&quot;-Wunused-function&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="cp">#</span><span class="w">  </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cuda_bf16.h&gt;</span><span class="cp"></span>
+<span class="n">_CCCL_DIAG_POP</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="n">CUB_NAMESPACE_BEGIN</span><span class="w"></span>
+
+<span class="cp">#ifndef _CCCL_DOXYGEN_INVOKED </span><span class="c1">// Do not document</span>
+
+<span class="cm">/***********************************************************************************************************************</span>
+<span class="cm"> * SIMD operators</span>
+<span class="cm"> **********************************************************************************************************************/</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">extern</span><span class="w"> </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm80</span><span class="p">();</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">extern</span><span class="w"> </span><span class="n">_CCCL_HOST_DEVICE</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm53</span><span class="p">();</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMin</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">__always_false_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Unsupported specialization&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMin</span><span class="o">&lt;</span><span class="n">short2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">short2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">short2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">short2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">       </span><span class="k">auto</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="n">short2</span><span class="o">&gt;</span><span class="p">(</span><span class="o">::</span><span class="n">__vmins2</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">b1</span><span class="p">));),</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">short2</span><span class="p">{</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">)};))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMin</span><span class="o">&lt;</span><span class="n">ushort2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">ushort2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">ushort2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">ushort2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">       </span><span class="k">auto</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="n">ushort2</span><span class="o">&gt;</span><span class="p">(</span><span class="o">::</span><span class="n">__vminu2</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">b1</span><span class="p">));),</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ushort2</span><span class="p">{</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">)};))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMin</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__half2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hmin2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#  if _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMin</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_80</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hmin2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);),</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm80</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="p">();))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMax</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">__always_false_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Unsupported specialization&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMax</span><span class="o">&lt;</span><span class="n">short2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">short2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">short2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">short2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">       </span><span class="k">auto</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="n">short2</span><span class="o">&gt;</span><span class="p">(</span><span class="o">::</span><span class="n">__vmaxs2</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">b1</span><span class="p">));),</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">short2</span><span class="p">{</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">)};))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMax</span><span class="o">&lt;</span><span class="n">ushort2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">ushort2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">ushort2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">ushort2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">       </span><span class="k">auto</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="n">ushort2</span><span class="o">&gt;</span><span class="p">(</span><span class="o">::</span><span class="n">__vmaxu2</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">b1</span><span class="p">));),</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ushort2</span><span class="p">{</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{}(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">)};))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMax</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__half2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hmax2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#  if _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMax</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_80</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hmax2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);),</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm80</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="p">();))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdSum</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">__always_false_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Unsupported specialization&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdSum</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__half2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_53</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hadd2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);),</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm53</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span><span class="p">();))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#  if _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdSum</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_80</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hadd2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);),</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm80</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="p">();))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdSum</span><span class="o">&lt;</span><span class="n">ushort2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">ushort2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">ushort2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">ushort2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// clang-format off</span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"></span>
+<span class="w">                     </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<span class="w">                      </span><span class="k">asm</span><span class="p">(</span><span class="s">&quot;add.u16x2 %0, %1, %2;&quot;</span><span class="w"></span>
+<span class="w">                          </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;=r&quot;</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="w"></span>
+<span class="w">                          </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span><span class="w"></span>
+<span class="w">                            </span><span class="s">&quot;r&quot;</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)));</span><span class="w"></span>
+<span class="w">                      </span><span class="k">return</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="n">ushort2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ret</span><span class="p">);),</span><span class="w"></span>
+<span class="w">                     </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">ushort2</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">)};));</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// clang-format on</span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdSum</span><span class="o">&lt;</span><span class="n">short2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">short2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">short2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">short2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// clang-format off</span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w"></span>
+<span class="w">                     </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<span class="w">                      </span><span class="k">asm</span><span class="p">(</span><span class="s">&quot;add.s16x2 %0, %1, %2;&quot;</span><span class="w"></span>
+<span class="w">                          </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;=r&quot;</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="w"></span>
+<span class="w">                          </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span><span class="w"></span>
+<span class="w">                            </span><span class="s">&quot;r&quot;</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)));</span><span class="w"></span>
+<span class="w">                      </span><span class="k">return</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="n">short2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ret</span><span class="p">);),</span><span class="w"></span>
+<span class="w">                     </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">short2</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int16_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int16_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">)};));</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// clang-format on</span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdSum</span><span class="o">&lt;</span><span class="n">float2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">float2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">float2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">float2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// clang-format off</span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_100</span><span class="p">,</span><span class="w"></span>
+<span class="w">                     </span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<span class="w">                      </span><span class="k">asm</span><span class="p">(</span><span class="s">&quot;add.f32x2 %0, %1, %2;&quot;</span><span class="w"></span>
+<span class="w">                           </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;=l&quot;</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="w"></span>
+<span class="w">                           </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;l&quot;</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span><span class="w"></span>
+<span class="w">                             </span><span class="s">&quot;l&quot;</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)));</span><span class="w"></span>
+<span class="w">                      </span><span class="k">return</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">bit_cast</span><span class="o">&lt;</span><span class="n">float2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ret</span><span class="p">);),</span><span class="w"></span>
+<span class="w">                     </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">float2</span><span class="p">{</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w">  </span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">};))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// clang-format on</span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMul</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">__always_false_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Unsupported specialization&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMul</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__half2</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__half2</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_53</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hmul2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);),</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm53</span><span class="o">&lt;</span><span class="n">__half2</span><span class="o">&gt;</span><span class="p">();))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#  if _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SimdMul</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_80</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">__hmul2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);),</span><span class="w"></span>
+<span class="w">                      </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">simd_operation_is_not_supported_before_sm80</span><span class="o">&lt;</span><span class="n">__nv_bfloat162</span><span class="o">&gt;</span><span class="p">();))</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOp</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_simd_operator_v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_simd_operator_v</span><span class="o">&lt;</span><span class="n">SimdSum</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_simd_operator_v</span><span class="o">&lt;</span><span class="n">SimdMul</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_simd_operator_v</span><span class="o">&lt;</span><span class="n">SimdMin</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_simd_operator_v</span><span class="o">&lt;</span><span class="n">SimdMax</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">// SIMD type</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">VectorTypeX2</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">__always_false_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Unsupported specialization&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">VectorTypeX2</span><span class="o">&lt;</span><span class="kt">int16_t</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">short2</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">VectorTypeX2</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ushort2</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  if _CCCL_HAS_NVFP16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">VectorTypeX2</span><span class="o">&lt;</span><span class="n">__half</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__half2</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVFP16()</span>
+
+<span class="cp">#  if _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">VectorTypeX2</span><span class="o">&lt;</span><span class="n">__nv_bfloat16</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__nv_bfloat162</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_HAS_NVBF16()</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">vector_type_x2_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">VectorTypeX2</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">// Predefined CUDA operators to SIMD</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReduceOp</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">__always_false_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Unsupported specialization&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdMin</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdMin</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdMax</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdMax</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdSum</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdSum</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">multiplies</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdMul</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;</span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">multiplies</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SimdMul</span><span class="o">&lt;</span><span class="n">vector_type_x2_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ReduceOp</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">cuda_operator_to_simd_x2_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">CudaOperatorToSimdX2</span><span class="o">&lt;</span><span class="n">ReduceOp</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Op</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">try_simd_operator</span><span class="p">(</span><span class="n">Op</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">is_same_v</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_supported_vector_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">is_any_short2_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">is_bfloat162_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">is_half2_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">is_cuda_std_plus_v</span><span class="o">&lt;</span><span class="n">Op</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">float2</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">is_supported_vector_type</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">SimdSum</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">{};</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">is_cuda_minimum_v</span><span class="o">&lt;</span><span class="n">Op</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_supported_vector_type</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">SimdMin</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">{};</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">is_cuda_maximum_v</span><span class="o">&lt;</span><span class="n">Op</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_supported_vector_type</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">SimdMax</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">{};</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">else</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">op</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
+
+<span class="cp">#endif </span><span class="c1">// !_CCCL_DOXYGEN_INVOKED</span>
+
+<span class="n">CUB_NAMESPACE_END</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

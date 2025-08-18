@@ -1,0 +1,1853 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1BlockExchange" kind="class" language="C++" prot="public">
+    <compoundname>cub::BlockExchange</compoundname>
+    <innerclass refid="structcub_1_1BlockExchange_1_1__TempStorage" prot="private">cub::BlockExchange::_TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_X</declname>
+        <defname>BLOCK_DIM_X</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ITEMS_PER_THREAD</declname>
+        <defname>ITEMS_PER_THREAD</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>WARP_TIME_SLICING</declname>
+        <defname>WARP_TIME_SLICING</defname>
+        <defval>false</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Y</declname>
+        <defname>BLOCK_DIM_Y</defname>
+        <defval>1</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Z</declname>
+        <defname>BLOCK_DIM_Z</defname>
+        <defval>1</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a0bce231fcff01c78530e61c7dbe7ae6d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockExchange</definition>
+        <argsstring>()</argsstring>
+        <name>BlockExchange</name>
+        <briefdescription>
+<para>Collective constructor using a private static allocation of shared memory as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="841" column="5" bodyfile="cub/block/block_exchange.cuh" bodystart="841" bodyend="843"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a535bd00d7bb678bc37080bd55699390e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockExchange</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>BlockExchange</name>
+        <param>
+          <type><ref refid="classcub_1_1BlockExchange_1a0e85332abd704e6d1273854dbb173362" kindref="member">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to memory allocation having layout type TempStorage </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="847" column="5" bodyfile="cub/block/block_exchange.cuh" bodystart="847" bodyend="849"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Structured exchanges</header>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a629e331cf1ee8e222394530493345759" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::StripedToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD])</argsstring>
+        <name>StripedToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Transposes data items from **striped** arrangement to **blocked** arrangement.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates the conversion from a &quot;striped&quot; to a &quot;blocked&quot; arrangement
+of 512 integer items partitioned across 128 threads where each thread owns 4 items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_exchange.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, ...)
+   {
+       // Specialize BlockExchange for a 1D block of 128 threads owning 4 integer items each
+       using BlockExchange = cub::BlockExchange&lt;int, 128, 4&gt;;
+
+       // Allocate shared memory for BlockExchange
+       __shared__ typename BlockExchange::TempStorage temp_storage;
+
+       // Load a tile of ordered data into a striped arrangement across block threads
+       int thread_data[4];
+       cub::LoadDirectStriped&lt;128&gt;(threadIdx.x, d_data, thread_data);
+
+       // Collectively exchange data into a blocked arrangement across threads
+       BlockExchange(temp_storage).StripedToBlocked(thread_data, thread_data);
+
+Suppose the set of striped input ``thread_data`` across the block of threads is ``{ [0,128,256,384],
+[1,129,257,385], ..., [127,255,383,511] }`` after loading from device-accessible memory. The corresponding output
+``thread_data`` in those threads will be ``{ [0,1,2,3], [4,5,6,7], [8,9,10,11], ..., [508,509,510,511] }``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="897" column="3" bodyfile="cub/block/block_exchange.cuh" bodystart="897" bodyend="900"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1aa6eb3d9971e0d986297fe0786ac7d3ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockedToStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD])</argsstring>
+        <name>BlockedToStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Transposes data items from **blocked** arrangement to **striped** arrangement.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates the conversion from a &quot;blocked&quot; to a &quot;striped&quot; arrangement
+of 512 integer items partitioned across 128 threads where each thread owns 4 items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_exchange.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, ...)
+   {
+       // Specialize BlockExchange for a 1D block of 128 threads owning 4 integer items each
+       using BlockExchange = cub::BlockExchange&lt;int, 128, 4&gt;;
+
+       // Allocate shared memory for BlockExchange
+       __shared__ typename BlockExchange::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively exchange data into a striped arrangement across threads
+       BlockExchange(temp_storage).BlockedToStriped(thread_data, thread_data);
+
+       // Store data striped across block threads into an ordered tile
+       cub::StoreDirectStriped&lt;STORE_DEFAULT, 128&gt;(threadIdx.x, d_data, thread_data);
+
+Suppose the set of blocked input ``thread_data`` across the block of threads is ``{ [0,1,2,3], [4,5,6,7],
+[8,9,10,11], ..., [508,509,510,511] }``. The corresponding output ``thread_data`` in those threads will be
+``{ [0,128,256,384], [1,129,257,385], ..., [127,255,383,511] }`` in preparation for storing to device-accessible
+memory.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="948" column="3" bodyfile="cub/block/block_exchange.cuh" bodystart="948" bodyend="951"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1aa038e3aaecc442ed9612ff49eb7f41c0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WarpStripedToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD])</argsstring>
+        <name>WarpStripedToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Transposes data items from **warp-striped** arrangement to **blocked** arrangement.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+
+Snippet
++++++++
+
+The code snippet below illustrates the conversion from a &quot;warp-striped&quot; to a &quot;blocked&quot;
+arrangement of 512 integer items partitioned across 128 threads where each thread owns 4
+items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_exchange.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, ...)
+   {
+       // Specialize BlockExchange for a 1D block of 128 threads owning 4 integer items each
+       using BlockExchange = cub::BlockExchange&lt;int, 128, 4&gt;;
+
+       // Allocate shared memory for BlockExchange
+       __shared__ typename BlockExchange::TempStorage temp_storage;
+
+       // Load a tile of ordered data into a warp-striped arrangement across warp threads
+       int thread_data[4];
+       cub::LoadSWarptriped&lt;LOAD_DEFAULT&gt;(threadIdx.x, d_data, thread_data);
+
+       // Collectively exchange data into a blocked arrangement across threads
+       BlockExchange(temp_storage).WarpStripedToBlocked(thread_data);
+
+Suppose the set of warp-striped input ``thread_data`` across the block of threads is ``{ [0,32,64,96],
+[1,33,65,97], [2,34,66,98], ..., [415,447,479,511] }`` after loading from device-accessible memory. (The first 128
+items are striped across the first warp of 32 threads, the second 128 items are striped across the second warp,
+etc.) The corresponding output ``thread_data`` in those threads will be ``{ [0,1,2,3], [4,5,6,7], [8,9,10,11],
+..., [508,509,510,511] }``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="999" column="3" bodyfile="cub/block/block_exchange.cuh" bodystart="999" bodyend="1002"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a96e4bac02db8e4724559ce559b06563b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockedToWarpStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD])</argsstring>
+        <name>BlockedToWarpStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Transposes data items from **blocked** arrangement to **warp-striped** arrangement.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+
+Snippet
++++++++
+
+The code snippet below illustrates the conversion from a &quot;blocked&quot; to a &quot;warp-striped&quot;
+arrangement of 512 integer items partitioned across 128 threads where each thread owns 4
+items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_exchange.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, ...)
+   {
+       // Specialize BlockExchange for a 1D block of 128 threads owning 4 integer items each
+       using BlockExchange = cub::BlockExchange&lt;int, 128, 4&gt;;
+
+       // Allocate shared memory for BlockExchange
+       __shared__ typename BlockExchange::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively exchange data into a warp-striped arrangement across threads
+       BlockExchange(temp_storage).BlockedToWarpStriped(thread_data, thread_data);
+
+       // Store data striped across warp threads into an ordered tile
+       cub::StoreDirectStriped&lt;STORE_DEFAULT, 128&gt;(threadIdx.x, d_data, thread_data);
+
+Suppose the set of blocked input ``thread_data`` across the block of threads is ``{ [0,1,2,3], [4,5,6,7],
+[8,9,10,11], ..., [508,509,510,511] }``. The corresponding output ``thread_data`` in those threads will be
+``{ [0,32,64,96], [1,33,65,97], [2,34,66,98], ..., [415,447,479,511] }`` in preparation for storing to
+device-accessible memory. (The first 128 items are striped across the first warp of 32 threads, the second 128
+items are striped across the second warp, etc.)
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="1053" column="3" bodyfile="cub/block/block_exchange.cuh" bodystart="1053" bodyend="1056"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Scatter exchanges</header>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a0fc003f6d8b474acd35b6ad0a9ec4e87" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD])</argsstring>
+        <name>ScatterToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Exchanges data items annotated by rank into **blocked** arrangement.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>OffsetT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Signed integer type for local offsets</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="1080" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="1080" bodyend="1086"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1add2ca4742186f40d02b19f4a3b83b8ef" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD])</argsstring>
+        <name>ScatterToStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Exchanges data items annotated by rank into **striped** arrangement.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>OffsetT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Signed integer type for local offsets</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="1107" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="1107" bodyend="1113"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a5b0df7721cbabcfec3eae4cb9668c8ea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToStripedGuarded</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD])</argsstring>
+        <name>ScatterToStripedGuarded</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Exchanges data items annotated by rank into **striped** arrangement. Items with rank -1 are not exchanged.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>OffsetT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Signed integer type for local offsets</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="1134" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="1134" bodyend="1165"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a6e0f825ef823037798b0c8c40df10a81" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+          <param>
+            <type>typename ValidFlag</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToStripedFlagged</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD], ValidFlag(&amp;is_valid)[ITEMS_PER_THREAD])</argsstring>
+        <name>ScatterToStripedFlagged</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ValidFlag(&amp;)</type>
+          <declname>is_valid</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Exchanges valid data items annotated by rank into **striped** arrangement.
+
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>OffsetT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Signed integer type for local offsets</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ValidFlag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> FlagT type denoting which items are valid</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <bold>striped</bold> and <bold>blocked</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">is_valid</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding flag denoting item validity </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="1192" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="1192" bodyend="1224"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classcub_1_1BlockExchange_1a0e85332abd704e6d1273854dbb173362" prot="public" static="no">
+        <type>Uninitialized&lt; _TempStorage &gt;</type>
+        <definition>using cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::TempStorage =  Uninitialized&lt;_TempStorage&gt;</definition>
+        <argsstring></argsstring>
+        <name>TempStorage</name>
+        <briefdescription>
+<para>The operations exposed by <ref refid="classcub_1_1BlockExchange" kindref="compound">BlockExchange</ref> require a temporary memory allocation of this nested type for thread communication. This opaque storage can be allocated directly using the <computeroutput>__shared__</computeroutput> keyword. Alternatively, it can be aliased to externally allocated memory (shared or global) or <computeroutput>union</computeroutput>&apos;d with other storage allocation types to facilitate memory reuse. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="175" column="3" bodyfile="cub/block/block_exchange.cuh" bodystart="175" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a01e9e93153e274225fa1daff7ba5433c" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BLOCK_THREADS</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_THREADS</name>
+        <initializer>= BLOCK_DIM_X * BLOCK_DIM_Y * BLOCK_DIM_Z</initializer>
+        <briefdescription>
+<para>The thread block size in threads. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="148" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a6ce171c9eacfe51abf292b9bc5f9da06" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WARP_THREADS</definition>
+        <argsstring></argsstring>
+        <name>WARP_THREADS</name>
+        <initializer>= detail::warp_threads</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="149" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a68b1cb8cce5a4fc019e3c33f70f1f5e5" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WARPS</definition>
+        <argsstring></argsstring>
+        <name>WARPS</name>
+        <initializer>= (BLOCK_THREADS + WARP_THREADS - 1) / WARP_THREADS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="150" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a25a053407523787eae4b693a0bdc488c" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::LOG_SMEM_BANKS</definition>
+        <argsstring></argsstring>
+        <name>LOG_SMEM_BANKS</name>
+        <initializer>= detail::log2_smem_banks</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="152" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a726ae905b599d8562bfad250728b1f47" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::TILE_ITEMS</definition>
+        <argsstring></argsstring>
+        <name>TILE_ITEMS</name>
+        <initializer>= BLOCK_THREADS * ITEMS_PER_THREAD</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="154" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a6cbaca47c2c6397193d4b690d962d090" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::TIME_SLICES</definition>
+        <argsstring></argsstring>
+        <name>TIME_SLICES</name>
+        <initializer>= WARP_TIME_SLICING ? WARPS : 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="155" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a85aafc9ae423ab77babba4f71f160b04" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::TIME_SLICED_THREADS</definition>
+        <argsstring></argsstring>
+        <name>TIME_SLICED_THREADS</name>
+        <initializer>=
+    WARP_TIME_SLICING ? cuda::std::min(BLOCK_THREADS, WARP_THREADS) : BLOCK_THREADS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="156" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1ae410d4ce21c7c1d6335f4de9329262a2" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::TIME_SLICED_ITEMS</definition>
+        <argsstring></argsstring>
+        <name>TIME_SLICED_ITEMS</name>
+        <initializer>= TIME_SLICED_THREADS * ITEMS_PER_THREAD</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="158" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a33e0089e3c7d5f141cfdd96f15d3067a" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WARP_TIME_SLICED_THREADS</definition>
+        <argsstring></argsstring>
+        <name>WARP_TIME_SLICED_THREADS</name>
+        <initializer>= cuda::std::min(BLOCK_THREADS, WARP_THREADS)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="159" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1ae5799e2e67b480216f90ac100391af5a" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WARP_TIME_SLICED_ITEMS</definition>
+        <argsstring></argsstring>
+        <name>WARP_TIME_SLICED_ITEMS</name>
+        <initializer>= WARP_TIME_SLICED_THREADS * ITEMS_PER_THREAD</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="160" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1aef08d8fc3c603430f711c8fb7d71405b" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::INSERT_PADDING</definition>
+        <argsstring></argsstring>
+        <name>INSERT_PADDING</name>
+        <initializer>= ITEMS_PER_THREAD &gt; 4 &amp;&amp; PowerOfTwo&lt;ITEMS_PER_THREAD&gt;::VALUE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="164" column="25" bodyfile="cub/block/block_exchange.cuh" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1ac3d44e52cd9b54edcab7132bb4792c36" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::PADDING_ITEMS</definition>
+        <argsstring></argsstring>
+        <name>PADDING_ITEMS</name>
+        <initializer>= INSERT_PADDING ? (TIME_SLICED_ITEMS &gt;&gt; LOG_SMEM_BANKS) : 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="165" column="24" bodyfile="cub/block/block_exchange.cuh" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1a48b04bac20e19e6bb99e566922568309" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="178" column="16" bodyfile="cub/block/block_exchange.cuh" bodystart="178" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1ab4bac4a0981ac581984fb97c0ae1fbf5" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::linear_tid</definition>
+        <argsstring></argsstring>
+        <name>linear_tid</name>
+        <initializer>= <ref refid="namespacecub_1a767f6bb0f696ac8264755e2c5549ba52" kindref="member">RowMajorTid</ref>(BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="181" column="16" bodyfile="cub/block/block_exchange.cuh" bodystart="181" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1ae3fcac50a258118802c46979ec215fc7" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::lane_id</definition>
+        <argsstring></argsstring>
+        <name>lane_id</name>
+        <initializer>= ::cuda::ptx::get_sreg_laneid()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="182" column="16" bodyfile="cub/block/block_exchange.cuh" bodystart="182" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1ab2c1b23f02bf6d802e1417ae802dbd6f" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::warp_id</definition>
+        <argsstring></argsstring>
+        <name>warp_id</name>
+        <initializer>= WARPS == 1 ? 0 : linear_tid / WARP_THREADS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="183" column="16" bodyfile="cub/block/block_exchange.cuh" bodystart="183" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockExchange_1adb258018582e5cb367cd4511535f3677" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::warp_offset</definition>
+        <argsstring></argsstring>
+        <name>warp_offset</name>
+        <initializer>= warp_id * WARP_TIME_SLICED_ITEMS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="184" column="16" bodyfile="cub/block/block_exchange.cuh" bodystart="184" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a163678cc9ac903ad1872e71dbf4d7453" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::PrivateStorage</definition>
+        <argsstring>()</argsstring>
+        <name>PrivateStorage</name>
+        <briefdescription>
+<para>Internal storage allocator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="187" column="18" bodyfile="cub/block/block_exchange.cuh" bodystart="187" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1aae7dc6ad7b7c0a04434763017f0e9f86" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockedToStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::false_type)</argsstring>
+        <name>BlockedToStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::false_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>blocked</bold> arrangement to <bold>striped</bold> arrangement. Specialized for no timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="202" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="202" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1adf83ebf36cb8920baa9d3de619ac184f" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockedToStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::true_type)</argsstring>
+        <name>BlockedToStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::true_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>blocked</bold> arrangement to <bold>striped</bold> arrangement. Specialized for warp-timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="241" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="241" bodyend="300"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1ab2daaa64d644704c996d213895ae219c" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockedToWarpStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::false_type)</argsstring>
+        <name>BlockedToWarpStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::false_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>blocked</bold> arrangement to <bold>warp-striped</bold> arrangement. Specialized for no timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="311" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="311" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a4ad462687135ec1b6956606783b5c360" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockedToWarpStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::true_type)</argsstring>
+        <name>BlockedToWarpStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::true_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>blocked</bold> arrangement to <bold>warp-striped</bold> arrangement. Specialized for warp-timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="350" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="350" bodyend="414"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a6907cb06e4735261569c9c199c7b617a" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::StripedToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::false_type)</argsstring>
+        <name>StripedToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::false_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>striped</bold> arrangement to <bold>blocked</bold> arrangement. Specialized for no timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="425" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="425" bodyend="454"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a0f3c00f85b9e00eb89917746035a2c5a" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::StripedToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::true_type)</argsstring>
+        <name>StripedToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::true_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>striped</bold> arrangement to <bold>blocked</bold> arrangement. Specialized for warp-timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="465" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="465" bodyend="525"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1aac3525fe7ba14bdd873a64ea540403ea" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WarpStripedToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::false_type)</argsstring>
+        <name>WarpStripedToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::false_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>warp-striped</bold> arrangement to <bold>blocked</bold> arrangement. Specialized for no timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="536" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="536" bodyend="564"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1aa7831c823a53bbbc5f7b999b957657a4" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WarpStripedToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], ::cuda::std::true_type)</argsstring>
+        <name>WarpStripedToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::true_type</type>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <bold>warp-striped</bold> arrangement to <bold>blocked</bold> arrangement. Specialized for warp-timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="575" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="575" bodyend="612"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a9bae0e61de59c025280bc07ebc7b2588" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD], ::cuda::std::false_type)</argsstring>
+        <name>ScatterToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::false_type</type>
+        </param>
+        <briefdescription>
+<para>Exchanges data items annotated by rank into <bold>blocked</bold> arrangement. Specialized for no timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="625" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="625" bodyend="654"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a7a26a05c7c31dcfc2bafc0efa53ad2c7" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToBlocked</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT ranks[ITEMS_PER_THREAD], ::cuda::std::true_type)</argsstring>
+        <name>ScatterToBlocked</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::true_type</type>
+        </param>
+        <briefdescription>
+<para>Exchanges data items annotated by rank into <bold>blocked</bold> arrangement. Specialized for warp-timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="667" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="667" bodyend="719"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1a40f42e09996f3f9ee5d25d02da0ef283" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD], ::cuda::std::false_type)</argsstring>
+        <name>ScatterToStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::false_type</type>
+        </param>
+        <briefdescription>
+<para>Exchanges data items annotated by rank into <bold>striped</bold> arrangement. Specialized for no timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="732" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="732" bodyend="761"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockExchange_1ab83fbffdac1cfcc88c86c989d09d29c2" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockExchange&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, WARP_TIME_SLICING, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScatterToStriped</definition>
+        <argsstring>(const T(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD], ::cuda::std::true_type)</argsstring>
+        <name>ScatterToStriped</name>
+        <param>
+          <type>const T(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>::cuda::std::true_type</type>
+        </param>
+        <briefdescription>
+<para>Exchanges data items annotated by rank into <bold>striped</bold> arrangement. Specialized for warp-timeslicing. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <bold>blocked</bold> and <bold>striped</bold> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_exchange.cuh" line="774" column="10" bodyfile="cub/block/block_exchange.cuh" bodystart="774" bodyend="834"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+The BlockExchange class provides :ref:`collective &lt;collective-primitives&gt;` methods for rearranging data partitioned
+across a CUDA thread block.
+
+Overview
++++++++++++++++++++++++++++++++++++++++++++++
+
+- It is commonplace for blocks of threads to rearrange data items between threads.  For example, the
+  device-accessible memory subsystem prefers access patterns where data items are &quot;striped&quot; across threads (where
+  consecutive threads access consecutive items), yet most block-wide operations prefer a &quot;blocked&quot; partitioning of
+  items across threads (where consecutive items belong to a single thread).
+- BlockExchange supports the following types of data exchanges:
+
+  - Transposing between :ref:`blocked &lt;flexible-data-arrangement&gt;` and :ref:`striped &lt;flexible-data-arrangement&gt;`
+    arrangements
+  - Transposing between :ref:`blocked &lt;flexible-data-arrangement&gt;` and
+    :ref:`warp-striped &lt;flexible-data-arrangement&gt;`  arrangements
+  - Scattering ranked items to a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;`
+  - Scattering ranked items to a :ref:`striped arrangement &lt;flexible-data-arrangement&gt;`
+
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+
+A Simple Example
++++++++++++++++++++++++++++++++++++++++++++++
+
+Every thread in the block uses the BlockExchange class by first specializing the BlockExchange type, then instantiating an instance with parameters for communication, and finally invoking one or more collective member functions.
+
+The code snippet below illustrates the conversion from a &quot;blocked&quot; to a &quot;striped&quot; arrangement of 512 integer items
+partitioned across 128 threads where each thread owns 4 items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_exchange.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, ...)
+   {
+       // Specialize BlockExchange for a 1D block of 128 threads owning 4 integer items each
+       using BlockExchange = cub::BlockExchange&lt;int, 128, 4&gt;;
+
+       // Allocate shared memory for BlockExchange
+       __shared__ typename BlockExchange::TempStorage temp_storage;
+
+       // Load a tile of data striped across threads
+       int thread_data[4];
+       cub::LoadDirectStriped&lt;128&gt;(threadIdx.x, d_data, thread_data);
+
+       // Collectively exchange data into a blocked arrangement across threads
+       BlockExchange(temp_storage).StripedToBlocked(thread_data);
+
+Suppose the set of striped input ``thread_data`` across the block of threads is ``{ [0,128,256,384],
+[1,129,257,385], ..., [127,255,383,511] }``. The corresponding output ``thread_data`` in those threads will be
+``{ [0,1,2,3], [4,5,6,7], [8,9,10,11], ..., [508,509,510,511] }``.
+
+Performance Considerations
++++++++++++++++++++++++++++++++++++++++++++++
+
+- Proper device-specific padding ensures zero bank conflicts for most types.
+
+Re-using dynamically allocating shared memory
++++++++++++++++++++++++++++++++++++++++++++++
+
+The ``block/example_block_reduce_dyn_smem.cu`` example illustrates usage of dynamically shared memory with
+BlockReduce and how to re-purpose the same memory region. This example can be easily adapted to the storage required
+by BlockExchange.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The data type to be exchanged</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thread block length in threads along the X dimension</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>WARP_TIME_SLICING</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> When <computeroutput>true</computeroutput>, only use enough shared memory for a single warp&apos;s worth of tile data, time-slicing the block-wide exchange over multiple synchronized rounds. Yields a smaller memory footprint at the expense of decreased parallelism. (Default: false)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Y dimension (default: 1)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Z dimension (default: 1) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/block/block_exchange.cuh" line="146" column="1" bodyfile="cub/block/block_exchange.cuh" bodystart="147" bodyend="1304"/>
+    <listofallmembers>
+      <member refid="classcub_1_1BlockExchange_1a01e9e93153e274225fa1daff7ba5433c" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BLOCK_THREADS</name></member>
+      <member refid="classcub_1_1BlockExchange_1aae7dc6ad7b7c0a04434763017f0e9f86" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockedToStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1adf83ebf36cb8920baa9d3de619ac184f" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockedToStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1aa6eb3d9971e0d986297fe0786ac7d3ad" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockedToStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1ab2daaa64d644704c996d213895ae219c" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockedToWarpStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1a4ad462687135ec1b6956606783b5c360" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockedToWarpStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1a96e4bac02db8e4724559ce559b06563b" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockedToWarpStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1a0bce231fcff01c78530e61c7dbe7ae6d" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockExchange</name></member>
+      <member refid="classcub_1_1BlockExchange_1a535bd00d7bb678bc37080bd55699390e" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>BlockExchange</name></member>
+      <member refid="classcub_1_1BlockExchange_1aef08d8fc3c603430f711c8fb7d71405b" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>INSERT_PADDING</name></member>
+      <member refid="classcub_1_1BlockExchange_1ae3fcac50a258118802c46979ec215fc7" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>lane_id</name></member>
+      <member refid="classcub_1_1BlockExchange_1ab4bac4a0981ac581984fb97c0ae1fbf5" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>linear_tid</name></member>
+      <member refid="classcub_1_1BlockExchange_1a25a053407523787eae4b693a0bdc488c" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>LOG_SMEM_BANKS</name></member>
+      <member refid="classcub_1_1BlockExchange_1ac3d44e52cd9b54edcab7132bb4792c36" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>PADDING_ITEMS</name></member>
+      <member refid="classcub_1_1BlockExchange_1a163678cc9ac903ad1872e71dbf4d7453" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>PrivateStorage</name></member>
+      <member refid="classcub_1_1BlockExchange_1a9bae0e61de59c025280bc07ebc7b2588" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1a7a26a05c7c31dcfc2bafc0efa53ad2c7" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1a0fc003f6d8b474acd35b6ad0a9ec4e87" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1a40f42e09996f3f9ee5d25d02da0ef283" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1ab83fbffdac1cfcc88c86c989d09d29c2" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1add2ca4742186f40d02b19f4a3b83b8ef" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToStriped</name></member>
+      <member refid="classcub_1_1BlockExchange_1a6e0f825ef823037798b0c8c40df10a81" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToStripedFlagged</name></member>
+      <member refid="classcub_1_1BlockExchange_1a5b0df7721cbabcfec3eae4cb9668c8ea" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>ScatterToStripedGuarded</name></member>
+      <member refid="classcub_1_1BlockExchange_1a6907cb06e4735261569c9c199c7b617a" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>StripedToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1a0f3c00f85b9e00eb89917746035a2c5a" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>StripedToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1a629e331cf1ee8e222394530493345759" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>StripedToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1a48b04bac20e19e6bb99e566922568309" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>temp_storage</name></member>
+      <member refid="classcub_1_1BlockExchange_1a0e85332abd704e6d1273854dbb173362" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>TempStorage</name></member>
+      <member refid="classcub_1_1BlockExchange_1a726ae905b599d8562bfad250728b1f47" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>TILE_ITEMS</name></member>
+      <member refid="classcub_1_1BlockExchange_1ae410d4ce21c7c1d6335f4de9329262a2" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>TIME_SLICED_ITEMS</name></member>
+      <member refid="classcub_1_1BlockExchange_1a85aafc9ae423ab77babba4f71f160b04" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>TIME_SLICED_THREADS</name></member>
+      <member refid="classcub_1_1BlockExchange_1a6cbaca47c2c6397193d4b690d962d090" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>TIME_SLICES</name></member>
+      <member refid="classcub_1_1BlockExchange_1ab2c1b23f02bf6d802e1417ae802dbd6f" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>warp_id</name></member>
+      <member refid="classcub_1_1BlockExchange_1adb258018582e5cb367cd4511535f3677" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>warp_offset</name></member>
+      <member refid="classcub_1_1BlockExchange_1a6ce171c9eacfe51abf292b9bc5f9da06" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>WARP_THREADS</name></member>
+      <member refid="classcub_1_1BlockExchange_1ae5799e2e67b480216f90ac100391af5a" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>WARP_TIME_SLICED_ITEMS</name></member>
+      <member refid="classcub_1_1BlockExchange_1a33e0089e3c7d5f141cfdd96f15d3067a" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>WARP_TIME_SLICED_THREADS</name></member>
+      <member refid="classcub_1_1BlockExchange_1a68b1cb8cce5a4fc019e3c33f70f1f5e5" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>WARPS</name></member>
+      <member refid="classcub_1_1BlockExchange_1aac3525fe7ba14bdd873a64ea540403ea" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>WarpStripedToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1aa7831c823a53bbbc5f7b999b957657a4" prot="private" virt="non-virtual"><scope>cub::BlockExchange</scope><name>WarpStripedToBlocked</name></member>
+      <member refid="classcub_1_1BlockExchange_1aa038e3aaecc442ed9612ff49eb7f41c0" prot="public" virt="non-virtual"><scope>cub::BlockExchange</scope><name>WarpStripedToBlocked</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

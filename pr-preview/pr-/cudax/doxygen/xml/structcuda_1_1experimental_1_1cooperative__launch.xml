@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structcuda_1_1experimental_1_1cooperative__launch" kind="struct" language="C++" prot="public">
+    <compoundname>cuda::experimental::cooperative_launch</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">cuda::experimental::__detail::launch_option</basecompoundref>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structcuda_1_1experimental_1_1cooperative__launch_1ada846a927aa4e553605a9f0efdffd6c7" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool cuda::experimental::cooperative_launch::needs_attribute_space</definition>
+        <argsstring></argsstring>
+        <name>needs_attribute_space</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/cuda/experimental/__launch/configuration.cuh" line="129" column="25" bodyfile="include/cuda/experimental/__launch/configuration.cuh" bodystart="129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structcuda_1_1experimental_1_1cooperative__launch_1af14b3b88e25657f7c24269611b392daf" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool cuda::experimental::cooperative_launch::is_relevant_on_device</definition>
+        <argsstring></argsstring>
+        <name>is_relevant_on_device</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/cuda/experimental/__launch/configuration.cuh" line="130" column="25" bodyfile="include/cuda/experimental/__launch/configuration.cuh" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structcuda_1_1experimental_1_1cooperative__launch_1a9bdcf970382694d5c448ebc1b4fc741f" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr __detail::launch_option_kind</type>
+        <definition>constexpr __detail::launch_option_kind cuda::experimental::cooperative_launch::kind</definition>
+        <argsstring></argsstring>
+        <name>kind</name>
+        <initializer>= __detail::launch_option_kind::cooperative_launch</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/cuda/experimental/__launch/configuration.cuh" line="131" column="49" bodyfile="include/cuda/experimental/__launch/configuration.cuh" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structcuda_1_1experimental_1_1cooperative__launch_1ab9fee166a8efdfe7eec9e1fe7c137e03" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr cuda::experimental::cooperative_launch::cooperative_launch</definition>
+        <argsstring>()=default</argsstring>
+        <name>cooperative_launch</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/cuda/experimental/__launch/configuration.cuh" line="133" column="13"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="structcuda_1_1experimental_1_1cooperative__launch_1a3c7baf3923756ef2376201ab868b46b3" prot="private" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>cudaError_t</type>
+        <definition>cudaError_t cuda::experimental::cooperative_launch::apply</definition>
+        <argsstring>(cudaLaunchConfig_t &amp;config, void *) const noexcept</argsstring>
+        <name>apply</name>
+        <param>
+          <type>cudaLaunchConfig_t &amp;</type>
+          <declname>config</declname>
+        </param>
+        <param>
+          <type>void *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/cuda/experimental/__launch/configuration.cuh" line="140" column="16" bodyfile="include/cuda/experimental/__launch/configuration.cuh" bodystart="140" bodyend="149"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Launch option enabling cooperative launch. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This launch option causes the launched grid to be restricted to a number of blocks that can simultaneously execute on the device. It means that every thread in the launched grid can eventually observe execution of each other thread in the grid. It also enables usage of cooperative_groups::grid_group::sync() function, that synchronizes all threads in the grid.</para>
+<para><simplesect kind="par"><title>Snippet</title><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cudax/launch.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;cooperative_groups.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>Configuration&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>kernel(Configuration<sp/>conf)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/>grid<sp/>=<sp/>cooperative_groups::this_grid();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>grid.sync();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">void<sp/>kernel_launch(cuda::stream_ref<sp/>stream)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/>dims<sp/>=<sp/>cudax::make_hierarchy(cudax::block&lt;128&gt;(),<sp/>cudax::grid(4));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>auto<sp/>conf<sp/>=<sp/>cudax::make_configuration(dims,<sp/>cooperative_launch());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cudax::launch(stream,<sp/>conf,<sp/>kernel);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting> </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>cuda::experimental::cooperative_launch</label>
+        <link refid="structcuda_1_1experimental_1_1cooperative__launch"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cuda::experimental::__detail::launch_option</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>cuda::experimental::cooperative_launch</label>
+        <link refid="structcuda_1_1experimental_1_1cooperative__launch"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cuda::experimental::__detail::launch_option</label>
+      </node>
+    </collaborationgraph>
+    <location file="include/cuda/experimental/__launch/configuration.cuh" line="127" column="1" bodyfile="include/cuda/experimental/__launch/configuration.cuh" bodystart="128" bodyend="150"/>
+    <listofallmembers>
+      <member refid="structcuda_1_1experimental_1_1cooperative__launch_1a3c7baf3923756ef2376201ab868b46b3" prot="private" virt="non-virtual"><scope>cuda::experimental::cooperative_launch</scope><name>apply</name></member>
+      <member refid="structcuda_1_1experimental_1_1cooperative__launch_1ab9fee166a8efdfe7eec9e1fe7c137e03" prot="public" virt="non-virtual"><scope>cuda::experimental::cooperative_launch</scope><name>cooperative_launch</name></member>
+      <member refid="structcuda_1_1experimental_1_1cooperative__launch_1af14b3b88e25657f7c24269611b392daf" prot="public" virt="non-virtual"><scope>cuda::experimental::cooperative_launch</scope><name>is_relevant_on_device</name></member>
+      <member refid="structcuda_1_1experimental_1_1cooperative__launch_1a9bdcf970382694d5c448ebc1b4fc741f" prot="public" virt="non-virtual"><scope>cuda::experimental::cooperative_launch</scope><name>kind</name></member>
+      <member refid="structcuda_1_1experimental_1_1cooperative__launch_1ada846a927aa4e553605a9f0efdffd6c7" prot="public" virt="non-virtual"><scope>cuda::experimental::cooperative_launch</scope><name>needs_attribute_space</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

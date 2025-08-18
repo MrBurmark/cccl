@@ -1,0 +1,488 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1WarpStore" kind="class" language="C++" prot="public">
+    <compoundname>cub::WarpStore</compoundname>
+    <innerclass refid="structcub_1_1WarpStore_1_1StoreInternal" prot="private">cub::WarpStore::StoreInternal</innerclass>
+    <innerclass refid="structcub_1_1WarpStore_1_1StoreInternal_3_01WARP__STORE__DIRECT_00_01DUMMY_01_4" prot="private">cub::WarpStore::StoreInternal&lt; WARP_STORE_DIRECT, DUMMY &gt;</innerclass>
+    <innerclass refid="structcub_1_1WarpStore_1_1StoreInternal_3_01WARP__STORE__STRIPED_00_01DUMMY_01_4" prot="private">cub::WarpStore::StoreInternal&lt; WARP_STORE_STRIPED, DUMMY &gt;</innerclass>
+    <innerclass refid="structcub_1_1WarpStore_1_1StoreInternal_3_01WARP__STORE__TRANSPOSE_00_01DUMMY_01_4" prot="private">cub::WarpStore::StoreInternal&lt; WARP_STORE_TRANSPOSE, DUMMY &gt;</innerclass>
+    <innerclass refid="structcub_1_1WarpStore_1_1StoreInternal_3_01WARP__STORE__VECTORIZE_00_01DUMMY_01_4" prot="private">cub::WarpStore::StoreInternal&lt; WARP_STORE_VECTORIZE, DUMMY &gt;</innerclass>
+    <innerclass refid="structcub_1_1WarpStore_1_1TempStorage" prot="public">cub::WarpStore::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ITEMS_PER_THREAD</declname>
+        <defname>ITEMS_PER_THREAD</defname>
+      </param>
+      <param>
+        <type><ref refid="namespacecub_1ab9f09b230f6c6566d12470872db88048" kindref="member">WarpStoreAlgorithm</ref></type>
+        <declname>ALGORITHM</declname>
+        <defname>ALGORITHM</defname>
+        <defval><ref refid="namespacecub_1ab9f09b230f6c6566d12470872db88048a3ec38868da3e71e72b2624871cb8399e" kindref="member">WARP_STORE_DIRECT</ref></defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>LOGICAL_WARP_THREADS</declname>
+        <defname>LOGICAL_WARP_THREADS</defname>
+        <defval>detail::warp_threads</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1WarpStore_1a5dd4c476dcbc9942a0a35d62b5b628d1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::WarpStore</definition>
+        <argsstring>()</argsstring>
+        <name>WarpStore</name>
+        <briefdescription>
+<para>Collective constructor using a private static allocation of shared memory as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="378" column="5" bodyfile="cub/warp/warp_store.cuh" bodystart="378" bodyend="382"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpStore_1a5abdab7861579f6e739f685f773baf1a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::WarpStore</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>WarpStore</name>
+        <param>
+          <type><ref refid="structcub_1_1WarpStore_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="386" column="5" bodyfile="cub/warp/warp_store.cuh" bodystart="386" bodyend="390"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Data movement</header>
+      <memberdef kind="function" id="classcub_1_1WarpStore_1a4f20c82fa1b3eff15ec2362267004d32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputIteratorT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::Store</definition>
+        <argsstring>(OutputIteratorT block_itr, T(&amp;items)[ITEMS_PER_THREAD])</argsstring>
+        <name>Store</name>
+        <param>
+          <type>OutputIteratorT</type>
+          <declname>block_itr</declname>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Store items into a linear segment of memory.
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates the storing of a &quot;blocked&quot; arrangement
+of 64 integers across 16 threads (where each thread owns 4 consecutive items)
+into a linear segment of memory. The store is specialized for
+``WARP_STORE_TRANSPOSE``, meaning items are locally reordered among threads so
+that memory references will be efficiently coalesced using a warp-striped
+access pattern.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/warp/warp_store.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, ...)
+   {
+       constexpr int warp_threads = 16;
+       constexpr int block_threads = 256;
+       constexpr int items_per_thread = 4;
+
+       // Specialize WarpStore for a virtual warp of 16 threads owning 4 integer items each
+       using WarpStoreT = WarpStore&lt;int,
+                                    items_per_thread,
+                                    cub::WARP_STORE_TRANSPOSE,
+                                    warp_threads&gt;;
+
+       constexpr int warps_in_block = block_threads / warp_threads;
+       constexpr int tile_size = items_per_thread * warp_threads;
+       const int warp_id = static_cast&lt;int&gt;(threadIdx.x) / warp_threads;
+
+       // Allocate shared memory for WarpStore
+       __shared__ typename WarpStoreT::TempStorage temp_storage[warps_in_block];
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Store items to linear memory
+       WarpStoreT(temp_storage[warp_id]).Store(d_data + warp_id * tile_size, thread_data);
+
+Suppose the set of ``thread_data`` across the warp threads is
+``{ [0,1,2,3], [4,5,6,7], ..., [60,61,62,63] }``.
+The output ``d_data`` will be ``0, 1, 2, 3, 4, 5, ...``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">block_itr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thread block&apos;s base output iterator for storing to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Data to store </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="449" column="10" bodyfile="cub/warp/warp_store.cuh" bodystart="449" bodyend="452"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpStore_1a724a026e0ad696f7387f59925fde9169" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputIteratorT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::Store</definition>
+        <argsstring>(OutputIteratorT block_itr, T(&amp;items)[ITEMS_PER_THREAD], int valid_items)</argsstring>
+        <name>Store</name>
+        <param>
+          <type>OutputIteratorT</type>
+          <declname>block_itr</declname>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Store items into a linear segment of memory, guarded by range.
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates the storing of a &quot;blocked&quot; arrangement
+of 64 integers across 16 threads (where each thread owns 4 consecutive items)
+into a linear segment of memory. The store is specialized for
+``WARP_STORE_TRANSPOSE``, meaning items are locally reordered among threads so
+that memory references will be efficiently coalesced using a warp-striped
+access pattern.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/warp/warp_store.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, int valid_items ...)
+   {
+       constexpr int warp_threads = 16;
+       constexpr int block_threads = 256;
+       constexpr int items_per_thread = 4;
+
+       // Specialize WarpStore for a virtual warp of 16 threads owning 4 integer items each
+       using WarpStoreT = WarpStore&lt;int,
+                                    items_per_thread,
+                                    cub::WARP_STORE_TRANSPOSE,
+                                    warp_threads&gt;;
+
+       constexpr int warps_in_block = block_threads / warp_threads;
+       constexpr int tile_size = items_per_thread * warp_threads;
+       const int warp_id = static_cast&lt;int&gt;(threadIdx.x) / warp_threads;
+
+       // Allocate shared memory for WarpStore
+       __shared__ typename WarpStoreT::TempStorage temp_storage[warps_in_block];
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Store items to linear memory
+       WarpStoreT(temp_storage[warp_id]).Store(
+         d_data + warp_id * tile_size, thread_data, valid_items);
+
+Suppose the set of ``thread_data`` across the warp threads is
+``{ [0,1,2,3], [4,5,6,7], ..., [60,61,62,63] }`` and ``valid_items``
+is ``5``. The output ``d_data`` will be ``0, 1, 2, 3, 4, ?, ?, ...``,
+with only the first two threads being unmasked to store portions of valid
+data.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">block_itr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thread block&apos;s base output iterator for storing to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Data to store </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">valid_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of valid items to write </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="512" column="10" bodyfile="cub/warp/warp_store.cuh" bodystart="512" bodyend="515"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classcub_1_1WarpStore_1a0f46742c38aabdb53892ebcc7825daaf" prot="private" static="no">
+        <type>StoreInternal&lt; ALGORITHM, 0 &gt;</type>
+        <definition>using cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::InternalStore =  StoreInternal&lt;ALGORITHM, 0&gt;</definition>
+        <argsstring></argsstring>
+        <name>InternalStore</name>
+        <briefdescription>
+<para>Internal load implementation to use. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="354" column="3" bodyfile="cub/warp/warp_store.cuh" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1WarpStore_1a5fbc2dc2dc58c7ca7551f0840dbc6d9c" prot="private" static="no">
+        <type>typename InternalStore::TempStorage</type>
+        <definition>using cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::_TempStorage =  typename InternalStore::TempStorage</definition>
+        <argsstring></argsstring>
+        <name>_TempStorage</name>
+        <briefdescription>
+<para>Shared memory storage layout type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="357" column="3" bodyfile="cub/warp/warp_store.cuh" bodystart="357" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classcub_1_1WarpStore_1addccb1fa9c983196d6f9110f7671a040" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::IS_ARCH_WARP</definition>
+        <argsstring></argsstring>
+        <name>IS_ARCH_WARP</name>
+        <initializer>= LOGICAL_WARP_THREADS == detail::warp_threads</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="234" column="25" bodyfile="cub/warp/warp_store.cuh" bodystart="234" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1WarpStore_1a241da6700ab0d32ee37c363d8c0aed2f" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="365" column="16" bodyfile="cub/warp/warp_store.cuh" bodystart="365" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1WarpStore_1aedd4e3364ab542dbb670b23f4110f2a1" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::linear_tid</definition>
+        <argsstring></argsstring>
+        <name>linear_tid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="367" column="7" bodyfile="cub/warp/warp_store.cuh" bodystart="367" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcub_1_1WarpStore_1a8edf5d5b0967b06f5c91dfeaf6eb5ebb" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::WarpStore&lt; T, ITEMS_PER_THREAD, ALGORITHM, LOGICAL_WARP_THREADS &gt;::PrivateStorage</definition>
+        <argsstring>()</argsstring>
+        <name>PrivateStorage</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_store.cuh" line="359" column="18" bodyfile="cub/warp/warp_store.cuh" bodystart="359" bodyend="363"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+The WarpStore class provides :ref:`collective &lt;collective-primitives&gt;`
+data movement methods for writing a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;`
+of items partitioned across a CUDA warp to a linear segment of memory.
+
+Overview
+++++++++++++++++
+
+* The WarpStore class provides a single data movement abstraction that can be
+  specialized to implement different cub::WarpStoreAlgorithm strategies. This
+  facilitates different performance policies for different architectures,
+  data types, granularity sizes, etc.
+* WarpStore can be optionally specialized by different data movement strategies:
+
+  #. :cpp:enumerator:`cub::WARP_STORE_DIRECT`:
+     a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of data is written directly to
+     memory.
+  #. :cpp:enumerator:`cub::WARP_STORE_STRIPED`:
+     a :ref:`striped arrangement &lt;flexible-data-arrangement&gt;` of data is written directly to
+     memory.
+  #. :cpp:enumerator:`cub::WARP_STORE_VECTORIZE`:
+     a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of data is written directly to
+     memory using CUDA&apos;s built-in vectorized stores as a coalescing optimization.
+  #. :cpp:enumerator:`cub::WARP_STORE_TRANSPOSE`:
+     a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` is locally transposed into a
+     :ref:`striped arrangement &lt;flexible-data-arrangement&gt;` which is then written to memory.
+
+* For multi-dimensional blocks, threads are linearly ranked in row-major order.
+
+A Simple Example
+++++++++++++++++
+
+The code snippet below illustrates the storing of a &quot;blocked&quot; arrangement
+of 64 integers across 16 threads (where each thread owns 4 consecutive items)
+into a linear segment of memory. The store is specialized for
+``WARP_STORE_TRANSPOSE``, meaning items are locally reordered among threads so
+that memory references will be efficiently coalesced using a warp-striped
+access pattern.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/warp/warp_store.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, ...)
+   {
+       constexpr int warp_threads = 16;
+       constexpr int block_threads = 256;
+       constexpr int items_per_thread = 4;
+
+       // Specialize WarpStore for a virtual warp of 16 threads owning 4 integer items each
+       using WarpStoreT = WarpStore&lt;int,
+                                    items_per_thread,
+                                    cub::WARP_STORE_TRANSPOSE,
+                                    warp_threads&gt;;
+
+       constexpr int warps_in_block = block_threads / warp_threads;
+       constexpr int tile_size = items_per_thread * warp_threads;
+       const int warp_id = static_cast&lt;int&gt;(threadIdx.x) / warp_threads;
+
+       // Allocate shared memory for WarpStore
+       __shared__ typename WarpStoreT::TempStorage temp_storage[warps_in_block];
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Store items to linear memory
+       WarpStoreT(temp_storage[warp_id]).Store(d_data + warp_id * tile_size, thread_data);
+
+Suppose the set of ``thread_data`` across the warp threads is
+``{ [0,1,2,3], [4,5,6,7], ..., [60,61,62,63] }``.
+The output ``d_data`` will be ``0, 1, 2, 3, 4, 5, ...``.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of data to be written.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ALGORITHM</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> <ref refid="namespacecub_1ab9f09b230f6c6566d12470872db88048" kindref="member">cub::WarpStoreAlgorithm</ref> tuning policy enumeration. default: <ref refid="namespacecub_1ab9f09b230f6c6566d12470872db88048a3ec38868da3e71e72b2624871cb8399e" kindref="member">cub::WARP_STORE_DIRECT</ref>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LOGICAL_WARP_THREADS</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The number of threads per &quot;logical&quot; warp (may be less than the number of hardware warp threads). Default is the warp size of the targeted CUDA compute-capability (e.g., 32 threads for SM86). Must be a power of two. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/warp/warp_store.cuh" line="230" column="1" bodyfile="cub/warp/warp_store.cuh" bodystart="231" bodyend="518"/>
+    <listofallmembers>
+      <member refid="classcub_1_1WarpStore_1a5fbc2dc2dc58c7ca7551f0840dbc6d9c" prot="private" virt="non-virtual"><scope>cub::WarpStore</scope><name>_TempStorage</name></member>
+      <member refid="classcub_1_1WarpStore_1a0f46742c38aabdb53892ebcc7825daaf" prot="private" virt="non-virtual"><scope>cub::WarpStore</scope><name>InternalStore</name></member>
+      <member refid="classcub_1_1WarpStore_1addccb1fa9c983196d6f9110f7671a040" prot="private" virt="non-virtual"><scope>cub::WarpStore</scope><name>IS_ARCH_WARP</name></member>
+      <member refid="classcub_1_1WarpStore_1aedd4e3364ab542dbb670b23f4110f2a1" prot="private" virt="non-virtual"><scope>cub::WarpStore</scope><name>linear_tid</name></member>
+      <member refid="classcub_1_1WarpStore_1a8edf5d5b0967b06f5c91dfeaf6eb5ebb" prot="private" virt="non-virtual"><scope>cub::WarpStore</scope><name>PrivateStorage</name></member>
+      <member refid="classcub_1_1WarpStore_1a4f20c82fa1b3eff15ec2362267004d32" prot="public" virt="non-virtual"><scope>cub::WarpStore</scope><name>Store</name></member>
+      <member refid="classcub_1_1WarpStore_1a724a026e0ad696f7387f59925fde9169" prot="public" virt="non-virtual"><scope>cub::WarpStore</scope><name>Store</name></member>
+      <member refid="classcub_1_1WarpStore_1a241da6700ab0d32ee37c363d8c0aed2f" prot="private" virt="non-virtual"><scope>cub::WarpStore</scope><name>temp_storage</name></member>
+      <member refid="classcub_1_1WarpStore_1a5dd4c476dcbc9942a0a35d62b5b628d1" prot="public" virt="non-virtual"><scope>cub::WarpStore</scope><name>WarpStore</name></member>
+      <member refid="classcub_1_1WarpStore_1a5abdab7861579f6e739f685f773baf1a" prot="public" virt="non-virtual"><scope>cub::WarpStore</scope><name>WarpStore</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

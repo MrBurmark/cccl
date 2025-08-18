@@ -1,0 +1,915 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1BlockMergeSortStrategy" kind="class" language="C++" prot="public">
+    <compoundname>cub::BlockMergeSortStrategy</compoundname>
+    <innerclass refid="structcub_1_1BlockMergeSortStrategy_1_1TempStorage" prot="public">cub::BlockMergeSortStrategy::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename KeyT</type>
+      </param>
+      <param>
+        <type>typename ValueT</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>NUM_THREADS</declname>
+        <defname>NUM_THREADS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ITEMS_PER_THREAD</declname>
+        <defname>ITEMS_PER_THREAD</defname>
+      </param>
+      <param>
+        <type>typename SynchronizationPolicy</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockMergeSortStrategy_1a57a218217d79dc361ff004d4a32954ee" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int</type>
+        <definition>constexpr int cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::ITEMS_PER_TILE</definition>
+        <argsstring></argsstring>
+        <name>ITEMS_PER_TILE</name>
+        <initializer>= ITEMS_PER_THREAD * NUM_THREADS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="215" column="24" bodyfile="cub/block/block_merge_sort.cuh" bodystart="215" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockMergeSortStrategy_1a3956bb31c7ae570574ad427f07ccb4d6" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::KEYS_ONLY</definition>
+        <argsstring></argsstring>
+        <name>KEYS_ONLY</name>
+        <initializer>= ::cuda::std::is_same_v&lt;ValueT, NullType&gt;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="218" column="25" bodyfile="cub/block/block_merge_sort.cuh" bodystart="218" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockMergeSortStrategy_1a3b6edfdea640b7deffa9bf87477dd9c7" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+<para>Shared storage reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="230" column="16" bodyfile="cub/block/block_merge_sort.cuh" bodystart="230" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockMergeSortStrategy_1a7e4ae96970ed89d452de75cf2c2d10bc" prot="private" static="no" mutable="no">
+        <type>const unsigned int</type>
+        <definition>const unsigned int cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::linear_tid</definition>
+        <argsstring></argsstring>
+        <name>linear_tid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="239" column="22" bodyfile="cub/block/block_merge_sort.cuh" bodystart="239" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a866647deca4e8ede627e526a9887aca8" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::PrivateStorage</definition>
+        <argsstring>()</argsstring>
+        <name>PrivateStorage</name>
+        <briefdescription>
+<para>Internal storage allocator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="233" column="18" bodyfile="cub/block/block_merge_sort.cuh" bodystart="233" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a8836752e164ed4cbd4f2ec660105ce77" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::Sync</definition>
+        <argsstring>() const</argsstring>
+        <name>Sync</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="689" column="10" bodyfile="cub/block/block_merge_sort.cuh" bodystart="689" bodyend="692"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a30620debb4dbf86e3b9570ca3d50d3ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::BlockMergeSortStrategy</definition>
+        <argsstring>()=delete</argsstring>
+        <name>BlockMergeSortStrategy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="246" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a2a94655ee2bbf5d8b9b5d4a8f6e752ad" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::BlockMergeSortStrategy</definition>
+        <argsstring>(unsigned int linear_tid)</argsstring>
+        <name>BlockMergeSortStrategy</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>linear_tid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="247" column="14" bodyfile="cub/block/block_merge_sort.cuh" bodystart="247" bodyend="250"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1ac6425ab373c4975a19a90fc6c99b24db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::BlockMergeSortStrategy</definition>
+        <argsstring>(TempStorage &amp;temp_storage, unsigned int linear_tid)</argsstring>
+        <name>BlockMergeSortStrategy</name>
+        <param>
+          <type><ref refid="structcub_1_1BlockMergeSortStrategy_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>linear_tid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="252" column="5" bodyfile="cub/block/block_merge_sort.cuh" bodystart="252" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a2405d8db6734a0bcd2aaf7075f56d94c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::get_linear_tid</definition>
+        <argsstring>() const</argsstring>
+        <name>get_linear_tid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="257" column="18" bodyfile="cub/block/block_merge_sort.cuh" bodystart="257" bodyend="260"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1aa7df533ab31877c12b92080d6c6fbe0f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::Sort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], CompareOp compare_op)</argsstring>
+        <name>Sort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>Sort is not guaranteed to be stable. That is, suppose that i and j are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput>. <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="285" column="10" bodyfile="cub/block/block_merge_sort.cuh" bodystart="285" bodyend="289"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1add47f5f2f367f47323fdfcd9d6975b9a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::Sort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], CompareOp compare_op, int valid_items, KeyT oob_default)</argsstring>
+        <name>Sort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <param>
+          <type>KeyT</type>
+          <declname>oob_default</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para><itemizedlist>
+<listitem><para>Sort is not guaranteed to be stable. That is, suppose that <computeroutput>i</computeroutput> and <computeroutput>j</computeroutput> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</para>
+</listitem><listitem><para>The value of <computeroutput>oob_default</computeroutput> is assigned to all elements that are out of <computeroutput>valid_items</computeroutput> boundaries. It&apos;s expected that <computeroutput>oob_default</computeroutput> is ordered after any value in the <computeroutput>valid_items</computeroutput> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <computeroutput>ITEMS_PER_THREAD * BLOCK_THREADS</computeroutput>. If there is a value that is ordered after <computeroutput>oob_default</computeroutput>, it won&apos;t be placed within <computeroutput>valid_items</computeroutput> boundaries.</para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput>. <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">valid_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of valid items to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">oob_default</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Default value to assign out-of-bound items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="327" column="3" bodyfile="cub/block/block_merge_sort.cuh" bodystart="327" bodyend="331"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1abcb0596a0effb579a24a0d28a3d46c45" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::Sort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], ValueT(&amp;items)[ITEMS_PER_THREAD], CompareOp compare_op)</argsstring>
+        <name>Sort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ValueT(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>Sort is not guaranteed to be stable. That is, suppose that <computeroutput>i</computeroutput> and <computeroutput>j</computeroutput> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput>. <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Values to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="359" column="3" bodyfile="cub/block/block_merge_sort.cuh" bodystart="359" bodyend="362"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a2f05d78d053af0b1d5ce372c6a60f323" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>IS_LAST_TILE</declname>
+            <defname>IS_LAST_TILE</defname>
+            <defval>true</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::Sort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], ValueT(&amp;items)[ITEMS_PER_THREAD], CompareOp compare_op, int valid_items, KeyT oob_default)</argsstring>
+        <name>Sort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ValueT(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <param>
+          <type>KeyT</type>
+          <declname>oob_default</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para><itemizedlist>
+<listitem><para>Sort is not guaranteed to be stable. That is, suppose that <computeroutput>i</computeroutput> and <computeroutput>j</computeroutput> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</para>
+</listitem><listitem><para>The value of <computeroutput>oob_default</computeroutput> is assigned to all elements that are out of <computeroutput>valid_items</computeroutput> boundaries. It&apos;s expected that <computeroutput>oob_default</computeroutput> is ordered after any value in the <computeroutput>valid_items</computeroutput> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <computeroutput>ITEMS_PER_THREAD * BLOCK_THREADS</computeroutput>. If there is a value that is ordered after <computeroutput>oob_default</computeroutput>, it won&apos;t be placed within <computeroutput>valid_items</computeroutput> boundaries.</para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput> <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>IS_LAST_TILE</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True if <computeroutput>valid_items</computeroutput> isn&apos;t equal to the <computeroutput>ITEMS_PER_TILE</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Values to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">valid_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of valid items to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">oob_default</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Default value to assign out-of-bound items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="406" column="3" bodyfile="cub/block/block_merge_sort.cuh" bodystart="406" bodyend="529"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a97e3f9e3fffe579fb279df6f8d0740e4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::StableSort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], CompareOp compare_op)</argsstring>
+        <name>StableSort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements such that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, and if the two elements are equivalent (neither <computeroutput>x &lt; y</computeroutput> nor <computeroutput>y &lt; x</computeroutput>) then a postcondition of StableSort is that <computeroutput>x</computeroutput> still precedes <computeroutput>y</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput>. <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="555" column="10" bodyfile="cub/block/block_merge_sort.cuh" bodystart="555" bodyend="558"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a0c6a3ea4c4a397ca6af8643f41ee5fd4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::StableSort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], ValueT(&amp;items)[ITEMS_PER_THREAD], CompareOp compare_op)</argsstring>
+        <name>StableSort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ValueT(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements such that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, and if the two elements are equivalent (neither <computeroutput>x &lt; y</computeroutput> nor <computeroutput>y &lt; x</computeroutput>) then a postcondition of StableSort is that <computeroutput>x</computeroutput> still precedes <computeroutput>y</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput>. <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Values to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="588" column="3" bodyfile="cub/block/block_merge_sort.cuh" bodystart="588" bodyend="591"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a1319b0e0c1c31841790670afbb53a1ec" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::StableSort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], CompareOp compare_op, int valid_items, KeyT oob_default)</argsstring>
+        <name>StableSort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <param>
+          <type>KeyT</type>
+          <declname>oob_default</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para><itemizedlist>
+<listitem><para>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements such that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, and if the two elements are equivalent (neither <computeroutput>x &lt; y</computeroutput> nor <computeroutput>y &lt; x</computeroutput>) then a postcondition of StableSort is that <computeroutput>x</computeroutput> still precedes <computeroutput>y</computeroutput>.</para>
+</listitem><listitem><para>The value of <computeroutput>oob_default</computeroutput> is assigned to all elements that are out of <computeroutput>valid_items</computeroutput> boundaries. It&apos;s expected that <computeroutput>oob_default</computeroutput> is ordered after any value in the <computeroutput>valid_items</computeroutput> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <computeroutput>ITEMS_PER_THREAD * BLOCK_THREADS</computeroutput>. If there is a value that is ordered after <computeroutput>oob_default</computeroutput>, it won&apos;t be placed within <computeroutput>valid_items</computeroutput> boundaries.</para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput>. <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">valid_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of valid items to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">oob_default</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Default value to assign out-of-bound items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="631" column="3" bodyfile="cub/block/block_merge_sort.cuh" bodystart="631" bodyend="634"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockMergeSortStrategy_1a6d2f47fc4e2ec9485b2527c1e1d6c27f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CompareOp</type>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>IS_LAST_TILE</declname>
+            <defname>IS_LAST_TILE</defname>
+            <defval>true</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockMergeSortStrategy&lt; KeyT, ValueT, NUM_THREADS, ITEMS_PER_THREAD, SynchronizationPolicy &gt;::StableSort</definition>
+        <argsstring>(KeyT(&amp;keys)[ITEMS_PER_THREAD], ValueT(&amp;items)[ITEMS_PER_THREAD], CompareOp compare_op, int valid_items, KeyT oob_default)</argsstring>
+        <name>StableSort</name>
+        <param>
+          <type>KeyT(&amp;)</type>
+          <declname>keys</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ValueT(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CompareOp</type>
+          <declname>compare_op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <param>
+          <type>KeyT</type>
+          <declname>oob_default</declname>
+        </param>
+        <briefdescription>
+<para>Sorts items partitioned across a CUDA thread block using a merge sorting method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para><itemizedlist>
+<listitem><para>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are elements such that <computeroutput>x</computeroutput> precedes <computeroutput>y</computeroutput>, and if the two elements are equivalent (neither <computeroutput>x &lt; y</computeroutput> nor <computeroutput>y &lt; x</computeroutput>) then a postcondition of StableSort is that <computeroutput>x</computeroutput> still precedes <computeroutput>y</computeroutput>.</para>
+</listitem><listitem><para>The value of <computeroutput>oob_default</computeroutput> is assigned to all elements that are out of <computeroutput>valid_items</computeroutput> boundaries. It&apos;s expected that <computeroutput>oob_default</computeroutput> is ordered after any value in the <computeroutput>valid_items</computeroutput> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <computeroutput>ITEMS_PER_THREAD * BLOCK_THREADS</computeroutput>. If there is a value that is ordered after <computeroutput>oob_default</computeroutput>, it won&apos;t be placed within <computeroutput>valid_items</computeroutput> boundaries.</para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CompareOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>functor type having member <computeroutput>bool operator()(KeyT lhs, KeyT rhs)</computeroutput>. <computeroutput>CompareOp</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>IS_LAST_TILE</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True if <computeroutput>valid_items</computeroutput> isn&apos;t equal to the <computeroutput>ITEMS_PER_TILE</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Values to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">compare_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison function object which returns true if the first argument is ordered before the second</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">valid_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of valid items to sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">oob_default</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Default value to assign out-of-bound items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_merge_sort.cuh" line="678" column="10" bodyfile="cub/block/block_merge_sort.cuh" bodystart="678" bodyend="686"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Generalized merge sort algorithm. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class is used to reduce code duplication. Warp and Block merge sort differ only in how they compute thread index and how they synchronize threads. Since synchronization might require access to custom data (like member mask), CRTP is used.</para>
+<para><simplesect kind="par"><title></title><para>The code snippet below illustrates the way this class can be used. </para>
+</simplesect>
+<simplesect kind="par"><title></title><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cub/cub.cuh&gt;<sp/>//<sp/>or<sp/>equivalently<sp/>&lt;cub/block/block_merge_sort.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">constexpr<sp/>int<sp/>BLOCK_THREADS<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal">constexpr<sp/>int<sp/>ITEMS_PER_THREAD<sp/>=<sp/>9;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">class<sp/>BlockMergeSort<sp/>:<sp/>public<sp/>BlockMergeSortStrategy&lt;int,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cub::NullType,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BLOCK_THREADS,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ITEMS_PER_THREAD,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BlockMergeSort&gt;</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>using<sp/>BlockMergeSortStrategyT<sp/>=</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>BlockMergeSortStrategy&lt;int,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cub::NullType,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BLOCK_THREADS,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ITEMS_PER_THREAD,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BlockMergeSort&gt;;</highlight></codeline>
+<codeline><highlight class="normal">public:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__device__<sp/>__forceinline__<sp/>explicit<sp/>BlockMergeSort(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>typename<sp/>BlockMergeSortStrategyT::TempStorage<sp/>&amp;temp_storage)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>BlockMergeSortStrategyT(temp_storage,<sp/>threadIdx.x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__device__<sp/>__forceinline__<sp/>void<sp/>SyncImplementation()<sp/>const</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>KeyT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>KeyT type</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ValueT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ValueT type. cub::NullType indicates a keys-only sort</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SynchronizationPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Provides a way of synchronizing threads. Should be derived from <computeroutput><ref refid="classcub_1_1BlockMergeSortStrategy" kindref="compound">BlockMergeSortStrategy</ref></computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/block/block_merge_sort.cuh" line="210" column="1" bodyfile="cub/block/block_merge_sort.cuh" bodystart="211" bodyend="693"/>
+    <listofallmembers>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a30620debb4dbf86e3b9570ca3d50d3ad" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>BlockMergeSortStrategy</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a2a94655ee2bbf5d8b9b5d4a8f6e752ad" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>BlockMergeSortStrategy</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1ac6425ab373c4975a19a90fc6c99b24db" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>BlockMergeSortStrategy</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a2405d8db6734a0bcd2aaf7075f56d94c" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>get_linear_tid</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a57a218217d79dc361ff004d4a32954ee" prot="private" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>ITEMS_PER_TILE</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a3956bb31c7ae570574ad427f07ccb4d6" prot="private" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>KEYS_ONLY</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a7e4ae96970ed89d452de75cf2c2d10bc" prot="private" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>linear_tid</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a866647deca4e8ede627e526a9887aca8" prot="private" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>PrivateStorage</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1aa7df533ab31877c12b92080d6c6fbe0f" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>Sort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1add47f5f2f367f47323fdfcd9d6975b9a" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>Sort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1abcb0596a0effb579a24a0d28a3d46c45" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>Sort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a2f05d78d053af0b1d5ce372c6a60f323" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>Sort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a97e3f9e3fffe579fb279df6f8d0740e4" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>StableSort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a0c6a3ea4c4a397ca6af8643f41ee5fd4" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>StableSort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a1319b0e0c1c31841790670afbb53a1ec" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>StableSort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a6d2f47fc4e2ec9485b2527c1e1d6c27f" prot="public" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>StableSort</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a8836752e164ed4cbd4f2ec660105ce77" prot="private" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>Sync</name></member>
+      <member refid="classcub_1_1BlockMergeSortStrategy_1a3b6edfdea640b7deffa9bf87477dd9c7" prot="private" virt="non-virtual"><scope>cub::BlockMergeSortStrategy</scope><name>temp_storage</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

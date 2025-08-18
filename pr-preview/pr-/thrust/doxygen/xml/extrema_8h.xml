@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="extrema_8h" kind="file" language="C++">
+    <compoundname>extrema.h</compoundname>
+    <includes local="no">thrust/detail/config.h</includes>
+    <includes local="no">thrust/detail/execution_policy.h</includes>
+    <includes refid="pair_8h" local="no">thrust/pair.h</includes>
+    <includes local="no">cuda/std/__algorithm/max.h</includes>
+    <includes local="no">cuda/std/__algorithm/min.h</includes>
+    <includes local="no">thrust/detail/extrema.inl</includes>
+    <incdepgraph>
+      <node id="8">
+        <label>thrust/detail/extrema.inl</label>
+      </node>
+      <node id="6">
+        <label>cuda/std/__algorithm/max.h</label>
+      </node>
+      <node id="1">
+        <label>thrust/extrema.h</label>
+        <link refid="extrema_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>thrust/detail/config.h</label>
+      </node>
+      <node id="3">
+        <label>thrust/detail/execution_policy.h</label>
+      </node>
+      <node id="5">
+        <label>cuda/std/utility</label>
+      </node>
+      <node id="4">
+        <label>thrust/pair.h</label>
+        <link refid="pair_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>cuda/std/__algorithm/min.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacethrust">thrust</innernamespace>
+    <briefdescription>
+<para>Functions for computing computing extremal values. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>Copyright<sp/>2008-2013<sp/>NVIDIA<sp/>Corporation</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Licensed<sp/>under<sp/>the<sp/>Apache<sp/>License,<sp/>Version<sp/>2.0<sp/>(the<sp/>&quot;License&quot;);</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/>you<sp/>may<sp/>not<sp/>use<sp/>this<sp/>file<sp/>except<sp/>in<sp/>compliance<sp/>with<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>may<sp/>obtain<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>License<sp/>at</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>http://www.apache.org/licenses/LICENSE-2.0</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/>Unless<sp/>required<sp/>by<sp/>applicable<sp/>law<sp/>or<sp/>agreed<sp/>to<sp/>in<sp/>writing,<sp/>software</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/>distributed<sp/>under<sp/>the<sp/>License<sp/>is<sp/>distributed<sp/>on<sp/>an<sp/>&quot;AS<sp/>IS&quot;<sp/>BASIS,</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/>WITHOUT<sp/>WARRANTIES<sp/>OR<sp/>CONDITIONS<sp/>OF<sp/>ANY<sp/>KIND,<sp/>either<sp/>express<sp/>or<sp/>implied.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/>See<sp/>the<sp/>License<sp/>for<sp/>the<sp/>specific<sp/>language<sp/>governing<sp/>permissions<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/>limitations<sp/>under<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/config.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/execution_policy.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="pair_8h" kindref="compound">thrust/pair.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/__algorithm/max.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/__algorithm/min.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">THRUST_NAMESPACE_BEGIN</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal">using<sp/>::cuda::std::max;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">using<sp/>::cuda::std::min;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator&gt;</highlight></codeline>
+<codeline lineno="88" refid="group__extrema_1gab17dd6fa29f87f9971b3be412d052e4b" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__extrema_1ga90f5158cab04adeb3f1b8b5e4acdbbcc" kindref="member">min_element</ref>(</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,<sp/>ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator&gt;</highlight></codeline>
+<codeline lineno="125" refid="group__extrema_1gaa9dcee5e36206a3ef7215a4b3984e002" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__extrema_1ga90f5158cab04adeb3f1b8b5e4acdbbcc" kindref="member">min_element</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="189" refid="group__extrema_1ga70a05eafeff24c0553adcbb51d8f052a" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__extrema_1ga90f5158cab04adeb3f1b8b5e4acdbbcc" kindref="member">min_element</ref>(</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/>BinaryPredicate<sp/>comp);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="251" refid="group__extrema_1ga90f5158cab04adeb3f1b8b5e4acdbbcc" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__extrema_1ga90f5158cab04adeb3f1b8b5e4acdbbcc" kindref="member">min_element</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>BinaryPredicate<sp/>comp);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator&gt;</highlight></codeline>
+<codeline lineno="291" refid="group__extrema_1ga879a150e971c0d4f36a0a3cc2d853f47" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__extrema_1gadd477c531dc4a4bf847f70ce73d01464" kindref="member">max_element</ref>(</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,<sp/>ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last);</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator&gt;</highlight></codeline>
+<codeline lineno="327" refid="group__extrema_1gabc0550e56644df298a6b7a5824f1a166" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__extrema_1gadd477c531dc4a4bf847f70ce73d01464" kindref="member">max_element</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last);</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight></codeline>
+<codeline lineno="390"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="391" refid="group__extrema_1ga262a9771eb253a9587ab0690cae258a7" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__extrema_1gadd477c531dc4a4bf847f70ce73d01464" kindref="member">max_element</ref>(</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/>BinaryPredicate<sp/>comp);</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"></highlight></codeline>
+<codeline lineno="452"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="453" refid="group__extrema_1gadd477c531dc4a4bf847f70ce73d01464" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__extrema_1gadd477c531dc4a4bf847f70ce73d01464" kindref="member">max_element</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>BinaryPredicate<sp/>comp);</highlight></codeline>
+<codeline lineno="454"><highlight class="normal"></highlight></codeline>
+<codeline lineno="490"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator&gt;</highlight></codeline>
+<codeline lineno="491" refid="group__extrema_1gab334614571edb0bad0c88de27797f6c5" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;ForwardIterator, ForwardIterator&gt;</ref><sp/><ref refid="group__extrema_1ga227929cf789ca33c1757acf5c08ceb91" kindref="member">minmax_element</ref>(</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,<sp/>ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last);</highlight></codeline>
+<codeline lineno="493"><highlight class="normal"></highlight></codeline>
+<codeline lineno="524"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator&gt;</highlight></codeline>
+<codeline lineno="525" refid="group__extrema_1gacf7322993ea5e0486d2db3f613a1be98" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;ForwardIterator, ForwardIterator&gt;</ref><sp/><ref refid="group__extrema_1ga227929cf789ca33c1757acf5c08ceb91" kindref="member">minmax_element</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last);</highlight></codeline>
+<codeline lineno="526"><highlight class="normal"></highlight></codeline>
+<codeline lineno="587"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="588" refid="group__extrema_1ga3d417c8600dd217f3d8550fea9bbf4a6" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;ForwardIterator, ForwardIterator&gt;</ref><sp/><ref refid="group__extrema_1ga227929cf789ca33c1757acf5c08ceb91" kindref="member">minmax_element</ref>(</highlight></codeline>
+<codeline lineno="589"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="590"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="591"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="592"><highlight class="normal"><sp/><sp/>BinaryPredicate<sp/>comp);</highlight></codeline>
+<codeline lineno="593"><highlight class="normal"></highlight></codeline>
+<codeline lineno="647"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="648"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;ForwardIterator, ForwardIterator&gt;</ref></highlight></codeline>
+<codeline lineno="649" refid="group__extrema_1ga227929cf789ca33c1757acf5c08ceb91" refkind="member"><highlight class="normal"><ref refid="group__extrema_1ga227929cf789ca33c1757acf5c08ceb91" kindref="member">minmax_element</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>BinaryPredicate<sp/>comp);</highlight></codeline>
+<codeline lineno="650"><highlight class="normal"></highlight></codeline>
+<codeline lineno="655"><highlight class="normal">THRUST_NAMESPACE_END</highlight></codeline>
+<codeline lineno="656"><highlight class="normal"></highlight></codeline>
+<codeline lineno="657"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/extrema.inl&gt;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="thrust/extrema.h"/>
+  </compounddef>
+</doxygen>

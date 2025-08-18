@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="partition_8h" kind="file" language="C++">
+    <compoundname>partition.h</compoundname>
+    <includes local="no">thrust/detail/config.h</includes>
+    <includes local="no">thrust/detail/execution_policy.h</includes>
+    <includes refid="pair_8h" local="no">thrust/pair.h</includes>
+    <includes local="no">thrust/detail/partition.inl</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>thrust/partition.h</label>
+        <link refid="partition_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>thrust/detail/partition.inl</label>
+      </node>
+      <node id="2">
+        <label>thrust/detail/config.h</label>
+      </node>
+      <node id="3">
+        <label>thrust/detail/execution_policy.h</label>
+      </node>
+      <node id="5">
+        <label>cuda/std/utility</label>
+      </node>
+      <node id="4">
+        <label>thrust/pair.h</label>
+        <link refid="pair_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacethrust">thrust</innernamespace>
+    <briefdescription>
+<para>Reorganizes a range based on a predicate. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>Copyright<sp/>2008-2013<sp/>NVIDIA<sp/>Corporation</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Licensed<sp/>under<sp/>the<sp/>Apache<sp/>License,<sp/>Version<sp/>2.0<sp/>(the<sp/>&quot;License&quot;);</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/>you<sp/>may<sp/>not<sp/>use<sp/>this<sp/>file<sp/>except<sp/>in<sp/>compliance<sp/>with<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>may<sp/>obtain<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>License<sp/>at</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>http://www.apache.org/licenses/LICENSE-2.0</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/>Unless<sp/>required<sp/>by<sp/>applicable<sp/>law<sp/>or<sp/>agreed<sp/>to<sp/>in<sp/>writing,<sp/>software</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/>distributed<sp/>under<sp/>the<sp/>License<sp/>is<sp/>distributed<sp/>on<sp/>an<sp/>&quot;AS<sp/>IS&quot;<sp/>BASIS,</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/>WITHOUT<sp/>WARRANTIES<sp/>OR<sp/>CONDITIONS<sp/>OF<sp/>ANY<sp/>KIND,<sp/>either<sp/>express<sp/>or<sp/>implied.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/>See<sp/>the<sp/>License<sp/>for<sp/>the<sp/>specific<sp/>language<sp/>governing<sp/>permissions<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/>limitations<sp/>under<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/config.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/execution_policy.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="pair_8h" kindref="compound">thrust/pair.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">THRUST_NAMESPACE_BEGIN</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="102" refid="group__partitioning_1gad057b6f3f3f7f8098f8e5301843118e2" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__partitioning_1ga73ee335b49c6ae3dcb019423e268a231" kindref="member">partition</ref>(</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="159" refid="group__partitioning_1ga26eb205b71250a1d8a1f938c0f697c06" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__partitioning_1ga73ee335b49c6ae3dcb019423e268a231" kindref="member">partition</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="223" refid="group__partitioning_1gab55221023e3832e8bf61e7616f44032a" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__partitioning_1ga73ee335b49c6ae3dcb019423e268a231" kindref="member">partition</ref>(</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/>InputIterator<sp/>stencil,</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="287" refid="group__partitioning_1ga73ee335b49c6ae3dcb019423e268a231" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__partitioning_1ga73ee335b49c6ae3dcb019423e268a231" kindref="member">partition</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>InputIterator<sp/>stencil,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight></codeline>
+<codeline lineno="358"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="363" refid="group__partitioning_1gaadff8bf21b036950ce2655c5824bb817" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1gaa082297920f8ff77bb5d670b1a86946d" kindref="member">partition_copy</ref>(</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/>InputIterator<sp/>last,</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>out_true,</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>out_false,</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight></codeline>
+<codeline lineno="434"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="435" refid="group__partitioning_1ga0f82333b8621aaf56285efabdaf3a037" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1gaa082297920f8ff77bb5d670b1a86946d" kindref="member">partition_copy</ref>(</highlight></codeline>
+<codeline lineno="436"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>OutputIterator1<sp/>out_true,<sp/>OutputIterator2<sp/>out_false,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="437"><highlight class="normal"></highlight></codeline>
+<codeline lineno="504"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="505"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="506"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="507"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="508"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="509"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="510" refid="group__partitioning_1ga25663b8a98cd8c50376e48bc3d3b9a42" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1gaa082297920f8ff77bb5d670b1a86946d" kindref="member">partition_copy</ref>(</highlight></codeline>
+<codeline lineno="511"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="512"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first,</highlight></codeline>
+<codeline lineno="513"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last,</highlight></codeline>
+<codeline lineno="514"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="515"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>out_true,</highlight></codeline>
+<codeline lineno="516"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>out_false,</highlight></codeline>
+<codeline lineno="517"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="518"><highlight class="normal"></highlight></codeline>
+<codeline lineno="579"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="580"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="581"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="582"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="583"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="584" refid="group__partitioning_1gaa082297920f8ff77bb5d670b1a86946d" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1gaa082297920f8ff77bb5d670b1a86946d" kindref="member">partition_copy</ref>(</highlight></codeline>
+<codeline lineno="585"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first,</highlight></codeline>
+<codeline lineno="586"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last,</highlight></codeline>
+<codeline lineno="587"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="588"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>out_true,</highlight></codeline>
+<codeline lineno="589"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>out_false,</highlight></codeline>
+<codeline lineno="590"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="591"><highlight class="normal"></highlight></codeline>
+<codeline lineno="651"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="652" refid="group__partitioning_1ga9184a73d9481374d7868f6bf9d61add7" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__partitioning_1ga12fbf51ebfc80fd049ed0cbde2dd8ff8" kindref="member">stable_partition</ref>(</highlight></codeline>
+<codeline lineno="653"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="654"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="655"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="656"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="657"><highlight class="normal"></highlight></codeline>
+<codeline lineno="711"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="712" refid="group__partitioning_1gaa462d317fb80b65e671a3690aa8be372" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__partitioning_1ga12fbf51ebfc80fd049ed0cbde2dd8ff8" kindref="member">stable_partition</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="713"><highlight class="normal"></highlight></codeline>
+<codeline lineno="777"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="778" refid="group__partitioning_1gac31350c1f5f917b7b205a3a226bfe00e" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__partitioning_1ga12fbf51ebfc80fd049ed0cbde2dd8ff8" kindref="member">stable_partition</ref>(</highlight></codeline>
+<codeline lineno="779"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="780"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="781"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="782"><highlight class="normal"><sp/><sp/>InputIterator<sp/>stencil,</highlight></codeline>
+<codeline lineno="783"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="784"><highlight class="normal"></highlight></codeline>
+<codeline lineno="843"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="844" refid="group__partitioning_1ga12fbf51ebfc80fd049ed0cbde2dd8ff8" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__partitioning_1ga12fbf51ebfc80fd049ed0cbde2dd8ff8" kindref="member">stable_partition</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>InputIterator<sp/>stencil,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="845"><highlight class="normal"></highlight></codeline>
+<codeline lineno="917"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="918"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,</highlight></codeline>
+<codeline lineno="919"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="920"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="921"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="922" refid="group__partitioning_1ga9ccfecfb316693a59ae0f812af16214d" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1ga2be93491492ec034aab994b104ee2c3c" kindref="member">stable_partition_copy</ref>(</highlight></codeline>
+<codeline lineno="923"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="924"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,</highlight></codeline>
+<codeline lineno="925"><highlight class="normal"><sp/><sp/>InputIterator<sp/>last,</highlight></codeline>
+<codeline lineno="926"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>out_true,</highlight></codeline>
+<codeline lineno="927"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>out_false,</highlight></codeline>
+<codeline lineno="928"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="929"><highlight class="normal"></highlight></codeline>
+<codeline lineno="995"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="996" refid="group__partitioning_1ga29776c7e55f0beffbcb587b2f3de204f" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1ga2be93491492ec034aab994b104ee2c3c" kindref="member">stable_partition_copy</ref>(</highlight></codeline>
+<codeline lineno="997"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>OutputIterator1<sp/>out_true,<sp/>OutputIterator2<sp/>out_false,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="998"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1067"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="1068"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1069"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1070"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1071"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="1072"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="1073" refid="group__partitioning_1ga9b2be7549737deb0afcfade4edd262a9" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1ga2be93491492ec034aab994b104ee2c3c" kindref="member">stable_partition_copy</ref>(</highlight></codeline>
+<codeline lineno="1074"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1075"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first,</highlight></codeline>
+<codeline lineno="1076"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last,</highlight></codeline>
+<codeline lineno="1077"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="1078"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>out_true,</highlight></codeline>
+<codeline lineno="1079"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>out_false,</highlight></codeline>
+<codeline lineno="1080"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="1081"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1144"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="1148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="1149" refid="group__partitioning_1ga2be93491492ec034aab994b104ee2c3c" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__partitioning_1ga2be93491492ec034aab994b104ee2c3c" kindref="member">stable_partition_copy</ref>(</highlight></codeline>
+<codeline lineno="1150"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first,</highlight></codeline>
+<codeline lineno="1151"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last,</highlight></codeline>
+<codeline lineno="1152"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="1153"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>out_true,</highlight></codeline>
+<codeline lineno="1154"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>out_false,</highlight></codeline>
+<codeline lineno="1155"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="1156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1217"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="1218" refid="group__searching_1ga902ccc1fe9aeb8585ac8ddcf10fb4337" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>ForwardIterator<sp/><ref refid="group__searching_1gacc1aa2e2a54dee829eab21c5bdabbc94" kindref="member">partition_point</ref>(</highlight></codeline>
+<codeline lineno="1219"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1220"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>first,</highlight></codeline>
+<codeline lineno="1221"><highlight class="normal"><sp/><sp/>ForwardIterator<sp/>last,</highlight></codeline>
+<codeline lineno="1222"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="1223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1268"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ForwardIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="1269" refid="group__searching_1gacc1aa2e2a54dee829eab21c5bdabbc94" refkind="member"><highlight class="normal">ForwardIterator<sp/><ref refid="group__searching_1gacc1aa2e2a54dee829eab21c5bdabbc94" kindref="member">partition_point</ref>(ForwardIterator<sp/>first,<sp/>ForwardIterator<sp/>last,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="1270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1326"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="1327" refid="group__predicates_1ga91da05b683fadd078eb90bf126de0e52" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="group__predicates_1ga39f90d87ed0ed524e90551a1c97c71d0" kindref="member">is_partitioned</ref>(</highlight></codeline>
+<codeline lineno="1328"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1329"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,</highlight></codeline>
+<codeline lineno="1330"><highlight class="normal"><sp/><sp/>InputIterator<sp/>last,</highlight></codeline>
+<codeline lineno="1331"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="1332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1374"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="1375" refid="group__predicates_1ga39f90d87ed0ed524e90551a1c97c71d0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="group__predicates_1ga39f90d87ed0ed524e90551a1c97c71d0" kindref="member">is_partitioned</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="1376"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1381"><highlight class="normal">THRUST_NAMESPACE_END</highlight></codeline>
+<codeline lineno="1382"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1383"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/partition.inl&gt;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="thrust/partition.h"/>
+  </compounddef>
+</doxygen>

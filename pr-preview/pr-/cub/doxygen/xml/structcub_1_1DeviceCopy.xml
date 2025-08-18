@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structcub_1_1DeviceCopy" kind="struct" language="C++" prot="public">
+    <compoundname>cub::DeviceCopy</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structcub_1_1DeviceCopy_1aa08c1f25efde42e3bfb5d6c86f5678db" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIt</type>
+          </param>
+          <param>
+            <type>typename OutputIt</type>
+          </param>
+          <param>
+            <type>typename SizeIteratorT</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceCopy::Batched</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, InputIt input_it, OutputIt output_it, SizeIteratorT sizes, ::cuda::std::int64_t num_ranges, cudaStream_t stream=0)</argsstring>
+        <name>Batched</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>InputIt</type>
+          <declname>input_it</declname>
+        </param>
+        <param>
+          <type>OutputIt</type>
+          <declname>output_it</declname>
+        </param>
+        <param>
+          <type>SizeIteratorT</type>
+          <declname>sizes</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_ranges</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Copies data from a batch of given source ranges to their corresponding destination ranges.
+
+.. note::
+
+   If any input range aliases any output range the behavior is undefined.
+   If any output range aliases another output range the behavior is undefined.
+   Input ranges can alias one another.
+
+Snippet
++++++++
+
+The code snippet below illustrates usage of DeviceCopy::Batched to perform a DeviceRunLength Decode operation.
+
+.. code-block:: c++
+
+   struct GetIteratorToRange
+   {
+     __host__ __device__ __forceinline__ auto operator()(uint32_t index)
+     {
+       return thrust::make_constant_iterator(d_data_in[index]);
+     }
+     int32_t *d_data_in;
+   };
+
+   struct GetPtrToRange
+   {
+     __host__ __device__ __forceinline__ auto operator()(uint32_t index)
+     {
+       return d_data_out + d_offsets[index];
+     }
+     int32_t *d_data_out;
+     uint32_t *d_offsets;
+   };
+
+   struct GetRunLength
+   {
+     __host__ __device__ __forceinline__ uint32_t operator()(uint32_t index)
+     {
+       return d_offsets[index + 1] - d_offsets[index];
+     }
+     uint32_t *d_offsets;
+   };
+
+   uint32_t num_ranges = 5;
+   int32_t *d_data_in;           // e.g., [4, 2, 7, 3, 1]
+   int32_t *d_data_out;          // e.g., [0,                ...               ]
+   uint32_t *d_offsets;          // e.g., [0, 2, 5, 6, 9, 14]
+
+   // Returns a constant iterator to the element of the i-th run
+   thrust::counting_iterator&lt;uint32_t&gt; iota(0);
+   auto iterators_in = thrust::make_transform_iterator(iota, GetIteratorToRange{d_data_in});
+
+   // Returns the run length of the i-th run
+   auto sizes = thrust::make_transform_iterator(iota, GetRunLength{d_offsets});
+
+   // Returns pointers to the output range for each run
+   auto ptrs_out = thrust::make_transform_iterator(iota, GetPtrToRange{d_data_out, d_offsets});
+
+   // Determine temporary device storage requirements
+   void *d_temp_storage      = nullptr;
+   size_t temp_storage_bytes = 0;
+   cub::DeviceCopy::Batched(d_temp_storage, temp_storage_bytes, iterators_in, ptrs_out, sizes,
+   num_ranges);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run batched copy algorithm (used to perform runlength decoding)
+   cub::DeviceCopy::Batched(d_temp_storage, temp_storage_bytes, iterators_in, ptrs_out, sizes,
+   num_ranges);
+
+   // d_data_out       &lt;-- [4, 4, 2, 2, 2, 7, 3, 3, 3, 1, 1, 1, 1, 1]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Device-accessible random-access input iterator type providing the iterators to the source ranges</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Device-accessible random-access input iterator type providing the iterators to the destination ranges</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SizeIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Device-accessible random-access input iterator type providing the number of items to be copied for each pair of ranges</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">input_it</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible iterator providing the iterators to the source ranges</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">output_it</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible iterator providing the iterators to the destination ranges</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible iterator providing the number of elements to be copied for each pair of ranges</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_ranges</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The total number of range pairs</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_copy.cuh" line="166" column="23" bodyfile="cub/device/device_copy.cuh" bodystart="166" bodyend="184"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para><ref refid="structcub_1_1DeviceCopy" kindref="compound">cub::DeviceCopy</ref> provides device-wide, parallel operations for copying data. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="cub/device/device_copy.cuh" line="53" column="1" bodyfile="cub/device/device_copy.cuh" bodystart="54" bodyend="185"/>
+    <listofallmembers>
+      <member refid="structcub_1_1DeviceCopy_1aa08c1f25efde42e3bfb5d6c86f5678db" prot="public" virt="non-virtual"><scope>cub::DeviceCopy</scope><name>Batched</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,2130 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__binary__search" kind="group">
+    <compoundname>binary_search</compoundname>
+    <title>Binary Search</title>
+    <innergroup refid="group__vectorized__binary__search">Vectorized Searches</innergroup>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__binary__search_1gad2ac5a1c5091366144d6fdbf2ff5551e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::lower_bound</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>lower_bound</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>lower_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the first position where value could be inserted without violating the ordering. This version of <computeroutput>lower_bound</computeroutput> uses <computeroutput>operator&lt;</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>*j &lt; value</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>*i &lt; value</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>lower_bound</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>input.begin()</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/lower_bound">https://en.cppreference.com/w/cpp/algorithm/lower_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="105" column="18" declfile="thrust/binary_search.h" declline="105" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga1e475b6887f3dcbbb1bc0f68225d0cac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::lower_bound</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>lower_bound</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>lower_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the first position where value could be inserted without violating the ordering. This version of <computeroutput>lower_bound</computeroutput> uses <computeroutput>operator&lt;</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>*j &lt; value</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>*i &lt; value</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>lower_bound</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>input.begin()</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/lower_bound">https://en.cppreference.com/w/cpp/algorithm/lower_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="157" column="17" declfile="thrust/binary_search.h" declline="157" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga2a43c68bb60d96d859d426307c672716" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::lower_bound</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>lower_bound</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>lower_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the first position where value could be inserted without violating the ordering. This version of <computeroutput>lower_bound</computeroutput> uses function object <computeroutput>comp</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>comp(*j, value)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>comp(*i, value)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>lower_bound</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>0,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>1,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>2,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>3,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>8,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>9,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/lower_bound">https://en.cppreference.com/w/cpp/algorithm/lower_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="213" column="18" declfile="thrust/binary_search.h" declline="213" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1gad1c957a4f437f5df70a86e13ea75ec5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::lower_bound</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>lower_bound</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>lower_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the first position where value could be inserted without violating the ordering. This version of <computeroutput>lower_bound</computeroutput> uses function object <computeroutput>comp</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>comp(*j, value)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>comp(*i, value)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>lower_bound</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>0,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>1,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>2,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>3,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>8,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">thrust::lower_bound(input.begin(),<sp/>input.end(),<sp/>9,<sp/>::cuda::std::less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/lower_bound">https://en.cppreference.com/w/cpp/algorithm/lower_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="269" column="17" declfile="thrust/binary_search.h" declline="269" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1gac85cc9ea00f4bdd8f80ad25fff16741d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::upper_bound</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>upper_bound</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>upper_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the last position where value could be inserted without violating the ordering. This version of <computeroutput>upper_bound</computeroutput> uses <computeroutput>operator&lt;</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>value &lt; *j</computeroutput> is <computeroutput>false</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>value &lt; *i</computeroutput> is <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>upper_bound</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelism:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/upper_bound">https://en.cppreference.com/w/cpp/algorithm/upper_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="323" column="18" declfile="thrust/binary_search.h" declline="323" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga5d3e8f2af56dde127de4d1c54782b525" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::upper_bound</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>upper_bound</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>upper_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the last position where value could be inserted without violating the ordering. This version of <computeroutput>upper_bound</computeroutput> uses <computeroutput>operator&lt;</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>value &lt; *j</computeroutput> is <computeroutput>false</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>value &lt; *i</computeroutput> is <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>upper_bound</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/upper_bound">https://en.cppreference.com/w/cpp/algorithm/upper_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="376" column="17" declfile="thrust/binary_search.h" declline="376" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1gacd5baa5c988501b9c8320e337d126827" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::upper_bound</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>upper_bound</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>upper_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the last position where value could be inserted without violating the ordering. This version of <computeroutput>upper_bound</computeroutput> uses function object <computeroutput>comp</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>comp(value, *j)</computeroutput> is <computeroutput>false</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>comp(value, *i)</computeroutput> is <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>upper_bound</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>::cuda::std::less;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>0,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>1,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>2,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>8,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/upper_bound">https://en.cppreference.com/w/cpp/algorithm/upper_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="434" column="18" declfile="thrust/binary_search.h" declline="434" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga183fbd2f3d478f3e3d0dc97c5bce883b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::upper_bound</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>upper_bound</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>upper_bound</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. Specifically, it returns the last position where value could be inserted without violating the ordering. This version of <computeroutput>upper_bound</computeroutput> uses function object <computeroutput>comp</computeroutput> for comparison and returns the furthermost iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>j</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>comp(value, *j)</computeroutput> is <computeroutput>false</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The furthermost iterator <computeroutput>i</computeroutput>, such that <computeroutput>comp(value, *i)</computeroutput> is <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>upper_bound</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>::cuda::std::less;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>0,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>1,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>2,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>3,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>8,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+<codeline><highlight class="normal">thrust::upper_bound(input.begin(),<sp/>input.end(),<sp/>9,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/upper_bound">https://en.cppreference.com/w/cpp/algorithm/upper_bound</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="492" column="17" declfile="thrust/binary_search.h" declline="492" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1gaa855fdcf3942f95919bb712e26c7bfc6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::binary_search</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>binary_search</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>binary_search</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. It returns <computeroutput>true</computeroutput> if an element that is equivalent to <computeroutput>value</computeroutput> is present in <computeroutput>[first, last)</computeroutput> and <computeroutput>false</computeroutput> if no such element exists. Specifically, this version returns <computeroutput>true</computeroutput> if and only if there exists an iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that <computeroutput>*i &lt; value</computeroutput> and <computeroutput>value &lt; *i</computeroutput> are both <computeroutput>false</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if an equivalent element exists in <computeroutput>[first, last)</computeroutput>, otherwise <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>binary_search</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/binary_search">https://en.cppreference.com/w/cpp/algorithm/binary_search</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="545" column="7" declfile="thrust/binary_search.h" declline="545" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1gaca71baf79a6985712d8e5bdc1dcdbaa9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::binary_search</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>binary_search</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>binary_search</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. It returns <computeroutput>true</computeroutput> if an element that is equivalent to <computeroutput>value</computeroutput> is present in <computeroutput>[first, last)</computeroutput> and <computeroutput>false</computeroutput> if no such element exists. Specifically, this version returns <computeroutput>true</computeroutput> if and only if there exists an iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that <computeroutput>*i &lt; value</computeroutput> and <computeroutput>value &lt; *i</computeroutput> are both <computeroutput>false</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if an equivalent element exists in <computeroutput>[first, last)</computeroutput>, otherwise <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>binary_search</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/binary_search">https://en.cppreference.com/w/cpp/algorithm/binary_search</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="597" column="6" declfile="thrust/binary_search.h" declline="597" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1gae7231fe891e8070481f57f4cc9cdddbb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::binary_search</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>binary_search</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>binary_search</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. It returns <computeroutput>true</computeroutput> if an element that is equivalent to <computeroutput>value</computeroutput> is present in <computeroutput>[first, last)</computeroutput> and <computeroutput>false</computeroutput> if no such element exists. Specifically, this version returns <computeroutput>true</computeroutput> if and only if there exists an iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that <computeroutput>comp(*i, value)</computeroutput> and <computeroutput>comp(value, *i)</computeroutput> are both <computeroutput>false</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if an equivalent element exists in <computeroutput>[first, last)</computeroutput>, otherwise <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>binary_search</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>::cuda::std::less;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>0,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>1,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>2,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>8,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/binary_search">https://en.cppreference.com/w/cpp/algorithm/binary_search</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="654" column="7" declfile="thrust/binary_search.h" declline="654" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1gaeb34fdc9da32ad2baa270b51cb769712" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::binary_search</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>binary_search</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>binary_search</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. It returns <computeroutput>true</computeroutput> if an element that is equivalent to <computeroutput>value</computeroutput> is present in <computeroutput>[first, last)</computeroutput> and <computeroutput>false</computeroutput> if no such element exists. Specifically, this version returns <computeroutput>true</computeroutput> if and only if there exists an iterator <computeroutput>i</computeroutput> in <computeroutput>[first, last)</computeroutput> such that <computeroutput>comp(*i, value)</computeroutput> and <computeroutput>comp(value, *i)</computeroutput> are both <computeroutput>false</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if an equivalent element exists in <computeroutput>[first, last)</computeroutput>, otherwise <computeroutput>false</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>binary_search</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>::cuda::std::less;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>0,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>1,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>2,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>3,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>8,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::binary_search(input.begin(),<sp/>input.end(),<sp/>9,<sp/>less&lt;int&gt;());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/binary_search">https://en.cppreference.com/w/cpp/algorithm/binary_search</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>equal_range</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="711" column="6" declfile="thrust/binary_search.h" declline="711" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga1ccd67cb0e378d441f38cea77ca3dfd5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; ForwardIterator, ForwardIterator &gt;</type>
+        <definition>thrust::pair&lt;ForwardIterator, ForwardIterator&gt; thrust::equal_range</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>equal_range</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>equal_range</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. The value returned by <computeroutput>equal_range</computeroutput> is essentially a combination of the values returned by <computeroutput>lower_bound</computeroutput> and <computeroutput>upper_bound:</computeroutput> it returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>i</computeroutput> and <computeroutput>j</computeroutput> such that <computeroutput>i</computeroutput> is the first position where value could be inserted without violating the ordering and <computeroutput>j</computeroutput> is the last position where value could be inserted without violating the ordering. It follows that every element in the range <computeroutput>[i, j)</computeroutput> is equivalent to value, and that <computeroutput>[i, j)</computeroutput> is the largest subrange of <computeroutput>[first, last)</computeroutput> that has this property.</para>
+<para>This version of <computeroutput>equal_range</computeroutput> returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput>, where <computeroutput>i</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>*k &lt; value</computeroutput>. <computeroutput>j</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, j)</computeroutput>, <computeroutput>value &lt; *k</computeroutput> is <computeroutput>false</computeroutput>. For every iterator <computeroutput>k</computeroutput> in <computeroutput>[i, j)</computeroutput>, neither <computeroutput>value &lt; *k</computeroutput> nor <computeroutput>*k &lt; value</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput> that define the range of equivalent elements.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>equal_range</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>...</highlight></codeline>
+<codeline><highlight class="normal"><sp/>thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>[input.begin(),<sp/>input.begin()<sp/>+<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal"><sp/>thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>1,<sp/>input.begin()<sp/>+</highlight></codeline>
+<codeline><highlight class="normal">1)<sp/>thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>1,<sp/>input.begin()<sp/>+</highlight></codeline>
+<codeline><highlight class="normal">2)<sp/>thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>2,<sp/>input.begin()<sp/>+</highlight></codeline>
+<codeline><highlight class="normal">2)<sp/>thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>4,<sp/>input.end())</highlight></codeline>
+<codeline><highlight class="normal"><sp/>thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>[input.end(),<sp/>input.end())</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/equal_range">https://en.cppreference.com/w/cpp/algorithm/equal_range</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="777" column="15" declfile="thrust/binary_search.h" declline="777" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga5ff555e321537d07b241723e1f1be767" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class LessThanComparable</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; ForwardIterator, ForwardIterator &gt;</type>
+        <definition>thrust::pair&lt;ForwardIterator, ForwardIterator&gt; thrust::equal_range</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const LessThanComparable &amp;value)</argsstring>
+        <name>equal_range</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const LessThanComparable &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>equal_range</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. The value returned by <computeroutput>equal_range</computeroutput> is essentially a combination of the values returned by <computeroutput>lower_bound</computeroutput> and <computeroutput>upper_bound:</computeroutput> it returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>i</computeroutput> and <computeroutput>j</computeroutput> such that <computeroutput>i</computeroutput> is the first position where value could be inserted without violating the ordering and <computeroutput>j</computeroutput> is the last position where value could be inserted without violating the ordering. It follows that every element in the range <computeroutput>[i, j)</computeroutput> is equivalent to value, and that <computeroutput>[i, j)</computeroutput> is the largest subrange of <computeroutput>[first, last)</computeroutput> that has this property.</para>
+<para>This version of <computeroutput>equal_range</computeroutput> returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput>, where <computeroutput>i</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>*k &lt; value</computeroutput>. <computeroutput>j</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, j)</computeroutput>, <computeroutput>value &lt; *k</computeroutput> is <computeroutput>false</computeroutput>. For every iterator <computeroutput>k</computeroutput> in <computeroutput>[i, j)</computeroutput>, neither <computeroutput>value &lt; *k</computeroutput> nor <computeroutput>*k &lt; value</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput> that define the range of equivalent elements.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LessThanComparable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThanComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>equal_range</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>0);<sp/>//<sp/>returns<sp/>[input.begin(),<sp/>input.begin()<sp/>+<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>1);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>1,<sp/>input.begin()<sp/>+<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>2);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>1,<sp/>input.begin()<sp/>+<sp/>2)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>2,<sp/>input.begin()<sp/>+<sp/>2)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>8);<sp/>//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>4,<sp/>input.end())</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>[input.end(),<sp/>input.end())</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/equal_range">https://en.cppreference.com/w/cpp/algorithm/equal_range</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="843" column="1" declfile="thrust/binary_search.h" declline="843" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga0042d84469e2606e7aafb0e3434d15f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; ForwardIterator, ForwardIterator &gt;</type>
+        <definition>thrust::pair&lt;ForwardIterator, ForwardIterator&gt; thrust::equal_range</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>equal_range</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>equal_range</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. The value returned by <computeroutput>equal_range</computeroutput> is essentially a combination of the values returned by <computeroutput>lower_bound</computeroutput> and <computeroutput>upper_bound:</computeroutput> it returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>i</computeroutput> and <computeroutput>j</computeroutput> such that <computeroutput>i</computeroutput> is the first position where value could be inserted without violating the ordering and <computeroutput>j</computeroutput> is the last position where value could be inserted without violating the ordering. It follows that every element in the range <computeroutput>[i, j)</computeroutput> is equivalent to value, and that <computeroutput>[i, j)</computeroutput> is the largest subrange of <computeroutput>[first, last)</computeroutput> that has this property.</para>
+<para>This version of <computeroutput>equal_range</computeroutput> returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput>. <computeroutput>i</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>comp(*k, value)</computeroutput> is <computeroutput>true</computeroutput>. <computeroutput>j</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, last)</computeroutput>, <computeroutput>comp(value, *k)</computeroutput> is <computeroutput>false</computeroutput>. For every iterator <computeroutput>k</computeroutput> in <computeroutput>[i, j)</computeroutput>, neither <computeroutput>comp(value, *k)</computeroutput> nor <computeroutput>comp(*k, value)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput> that define the range of equivalent elements.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>equal_range</computeroutput> to search for values in a ordered range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>::cuda::std::less;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>0,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin(),<sp/>input.begin()<sp/>+<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>1,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>1,<sp/>input.begin()<sp/>+<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>2,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>1,<sp/>input.begin()<sp/>+<sp/>2)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>2,<sp/>input.begin()<sp/>+<sp/>2)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>8,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>4,<sp/>input.end())</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.end(),<sp/>input.end())</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/equal_range">https://en.cppreference.com/w/cpp/algorithm/equal_range</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="920" column="15" declfile="thrust/binary_search.h" declline="920" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__binary__search_1ga2662d7a81c13da036ef9c2b3cbf637b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ForwardIterator</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class StrictWeakOrdering</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; ForwardIterator, ForwardIterator &gt;</type>
+        <definition>thrust::pair&lt;ForwardIterator, ForwardIterator&gt; thrust::equal_range</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, const T &amp;value, StrictWeakOrdering comp)</argsstring>
+        <name>equal_range</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>StrictWeakOrdering</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>equal_range</computeroutput> is a version of binary search: it attempts to find the element value in an ordered range <computeroutput>[first, last)</computeroutput>. The value returned by <computeroutput>equal_range</computeroutput> is essentially a combination of the values returned by <computeroutput>lower_bound</computeroutput> and <computeroutput>upper_bound:</computeroutput> it returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>i</computeroutput> and <computeroutput>j</computeroutput> such that <computeroutput>i</computeroutput> is the first position where value could be inserted without violating the ordering and <computeroutput>j</computeroutput> is the last position where value could be inserted without violating the ordering. It follows that every element in the range <computeroutput>[i, j)</computeroutput> is equivalent to value, and that <computeroutput>[i, j)</computeroutput> is the largest subrange of <computeroutput>[first, last)</computeroutput> that has this property.</para>
+<para>This version of <computeroutput>equal_range</computeroutput> returns a <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput>. <computeroutput>i</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, i)</computeroutput>, <computeroutput>comp(*k, value)</computeroutput> is <computeroutput>true</computeroutput>. <computeroutput>j</computeroutput> is the furthermost iterator in <computeroutput>[first, last)</computeroutput> such that, for every iterator <computeroutput>k</computeroutput> in <computeroutput>[first, last)</computeroutput>, <computeroutput>comp(value, *k)</computeroutput> is <computeroutput>false</computeroutput>. For every iterator <computeroutput>k</computeroutput> in <computeroutput>[i, j)</computeroutput>, neither <computeroutput>comp(value, *k)</computeroutput> nor <computeroutput>comp(*k, value)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the ordered sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to be searched. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>pair</computeroutput> of iterators <computeroutput>[i, j)</computeroutput> that define the range of equivalent elements.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is comparable to <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>StrictWeakOrdering</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>equal_range</computeroutput> to search for values in a ordered range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/binary_search.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(5);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">input[4]<sp/>=<sp/>8;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>::cuda::std::less;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>0,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin(),<sp/>input.begin()<sp/>+<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>1,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>1,<sp/>input.begin()<sp/>+<sp/>1)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>2,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>*<sp/>+<sp/>1,<sp/>input.begin()<sp/>+<sp/>2)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>3,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>2,<sp/>input.begin()<sp/>+<sp/>2)</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>8,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.begin()<sp/>+<sp/>4,<sp/>input.end())</highlight></codeline>
+<codeline><highlight class="normal">thrust::equal_range(input.begin(),<sp/>input.end(),<sp/>9,<sp/>less&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>returns<sp/>[input.end(),<sp/>input.end())</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/equal_range">https://en.cppreference.com/w/cpp/algorithm/equal_range</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>lower_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>upper_bound</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput><ref refid="group__binary__search" kindref="compound">Binary Search</ref></computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/binary_search.h" line="998" column="1" declfile="thrust/binary_search.h" declline="998" declcolumn="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

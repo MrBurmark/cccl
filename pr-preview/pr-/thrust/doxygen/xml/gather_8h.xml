@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="gather_8h" kind="file" language="C++">
+    <compoundname>gather.h</compoundname>
+    <includes local="no">thrust/detail/config.h</includes>
+    <includes local="no">thrust/detail/execution_policy.h</includes>
+    <includes local="no">thrust/detail/gather.inl</includes>
+    <incdepgraph>
+      <node id="2">
+        <label>thrust/detail/config.h</label>
+      </node>
+      <node id="1">
+        <label>thrust/gather.h</label>
+        <link refid="gather_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>thrust/detail/execution_policy.h</label>
+      </node>
+      <node id="4">
+        <label>thrust/detail/gather.inl</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacethrust">thrust</innernamespace>
+    <briefdescription>
+<para>Irregular copying from a source range. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>Copyright<sp/>2008-2013<sp/>NVIDIA<sp/>Corporation</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Licensed<sp/>under<sp/>the<sp/>Apache<sp/>License,<sp/>Version<sp/>2.0<sp/>(the<sp/>&quot;License&quot;);</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/>you<sp/>may<sp/>not<sp/>use<sp/>this<sp/>file<sp/>except<sp/>in<sp/>compliance<sp/>with<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>may<sp/>obtain<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>License<sp/>at</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>http://www.apache.org/licenses/LICENSE-2.0</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/>Unless<sp/>required<sp/>by<sp/>applicable<sp/>law<sp/>or<sp/>agreed<sp/>to<sp/>in<sp/>writing,<sp/>software</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/>distributed<sp/>under<sp/>the<sp/>License<sp/>is<sp/>distributed<sp/>on<sp/>an<sp/>&quot;AS<sp/>IS&quot;<sp/>BASIS,</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/>WITHOUT<sp/>WARRANTIES<sp/>OR<sp/>CONDITIONS<sp/>OF<sp/>ANY<sp/>KIND,<sp/>either<sp/>express<sp/>or<sp/>implied.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/>See<sp/>the<sp/>License<sp/>for<sp/>the<sp/>specific<sp/>language<sp/>governing<sp/>permissions<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/>limitations<sp/>under<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/config.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/execution_policy.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">THRUST_NAMESPACE_BEGIN</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>RandomAccessIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="93" refid="group__gathering_1ga9e0862c6d03cd02b9b47083043cdb129" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__gathering_1ga6fdb1fe3ff0d9ce01f41a72fa94c56df" kindref="member">gather</ref>(</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/>InputIterator<sp/>map_first,</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/>InputIterator<sp/>map_last,</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/>RandomAccessIterator<sp/>input_first,</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>RandomAccessIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal">OutputIterator</highlight></codeline>
+<codeline lineno="147" refid="group__gathering_1ga6fdb1fe3ff0d9ce01f41a72fa94c56df" refkind="member"><highlight class="normal"><ref refid="group__gathering_1ga6fdb1fe3ff0d9ce01f41a72fa94c56df" kindref="member">gather</ref>(InputIterator<sp/>map_first,<sp/>InputIterator<sp/>map_last,<sp/>RandomAccessIterator<sp/>input_first,<sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>RandomAccessIterator,</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="216" refid="group__gathering_1gabe7fcb9789daffbdb2be995be1494240" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__gathering_1ga99684dec614e14ccc4b2b6b896324b81" kindref="member">gather_if</ref>(</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_first,</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_last,</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/>RandomAccessIterator<sp/>input_first,</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>RandomAccessIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="281" refid="group__gathering_1gaf7acd33a67b2313a651ee19f3ac5cd04" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__gathering_1ga99684dec614e14ccc4b2b6b896324b81" kindref="member">gather_if</ref>(</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_first,</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_last,</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/>RandomAccessIterator<sp/>input_first,</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight></codeline>
+<codeline lineno="363"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>RandomAccessIterator,</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="369" refid="group__gathering_1ga826a4fe88363c1558017dbb6f1de4752" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__gathering_1ga99684dec614e14ccc4b2b6b896324b81" kindref="member">gather_if</ref>(</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_first,</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_last,</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/>RandomAccessIterator<sp/>input_first,</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight></codeline>
+<codeline lineno="446"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="447"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="448"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>RandomAccessIterator,</highlight></codeline>
+<codeline lineno="449"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,</highlight></codeline>
+<codeline lineno="450"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Predicate&gt;</highlight></codeline>
+<codeline lineno="451" refid="group__gathering_1ga99684dec614e14ccc4b2b6b896324b81" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__gathering_1ga99684dec614e14ccc4b2b6b896324b81" kindref="member">gather_if</ref>(</highlight></codeline>
+<codeline lineno="452"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_first,</highlight></codeline>
+<codeline lineno="453"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>map_last,</highlight></codeline>
+<codeline lineno="454"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>stencil,</highlight></codeline>
+<codeline lineno="455"><highlight class="normal"><sp/><sp/>RandomAccessIterator<sp/>input_first,</highlight></codeline>
+<codeline lineno="456"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/><sp/>Predicate<sp/>pred);</highlight></codeline>
+<codeline lineno="458"><highlight class="normal"></highlight></codeline>
+<codeline lineno="462"><highlight class="normal">THRUST_NAMESPACE_END</highlight></codeline>
+<codeline lineno="463"><highlight class="normal"></highlight></codeline>
+<codeline lineno="464"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/gather.inl&gt;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="thrust/gather.h"/>
+  </compounddef>
+</doxygen>

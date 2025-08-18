@@ -1,0 +1,549 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1WarpExchange" kind="class" language="C++" prot="public">
+    <compoundname>cub::WarpExchange</compoundname>
+    <basecompoundref prot="private" virt="non-virtual">detail::InternalWarpExchangeImpl&lt; InputT, ITEMS_PER_THREAD, detail::warp_threads, WARP_EXCHANGE_SMEM &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>typename InputT</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ITEMS_PER_THREAD</declname>
+        <defname>ITEMS_PER_THREAD</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>LOGICAL_WARP_THREADS</declname>
+        <defname>LOGICAL_WARP_THREADS</defname>
+        <defval>detail::warp_threads</defval>
+      </param>
+      <param>
+        <type>WarpExchangeAlgorithm</type>
+        <declname>WARP_EXCHANGE_ALGORITHM</declname>
+        <defname>WARP_EXCHANGE_ALGORITHM</defname>
+        <defval>WARP_EXCHANGE_SMEM</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1WarpExchange_1ab09450373ff5a9b6410d317d7e7bbe38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::WarpExchange</definition>
+        <argsstring>()=delete</argsstring>
+        <name>WarpExchange</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="153" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpExchange_1a1778c9f2454b9f1c7293b278d06616a2" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::WarpExchange</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>WarpExchange</name>
+        <param>
+          <type><ref refid="classcub_1_1WarpExchange_1a489390aeb68fdec6fadf5d455c30ed3d" kindref="member">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="159" column="14" bodyfile="cub/warp/warp_exchange.cuh" bodystart="159" bodyend="161"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Data movement</header>
+      <memberdef kind="function" id="classcub_1_1WarpExchange_1a9a26e217195ea215231afda97e25424b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::BlockedToStriped</definition>
+        <argsstring>(const InputT(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD])</argsstring>
+        <name>BlockedToStriped</name>
+        <param>
+          <type>const InputT(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <emphasis>blocked</emphasis> arrangement to <emphasis>striped</emphasis> arrangement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>A subsequent <computeroutput>__syncwarp()</computeroutput> warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., <computeroutput>temp_storage</computeroutput>) is to be reused or repurposed.</para>
+</simplesect>
+<simplesect kind="par"><title>Snippet</title><para>The code snippet below illustrates the conversion from a &quot;blocked&quot; to a &quot;striped&quot; arrangement of 64 integer items partitioned across 16 threads where each thread owns 4 items. </para>
+</simplesect>
+<simplesect kind="par"><title></title><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cub/cub.cuh&gt;<sp/><sp/><sp/>//<sp/>or<sp/>equivalently<sp/>&lt;cub/warp/warp_exchange.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>ExampleKernel(int<sp/>*d_data,<sp/>...)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warp_threads<sp/>=<sp/>16;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>block_threads<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>items_per_thread<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warps_per_block<sp/>=<sp/>block_threads<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>int<sp/>warp_id<sp/>=<sp/>static_cast&lt;int&gt;(threadIdx.x)<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Specialize<sp/>WarpExchange<sp/>for<sp/>a<sp/>virtual<sp/>warp<sp/>of<sp/>16<sp/>threads<sp/>owning<sp/>4<sp/>integer<sp/>items<sp/>each</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>using<sp/>WarpExchangeT<sp/>=<sp/>cub::WarpExchange&lt;int,<sp/>items_per_thread,<sp/>warp_threads&gt;;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Allocate<sp/>shared<sp/>memory<sp/>for<sp/>WarpExchange</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>typename<sp/>WarpExchangeT::TempStorage<sp/>temp_storage[warps_per_block];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Obtain<sp/>a<sp/>segment<sp/>of<sp/>consecutive<sp/>items<sp/>that<sp/>are<sp/>blocked<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_data[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Collectively<sp/>exchange<sp/>data<sp/>into<sp/>a<sp/>striped<sp/>arrangement<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>WarpExchangeT(temp_storage[warp_id]).BlockedToStriped(thread_data,<sp/>thread_data);</highlight></codeline>
+</programlisting> </para>
+</simplesect>
+<simplesect kind="par"><title></title><para>Suppose the set of striped input <computeroutput>thread_data</computeroutput> across the block of threads is <computeroutput>{ [0,1,2,3], [4,5,6,7], [8,9,10,11], ..., [60,61,62,63] }</computeroutput>. The corresponding output <computeroutput>thread_data</computeroutput> in those threads will be <computeroutput>{ [0,16,32,48], [1,17,33,49], ..., [15, 32, 47, 63] }</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange, converting between <emphasis>blocked</emphasis> and <emphasis>striped</emphasis> arrangements.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange, converting between <emphasis>striped</emphasis> and <emphasis>blocked</emphasis> arrangements. May be aliased to <computeroutput>input_items</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="219" column="3" bodyfile="cub/warp/warp_exchange.cuh" bodystart="219" bodyend="222"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpExchange_1abb222fd46872ba4a23938db2c09f684a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::StripedToBlocked</definition>
+        <argsstring>(const InputT(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD])</argsstring>
+        <name>StripedToBlocked</name>
+        <param>
+          <type>const InputT(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+<para>Transposes data items from <emphasis>striped</emphasis> arrangement to <emphasis>blocked</emphasis> arrangement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>A subsequent <computeroutput>__syncwarp()</computeroutput> warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., <computeroutput>temp_storage</computeroutput>) is to be reused or repurposed.</para>
+</simplesect>
+<simplesect kind="par"><title>Snippet</title><para>The code snippet below illustrates the conversion from a &quot;striped&quot; to a &quot;blocked&quot; arrangement of 64 integer items partitioned across 16 threads where each thread owns 4 items. </para>
+</simplesect>
+<simplesect kind="par"><title></title><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cub/cub.cuh&gt;<sp/><sp/><sp/>//<sp/>or<sp/>equivalently<sp/>&lt;cub/warp/warp_exchange.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>ExampleKernel(int<sp/>*d_data,<sp/>...)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warp_threads<sp/>=<sp/>16;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>block_threads<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>items_per_thread<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warps_per_block<sp/>=<sp/>block_threads<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>int<sp/>warp_id<sp/>=<sp/>static_cast&lt;int&gt;(threadIdx.x)<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Specialize<sp/>WarpExchange<sp/>for<sp/>a<sp/>virtual<sp/>warp<sp/>of<sp/>16<sp/>threads<sp/>owning<sp/>4<sp/>integer<sp/>items<sp/>each</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>using<sp/>WarpExchangeT<sp/>=<sp/>cub::WarpExchange&lt;int,<sp/>items_per_thread,<sp/>warp_threads&gt;;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Allocate<sp/>shared<sp/>memory<sp/>for<sp/>WarpExchange</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>typename<sp/>WarpExchangeT::TempStorage<sp/>temp_storage[warps_per_block];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Load<sp/>a<sp/>tile<sp/>of<sp/>data<sp/>striped<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_data[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Collectively<sp/>exchange<sp/>data<sp/>into<sp/>a<sp/>blocked<sp/>arrangement<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>WarpExchangeT(temp_storage[warp_id]).StripedToBlocked(thread_data,<sp/>thread_data);</highlight></codeline>
+</programlisting> </para>
+</simplesect>
+<simplesect kind="par"><title></title><para>Suppose the set of striped input <computeroutput>thread_data</computeroutput> across the block of threads is <computeroutput>{ [0,16,32,48], [1,17,33,49], ..., [15, 32, 47, 63] }</computeroutput>. The corresponding output <computeroutput>thread_data</computeroutput> in those threads will be <computeroutput>{ [0,1,2,3], [4,5,6,7], [8,9,10,11], ..., [60,61,62,63] }</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange. May be aliased to <computeroutput>input_items</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="274" column="3" bodyfile="cub/warp/warp_exchange.cuh" bodystart="274" bodyend="277"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpExchange_1a913a2dd9f7f06a02baaa3f80501b6cc3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::ScatterToStriped</definition>
+        <argsstring>(InputT(&amp;items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD])</argsstring>
+        <name>ScatterToStriped</name>
+        <param>
+          <type>InputT(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+<para>Exchanges valid data items annotated by rank into <emphasis>striped</emphasis> arrangement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>A subsequent <computeroutput>__syncwarp()</computeroutput> warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., <computeroutput>temp_storage</computeroutput>) is to be reused or repurposed.</para>
+</simplesect>
+<simplesect kind="par"><title>Snippet</title><para>The code snippet below illustrates the conversion from a &quot;scatter&quot; to a &quot;striped&quot; arrangement of 64 integer items partitioned across 16 threads where each thread owns 4 items. </para>
+</simplesect>
+<simplesect kind="par"><title></title><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cub/cub.cuh&gt;<sp/><sp/><sp/>//<sp/>or<sp/>equivalently<sp/>&lt;cub/warp/warp_exchange.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>ExampleKernel(int<sp/>*d_data,<sp/>...)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warp_threads<sp/>=<sp/>16;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>block_threads<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>items_per_thread<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warps_per_block<sp/>=<sp/>block_threads<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>int<sp/>warp_id<sp/>=<sp/>static_cast&lt;int&gt;(threadIdx.x)<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Specialize<sp/>WarpExchange<sp/>for<sp/>a<sp/>virtual<sp/>warp<sp/>of<sp/>16<sp/>threads<sp/>owning<sp/>4<sp/>integer<sp/>items<sp/>each</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>using<sp/>WarpExchangeT<sp/>=<sp/>cub::WarpExchange&lt;int,<sp/>items_per_thread,<sp/>warp_threads&gt;;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Allocate<sp/>shared<sp/>memory<sp/>for<sp/>WarpExchange</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>typename<sp/>WarpExchangeT::TempStorage<sp/>temp_storage[warps_per_block];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Obtain<sp/>a<sp/>segment<sp/>of<sp/>consecutive<sp/>items<sp/>that<sp/>are<sp/>blocked<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_data[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_ranks[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Collectively<sp/>exchange<sp/>data<sp/>into<sp/>a<sp/>striped<sp/>arrangement<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>WarpExchangeT(temp_storage[warp_id]).ScatterToStriped(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>thread_data,<sp/>thread_ranks);</highlight></codeline>
+</programlisting> </para>
+</simplesect>
+<simplesect kind="par"><title></title><para>Suppose the set of input <computeroutput>thread_data</computeroutput> across the block of threads is <computeroutput>{ [0,1,2,3], [4,5,6,7], ..., [60,61,62,63] }</computeroutput>, and the set of <computeroutput>thread_ranks</computeroutput> is <computeroutput>{ [63,62,61,60], ..., [7,6,5,4], [3,2,1,0] }</computeroutput>. The corresponding output <computeroutput>thread_data</computeroutput> in those threads will be <computeroutput>{ [63, 47, 31, 15], [62, 46, 30, 14], ..., [48, 32, 16, 0] }</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>OffsetT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Signed integer type for local offsets</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="331" column="3" bodyfile="cub/warp/warp_exchange.cuh" bodystart="331" bodyend="334"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpExchange_1ad8824c3a5ea7635cdda5c0df58d6428f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename OutputT</type>
+          </param>
+          <param>
+            <type>typename OffsetT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::ScatterToStriped</definition>
+        <argsstring>(const InputT(&amp;input_items)[ITEMS_PER_THREAD], OutputT(&amp;output_items)[ITEMS_PER_THREAD], OffsetT(&amp;ranks)[ITEMS_PER_THREAD])</argsstring>
+        <name>ScatterToStriped</name>
+        <param>
+          <type>const InputT(&amp;)</type>
+          <declname>input_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OutputT(&amp;)</type>
+          <declname>output_items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>OffsetT(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+<para>Exchanges valid data items annotated by rank into <emphasis>striped</emphasis> arrangement. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="par"><title></title><para>A subsequent <computeroutput>__syncwarp()</computeroutput> warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., <computeroutput>temp_storage</computeroutput>) is to be reused or repurposed.</para>
+</simplesect>
+<simplesect kind="par"><title>Snippet</title><para>The code snippet below illustrates the conversion from a &quot;scatter&quot; to a &quot;striped&quot; arrangement of 64 integer items partitioned across 16 threads where each thread owns 4 items. </para>
+</simplesect>
+<simplesect kind="par"><title></title><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cub/cub.cuh&gt;<sp/><sp/><sp/>//<sp/>or<sp/>equivalently<sp/>&lt;cub/warp/warp_exchange.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>ExampleKernel(int<sp/>*d_data,<sp/>...)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warp_threads<sp/>=<sp/>16;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>block_threads<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>items_per_thread<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warps_per_block<sp/>=<sp/>block_threads<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>int<sp/>warp_id<sp/>=<sp/>static_cast&lt;int&gt;(threadIdx.x)<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Specialize<sp/>WarpExchange<sp/>for<sp/>a<sp/>virtual<sp/>warp<sp/>of<sp/>16<sp/>threads<sp/>owning<sp/>4<sp/>integer<sp/>items<sp/>each</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>using<sp/>WarpExchangeT<sp/>=<sp/>cub::WarpExchange&lt;int,<sp/>items_per_thread,<sp/>warp_threads&gt;;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Allocate<sp/>shared<sp/>memory<sp/>for<sp/>WarpExchange</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>typename<sp/>WarpExchangeT::TempStorage<sp/>temp_storage[warps_per_block];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Obtain<sp/>a<sp/>segment<sp/>of<sp/>consecutive<sp/>items<sp/>that<sp/>are<sp/>blocked<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_input[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_ranks[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Collectively<sp/>exchange<sp/>data<sp/>into<sp/>a<sp/>striped<sp/>arrangement<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_output[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>WarpExchangeT(temp_storage[warp_id]).ScatterToStriped(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>thread_input,<sp/>thread_output,<sp/>thread_ranks);</highlight></codeline>
+</programlisting> </para>
+</simplesect>
+<simplesect kind="par"><title></title><para>Suppose the set of input <computeroutput>thread_input</computeroutput> across the block of threads is <computeroutput>{ [0,1,2,3], [4,5,6,7], ..., [60,61,62,63] }</computeroutput>, and the set of <computeroutput>thread_ranks</computeroutput> is <computeroutput>{ [63,62,61,60], ..., [7,6,5,4], [3,2,1,0] }</computeroutput>. The corresponding <computeroutput>thread_output</computeroutput> in those threads will be <computeroutput>{ [63, 47, 31, 15], [62, 46, 30, 14], ..., [48, 32, 16, 0] }</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>OffsetT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Signed integer type for local offsets</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items to exchange</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Items from exchange. May be aliased to <computeroutput>input_items</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Corresponding scatter ranks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="394" column="10" bodyfile="cub/warp/warp_exchange.cuh" bodystart="394" bodyend="400"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classcub_1_1WarpExchange_1aa520e55f5bcb953659078a87199e0802" prot="private" static="no">
+        <type>detail::InternalWarpExchangeImpl&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;</type>
+        <definition>using cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::InternalWarpExchange =  detail::InternalWarpExchangeImpl&lt;InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM&gt;</definition>
+        <argsstring></argsstring>
+        <name>InternalWarpExchange</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="143" column="3" bodyfile="cub/warp/warp_exchange.cuh" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classcub_1_1WarpExchange_1a489390aeb68fdec6fadf5d455c30ed3d" prot="public" static="no">
+        <type>typename InternalWarpExchange::TempStorage</type>
+        <definition>using cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;::TempStorage =  typename InternalWarpExchange::TempStorage</definition>
+        <argsstring></argsstring>
+        <name>TempStorage</name>
+        <briefdescription>
+<para>The operations exposed by <ref refid="classcub_1_1WarpExchange" kindref="compound">WarpExchange</ref> require a temporary memory allocation of this nested type for thread communication. This opaque storage can be allocated directly using the <computeroutput>__shared__</computeroutput> keyword. Alternatively, it can be aliased to externally allocated memory (shared or global) or <computeroutput>union</computeroutput>&apos;d with other storage allocation types to facilitate memory reuse. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_exchange.cuh" line="148" column="3" bodyfile="cub/warp/warp_exchange.cuh" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>The <ref refid="classcub_1_1WarpExchange" kindref="compound">WarpExchange</ref> class provides <ulink url="../index.html#sec0"><emphasis>collective</emphasis></ulink> methods for rearranging data partitioned across a CUDA warp. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The data type to be exchanged.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LOGICAL_WARP_THREADS</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The number of threads per &quot;logical&quot; warp (may be less than the number of hardware warp threads). Default is the warp size of the targeted CUDA compute-capability (e.g., 32 threads for SM86). Must be a power of two.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="par"><title>Overview</title><para><itemizedlist>
+<listitem><para>It is commonplace for a warp of threads to rearrange data items between threads. For example, the global memory accesses prefer patterns where data items are &quot;striped&quot; across threads (where consecutive threads access consecutive items), yet most warp-wide operations prefer a &quot;blocked&quot; partitioning of items across threads (where consecutive items belong to a single thread).</para>
+</listitem><listitem><para><ref refid="classcub_1_1WarpExchange" kindref="compound">WarpExchange</ref> supports the following types of data exchanges:<itemizedlist>
+<listitem><para>Transposing between <ulink url="../index.html#sec5sec3"><emphasis>blocked</emphasis></ulink> and <ulink url="../index.html#sec5sec3"><emphasis>striped</emphasis></ulink> arrangements</para>
+</listitem><listitem><para>Scattering ranked items to a <ulink url="../index.html#sec5sec3"><emphasis>striped arrangement</emphasis></ulink></para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+<simplesect kind="par"><title>A Simple Example</title><para></para>
+</simplesect>
+<simplesect kind="par"><title></title><para>The code snippet below illustrates the conversion from a &quot;blocked&quot; to a &quot;striped&quot; arrangement of 64 integer items partitioned across 16 threads where each thread owns 4 items. </para>
+</simplesect>
+<simplesect kind="par"><title></title><para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cub/cub.cuh&gt;<sp/><sp/><sp/>//<sp/>or<sp/>equivalently<sp/>&lt;cub/warp/warp_exchange.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>ExampleKernel(int<sp/>*d_data,<sp/>...)</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warp_threads<sp/>=<sp/>16;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>block_threads<sp/>=<sp/>256;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>items_per_thread<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>int<sp/>warps_per_block<sp/>=<sp/>block_threads<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>int<sp/>warp_id<sp/>=<sp/>static_cast&lt;int&gt;(threadIdx.x)<sp/>/<sp/>warp_threads;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Specialize<sp/>WarpExchange<sp/>for<sp/>a<sp/>virtual<sp/>warp<sp/>of<sp/>16<sp/>threads<sp/>owning<sp/>4<sp/>integer<sp/>items<sp/>each</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>using<sp/>WarpExchangeT<sp/>=</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cub::WarpExchange&lt;int,<sp/>items_per_thread,<sp/>warp_threads&gt;;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Allocate<sp/>shared<sp/>memory<sp/>for<sp/>WarpExchange</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>typename<sp/>WarpExchangeT::TempStorage<sp/>temp_storage[warps_per_block];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Load<sp/>a<sp/>tile<sp/>of<sp/>data<sp/>striped<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>thread_data[items_per_thread];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Collectively<sp/>exchange<sp/>data<sp/>into<sp/>a<sp/>blocked<sp/>arrangement<sp/>across<sp/>threads</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>WarpExchangeT(temp_storage[warp_id]).StripedToBlocked(thread_data,<sp/>thread_data);</highlight></codeline>
+</programlisting> </para>
+</simplesect>
+<simplesect kind="par"><title></title><para>Suppose the set of striped input <computeroutput>thread_data</computeroutput> across the block of threads is <computeroutput>{ [0,16,32,48], [1,17,33,49], ..., [15, 32, 47, 63] }</computeroutput>. The corresponding output <computeroutput>thread_data</computeroutput> in those threads will be <computeroutput>{ [0,1,2,3], [4,5,6,7], [8,9,10,11], ..., [60,61,62,63] }</computeroutput>. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>detail::InternalWarpExchangeImpl&lt; InputT, ITEMS_PER_THREAD, detail::warp_threads , WARP_EXCHANGE_SMEM  &gt;</label>
+      </node>
+      <node id="1">
+        <label>cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;</label>
+        <link refid="classcub_1_1WarpExchange"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>detail::InternalWarpExchangeImpl&lt; InputT, ITEMS_PER_THREAD, detail::warp_threads , WARP_EXCHANGE_SMEM  &gt;</label>
+      </node>
+      <node id="1">
+        <label>cub::WarpExchange&lt; InputT, ITEMS_PER_THREAD, LOGICAL_WARP_THREADS, WARP_EXCHANGE_ALGORITHM &gt;</label>
+        <link refid="classcub_1_1WarpExchange"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="cub/warp/warp_exchange.cuh" line="140" column="1" bodyfile="cub/warp/warp_exchange.cuh" bodystart="142" bodyend="403"/>
+    <listofallmembers>
+      <member refid="classcub_1_1WarpExchange_1a9a26e217195ea215231afda97e25424b" prot="public" virt="non-virtual"><scope>cub::WarpExchange</scope><name>BlockedToStriped</name></member>
+      <member refid="classcub_1_1WarpExchange_1aa520e55f5bcb953659078a87199e0802" prot="private" virt="non-virtual"><scope>cub::WarpExchange</scope><name>InternalWarpExchange</name></member>
+      <member refid="classcub_1_1WarpExchange_1a913a2dd9f7f06a02baaa3f80501b6cc3" prot="public" virt="non-virtual"><scope>cub::WarpExchange</scope><name>ScatterToStriped</name></member>
+      <member refid="classcub_1_1WarpExchange_1ad8824c3a5ea7635cdda5c0df58d6428f" prot="public" virt="non-virtual"><scope>cub::WarpExchange</scope><name>ScatterToStriped</name></member>
+      <member refid="classcub_1_1WarpExchange_1abb222fd46872ba4a23938db2c09f684a" prot="public" virt="non-virtual"><scope>cub::WarpExchange</scope><name>StripedToBlocked</name></member>
+      <member refid="classcub_1_1WarpExchange_1a489390aeb68fdec6fadf5d455c30ed3d" prot="public" virt="non-virtual"><scope>cub::WarpExchange</scope><name>TempStorage</name></member>
+      <member refid="classcub_1_1WarpExchange_1ab09450373ff5a9b6410d317d7e7bbe38" prot="public" virt="non-virtual"><scope>cub::WarpExchange</scope><name>WarpExchange</name></member>
+      <member refid="classcub_1_1WarpExchange_1a1778c9f2454b9f1c7293b278d06616a2" prot="public" virt="non-virtual"><scope>cub::WarpExchange</scope><name>WarpExchange</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,381 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structcub_1_1BlockRadixRankMatchEarlyCounts" kind="struct" language="C++" prot="public">
+    <compoundname>cub::BlockRadixRankMatchEarlyCounts</compoundname>
+    <innerclass refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1_1BlockRadixRankMatchInternal" prot="public">cub::BlockRadixRankMatchEarlyCounts::BlockRadixRankMatchInternal</innerclass>
+    <innerclass refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1_1TempStorage" prot="public">cub::BlockRadixRankMatchEarlyCounts::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_X</declname>
+        <defname>BLOCK_DIM_X</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>RADIX_BITS</declname>
+        <defname>RADIX_BITS</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>IS_DESCENDING</declname>
+        <defname>IS_DESCENDING</defname>
+      </param>
+      <param>
+        <type><ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23ab" kindref="member">BlockScanAlgorithm</ref></type>
+        <declname>INNER_SCAN_ALGORITHM</declname>
+        <defname>INNER_SCAN_ALGORITHM</defname>
+        <defval><ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba7f51e58246eb53f1a97bd1bc8c0f400f" kindref="member">BLOCK_SCAN_WARP_SCANS</ref></defval>
+      </param>
+      <param>
+        <type>WarpMatchAlgorithm</type>
+        <declname>MATCH_ALGORITHM</declname>
+        <defname>MATCH_ALGORITHM</defname>
+        <defval>WARP_MATCH_ANY</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>NUM_PARTS</declname>
+        <defname>NUM_PARTS</defname>
+        <defval>1</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fb" prot="public" static="no" strong="no">
+        <type></type>
+        <name>@10</name>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba6ec27f77373c184bf0a315644446d40d" prot="public">
+          <name>BLOCK_THREADS</name>
+          <initializer>= BLOCK_DIM_X</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fbaf3db7f8c37173ea4173c2809dda427c2" prot="public">
+          <name>RADIX_DIGITS</name>
+          <initializer>= 1 &lt;&lt; RADIX_BITS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fbaf126beef55bf8238d6c69cda2029ffe7" prot="public">
+          <name>BINS_PER_THREAD</name>
+          <initializer>= (RADIX_DIGITS + BLOCK_THREADS - 1) / BLOCK_THREADS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba1b3690a64f2cc4f5d1a32daaa3314c49" prot="public">
+          <name>BINS_TRACKED_PER_THREAD</name>
+          <initializer>= BINS_PER_THREAD</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba09a2d83b53c123a6f51f63bfbfa0cb7b" prot="public">
+          <name>FULL_BINS</name>
+          <initializer>= BINS_PER_THREAD * BLOCK_THREADS == RADIX_DIGITS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba4cdd20868c60619e00fda94b0e131d10" prot="public">
+          <name>WARP_THREADS</name>
+          <initializer>= detail::warp_threads</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba1386cc7f2353f86613245ba52066ca40" prot="public">
+          <name>PARTIAL_WARP_THREADS</name>
+          <initializer>= BLOCK_THREADS % WARP_THREADS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba3c97fc9001cb18391990527f45c1d268" prot="public">
+          <name>BLOCK_WARPS</name>
+          <initializer>= BLOCK_THREADS / WARP_THREADS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba70374f3b263f373adbd87c3e83006138" prot="public">
+          <name>PARTIAL_WARP_ID</name>
+          <initializer>= BLOCK_WARPS - 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba4fc27809f8bcccda43b3f178ac3ebaf1" prot="public">
+          <name>WARP_MASK</name>
+          <initializer>= ~0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba9f574b6f73fd2dcff69e16fc5ed22f4b" prot="public">
+          <name>NUM_MATCH_MASKS</name>
+          <initializer>= MATCH_ALGORITHM == WARP_MATCH_ATOMIC_OR ? BLOCK_WARPS : 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="896" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="897" bodyend="911"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structcub_1_1BlockRadixRankMatchEarlyCounts_1a17e99b07a0dbb2c9fc4fd77ac000f577" prot="public" static="no">
+        <type><ref refid="classcub_1_1BlockScan" kindref="compound">cub::BlockScan</ref>&lt; int, BLOCK_THREADS, INNER_SCAN_ALGORITHM &gt;</type>
+        <definition>using cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;::BlockScan =  cub::BlockScan&lt;int, BLOCK_THREADS, INNER_SCAN_ALGORITHM&gt;</definition>
+        <argsstring></argsstring>
+        <name>BlockScan</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="914" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="914" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structcub_1_1BlockRadixRankMatchEarlyCounts_1ac930ec2033ceaf02ecacfa75e639199e" prot="public" static="no" mutable="no">
+        <type><ref refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+        <definition>TempStorage&amp; cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="929" column="15" bodyfile="cub/block/block_radix_rank.cuh" bodystart="929" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structcub_1_1BlockRadixRankMatchEarlyCounts_1a51716e6bba5d9670a86ee8eca2fc844b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;::BlockRadixRankMatchEarlyCounts</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>BlockRadixRankMatchEarlyCounts</name>
+        <param>
+          <type><ref refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="1145" column="5" bodyfile="cub/block/block_radix_rank.cuh" bodystart="1145" bodyend="1147"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1BlockRadixRankMatchEarlyCounts_1a91905b8a23565e3d08aa9c236a90e8f8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename UnsignedBits</type>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>KEYS_PER_THREAD</declname>
+            <defname>KEYS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename DigitExtractorT</type>
+          </param>
+          <param>
+            <type>typename CountsCallback</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;::RankKeys</definition>
+        <argsstring>(UnsignedBits(&amp;keys)[KEYS_PER_THREAD], int(&amp;ranks)[KEYS_PER_THREAD], DigitExtractorT digit_extractor, int(&amp;exclusive_digit_prefix)[BINS_PER_THREAD], CountsCallback callback)</argsstring>
+        <name>RankKeys</name>
+        <param>
+          <type>UnsignedBits(&amp;)</type>
+          <declname>keys</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>DigitExtractorT</type>
+          <declname>digit_extractor</declname>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>exclusive_digit_prefix</declname>
+          <array>[BINS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CountsCallback</type>
+          <declname>callback</declname>
+        </param>
+        <briefdescription>
+<para>Rank keys. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For the lower <computeroutput>RADIX_DIGITS</computeroutput> threads, digit counts for each digit are provided for the corresponding thread. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="1154" column="10" bodyfile="cub/block/block_radix_rank.cuh" bodystart="1154" bodyend="1164"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1BlockRadixRankMatchEarlyCounts_1a0f31568e82037a7fa5bf4564b98bfa6d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename UnsignedBits</type>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>KEYS_PER_THREAD</declname>
+            <defname>KEYS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename DigitExtractorT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;::RankKeys</definition>
+        <argsstring>(UnsignedBits(&amp;keys)[KEYS_PER_THREAD], int(&amp;ranks)[KEYS_PER_THREAD], DigitExtractorT digit_extractor, int(&amp;exclusive_digit_prefix)[BINS_PER_THREAD])</argsstring>
+        <name>RankKeys</name>
+        <param>
+          <type>UnsignedBits(&amp;)</type>
+          <declname>keys</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>DigitExtractorT</type>
+          <declname>digit_extractor</declname>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>exclusive_digit_prefix</declname>
+          <array>[BINS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="1168" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="1168" bodyend="1177"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1BlockRadixRankMatchEarlyCounts_1a0c0fe8a0fc59d19c162d7d1904e56e44" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename UnsignedBits</type>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>KEYS_PER_THREAD</declname>
+            <defname>KEYS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename DigitExtractorT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;::RankKeys</definition>
+        <argsstring>(UnsignedBits(&amp;keys)[KEYS_PER_THREAD], int(&amp;ranks)[KEYS_PER_THREAD], DigitExtractorT digit_extractor)</argsstring>
+        <name>RankKeys</name>
+        <param>
+          <type>UnsignedBits(&amp;)</type>
+          <declname>keys</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>DigitExtractorT</type>
+          <declname>digit_extractor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="1181" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="1181" bodyend="1185"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Radix-rank using matching which computes the counts of keys for each digit value early, at the expense of doing more work. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This may be useful e.g. for decoupled look-back, where it reduces the time other thread blocks need to wait for digit counts to become available. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;::TempStorage</label>
+        <link refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1_1TempStorage"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>prefix_tmp</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::TempStorage</label>
+        <link refid="structcub_1_1BlockScan_1_1TempStorage"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Uninitialized&lt; _TempStorage &gt;</label>
+      </node>
+      <node id="1">
+        <label>cub::BlockRadixRankMatchEarlyCounts&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, INNER_SCAN_ALGORITHM, MATCH_ALGORITHM, NUM_PARTS &gt;</label>
+        <link refid="structcub_1_1BlockRadixRankMatchEarlyCounts"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>temp_storage</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="cub/block/block_radix_rank.cuh" line="893" column="1" bodyfile="cub/block/block_radix_rank.cuh" bodystart="894" bodyend="1186"/>
+    <listofallmembers>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fbaf126beef55bf8238d6c69cda2029ffe7" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>BINS_PER_THREAD</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba1b3690a64f2cc4f5d1a32daaa3314c49" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>BINS_TRACKED_PER_THREAD</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba6ec27f77373c184bf0a315644446d40d" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>BLOCK_THREADS</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba3c97fc9001cb18391990527f45c1d268" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>BLOCK_WARPS</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1a51716e6bba5d9670a86ee8eca2fc844b" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>BlockRadixRankMatchEarlyCounts</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1a17e99b07a0dbb2c9fc4fd77ac000f577" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>BlockScan</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba09a2d83b53c123a6f51f63bfbfa0cb7b" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>FULL_BINS</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba9f574b6f73fd2dcff69e16fc5ed22f4b" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>NUM_MATCH_MASKS</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba70374f3b263f373adbd87c3e83006138" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>PARTIAL_WARP_ID</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba1386cc7f2353f86613245ba52066ca40" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>PARTIAL_WARP_THREADS</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fbaf3db7f8c37173ea4173c2809dda427c2" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>RADIX_DIGITS</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1a91905b8a23565e3d08aa9c236a90e8f8" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>RankKeys</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1a0f31568e82037a7fa5bf4564b98bfa6d" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>RankKeys</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1a0c0fe8a0fc59d19c162d7d1904e56e44" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>RankKeys</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1ac930ec2033ceaf02ecacfa75e639199e" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>temp_storage</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba4fc27809f8bcccda43b3f178ac3ebaf1" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>WARP_MASK</name></member>
+      <member refid="structcub_1_1BlockRadixRankMatchEarlyCounts_1aee3c3f12ad8677fb079f1537b29f40fba4cdd20868c60619e00fda94b0e131d10" prot="public" virt="non-virtual"><scope>cub::BlockRadixRankMatchEarlyCounts</scope><name>WARP_THREADS</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

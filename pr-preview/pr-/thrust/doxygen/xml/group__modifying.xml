@@ -1,0 +1,514 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__modifying" kind="group">
+    <compoundname>modifying</compoundname>
+    <title>Modifying</title>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__modifying_1gacef91d7036641ffd9a9a483ff760de05" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename UnaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::for_each</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, UnaryFunction f)</argsstring>
+        <name>for_each</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>for_each</computeroutput> applies the function object <computeroutput>f</computeroutput> to each element in the range <computeroutput>[first, last)</computeroutput>; <computeroutput>f&apos;s</computeroutput> return value, if any, is ignored. Unlike the C++ Standard Template Library function <computeroutput>std::for_each</computeroutput>, this version offers no guarantee on order of execution. For this reason, this version of <computeroutput>for_each</computeroutput> does not return a copy of the function object.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function object to apply to the range <computeroutput>[first, last)</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>last</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>UnaryFunction&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>UnaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>does not apply any non-constant operation through its argument.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>for_each</computeroutput> to print the elements of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">thrust::device_vector</ref></computeroutput> using the <computeroutput>thrust::device</computeroutput> parallelization policy:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/for_each.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;cstdio&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>printf_functor</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>note<sp/>that<sp/>using<sp/>printf<sp/>in<sp/>a<sp/>__device__<sp/>function<sp/>requires</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>code<sp/>compiled<sp/>for<sp/>a<sp/>GPU<sp/>with<sp/>compute<sp/>capability<sp/>2.0<sp/>or</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>higher<sp/>(nvcc<sp/>--arch=sm_20)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printf(&quot;%d\n&quot;,<sp/>x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_vec(3);</highlight></codeline>
+<codeline><highlight class="normal">d_vec[0]<sp/>=<sp/>0;<sp/>d_vec[1]<sp/>=<sp/>1;<sp/>d_vec[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::for_each(thrust::device,<sp/>d_vec.begin(),<sp/>d_vec.end(),<sp/>printf_functor());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>0<sp/>1<sp/>2<sp/>is<sp/>printed<sp/>to<sp/>standard<sp/>output<sp/>in<sp/>some<sp/>unspecified<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>for_each_n </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/for_each">https://en.cppreference.com/w/cpp/algorithm/for_each</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/for_each.h" line="95" column="16" declfile="thrust/for_each.h" declline="95" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__modifying_1ga4924f29db1ab184e799c15259b6c6949" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Size</type>
+          </param>
+          <param>
+            <type>typename UnaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::for_each_n</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, Size n, UnaryFunction f)</argsstring>
+        <name>for_each_n</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>Size</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>for_each_n</computeroutput> applies the function object <computeroutput>f</computeroutput> to each element in the range <computeroutput>[first, first + n)</computeroutput>; <computeroutput>f&apos;s</computeroutput> return value, if any, is ignored. Unlike the C++ Standard Template Library function <computeroutput>std::for_each</computeroutput>, this version offers no guarantee on order of execution.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The size of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function object to apply to the range <computeroutput>[first, first + n)</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>first + n</computeroutput></para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>UnaryFunction&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is an integral type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>UnaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>does not apply any non-constant operation through its argument.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>for_each_n</computeroutput> to print the elements of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">device_vector</ref></computeroutput> using the <computeroutput>thrust::device</computeroutput> parallelization policy.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/for_each.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;cstdio&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>printf_functor</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>note<sp/>that<sp/>using<sp/>printf<sp/>in<sp/>a<sp/>__device__<sp/>function<sp/>requires</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>code<sp/>compiled<sp/>for<sp/>a<sp/>GPU<sp/>with<sp/>compute<sp/>capability<sp/>2.0<sp/>or</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>higher<sp/>(nvcc<sp/>--arch=sm_20)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printf(&quot;%d\n&quot;,<sp/>x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_vec(3);</highlight></codeline>
+<codeline><highlight class="normal">d_vec[0]<sp/>=<sp/>0;<sp/>d_vec[1]<sp/>=<sp/>1;<sp/>d_vec[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::for_each_n(thrust::device,<sp/>d_vec.begin(),<sp/>d_vec.size(),<sp/>printf_functor());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>0<sp/>1<sp/>2<sp/>is<sp/>printed<sp/>to<sp/>standard<sp/>output<sp/>in<sp/>some<sp/>unspecified<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>for_each </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/for_each">https://en.cppreference.com/w/cpp/algorithm/for_each</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/for_each.h" line="153" column="16" declfile="thrust/for_each.h" declline="153" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__modifying_1ga263741e1287daa9edbac8d56c95070ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename UnaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::for_each</definition>
+        <argsstring>(InputIterator first, InputIterator last, UnaryFunction f)</argsstring>
+        <name>for_each</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>for_each</computeroutput> applies the function object <computeroutput>f</computeroutput> to each element in the range <computeroutput>[first, last)</computeroutput>; <computeroutput>f&apos;s</computeroutput> return value, if any, is ignored. Unlike the C++ Standard Template Library function <computeroutput>std::for_each</computeroutput>, this version offers no guarantee on order of execution. For this reason, this version of <computeroutput>for_each</computeroutput> does not return a copy of the function object.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function object to apply to the range <computeroutput>[first, last)</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>last</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>UnaryFunction&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>UnaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>does not apply any non-constant operation through its argument.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>for_each</computeroutput> to print the elements of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">device_vector</ref></computeroutput>.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/for_each.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;stdio.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>printf_functor</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>note<sp/>that<sp/>using<sp/>printf<sp/>in<sp/>a<sp/>__device__<sp/>function<sp/>requires</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>code<sp/>compiled<sp/>for<sp/>a<sp/>GPU<sp/>with<sp/>compute<sp/>capability<sp/>2.0<sp/>or</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>higher<sp/>(nvcc<sp/>--arch=sm_20)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printf(&quot;%d\n&quot;,<sp/>x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_vec(3);</highlight></codeline>
+<codeline><highlight class="normal">d_vec[0]<sp/>=<sp/>0;<sp/>d_vec[1]<sp/>=<sp/>1;<sp/>d_vec[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::for_each(d_vec.begin(),<sp/>d_vec.end(),<sp/>printf_functor());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>0<sp/>1<sp/>2<sp/>is<sp/>printed<sp/>to<sp/>standard<sp/>output<sp/>in<sp/>some<sp/>unspecified<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>for_each_n </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/for_each">https://en.cppreference.com/w/cpp/algorithm/for_each</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/for_each.h" line="204" column="15" declfile="thrust/for_each.h" declline="204" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__modifying_1ga4c825347127313bc87b33731c907739a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Size</type>
+          </param>
+          <param>
+            <type>typename UnaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::for_each_n</definition>
+        <argsstring>(InputIterator first, Size n, UnaryFunction f)</argsstring>
+        <name>for_each_n</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>Size</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>for_each_n</computeroutput> applies the function object <computeroutput>f</computeroutput> to each element in the range <computeroutput>[first, first + n)</computeroutput>; <computeroutput>f&apos;s</computeroutput> return value, if any, is ignored. Unlike the C++ Standard Template Library function <computeroutput>std::for_each</computeroutput>, this version offers no guarantee on order of execution.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The size of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function object to apply to the range <computeroutput>[first, first + n)</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>first + n</computeroutput></para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>UnaryFunction&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is an integral type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>UnaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>does not apply any non-constant operation through its argument.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>for_each_n</computeroutput> to print the elements of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">device_vector</ref></computeroutput>.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/for_each.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;stdio.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>printf_functor</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>void<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>note<sp/>that<sp/>using<sp/>printf<sp/>in<sp/>a<sp/>__device__<sp/>function<sp/>requires</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>code<sp/>compiled<sp/>for<sp/>a<sp/>GPU<sp/>with<sp/>compute<sp/>capability<sp/>2.0<sp/>or</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>higher<sp/>(nvcc<sp/>--arch=sm_20)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>printf(&quot;%d\n&quot;,<sp/>x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_vec(3);</highlight></codeline>
+<codeline><highlight class="normal">d_vec[0]<sp/>=<sp/>0;<sp/>d_vec[1]<sp/>=<sp/>1;<sp/>d_vec[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::for_each_n(d_vec.begin(),<sp/>d_vec.size(),<sp/>printf_functor());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>0<sp/>1<sp/>2<sp/>is<sp/>printed<sp/>to<sp/>standard<sp/>output<sp/>in<sp/>some<sp/>unspecified<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>for_each </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/for_each">https://en.cppreference.com/w/cpp/algorithm/for_each</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/for_each.h" line="254" column="15" declfile="thrust/for_each.h" declline="254" declcolumn="15"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

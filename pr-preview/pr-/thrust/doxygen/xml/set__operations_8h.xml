@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="set__operations_8h" kind="file" language="C++">
+    <compoundname>set_operations.h</compoundname>
+    <includes local="no">thrust/detail/config.h</includes>
+    <includes local="no">thrust/detail/execution_policy.h</includes>
+    <includes refid="pair_8h" local="no">thrust/pair.h</includes>
+    <includes local="no">thrust/detail/set_operations.inl</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>thrust/set_operations.h</label>
+        <link refid="set__operations_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>thrust/detail/set_operations.inl</label>
+      </node>
+      <node id="2">
+        <label>thrust/detail/config.h</label>
+      </node>
+      <node id="3">
+        <label>thrust/detail/execution_policy.h</label>
+      </node>
+      <node id="5">
+        <label>cuda/std/utility</label>
+      </node>
+      <node id="4">
+        <label>thrust/pair.h</label>
+        <link refid="pair_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacethrust">thrust</innernamespace>
+    <briefdescription>
+<para>Set theoretic operations for sorted ranges. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>Copyright<sp/>2008-2013<sp/>NVIDIA<sp/>Corporation</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Licensed<sp/>under<sp/>the<sp/>Apache<sp/>License,<sp/>Version<sp/>2.0<sp/>(the<sp/>&quot;License&quot;);</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/>you<sp/>may<sp/>not<sp/>use<sp/>this<sp/>file<sp/>except<sp/>in<sp/>compliance<sp/>with<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>may<sp/>obtain<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>License<sp/>at</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>http://www.apache.org/licenses/LICENSE-2.0</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/>Unless<sp/>required<sp/>by<sp/>applicable<sp/>law<sp/>or<sp/>agreed<sp/>to<sp/>in<sp/>writing,<sp/>software</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/>distributed<sp/>under<sp/>the<sp/>License<sp/>is<sp/>distributed<sp/>on<sp/>an<sp/>&quot;AS<sp/>IS&quot;<sp/>BASIS,</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/>WITHOUT<sp/>WARRANTIES<sp/>OR<sp/>CONDITIONS<sp/>OF<sp/>ANY<sp/>KIND,<sp/>either<sp/>express<sp/>or<sp/>implied.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/>See<sp/>the<sp/>License<sp/>for<sp/>the<sp/>specific<sp/>language<sp/>governing<sp/>permissions<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/>limitations<sp/>under<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/config.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/execution_policy.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="pair_8h" kindref="compound">thrust/pair.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">THRUST_NAMESPACE_BEGIN</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="113" refid="group__set__operations_1ga3d7c39723b065e54feccdae6fbe599a5" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1gab4528ff414e0292680ba412dbafdc6e1" kindref="member">set_difference</ref>(</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="186" refid="group__set__operations_1gacf5edd558fd96eee01b6425b3909c6b4" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1gab4528ff414e0292680ba412dbafdc6e1" kindref="member">set_difference</ref>(</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,<sp/>InputIterator1<sp/>last1,<sp/>InputIterator2<sp/>first2,<sp/>InputIterator2<sp/>last2,<sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="260" refid="group__set__operations_1ga1326c0163eed54192fd419d1691cdfef" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1gab4528ff414e0292680ba412dbafdc6e1" kindref="member">set_difference</ref>(</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="330" refid="group__set__operations_1gab4528ff414e0292680ba412dbafdc6e1" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1gab4528ff414e0292680ba412dbafdc6e1" kindref="member">set_difference</ref>(</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="415"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="416" refid="group__set__operations_1ga69e037cb6ccedcc087e657641f8e5c63" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1ga63a7ebdaf5797f78be04febd436cd284" kindref="member">set_intersection</ref>(</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="419"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="421"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="422"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="423"><highlight class="normal"></highlight></codeline>
+<codeline lineno="495"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="496" refid="group__set__operations_1ga939f2c87cff784afc63e39c5e5119784" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1ga63a7ebdaf5797f78be04febd436cd284" kindref="member">set_intersection</ref>(</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,<sp/>InputIterator1<sp/>last1,<sp/>InputIterator2<sp/>first2,<sp/>InputIterator2<sp/>last2,<sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="498"><highlight class="normal"></highlight></codeline>
+<codeline lineno="577"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="578"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="579"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="580"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,</highlight></codeline>
+<codeline lineno="581"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="582" refid="group__set__operations_1ga251169469a5d79ccd11b9e0a1c867fc0" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1ga63a7ebdaf5797f78be04febd436cd284" kindref="member">set_intersection</ref>(</highlight></codeline>
+<codeline lineno="583"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="584"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="585"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="586"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="587"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="588"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="589"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="590"><highlight class="normal"></highlight></codeline>
+<codeline lineno="662"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="663" refid="group__set__operations_1ga63a7ebdaf5797f78be04febd436cd284" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1ga63a7ebdaf5797f78be04febd436cd284" kindref="member">set_intersection</ref>(</highlight></codeline>
+<codeline lineno="664"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="665"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="666"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="667"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="668"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="669"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="670"><highlight class="normal"></highlight></codeline>
+<codeline lineno="745"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="746" refid="group__set__operations_1ga575dc422a51753d641059e9897c51f11" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1ga2194c9c4fe22397aff13e1c163c86446" kindref="member">set_symmetric_difference</ref>(</highlight></codeline>
+<codeline lineno="747"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="748"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="749"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="750"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="751"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="752"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="753"><highlight class="normal"></highlight></codeline>
+<codeline lineno="822"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="823" refid="group__set__operations_1ga16bc72ce5444f82fca22e178b8370a98" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1ga2194c9c4fe22397aff13e1c163c86446" kindref="member">set_symmetric_difference</ref>(</highlight></codeline>
+<codeline lineno="824"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,<sp/>InputIterator1<sp/>last1,<sp/>InputIterator2<sp/>first2,<sp/>InputIterator2<sp/>last2,<sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="825"><highlight class="normal"></highlight></codeline>
+<codeline lineno="901"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="902"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="903"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="904"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,</highlight></codeline>
+<codeline lineno="905"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="906" refid="group__set__operations_1ga6b0c58c0c655c0cfe5ed3166d266bc4f" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1ga2194c9c4fe22397aff13e1c163c86446" kindref="member">set_symmetric_difference</ref>(</highlight></codeline>
+<codeline lineno="907"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="908"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="909"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="910"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="911"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="912"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="913"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="914"><highlight class="normal"></highlight></codeline>
+<codeline lineno="984"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="985" refid="group__set__operations_1ga2194c9c4fe22397aff13e1c163c86446" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1ga2194c9c4fe22397aff13e1c163c86446" kindref="member">set_symmetric_difference</ref>(</highlight></codeline>
+<codeline lineno="986"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="987"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="988"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="989"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="990"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="991"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="992"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1065"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="1066" refid="group__set__operations_1gac8e1b0b7feffbbccfab972a3dab81391" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1ga5d768feeec14f067304bf66bf59aaecf" kindref="member">set_union</ref>(</highlight></codeline>
+<codeline lineno="1067"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1068"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="1069"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="1070"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="1071"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="1072"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="1073"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1140"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="1141" refid="group__set__operations_1gaae9a47e263655f0e56b1a4860182d4a8" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1ga5d768feeec14f067304bf66bf59aaecf" kindref="member">set_union</ref>(</highlight></codeline>
+<codeline lineno="1142"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,<sp/>InputIterator1<sp/>last1,<sp/>InputIterator2<sp/>first2,<sp/>InputIterator2<sp/>last2,<sp/>OutputIterator<sp/>result);</highlight></codeline>
+<codeline lineno="1143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1212"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="1213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,</highlight></codeline>
+<codeline lineno="1216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="1217" refid="group__set__operations_1ga37c6a6e120f45a1623f3a5760148f6d7" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>OutputIterator<sp/><ref refid="group__set__operations_1ga5d768feeec14f067304bf66bf59aaecf" kindref="member">set_union</ref>(</highlight></codeline>
+<codeline lineno="1218"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1219"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="1220"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="1221"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="1222"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="1223"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="1224"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="1225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1288"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="1289" refid="group__set__operations_1ga5d768feeec14f067304bf66bf59aaecf" refkind="member"><highlight class="normal">OutputIterator<sp/><ref refid="group__set__operations_1ga5d768feeec14f067304bf66bf59aaecf" kindref="member">set_union</ref>(</highlight></codeline>
+<codeline lineno="1290"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>first1,</highlight></codeline>
+<codeline lineno="1291"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>last1,</highlight></codeline>
+<codeline lineno="1292"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>first2,</highlight></codeline>
+<codeline lineno="1293"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>last2,</highlight></codeline>
+<codeline lineno="1294"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>result,</highlight></codeline>
+<codeline lineno="1295"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="1296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1387"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="1388"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="1391"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="1392"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="1394" refid="group__set__operations_1gae72b9d1974e6a28f77a61fe4d766134e" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga13e50a81573e4cfe4c0ddb6d5aeed55d" kindref="member">set_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="1395"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1396"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="1397"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="1398"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="1399"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="1400"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="1401"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="1402"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="1403"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="1404"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1489"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1490"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1491"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="1492"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="1493"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1494"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="1495" refid="group__set__operations_1ga7462998276d8002271618b11907fc474" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga13e50a81573e4cfe4c0ddb6d5aeed55d" kindref="member">set_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="1496"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="1497"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="1498"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="1499"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="1500"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="1501"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="1502"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="1503"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="1504"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1599"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="1600"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1601"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1602"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="1603"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="1604"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1605"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="1606"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="1607" refid="group__set__operations_1gaec9ea46b14c4129cc5c89edb3bf8d268" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga13e50a81573e4cfe4c0ddb6d5aeed55d" kindref="member">set_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="1608"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1609"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="1610"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="1611"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="1612"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="1613"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="1614"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="1615"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="1616"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="1617"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="1618"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1707"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1708"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1709"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="1710"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="1711"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1712"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="1713"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="1714" refid="group__set__operations_1ga13e50a81573e4cfe4c0ddb6d5aeed55d" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga13e50a81573e4cfe4c0ddb6d5aeed55d" kindref="member">set_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="1715"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="1716"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="1717"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="1718"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="1719"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="1720"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="1721"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="1722"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="1723"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="1724"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1816"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="1817"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1818"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1819"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="1820"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1821"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="1822" refid="group__set__operations_1gacb6055627d945f7e7df567ae8abdbbf3" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga9777e9fb20b4597eab1dba6ac6209413" kindref="member">set_intersection_by_key</ref>(</highlight></codeline>
+<codeline lineno="1823"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1824"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="1825"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="1826"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="1827"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="1828"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="1829"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="1830"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="1831"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1917"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1918"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1919"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="1920"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1921"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="1922" refid="group__set__operations_1ga94abdc8c04deae612c7ff3a916e50b73" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga9777e9fb20b4597eab1dba6ac6209413" kindref="member">set_intersection_by_key</ref>(</highlight></codeline>
+<codeline lineno="1923"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="1924"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="1925"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="1926"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="1927"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="1928"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="1929"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="1930"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2026"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="2027"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2028"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2029"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2030"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2031"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="2032"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="2033" refid="group__set__operations_1ga73d15770c7f9c31846e54930f7ec5575" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga9777e9fb20b4597eab1dba6ac6209413" kindref="member">set_intersection_by_key</ref>(</highlight></codeline>
+<codeline lineno="2034"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="2035"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2036"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2037"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2038"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2039"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2040"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2041"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="2042"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="2043"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2133"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="2138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="2139" refid="group__set__operations_1ga9777e9fb20b4597eab1dba6ac6209413" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga9777e9fb20b4597eab1dba6ac6209413" kindref="member">set_intersection_by_key</ref>(</highlight></codeline>
+<codeline lineno="2140"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2141"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2142"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2143"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2144"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2145"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2146"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="2147"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="2148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2242"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="2243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="2247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="2249" refid="group__set__operations_1ga081e23da3b97e04528bfb403dd4e7af6" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga16c84eec19aadfe0d3d4726882d2f8ea" kindref="member">set_symmetric_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="2250"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="2251"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2252"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2253"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2254"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2255"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2256"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="2257"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2258"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="2259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2347"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2349"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="2351"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2352"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="2353" refid="group__set__operations_1gaab57bb979ffabcf5a7abf84fbd5ab9c1" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga16c84eec19aadfe0d3d4726882d2f8ea" kindref="member">set_symmetric_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="2354"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2355"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2356"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2357"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2358"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2359"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="2360"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2361"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="2362"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2460"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="2461"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2462"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2463"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2464"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="2465"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2466"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="2467"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="2468" refid="group__set__operations_1ga9261406b5ae4c38d457b76eab24a0a4d" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga16c84eec19aadfe0d3d4726882d2f8ea" kindref="member">set_symmetric_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="2469"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="2470"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2471"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2472"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2473"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2474"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2475"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="2476"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2477"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="2478"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="2479"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2571"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2572"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2573"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2574"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="2575"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2576"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="2577"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="2578" refid="group__set__operations_1ga16c84eec19aadfe0d3d4726882d2f8ea" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga16c84eec19aadfe0d3d4726882d2f8ea" kindref="member">set_symmetric_difference_by_key</ref>(</highlight></codeline>
+<codeline lineno="2579"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2580"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2581"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2582"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2583"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2584"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="2585"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2586"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="2587"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="2588"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2680"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="2681"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2682"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2683"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2684"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="2685"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2686"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="2687" refid="group__set__operations_1gafd083e5decf93eaebcb4d99fd4e09e85" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga7d1d5d7cedc8d479aacf60025f57c086" kindref="member">set_union_by_key</ref>(</highlight></codeline>
+<codeline lineno="2688"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="2689"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2690"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2691"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2692"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2693"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2694"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="2695"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2696"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="2697"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2783"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2784"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2785"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2786"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="2787"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2788"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="2789" refid="group__set__operations_1gafd50d04373d40746c12c0b9cb467b91b" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga7d1d5d7cedc8d479aacf60025f57c086" kindref="member">set_union_by_key</ref>(</highlight></codeline>
+<codeline lineno="2790"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2791"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2792"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2793"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2794"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2795"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="2796"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2797"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result);</highlight></codeline>
+<codeline lineno="2798"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2894"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="2895"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="2896"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="2897"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="2898"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="2899"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="2900"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="2901"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="2902" refid="group__set__operations_1ga7aa4740a1acff09b815492e408fa7508" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga7d1d5d7cedc8d479aacf60025f57c086" kindref="member">set_union_by_key</ref>(</highlight></codeline>
+<codeline lineno="2903"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="2904"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="2905"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="2906"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="2907"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="2908"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="2909"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="2910"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="2911"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="2912"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="2913"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3003"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="3004"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="3005"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator3,</highlight></codeline>
+<codeline lineno="3006"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator4,</highlight></codeline>
+<codeline lineno="3007"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="3008"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="3009"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StrictWeakCompare&gt;</highlight></codeline>
+<codeline lineno="3010" refid="group__set__operations_1ga7d1d5d7cedc8d479aacf60025f57c086" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__set__operations_1ga7d1d5d7cedc8d479aacf60025f57c086" kindref="member">set_union_by_key</ref>(</highlight></codeline>
+<codeline lineno="3011"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first1,</highlight></codeline>
+<codeline lineno="3012"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last1,</highlight></codeline>
+<codeline lineno="3013"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_first2,</highlight></codeline>
+<codeline lineno="3014"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>keys_last2,</highlight></codeline>
+<codeline lineno="3015"><highlight class="normal"><sp/><sp/>InputIterator3<sp/>values_first1,</highlight></codeline>
+<codeline lineno="3016"><highlight class="normal"><sp/><sp/>InputIterator4<sp/>values_first2,</highlight></codeline>
+<codeline lineno="3017"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_result,</highlight></codeline>
+<codeline lineno="3018"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_result,</highlight></codeline>
+<codeline lineno="3019"><highlight class="normal"><sp/><sp/>StrictWeakCompare<sp/>comp);</highlight></codeline>
+<codeline lineno="3020"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3024"><highlight class="normal">THRUST_NAMESPACE_END</highlight></codeline>
+<codeline lineno="3025"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3026"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/set_operations.inl&gt;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="thrust/set_operations.h"/>
+  </compounddef>
+</doxygen>

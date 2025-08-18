@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work stealing &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PTX" href="../ptx.html" />
+    <link rel="prev" title="static_for" href="utility/static_for.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bit.html">Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution_model.html">Execution model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="synchronization_primitives.html">Synchronization Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asynchronous_operations.html">Asynchronous Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Work stealing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../extended_api.html">Extended API</a> &raquo;</li>
+      <li>Work stealing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="work-stealing">
+<span id="libcudacxx-extended-api-work-stealing"></span><h1>Work stealing<a class="headerlink" href="#work-stealing" title="Permalink to this headline"></a></h1>
+<p>Defined in header <code class="docutils literal notranslate"><span class="pre">&lt;cuda/work_stealing&gt;</span></code> if the CUDA compiler supports at least PTX ISA 8.7:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="n">namespace</span><span class="w"> </span><span class="n">cuda</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w"> </span><span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">ThreadBlockRank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">typename</span><span class="w"> </span><span class="n">UnaryFunction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">..</span><span class="n">unspecified</span><span class="p">..</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w"> </span><span class="kt">__device__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">for_each_canceled_block</span><span class="p">(</span><span class="n">UnaryFunction</span><span class="w"> </span><span class="n">uf</span><span class="p">);</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace cuda</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: On devices with compute capability 10.0 or higher, this function may leverage hardware acceleration.</p>
+<p>This API is primarily intended for implementing work-stealing at the thread-block level.</p>
+<p>Compared to alternative work distribution techniques, such as  <a class="reference external" href="https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/">grid-stride loops</a>, which distribute work statically, or dynamic work distribution methods relying on global memory concurrency, this API offers several advantages:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>It enables dynamic work-stealing: thread blocks that complete their tasks sooner can take on additional work from slower thread blocks.</p></li>
+<li><p>It may cooperate with the GPU work scheduler to respect work priorities and improve load balancing.</p></li>
+<li><p>It may reduce work-stealing latency compared to global memory atomics.</p></li>
+</ul>
+</div></blockquote>
+<p>For better performance, extract the shared thread-block prologue and epilogue outside the lambda and reuse them across thread-block iterations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Prologue: Thread-block initialization code and data common to all thread blocks, such as <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> memory allocation and initialization.</p></li>
+<li><p>Epilogue: Epilogue: Thread-block finalization code common to all thread blocks, such as writing shared memory back to global memory..</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Mandates</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ThreadBlockRank</span></code> equals the rank of the thread block: <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, or <code class="docutils literal notranslate"><span class="pre">3</span></code> for one-dimensional, two-dimensional, and three-dimensional thread blocks, respectively.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_invocable_r_v&lt;UnaryFunction,</span> <span class="pre">void,</span> <span class="pre">dim3&gt;</span></code> is true.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Preconditions</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>All threads within a thread block shall call <code class="docutils literal notranslate"><span class="pre">for_each_canceled_block</span></code> <strong>exactly once</strong>.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Effects</strong>:</p>
+<blockquote>
+<div><ul>
+<li><p>Invokes <code class="docutils literal notranslate"><span class="pre">uf</span></code> with <code class="docutils literal notranslate"><span class="pre">blockIdx</span></code> and then repeatedly attempts to cancel the launch of another thread block within the current grid:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If successful: invokes <code class="docutils literal notranslate"><span class="pre">uf</span></code> with the canceled thread block’s <code class="docutils literal notranslate"><span class="pre">blockIdx</span></code> and repeats.</p></li>
+<li><p>Otherwise, the function returns; it failed to cancel the launch of another thread block.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<p>This example demonstrates work-stealing at thread-block granularity using this API.</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// Before:</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/math&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/functional&gt;</span><span class="cp"></span>
+<span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">vec_add</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Extract common prologue outside the lambda, e.g.,</span>
+<span class="w">  </span><span class="c1">// - __shared__ or global (malloc) memory allocation</span>
+<span class="w">  </span><span class="c1">// - common initialization code</span>
+<span class="w">  </span><span class="c1">// - etc.</span>
+
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">for_each_canceled_block</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">([</span><span class="o">=</span><span class="p">](</span><span class="kt">dim3</span><span class="w"> </span><span class="n">block_idx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// block_idx may be different than the built-in blockIdx variable, that is:</span>
+<span class="w">    </span><span class="c1">// assert(block_idx == blockIdx); // may fail!</span>
+<span class="w">    </span><span class="c1">// so we need to use &quot;block_idx&quot; consistently inside for_each_canceled:</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">block_idx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">c</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">});</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Note: Calling for_each_canceled_block&lt;1&gt; again from this</span>
+<span class="w">  </span><span class="c1">// thread block exhibits undefined behavior.</span>
+
+<span class="w">  </span><span class="c1">// Extract common epilogue outside the lambda, e.g.,</span>
+<span class="w">  </span><span class="c1">// - write back shared memory to global memory</span>
+<span class="w">  </span><span class="c1">// - external synchronization</span>
+<span class="w">  </span><span class="c1">// - global memory deallocation (free)</span>
+<span class="w">  </span><span class="c1">// - etc.</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">c</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span><span class="w"></span>
+<span class="w"> </span><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span><span class="w"></span>
+<span class="w"> </span><span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span><span class="w"></span>
+<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="p">}</span><span class="w"></span>
+
+<span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">blocks_per_grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">ceil_div</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">threads_per_block</span><span class="p">);</span><span class="w"></span>
+
+<span class="w"> </span><span class="n">vec_add</span><span class="o">&lt;&lt;&lt;</span><span class="n">blocks_per_grid</span><span class="p">,</span><span class="w"> </span><span class="n">threads_per_block</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span><span class="w"></span>
+
+<span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ERROR &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">     </span><span class="n">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w"> </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+
+<span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">success</span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
