@@ -1,0 +1,577 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1BlockHistogram" kind="class" language="C++" prot="public">
+    <compoundname>cub::BlockHistogram</compoundname>
+    <innerclass refid="structcub_1_1BlockHistogram_1_1TempStorage" prot="public">cub::BlockHistogram::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_X</declname>
+        <defname>BLOCK_DIM_X</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ITEMS_PER_THREAD</declname>
+        <defname>ITEMS_PER_THREAD</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BINS</declname>
+        <defname>BINS</defname>
+      </param>
+      <param>
+        <type><ref refid="namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2" kindref="member">BlockHistogramAlgorithm</ref></type>
+        <declname>ALGORITHM</declname>
+        <defname>ALGORITHM</defname>
+        <defval><ref refid="namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2ac14962247ae5693de2de53a8db40ca54" kindref="member">BLOCK_HISTO_SORT</ref></defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Y</declname>
+        <defname>BLOCK_DIM_Y</defname>
+        <defval>1</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Z</declname>
+        <defname>BLOCK_DIM_Z</defname>
+        <defval>1</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1BlockHistogram_1afaf42b04f1c6399ff5a09ca688814ee9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockHistogram</definition>
+        <argsstring>()</argsstring>
+        <name>BlockHistogram</name>
+        <briefdescription>
+<para>Collective constructor using a private static allocation of shared memory as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="230" column="5" bodyfile="cub/block/block_histogram.cuh" bodystart="230" bodyend="233"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockHistogram_1a3d58db09a81bbad6cadbe7eb853b468a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockHistogram</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>BlockHistogram</name>
+        <param>
+          <type><ref refid="structcub_1_1BlockHistogram_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to memory allocation having layout type <ref refid="structcub_1_1BlockHistogram_1_1TempStorage" kindref="compound">TempStorage</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="241" column="5" bodyfile="cub/block/block_histogram.cuh" bodystart="241" bodyend="244"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Histogram operations</header>
+      <memberdef kind="function" id="classcub_1_1BlockHistogram_1a2a8b2449c12c0f65431aff7b43953df4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CounterT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InitHistogram</definition>
+        <argsstring>(CounterT histogram[BINS])</argsstring>
+        <name>InitHistogram</name>
+        <param>
+          <type>CounterT</type>
+          <declname>histogram</declname>
+          <array>[BINS]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Initialize the shared histogram counters to zero.
+
+Snippet
++++++++
+
+The code snippet below illustrates a the initialization and update of a
+histogram of 512 integer samples that are partitioned across 128 threads
+where each thread owns 4 samples.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_histogram.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+     // Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each
+     using BlockHistogram = cub::BlockHistogram&lt;unsigned char, 128, 4, 256&gt;;
+
+     // Allocate shared memory for BlockHistogram
+     __shared__ typename BlockHistogram::TempStorage temp_storage;
+
+     // Allocate shared memory for block-wide histogram bin counts
+     __shared__ unsigned int smem_histogram[256];
+
+     // Obtain input samples per thread
+     unsigned char thread_samples[4];
+     ...
+
+     // Initialize the block-wide histogram
+     BlockHistogram(temp_storage).InitHistogram(smem_histogram);
+
+     // Update the block-wide histogram
+     BlockHistogram(temp_storage).Composite(thread_samples, smem_histogram);</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CounterT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Histogram counter type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="290" column="10" bodyfile="cub/block/block_histogram.cuh" bodystart="290" bodyend="305"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockHistogram_1aa8dae9addc61450a3584402165ba66d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CounterT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Histogram</definition>
+        <argsstring>(T(&amp;items)[ITEMS_PER_THREAD], CounterT histogram[BINS])</argsstring>
+        <name>Histogram</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CounterT</type>
+          <declname>histogram</declname>
+          <array>[BINS]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Constructs a block-wide histogram in shared/device-accessible memory.
+Each thread contributes an array of input elements.
+
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a 256-bin histogram of 512 integer samples that
+are partitioned across 128 threads where each thread owns 4 samples.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_histogram.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each
+       using BlockHistogram = cub::BlockHistogram&lt;unsigned char, 128, 4, 256&gt;;
+
+       // Allocate shared memory for BlockHistogram
+       __shared__ typename BlockHistogram::TempStorage temp_storage;
+
+       // Allocate shared memory for block-wide histogram bin counts
+       __shared__ unsigned int smem_histogram[256];
+
+       // Obtain input samples per thread
+       unsigned char thread_samples[4];
+       ...
+
+       // Compute the block-wide histogram
+       BlockHistogram(temp_storage).Histogram(thread_samples, smem_histogram);</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CounterT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Histogram counter type</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input values to histogram</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">histogram</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to shared/device-accessible memory histogram </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="353" column="10" bodyfile="cub/block/block_histogram.cuh" bodystart="353" bodyend="362"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockHistogram_1ac548d058d4af18c8f6d932ca7b7d2511" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CounterT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Composite</definition>
+        <argsstring>(T(&amp;items)[ITEMS_PER_THREAD], CounterT histogram[BINS])</argsstring>
+        <name>Composite</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>items</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>CounterT</type>
+          <declname>histogram</declname>
+          <array>[BINS]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Updates an existing block-wide histogram in shared/device-accessible memory.
+Each thread composites an array of input elements.
+
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a the initialization and update of a
+histogram of 512 integer samples that are partitioned across 128 threads
+where each thread owns 4 samples.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_histogram.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each
+       using BlockHistogram = cub::BlockHistogram&lt;unsigned char, 128, 4, 256&gt;;
+
+       // Allocate shared memory for BlockHistogram
+       __shared__ typename BlockHistogram::TempStorage temp_storage;
+
+       // Allocate shared memory for block-wide histogram bin counts
+       __shared__ unsigned int smem_histogram[256];
+
+       // Obtain input samples per thread
+       unsigned char thread_samples[4];
+       ...
+
+       // Initialize the block-wide histogram
+       BlockHistogram(temp_storage).InitHistogram(smem_histogram);
+
+       // Update the block-wide histogram
+       BlockHistogram(temp_storage).Composite(thread_samples, smem_histogram);</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>CounterT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Histogram counter type</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input values to histogram</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">histogram</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to shared/device-accessible memory histogram </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="414" column="10" bodyfile="cub/block/block_histogram.cuh" bodystart="414" bodyend="417"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classcub_1_1BlockHistogram_1a7c0b656da08c4536357ba36f336deb6d" prot="private" static="no" strong="no">
+        <type></type>
+        <name>@3</name>
+        <enumvalue id="classcub_1_1BlockHistogram_1a7c0b656da08c4536357ba36f336deb6da3c9935f07accf7630e14730e939b9267" prot="private">
+          <name>BLOCK_THREADS</name>
+          <initializer>= BLOCK_DIM_X * BLOCK_DIM_Y * BLOCK_DIM_Z</initializer>
+          <briefdescription>
+<para>The thread block size in threads. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Constants. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="193" column="3" bodyfile="cub/block/block_histogram.cuh" bodystart="194" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockHistogram_1a5c295d9e9ca33212c8420383eca4f4b5" prot="private" static="no">
+        <type>::cuda::std::_If&lt; ALGORITHM==<ref refid="namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2ac14962247ae5693de2de53a8db40ca54" kindref="member">BLOCK_HISTO_SORT</ref>, detail::BlockHistogramSort&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;, detail::BlockHistogramAtomic&lt; BINS &gt; &gt;</type>
+        <definition>using cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InternalBlockHistogram =  ::cuda::std::_If&lt;ALGORITHM == BLOCK_HISTO_SORT, detail::BlockHistogramSort&lt;T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, BLOCK_DIM_Y, BLOCK_DIM_Z&gt;, detail::BlockHistogramAtomic&lt;BINS&gt; &gt;</definition>
+        <argsstring></argsstring>
+        <name>InternalBlockHistogram</name>
+        <briefdescription>
+<para>Internal specialization. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="200" column="3" bodyfile="cub/block/block_histogram.cuh" bodystart="203" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockHistogram_1aaee582b2e95559d0f126896d150222b0" prot="private" static="no">
+        <type>typename InternalBlockHistogram::TempStorage</type>
+        <definition>using cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::_TempStorage =  typename InternalBlockHistogram::TempStorage</definition>
+        <argsstring></argsstring>
+        <name>_TempStorage</name>
+        <briefdescription>
+<para>Shared memory storage layout type for <ref refid="classcub_1_1BlockHistogram" kindref="compound">BlockHistogram</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="206" column="3" bodyfile="cub/block/block_histogram.cuh" bodystart="206" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockHistogram_1a1b33a552dc7f89d98ac7fee0712c9445" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+<para>Shared storage reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="209" column="16" bodyfile="cub/block/block_histogram.cuh" bodystart="209" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockHistogram_1a5081e3ad44ac65acc5adabb62ca0a772" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::linear_tid</definition>
+        <argsstring></argsstring>
+        <name>linear_tid</name>
+        <briefdescription>
+<para>Linear thread-id. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="212" column="16" bodyfile="cub/block/block_histogram.cuh" bodystart="212" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcub_1_1BlockHistogram_1ab844e3c0161312dd002f542b8349a2b4" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockHistogram&lt; T, BLOCK_DIM_X, ITEMS_PER_THREAD, BINS, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::PrivateStorage</definition>
+        <argsstring>()</argsstring>
+        <name>PrivateStorage</name>
+        <briefdescription>
+<para>Internal storage allocator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_histogram.cuh" line="215" column="18" bodyfile="cub/block/block_histogram.cuh" bodystart="215" bodyend="219"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+The BlockHistogram class provides :ref:`collective &lt;collective-primitives&gt;` methods for
+constructing block-wide histograms from data samples partitioned across a CUDA thread block.
+
+Overview
++++++++++++++++++++++++++++++++++++++++++++++
+
+- A `histogram &lt;http://en.wikipedia.org/wiki/Histogram&gt;`_ counts the number of observations that fall into
+  each of the disjoint categories (known as *bins*).
+- The ``T`` type must be implicitly castable to an integer type.
+- BlockHistogram expects each integral ``input[i]`` value to satisfy
+  ``0 &lt;= input[i] &lt; BINS``. Values outside of this range result in undefined behavior.
+- BlockHistogram can be optionally specialized to use different algorithms:
+
+  #. :cpp:enumerator:`cub::BLOCK_HISTO_SORT`: Sorting followed by differentiation.
+  #. :cpp:enumerator:`cub::BLOCK_HISTO_ATOMIC`: Use atomic addition to update byte counts directly.
+
+A Simple Example
++++++++++++++++++++++++++++++++++++++++++++++
+
+Every thread in the block uses the BlockHistogram class by first specializing the BlockHistogram type, then instantiating an instance with parameters for communication, and finally invoking one or more collective member functions.
+
+The code snippet below illustrates a 256-bin histogram of 512 integer samples that
+are partitioned across 128 threads where each thread owns 4 samples.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_histogram.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each
+       using BlockHistogram = cub::BlockHistogram&lt;unsigned char, 128, 4, 256&gt;;
+
+       // Allocate shared memory for BlockHistogram
+       __shared__ typename BlockHistogram::TempStorage temp_storage;
+
+       // Allocate shared memory for block-wide histogram bin counts
+       __shared__ unsigned int smem_histogram[256];
+
+       // Obtain input samples per thread
+       unsigned char data[4];
+       ...
+
+       // Compute the block-wide histogram
+       BlockHistogram(temp_storage).Histogram(data, smem_histogram);
+
+Performance and Usage Considerations
++++++++++++++++++++++++++++++++++++++++++++++
+
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- All input values must fall between ``[0, BINS)``, or behavior is undefined.
+- The histogram output can be constructed in shared or device-accessible memory
+- See ``cub::BlockHistogramAlgorithm`` for performance details regarding algorithmic alternatives
+
+Re-using dynamically allocating shared memory
++++++++++++++++++++++++++++++++++++++++++++++
+
+The ``block/example_block_reduce_dyn_smem.cu`` example illustrates usage of dynamically shared memory with
+BlockReduce and how to re-purpose the same memory region. This example can be easily adapted to the storage
+required by BlockHistogram.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The sample type being histogrammed (must be castable to an integer bin identifier)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thread block length in threads along the X dimension</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of items per thread</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BINS</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number bins within the histogram</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ALGORITHM</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> <ref refid="namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2" kindref="member">cub::BlockHistogramAlgorithm</ref> enumerator specifying the underlying algorithm to use (default: <ref refid="namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2ac14962247ae5693de2de53a8db40ca54" kindref="member">cub::BLOCK_HISTO_SORT</ref>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Y dimension (default: 1)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Z dimension (default: 1) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/block/block_histogram.cuh" line="189" column="1" bodyfile="cub/block/block_histogram.cuh" bodystart="190" bodyend="418"/>
+    <listofallmembers>
+      <member refid="classcub_1_1BlockHistogram_1aaee582b2e95559d0f126896d150222b0" prot="private" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>_TempStorage</name></member>
+      <member refid="classcub_1_1BlockHistogram_1a7c0b656da08c4536357ba36f336deb6da3c9935f07accf7630e14730e939b9267" prot="private" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>BLOCK_THREADS</name></member>
+      <member refid="classcub_1_1BlockHistogram_1afaf42b04f1c6399ff5a09ca688814ee9" prot="public" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>BlockHistogram</name></member>
+      <member refid="classcub_1_1BlockHistogram_1a3d58db09a81bbad6cadbe7eb853b468a" prot="public" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>BlockHistogram</name></member>
+      <member refid="classcub_1_1BlockHistogram_1ac548d058d4af18c8f6d932ca7b7d2511" prot="public" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>Composite</name></member>
+      <member refid="classcub_1_1BlockHistogram_1aa8dae9addc61450a3584402165ba66d5" prot="public" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>Histogram</name></member>
+      <member refid="classcub_1_1BlockHistogram_1a2a8b2449c12c0f65431aff7b43953df4" prot="public" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>InitHistogram</name></member>
+      <member refid="classcub_1_1BlockHistogram_1a5c295d9e9ca33212c8420383eca4f4b5" prot="private" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>InternalBlockHistogram</name></member>
+      <member refid="classcub_1_1BlockHistogram_1a5081e3ad44ac65acc5adabb62ca0a772" prot="private" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>linear_tid</name></member>
+      <member refid="classcub_1_1BlockHistogram_1ab844e3c0161312dd002f542b8349a2b4" prot="private" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>PrivateStorage</name></member>
+      <member refid="classcub_1_1BlockHistogram_1a1b33a552dc7f89d98ac7fee0712c9445" prot="private" virt="non-virtual"><scope>cub::BlockHistogram</scope><name>temp_storage</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

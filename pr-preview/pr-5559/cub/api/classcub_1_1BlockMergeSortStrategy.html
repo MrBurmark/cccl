@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::BlockMergeSortStrategy &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::BlockRadixRank" href="classcub_1_1BlockRadixRank.html" />
+    <link rel="prev" title="cub::BlockMergeSort" href="classcub_1_1BlockMergeSort.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockAdjacentDifference.html">cub::BlockAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockDiscontinuity.html">cub::BlockDiscontinuity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockExchange.html">cub::BlockExchange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockHistogram.html">cub::BlockHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockLoad.html">cub::BlockLoad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockMergeSort.html">cub::BlockMergeSort</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::BlockMergeSortStrategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixRank.html">cub::BlockRadixRank</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixRankMatch.html">cub::BlockRadixRankMatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixSort.html">cub::BlockRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockReduce.html">cub::BlockReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRunLengthDecode.html">cub::BlockRunLengthDecode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockScan.html">cub::BlockScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockShuffle.html">cub::BlockShuffle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockStore.html">cub::BlockStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockLoadType.html">cub::BlockLoadType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRadixRankEmptyCallback.html">cub::BlockRadixRankEmptyCallback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRadixRankMatchEarlyCounts.html">cub::BlockRadixRankMatchEarlyCounts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRakingLayout.html">cub::BlockRakingLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../block_wide.html">Block-Wide “Collective” Primitives</a> &raquo;</li>
+      <li>cub::BlockMergeSortStrategy</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-blockmergesortstrategy">
+<h1>cub::BlockMergeSortStrategy<a class="headerlink" href="#cub-blockmergesortstrategy" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_block_block_merge_sort.cuh.html#block-merge-sort-8cuh"><span class="std std-ref">cub/block/block_merge_sort.cuh</span></a></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE">
+<span id="_CPPv3I00_i_i0EN3cub22BlockMergeSortStrategyE"></span><span id="_CPPv2I00_i_i0EN3cub22BlockMergeSortStrategyE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NUM_THREADS</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SynchronizationPolicy</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockMergeSortStrategy</span></span></span><a class="headerlink" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Generalized merge sort algorithm. </p>
+<p>This class is used to reduce code duplication. Warp and Block merge sort differ only in how they compute thread index and how they synchronize threads. Since synchronization might require access to custom data (like member mask), CRTP is used.</p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>The code snippet below illustrates the way this class can be used. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1"> // or equivalently &lt;cub/block/block_merge_sort.cuh&gt;</span><span class="cp"></span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BLOCK_THREADS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span><span class="w"></span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ITEMS_PER_THREAD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BlockMergeSort</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">BlockMergeSortStrategy</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                                     </span><span class="n">cub</span><span class="o">::</span><span class="n">NullType</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                                     </span><span class="n">BLOCK_THREADS</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                                     </span><span class="n">ITEMS_PER_THREAD</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                                     </span><span class="n">BlockMergeSort</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">BlockMergeSortStrategyT</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="n">BlockMergeSortStrategy</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"></span>
+<span class="w">                           </span><span class="n">cub</span><span class="o">::</span><span class="n">NullType</span><span class="p">,</span><span class="w"></span>
+<span class="w">                           </span><span class="n">BLOCK_THREADS</span><span class="p">,</span><span class="w"></span>
+<span class="w">                           </span><span class="n">ITEMS_PER_THREAD</span><span class="p">,</span><span class="w"></span>
+<span class="w">                           </span><span class="n">BlockMergeSort</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="k">explicit</span><span class="w"> </span><span class="n">BlockMergeSort</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockMergeSortStrategyT</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="o">&amp;</span><span class="n">temp_storage</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">BlockMergeSortStrategyT</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="n">__forceinline__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">SyncImplementation</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">__syncthreads</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – KeyT type</p></li>
+<li><p><strong>ValueT</strong> – ValueT type. cub::NullType indicates a keys-only sort</p></li>
+<li><p><strong>SynchronizationPolicy</strong> – Provides a way of synchronizing threads. Should be derived from <code class="docutils literal notranslate"><span class="pre">BlockMergeSortStrategy</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEv">
+<span id="_CPPv3N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEv"></span><span id="_CPPv2N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEv"></span><span id="cub::BlockMergeSortStrategy::BlockMergeSortStrategy"></span><span class="target" id="classcub_1_1blockmergesortstrategy_1a30620debb4dbf86e3b9570ca3d50d3ad"></span><span class="sig-name descname"><span class="n"><span class="pre">BlockMergeSortStrategy</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEj">
+<span id="_CPPv3N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEj"></span><span id="_CPPv2N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEj"></span><span id="cub::BlockMergeSortStrategy::BlockMergeSortStrategy__unsigned-i"></span><span class="target" id="classcub_1_1blockmergesortstrategy_1a2a94655ee2bbf5d8b9b5d4a8f6e752ad"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockMergeSortStrategy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">linear_tid</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyEj" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyER11TempStoragej">
+<span id="_CPPv3N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyER11TempStoragej"></span><span id="_CPPv2N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyER11TempStoragej"></span><span id="cub::BlockMergeSortStrategy::BlockMergeSortStrategy__TempStorageR.unsigned-i"></span><span class="target" id="classcub_1_1blockmergesortstrategy_1ac6425ab373c4975a19a90fc6c99b24db"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockMergeSortStrategy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3cub22BlockMergeSortStrategy11TempStorageE" title="cub::BlockMergeSortStrategy::TempStorage"><span class="n"><span class="pre">TempStorage</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">linear_tid</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub22BlockMergeSortStrategy22BlockMergeSortStrategyER11TempStoragej" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3cub22BlockMergeSortStrategy14get_linear_tidEv">
+<span id="_CPPv3NK3cub22BlockMergeSortStrategy14get_linear_tidEv"></span><span id="_CPPv2NK3cub22BlockMergeSortStrategy14get_linear_tidEv"></span><span id="cub::BlockMergeSortStrategy::get_linear_tidC"></span><span class="target" id="classcub_1_1blockmergesortstrategy_1a2405d8db6734a0bcd2aaf7075f56d94c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_linear_tid</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3cub22BlockMergeSortStrategy14get_linear_tidEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOp">
+<span id="_CPPv3I0EN3cub22BlockMergeSortStrategy4SortERA16ITEMS_PER_THREAD_4KeyT9CompareOp"></span><span id="_CPPv2I0EN3cub22BlockMergeSortStrategy4SortERAITEMS_PER_THREAD_4KeyT9CompareOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1aa7df533ab31877c12b92080d6c6fbe0f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOp" title="cub::BlockMergeSortStrategy::Sort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>Sort is not guaranteed to be stable. That is, suppose that i and j are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code>. <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT">
+<span id="_CPPv3I0EN3cub22BlockMergeSortStrategy4SortERA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT"></span><span id="_CPPv2I0EN3cub22BlockMergeSortStrategy4SortERAITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1add47f5f2f367f47323fdfcd9d6975b9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT" title="cub::BlockMergeSortStrategy::Sort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">oob_default</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p><ul class="simple">
+<li><p>Sort is not guaranteed to be stable. That is, suppose that <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p></li>
+<li><p>The value of <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is assigned to all elements that are out of <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. It’s expected that <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is ordered after any value in the <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span> <span class="pre">*</span> <span class="pre">BLOCK_THREADS</span></code>. If there is a value that is ordered after <code class="docutils literal notranslate"><span class="pre">oob_default</span></code>, it won’t be placed within <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code>. <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>valid_items</strong> – <strong>[in]</strong> Number of valid items to sort</p></li>
+<li><p><strong>oob_default</strong> – <strong>[in]</strong> Default value to assign out-of-bound items </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp">
+<span id="_CPPv3I0EN3cub22BlockMergeSortStrategy4SortERA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp"></span><span id="_CPPv2I0EN3cub22BlockMergeSortStrategy4SortERAITEMS_PER_THREAD_4KeyTRAITEMS_PER_THREAD_6ValueT9CompareOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1abcb0596a0effb579a24a0d28a3d46c45"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">items</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp" title="cub::BlockMergeSortStrategy::Sort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>Sort is not guaranteed to be stable. That is, suppose that <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code>. <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>items</strong> – <strong>[inout]</strong> Values to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_bEN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT">
+<span id="_CPPv3I0_bEN3cub22BlockMergeSortStrategy4SortERA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT"></span><span id="_CPPv2I0_bEN3cub22BlockMergeSortStrategy4SortERAITEMS_PER_THREAD_4KeyTRAITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IS_LAST_TILE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1a2f05d78d053af0b1d5ce372c6a60f323"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">items</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0_bEN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT" title="cub::BlockMergeSortStrategy::Sort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">oob_default</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_bEN3cub22BlockMergeSortStrategy4SortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p><ul class="simple">
+<li><p>Sort is not guaranteed to be stable. That is, suppose that <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p></li>
+<li><p>The value of <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is assigned to all elements that are out of <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. It’s expected that <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is ordered after any value in the <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span> <span class="pre">*</span> <span class="pre">BLOCK_THREADS</span></code>. If there is a value that is ordered after <code class="docutils literal notranslate"><span class="pre">oob_default</span></code>, it won’t be placed within <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p></li>
+<li><p><strong>IS_LAST_TILE</strong> – True if <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> isn’t equal to the <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_TILE</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>items</strong> – <strong>[inout]</strong> Values to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>valid_items</strong> – <strong>[in]</strong> Number of valid items to sort</p></li>
+<li><p><strong>oob_default</strong> – <strong>[in]</strong> Default value to assign out-of-bound items </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOp">
+<span id="_CPPv3I0EN3cub22BlockMergeSortStrategy10StableSortERA16ITEMS_PER_THREAD_4KeyT9CompareOp"></span><span id="_CPPv2I0EN3cub22BlockMergeSortStrategy10StableSortERAITEMS_PER_THREAD_4KeyT9CompareOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1a97e3f9e3fffe579fb279df6f8d0740e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StableSort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOp" title="cub::BlockMergeSortStrategy::StableSort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are elements such that <code class="docutils literal notranslate"><span class="pre">x</span></code> precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>, and if the two elements are equivalent (neither <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">y</span></code> nor <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">x</span></code>) then a postcondition of StableSort is that <code class="docutils literal notranslate"><span class="pre">x</span></code> still precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code>. <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp">
+<span id="_CPPv3I0EN3cub22BlockMergeSortStrategy10StableSortERA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp"></span><span id="_CPPv2I0EN3cub22BlockMergeSortStrategy10StableSortERAITEMS_PER_THREAD_4KeyTRAITEMS_PER_THREAD_6ValueT9CompareOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1a0c6a3ea4c4a397ca6af8643f41ee5fd4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StableSort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">items</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp" title="cub::BlockMergeSortStrategy::StableSort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are elements such that <code class="docutils literal notranslate"><span class="pre">x</span></code> precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>, and if the two elements are equivalent (neither <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">y</span></code> nor <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">x</span></code>) then a postcondition of StableSort is that <code class="docutils literal notranslate"><span class="pre">x</span></code> still precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code>. <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>items</strong> – <strong>[inout]</strong> Values to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT">
+<span id="_CPPv3I0EN3cub22BlockMergeSortStrategy10StableSortERA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT"></span><span id="_CPPv2I0EN3cub22BlockMergeSortStrategy10StableSortERAITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1a1319b0e0c1c31841790670afbb53a1ec"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StableSort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT" title="cub::BlockMergeSortStrategy::StableSort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">oob_default</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyT9CompareOpi4KeyT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p><ul class="simple">
+<li><p>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are elements such that <code class="docutils literal notranslate"><span class="pre">x</span></code> precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>, and if the two elements are equivalent (neither <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">y</span></code> nor <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">x</span></code>) then a postcondition of StableSort is that <code class="docutils literal notranslate"><span class="pre">x</span></code> still precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p>The value of <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is assigned to all elements that are out of <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. It’s expected that <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is ordered after any value in the <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span> <span class="pre">*</span> <span class="pre">BLOCK_THREADS</span></code>. If there is a value that is ordered after <code class="docutils literal notranslate"><span class="pre">oob_default</span></code>, it won’t be placed within <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code>. <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>valid_items</strong> – <strong>[in]</strong> Number of valid items to sort</p></li>
+<li><p><strong>oob_default</strong> – <strong>[in]</strong> Default value to assign out-of-bound items </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_bEN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT">
+<span id="_CPPv3I0_bEN3cub22BlockMergeSortStrategy10StableSortERA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT"></span><span id="_CPPv2I0_bEN3cub22BlockMergeSortStrategy10StableSortERAITEMS_PER_THREAD_4KeyTRAITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOp</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IS_LAST_TILE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockmergesortstrategy_1a6d2f47fc4e2ec9485b2527c1e1d6c27f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StableSort</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">keys</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">items</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0_bEN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT" title="cub::BlockMergeSortStrategy::StableSort::CompareOp"><span class="n"><span class="pre">CompareOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span>, <a class="reference internal" href="#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">oob_default</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_bEN3cub22BlockMergeSortStrategy10StableSortEvRA16ITEMS_PER_THREAD_4KeyTRA16ITEMS_PER_THREAD_6ValueT9CompareOpi4KeyT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items partitioned across a CUDA thread block using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p><ul class="simple">
+<li><p>StableSort is stable: it preserves the relative ordering of equivalent elements. That is, if <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are elements such that <code class="docutils literal notranslate"><span class="pre">x</span></code> precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>, and if the two elements are equivalent (neither <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">y</span></code> nor <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">x</span></code>) then a postcondition of StableSort is that <code class="docutils literal notranslate"><span class="pre">x</span></code> still precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p>The value of <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is assigned to all elements that are out of <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. It’s expected that <code class="docutils literal notranslate"><span class="pre">oob_default</span></code> is ordered after any value in the <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries. The algorithm always sorts a fixed amount of elements, which is equal to <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span> <span class="pre">*</span> <span class="pre">BLOCK_THREADS</span></code>. If there is a value that is ordered after <code class="docutils literal notranslate"><span class="pre">oob_default</span></code>, it won’t be placed within <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> boundaries.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CompareOp</strong> – functor type having member <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code>. <code class="docutils literal notranslate"><span class="pre">CompareOp</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a>.</p></li>
+<li><p><strong>IS_LAST_TILE</strong> – True if <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> isn’t equal to the <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_TILE</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>keys</strong> – <strong>[inout]</strong> Keys to sort</p></li>
+<li><p><strong>items</strong> – <strong>[inout]</strong> Values to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>valid_items</strong> – <strong>[in]</strong> Number of valid items to sort</p></li>
+<li><p><strong>oob_default</strong> – <strong>[in]</strong> Default value to assign out-of-bound items </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub22BlockMergeSortStrategy11TempStorageE">
+<span id="_CPPv3N3cub22BlockMergeSortStrategy11TempStorageE"></span><span id="_CPPv2N3cub22BlockMergeSortStrategy11TempStorageE"></span><span id="cub::BlockMergeSortStrategy::TempStorage"></span><span class="target" id="structcub_1_1blockmergesortstrategy_1_1tempstorage"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TempStorage</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">Uninitialized</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">_TempStorage</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3cub22BlockMergeSortStrategy11TempStorageE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The operations exposed by BlockMergeSort require a temporary memory allocation of this nested type for thread communication. This opaque storage can be allocated directly using the <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> keyword. Alternatively, it can be aliased to externally allocated memory (shared or global) or <code class="docutils literal notranslate"><span class="pre">union</span></code>’d with other storage allocation types to facilitate memory reuse. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

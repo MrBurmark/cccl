@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub/block/block_run_length_decode.cuh &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub/block/block_scan.cuh" href="file_cub_block_block_scan.cuh.html" />
+    <link rel="prev" title="cub/block/block_run_length_decode.cuh" href="file_cub_block_block_run_length_decode.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">CUB Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cub_api.html">CUB API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cub_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_cub.html">cub</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_cub.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="dir_cub_block.html">cub/block</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_cub_block.html#files">Files</a><ul class="current">
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_adjacent_difference.cuh.html">cub/block/block_adjacent_difference.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_discontinuity.cuh.html">cub/block/block_discontinuity.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_exchange.cuh.html">cub/block/block_exchange.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_histogram.cuh.html">cub/block/block_histogram.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_load.cuh.html">cub/block/block_load.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_merge_sort.cuh.html">cub/block/block_merge_sort.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_radix_rank.cuh.html">cub/block/block_radix_rank.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_radix_sort.cuh.html">cub/block/block_radix_sort.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_raking_layout.cuh.html">cub/block/block_raking_layout.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_reduce.cuh.html">cub/block/block_reduce.cuh</a></li>
+<li class="toctree-l7 current"><a class="reference internal" href="file_cub_block_block_run_length_decode.cuh.html">cub/block/block_run_length_decode.cuh</a><ul class="current">
+<li class="toctree-l8 current"><a class="current reference internal" href="#">Source file</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_cub_block_block_run_length_decode.cuh.html#classes">Classes</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_cub_block_block_run_length_decode.cuh.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_scan.cuh.html">cub/block/block_scan.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_shuffle.cuh.html">cub/block/block_shuffle.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_block_store.cuh.html">cub/block/block_store.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_block_radix_rank_sort_operations.cuh.html">cub/block/radix_rank_sort_operations.cuh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_device.html">cub/device</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_grid.html">cub/grid</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_iterator.html">cub/iterator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_thread.html">cub/thread</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_warp.html">cub/warp</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="dir_cub.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cub_api.html">CUB API</a> &raquo;</li>
+          <li><a href="dir_cub.html">cub</a> &raquo;</li>
+          <li><a href="dir_cub_block.html">cub/block</a> &raquo;</li>
+          <li><a href="file_cub_block_block_run_length_decode.cuh.html">cub/block/block_run_length_decode.cuh</a> &raquo;</li>
+      <li>cub/block/block_run_length_decode.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-block-block-run-length-decode-cuh">
+<h1>cub/block/block_run_length_decode.cuh<a class="headerlink" href="#cub-block-block-run-length-decode-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_cub_block_block_run_length_decode.cuh.html#block-run-length-decode-8cuh"><span class="std std-ref">cub/block/block_run_length_decode.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/******************************************************************************</span>
+<span class="cm"> * Copyright (c) 2011-2021, NVIDIA CORPORATION.  All rights reserved.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Redistribution and use in source and binary forms, with or without</span>
+<span class="cm"> * modification, are permitted provided that the following conditions are met:</span>
+<span class="cm"> *     * Redistributions of source code must retain the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer.</span>
+<span class="cm"> *     * Redistributions in binary form must reproduce the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer in the</span>
+<span class="cm"> *       documentation and/or other materials provided with the distribution.</span>
+<span class="cm"> *     * Neither the name of the NVIDIA CORPORATION nor the</span>
+<span class="cm"> *       names of its contributors may be used to endorse or promote products</span>
+<span class="cm"> *       derived from this software without specific prior written permission.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="cm"> *AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="cm"> *IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="cm"> * DISCLAIMED. IN NO EVENT SHALL NVIDIA CORPORATION BE LIABLE FOR ANY</span>
+<span class="cm"> * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="cm"> * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="cm"> * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="cm"> * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="cm"> * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="cm"> * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="cm"> *</span>
+<span class="cm"> ******************************************************************************/</span><span class="w"></span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/config.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/block/block_scan.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/thread/thread_search.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_math.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_namespace.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_ptx.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_type.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/__algorithm/max.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/__algorithm/min.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/limits&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/type_traits&gt;</span><span class="cp"></span>
+
+<span class="n">CUB_NAMESPACE_BEGIN</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ItemT</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="n">BLOCK_DIM_X</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="n">RUNS_PER_THREAD</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="k">typename</span><span class="w"> </span><span class="nc">DecodedOffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">uint32_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="n">BLOCK_DIM_Y</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="n">BLOCK_DIM_Z</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BlockRunLengthDecode</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">//---------------------------------------------------------------------</span>
+<span class="w">  </span><span class="c1">// CONFIGS &amp; TYPE ALIASES</span>
+<span class="w">  </span><span class="c1">//---------------------------------------------------------------------</span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BLOCK_THREADS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLOCK_DIM_X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BLOCK_DIM_Y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BLOCK_DIM_Z</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BLOCK_RUNS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLOCK_THREADS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">RUNS_PER_THREAD</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">RunOffsetScanT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockScan</span><span class="o">&lt;</span><span class="n">DecodedOffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_X</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_SCAN_RAKING_MEMOIZE</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Y</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Z</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">RunOffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">uint32_t</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#ifndef _CCCL_DOXYGEN_INVOKED </span><span class="c1">// Do not document</span>
+<span class="w">  </span><span class="k">union</span><span class="w"> </span><span class="nc">_TempStorage</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">typename</span><span class="w"> </span><span class="nc">RunOffsetScanT</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">offset_scan</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">ItemT</span><span class="w"> </span><span class="n">run_values</span><span class="p">[</span><span class="n">BLOCK_RUNS</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">run_offsets</span><span class="p">[</span><span class="n">BLOCK_RUNS</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="n">runs</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"> </span><span class="c1">// union TempStorage</span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_DOXYGEN_INVOKED</span>
+
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">_TempStorage</span><span class="o">&amp;</span><span class="w"> </span><span class="n">PrivateStorage</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="n">_TempStorage</span><span class="w"> </span><span class="n">private_storage</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">private_storage</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_TempStorage</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">linear_tid</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">TempStorage</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Uninitialized</span><span class="o">&lt;</span><span class="n">_TempStorage</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="p">{};</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">//---------------------------------------------------------------------</span>
+<span class="w">  </span><span class="c1">// CONSTRUCTOR</span>
+<span class="w">  </span><span class="c1">//---------------------------------------------------------------------</span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">RunLengthT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TotalDecodedSizeT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">BlockRunLengthDecode</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">TempStorage</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_values</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">RunLengthT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_lengths</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">TotalDecodedSizeT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">total_decoded_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">Alias</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">linear_tid</span><span class="p">(</span><span class="n">RowMajorTid</span><span class="p">(</span><span class="n">BLOCK_DIM_X</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Y</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Z</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">InitWithRunLengths</span><span class="p">(</span><span class="n">run_values</span><span class="p">,</span><span class="w"> </span><span class="n">run_lengths</span><span class="p">,</span><span class="w"> </span><span class="n">total_decoded_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">UserRunOffsetT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">BlockRunLengthDecode</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">TempStorage</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_values</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"> </span><span class="n">UserRunOffsetT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_offsets</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">])</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">Alias</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">linear_tid</span><span class="p">(</span><span class="n">RowMajorTid</span><span class="p">(</span><span class="n">BLOCK_DIM_X</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Y</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Z</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">InitWithRunOffsets</span><span class="p">(</span><span class="n">run_values</span><span class="p">,</span><span class="w"> </span><span class="n">run_offsets</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">RunLengthT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TotalDecodedSizeT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">BlockRunLengthDecode</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_values</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">RunLengthT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_lengths</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">TotalDecodedSizeT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">total_decoded_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">PrivateStorage</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">linear_tid</span><span class="p">(</span><span class="n">RowMajorTid</span><span class="p">(</span><span class="n">BLOCK_DIM_X</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Y</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Z</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">InitWithRunLengths</span><span class="p">(</span><span class="n">run_values</span><span class="p">,</span><span class="w"> </span><span class="n">run_lengths</span><span class="p">,</span><span class="w"> </span><span class="n">total_decoded_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">UserRunOffsetT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"></span>
+<span class="w">  </span><span class="n">BlockRunLengthDecode</span><span class="p">(</span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_values</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"> </span><span class="n">UserRunOffsetT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_offsets</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">])</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">(</span><span class="n">PrivateStorage</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">linear_tid</span><span class="p">(</span><span class="n">RowMajorTid</span><span class="p">(</span><span class="n">BLOCK_DIM_X</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Y</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_DIM_Z</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">InitWithRunOffsets</span><span class="p">(</span><span class="n">run_values</span><span class="p">,</span><span class="w"> </span><span class="n">run_offsets</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_NUM_ITEMS</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="n">StaticUpperBound</span><span class="p">(</span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">val</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">OffsetT</span><span class="w"> </span><span class="n">lower_bound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">OffsetT</span><span class="w"> </span><span class="n">upper_bound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_items</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">Log2</span><span class="o">&lt;</span><span class="n">MAX_NUM_ITEMS</span><span class="o">&gt;::</span><span class="n">VALUE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">OffsetT</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">MidPoint</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span><span class="w"> </span><span class="n">upper_bound</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">mid</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">mid</span><span class="p">])</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">upper_bound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">lower_bound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lower_bound</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">RunOffsetT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"></span>
+<span class="w">  </span><span class="n">InitWithRunOffsets</span><span class="p">(</span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_values</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"> </span><span class="n">RunOffsetT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_offsets</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">])</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Keep the runs&#39; items and the offsets of each run&#39;s beginning in the temporary storage</span>
+<span class="w">    </span><span class="n">RunOffsetT</span><span class="w"> </span><span class="n">thread_dst_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">RunOffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">linear_tid</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">RunOffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">RUNS_PER_THREAD</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">RUNS_PER_THREAD</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_values</span><span class="p">[</span><span class="n">thread_dst_offset</span><span class="p">]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">run_values</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_offsets</span><span class="p">[</span><span class="n">thread_dst_offset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">run_offsets</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="n">thread_dst_offset</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Ensure run offsets and run values have been written to shared memory</span>
+<span class="w">    </span><span class="n">__syncthreads</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">RunLengthT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TotalDecodedSizeT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">InitWithRunLengths</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_values</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">RunLengthT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">run_lengths</span><span class="p">)[</span><span class="n">RUNS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">TotalDecodedSizeT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">total_decoded_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Compute the offset for the beginning of each run</span>
+<span class="w">    </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">run_offsets</span><span class="p">[</span><span class="n">RUNS_PER_THREAD</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">RUNS_PER_THREAD</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">run_offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">DecodedOffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">run_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">decoded_size_aggregate</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">RunOffsetScanT</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">offset_scan</span><span class="p">).</span><span class="n">ExclusiveSum</span><span class="p">(</span><span class="n">run_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">run_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">decoded_size_aggregate</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">total_decoded_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">TotalDecodedSizeT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">decoded_size_aggregate</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Ensure the prefix scan&#39;s temporary storage can be reused (may be superfluous, but depends on scan implementation)</span>
+<span class="w">    </span><span class="n">__syncthreads</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">InitWithRunOffsets</span><span class="p">(</span><span class="n">run_values</span><span class="p">,</span><span class="w"> </span><span class="n">run_offsets</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">RelativeOffsetT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">RunLengthDecode</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">decoded_items</span><span class="p">)[</span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">RelativeOffsetT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">item_offsets</span><span class="p">)[</span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">from_decoded_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// The (global) offset of the first item decoded by this thread</span>
+<span class="w">    </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">thread_decoded_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_decoded_offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">linear_tid</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The run that the first decoded item of this thread belongs to</span>
+<span class="w">    </span><span class="c1">// If this thread&#39;s &lt;thread_decoded_offset&gt; is already beyond the total decoded size, it will be assigned to the</span>
+<span class="w">    </span><span class="c1">// last run</span>
+<span class="w">    </span><span class="n">RunOffsetT</span><span class="w"> </span><span class="n">assigned_run</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">StaticUpperBound</span><span class="o">&lt;</span><span class="n">BLOCK_RUNS</span><span class="o">&gt;</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_RUNS</span><span class="p">,</span><span class="w"> </span><span class="n">thread_decoded_offset</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">RunOffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1U</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">assigned_run_begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_offsets</span><span class="p">[</span><span class="n">assigned_run</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// If this thread is getting assigned the last run, we make sure it will not fetch any other run after this</span>
+<span class="w">    </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">assigned_run_end</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="p">(</span><span class="n">assigned_run</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BLOCK_RUNS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="o">?</span><span class="w"> </span><span class="n">thread_decoded_offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="w"></span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_offsets</span><span class="p">[</span><span class="n">assigned_run</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ItemT</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_values</span><span class="p">[</span><span class="n">assigned_run</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">_CCCL_PRAGMA_UNROLL_FULL</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">decoded_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">item_offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">thread_decoded_offset</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">assigned_run_begin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// A thread only needs to fetch the next run if this was not the last loop iteration</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_final_loop_iteration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">is_final_loop_iteration</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">thread_decoded_offset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">assigned_run_end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// We make sure that a thread is not re-entering this conditional when being assigned to the last run already by</span>
+<span class="w">        </span><span class="c1">// extending the last run&#39;s length to all the thread&#39;s item</span>
+<span class="w">        </span><span class="n">assigned_run</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">assigned_run_begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_offsets</span><span class="p">[</span><span class="n">assigned_run</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// If this thread is getting assigned the last run, we make sure it will not fetch any other run after this</span>
+<span class="w">        </span><span class="n">assigned_run_end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">assigned_run</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BLOCK_RUNS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                           </span><span class="o">?</span><span class="w"> </span><span class="n">thread_decoded_offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="w"></span>
+<span class="w">                           </span><span class="o">:</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_offsets</span><span class="p">[</span><span class="n">assigned_run</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="n">val</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">.</span><span class="n">runs</span><span class="p">.</span><span class="n">run_values</span><span class="p">[</span><span class="n">assigned_run</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="n">thread_decoded_offset</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"></span>
+<span class="w">  </span><span class="n">RunLengthDecode</span><span class="p">(</span><span class="n">ItemT</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">decoded_items</span><span class="p">)[</span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">],</span><span class="w"> </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">from_decoded_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">DecodedOffsetT</span><span class="w"> </span><span class="n">item_offsets</span><span class="p">[</span><span class="n">DECODED_ITEMS_PER_THREAD</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">RunLengthDecode</span><span class="p">(</span><span class="n">decoded_items</span><span class="p">,</span><span class="w"> </span><span class="n">item_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">from_decoded_offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="n">CUB_NAMESPACE_END</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

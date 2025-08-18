@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCCL Internal Macros &mdash; cccl 3.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/mermaid-init.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../_static/version.js"></script>
+        <script src="../../_static/social-media.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="CCCL Testing Utilities" href="testing.html" />
+    <link rel="prev" title="CCCL Development Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../cpp.html">CUDA C++ Core Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference external" href="https://nvidia.github.io/cccl/libcudacxx/">libcu++</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://nvidia.github.io/cccl/cub/">CUB</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://nvidia.github.io/cccl/thrust/">Thrust</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://nvidia.github.io/cccl/cudax/">Cuda Experimental</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3.0_migration_guide.html">CCCL 2.x ‐ CCCL 3.0 migration guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">CCCL Development</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CCCL Internal Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compiler-macros">Compiler Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#architecture-macros">Architecture Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#os-macros">OS Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-space">Execution Space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cuda-attributes">CUDA attributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cuda-toolkit-macros">CUDA Toolkit macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-standard-types-support">Non-standard Types Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c-language-macros">C++ Language Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visibility-macros">Visibility Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-common-macros">Other Common Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-macros">Debugging Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#warning-suppression-macros">Warning Suppression Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">CCCL Testing Utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python.html">CCCL Python Libraries</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cccl</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../cpp.html">CUDA C++ Core Libraries</a> &raquo;</li>
+          <li><a href="index.html">CCCL Development Guide</a> &raquo;</li>
+      <li>CCCL Internal Macros</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cccl-internal-macros">
+<span id="cccl-development-module-macros"></span><h1>CCCL Internal Macros<a class="headerlink" href="#cccl-internal-macros" title="Permalink to this headline"></a></h1>
+<p>The document describes the main <em>internal</em> macros used by CCCL. They are not intended to be used by end users, but for development of CCCL features only. We reserve the right to change them at any time without warning.</p>
+<hr class="docutils" />
+<section id="compiler-macros">
+<h2>Compiler Macros<a class="headerlink" href="#compiler-macros" title="Permalink to this headline"></a></h2>
+<p><strong>Host compiler macros</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER(CLANG)</span></code></p></td>
+<td><p>Clang</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER(GCC)</span></code></p></td>
+<td><p>GCC</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER(NVHPC)</span></code></p></td>
+<td><p>Nvidia HPC compiler</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER(MSVC)</span></code></p></td>
+<td><p>Microsoft Visual Studio</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER(MSVC2019)</span></code></p></td>
+<td><p>Microsoft Visual Studio 2019</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER(MSVC2022)</span></code></p></td>
+<td><p>Microsoft Visual Studio 2022</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER</span></code> function-like macro can also be used to check the version of a compiler.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">_CCCL_COMPILER</span><span class="p">(</span><span class="n">MSVC</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"></span>
+<span class="n">_CCCL_COMPILER</span><span class="p">(</span><span class="n">GCC</span><span class="p">,</span><span class="w"> </span><span class="o">&gt;=</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p><em>Note</em>: When used without specifying a minor version number, the macro will only test against
+the compiler’s major version number. For example, when the compiler is <code class="docutils literal notranslate"><span class="pre">gcc-9.1</span></code>, the macro
+<code class="docutils literal notranslate"><span class="pre">_CCCL_COMPILER(GCC,</span> <span class="pre">&gt;,</span> <span class="pre">9)</span></code> will be <code class="docutils literal notranslate"><span class="pre">false</span></code> even though <code class="docutils literal notranslate"><span class="pre">9.1</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">9</span></code>.</p>
+<p><strong>CUDA compiler macros</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 44%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILER(NVCC)</span></code></p></td>
+<td><p>Nvidia compiler</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILER(NVHPC)</span></code></p></td>
+<td><p>Nvidia HPC compiler</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILER(NVRTC)</span></code></p></td>
+<td><p>Nvidia Runtime Compiler</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILER(CLANG)</span></code></p></td>
+<td><p>Clang</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILER</span></code> function-like macro can also be used to check the version of a CUDA compiler.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">_CCCL_CUDA_COMPILER</span><span class="p">(</span><span class="n">NVCC</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="n">_CCCL_CUDA_COMPILER</span><span class="p">(</span><span class="n">CLANG</span><span class="p">,</span><span class="w"> </span><span class="o">&gt;=</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p><em>Note</em>: <code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILER(...)</span></code> check may result in a <code class="docutils literal notranslate"><span class="pre">true</span></code> value even during the compilation of a C++ source
+file. Use <code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILATION()</span></code> to check for the compilation of a CUDA source file.</p>
+<p><strong>CUDA identification/version macros</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_CUDA_COMPILER()</span></code></p></td>
+<td><p>CUDA compiler is available</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILATION()</span></code></p></td>
+<td><p>CUDA code is being compiled</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HOST_COMPILATION()</span></code></p></td>
+<td><p>Compiling host code, <code class="docutils literal notranslate"><span class="pre">true</span></code> when executing the CUDA host pass or compiling a C++ source file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DEVICE_COMPILATION()</span></code></p></td>
+<td><p>Compiling device code, <code class="docutils literal notranslate"><span class="pre">true</span></code> when executing the CUDA device pass</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CUDACC_BELOW(12,</span> <span class="pre">7)</span></code></p></td>
+<td><p>CUDA version below 12.7 when compiling a CUDA source file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CUDACC_AT_LEAST(12,</span> <span class="pre">7)</span></code></p></td>
+<td><p>CUDA version at least 12.7 when compiling a CUDA source file</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>Note</em>: When compiling CUDA code with <code class="docutils literal notranslate"><span class="pre">nvc++</span></code> both <code class="docutils literal notranslate"><span class="pre">_CCCL_HOST_COMPILATION()</span></code> and <code class="docutils literal notranslate"><span class="pre">_CCCL_DEVICE_COMPILATION()</span></code> result in a <code class="docutils literal notranslate"><span class="pre">true</span></code> value.</p>
+<p><strong>PTX macros</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 84%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_PTX_ARCH()</span></code></p></td>
+<td><p>Alias of <code class="docutils literal notranslate"><span class="pre">__CUDA_ARCH__</span></code> with value equal to 0 if a CUDA compiler is not available</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">__cccl_ptx_isa</span></code></p></td>
+<td><p>PTX ISA version available with the current CUDA compiler, e.g. PTX ISA 8.4 (<code class="docutils literal notranslate"><span class="pre">840</span></code>) is available from CUDA 12.4</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>Note</em>: When compiling CUDA code with <code class="docutils literal notranslate"><span class="pre">nvc++</span></code> the <code class="docutils literal notranslate"><span class="pre">_CCCL_PTX_ARCH()</span></code> macro expands to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="architecture-macros">
+<h2>Architecture Macros<a class="headerlink" href="#architecture-macros" title="Permalink to this headline"></a></h2>
+<p>The following macros are used to check the target architecture. They comply with the compiler supported by the CUDA toolkit. Compilers outside the CUDA toolkit may define such macros in a different way.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ARCH(ARM64)</span></code></p></td>
+<td><p>ARM 64-bit, including MSVC emulation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ARCH(X86_64)</span></code></p></td>
+<td><p>X86 64-bit. False on ARM 64-bit MSVC emulation</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="os-macros">
+<h2>OS Macros<a class="headerlink" href="#os-macros" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 59%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_OS(WINDOWS)</span></code></p></td>
+<td><p>Windows, including NVRTC LLP64</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_OS(LINUX)</span></code></p></td>
+<td><p>Linux, including NVRTC LP64</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_OS(ANDROID)</span></code></p></td>
+<td><p>Android</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_OS(QNX)</span></code></p></td>
+<td><p>QNX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="execution-space">
+<h2>Execution Space<a class="headerlink" href="#execution-space" title="Permalink to this headline"></a></h2>
+<p><strong>Functions</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HOST</span></code></p></td>
+<td><p>Host function</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DEVICE</span></code></p></td>
+<td><p>Device function</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HOST_DEVICE</span></code></p></td>
+<td><p>Host/Device function</p></td>
+</tr>
+</tbody>
+</table>
+<p>In addition, <code class="docutils literal notranslate"><span class="pre">_CCCL_EXEC_CHECK_DISABLE</span></code> disables the execution space check for the NVHPC compiler</p>
+<p><strong>Target Macros</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 48%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NV_IF_TARGET(TARGET,</span> <span class="pre">(CODE))</span></code></p></td>
+<td><p>Enable <code class="docutils literal notranslate"><span class="pre">CODE</span></code> only if <code class="docutils literal notranslate"><span class="pre">TARGET</span></code> is satisfied.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NV_IF_ELSE_TARGET(TARGET,</span> <span class="pre">(IF_CODE),</span> <span class="pre">(ELSE_CODE))</span></code></p></td>
+<td><p>Enable <code class="docutils literal notranslate"><span class="pre">CODE_IF</span></code> if <code class="docutils literal notranslate"><span class="pre">TARGET</span></code> is satisfied, <code class="docutils literal notranslate"><span class="pre">CODE_ELSE</span></code> otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NV_DISPATCH_TARGET(TARGET1,</span> <span class="pre">(TARGET1_CODE),</span> <span class="pre">...,</span> <span class="pre">TARGET_N,</span> <span class="pre">(TARGET_N_CODE))</span></code></p></td>
+<td><p>Enable a single code block if any of <code class="docutils literal notranslate"><span class="pre">TARGET_i</span></code> is satisfied.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Possible <code class="docutils literal notranslate"><span class="pre">TARGET</span></code> values:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NV_ANY_TARGET</span></code></p></td>
+<td><p>Any target</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NV_IS_HOST</span></code></p></td>
+<td><p>Host-code target</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NV_IS_DEVICE</span></code></p></td>
+<td><p>Device-code target</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NV_PROVIDES_SM_&lt;VER&gt;</span></code></p></td>
+<td><p>SM architecture is at least <code class="docutils literal notranslate"><span class="pre">VER</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">NV_PROVIDES_SM_80</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NV_IS_EXACTLY_SM_&lt;NN&gt;</span></code></p></td>
+<td><p>SM architecture is exactly <code class="docutils literal notranslate"><span class="pre">VER</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">NV_IS_EXACTLY_SM_80</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Usage example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_IS_DEVICE</span><span class="p">,</span><span class="w">    </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;));</span><span class="w"></span>
+<span class="n">NV_IF_ELSE_TARGET</span><span class="p">(</span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;),</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;));</span><span class="w"></span>
+<span class="n">NV_DISPATCH_TARGET</span><span class="p">(</span><span class="n">NV_PROVIDES_SM_90</span><span class="p">,</span><span class="w">   </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Hopper+&quot;</span><span class="p">;),</span><span class="w"></span>
+<span class="w">                   </span><span class="n">NV_IS_EXACTLY_SM_75</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Turing&quot;</span><span class="p">;),</span><span class="w"></span>
+<span class="w">                   </span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w">          </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Host&quot;</span><span class="p">;))</span><span class="w"></span>
+</pre></div>
+</div>
+<p><em>Pitfalls</em>:</p>
+<ul class="simple">
+<li><p>All target macros generate the code in a local scope, i.e. <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">code</span> <span class="pre">}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NV_DISPATCH_TARGET</span></code> is <em>NOT</em> a switch statement. It enables the code associated with the first condition satisfied.</p></li>
+<li><p>The target macros take <code class="docutils literal notranslate"><span class="pre">code</span></code> as an argument, so it is <em>not</em> possible to use any conditional compilation, .e.g <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">_CCCL_STD_VER</span> <span class="pre">&gt;=</span> <span class="pre">20</span></code> within a target macro</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="cuda-attributes">
+<h2>CUDA attributes<a class="headerlink" href="#cuda-attributes" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 66%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_GRID_CONSTANT</span></code></p></td>
+<td><p>Grid constant kernel parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_GLOBAL_CONSTANT</span></code></p></td>
+<td><p>Host/device global scope constant (<code class="docutils literal notranslate"><span class="pre">inline</span> <span class="pre">constexpr</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="cuda-toolkit-macros">
+<h2>CUDA Toolkit macros<a class="headerlink" href="#cuda-toolkit-macros" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_CTK()</span></code></p></td>
+<td><p>CUDA toolkit is available if <code class="docutils literal notranslate"><span class="pre">_CCCL_CUDA_COMPILER()</span></code> evaluates to a <code class="docutils literal notranslate"><span class="pre">true</span></code> value or if <code class="docutils literal notranslate"><span class="pre">cuda_runtime_api.h</span></code> was found</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CTK_BELOW</span></code></p></td>
+<td><p>CUDA toolkit version below 12.7</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CTK_AT_LEAST(12,</span> <span class="pre">7)</span></code></p></td>
+<td><p>CUDA toolkit version at least 12.7</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="non-standard-types-support">
+<h2>Non-standard Types Support<a class="headerlink" href="#non-standard-types-support" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 81%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_INT128()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__int128</span></code> and <code class="docutils literal notranslate"><span class="pre">__uint128_t</span></code> for 128-bit integer are supported and enabled</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_NVFP8()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__nv_fp8_e5m2/__nv_fp8_e4m3/__nv_fp8_e8m0</span></code> data types are supported and enabled.  Prefer over <code class="docutils literal notranslate"><span class="pre">__CUDA_FP8_TYPES_EXIST__</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_NVFP16()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__half/__half2</span></code> data types are supported and enabled. Prefer over <code class="docutils literal notranslate"><span class="pre">__CUDA_FP16_TYPES_EXIST__</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_NVBF16()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__nv_bfloat16/__nv_bfloat162</span></code> data types are supported and enabled.  Prefer over <code class="docutils literal notranslate"><span class="pre">__CUDA_BF16_TYPES_EXIST__</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_FLOAT128()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__float128</span></code> for 128-bit floating-point are supported and enabled</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_DISABLE_INT128_SUPPORT</span></code></p></td>
+<td><p>Disable <code class="docutils literal notranslate"><span class="pre">__int128/__uint128_t</span></code> support</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_DISABLE_NVFP8_SUPPORT</span></code></p></td>
+<td><p>Disable <code class="docutils literal notranslate"><span class="pre">__nv_fp8_e5m2/__nv_fp8_e4m3/__nv_fp8_e8m0</span></code> support</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_DISABLE_NVFP16_SUPPORT</span></code></p></td>
+<td><p>Disable <code class="docutils literal notranslate"><span class="pre">__half/__half2</span></code> support</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_DISABLE_NVBF16_SUPPORT</span></code></p></td>
+<td><p>Disable <code class="docutils literal notranslate"><span class="pre">__nv_bfloat16/__nv_bfloat162</span></code> support</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_DISABLE_FLOAT128_SUPPORT</span></code></p></td>
+<td><p>Disable <code class="docutils literal notranslate"><span class="pre">__float128</span></code> support</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_HAS_NVFP16()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__half/__half2</span></code> host/device are supported  (CUDA 12.2+)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_HAS_NVBF16()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__nv_bfloat16/__nv_bfloat162</span></code> host/device are supported (CUDA 12.2+)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="c-language-macros">
+<h2>C++ Language Macros<a class="headerlink" href="#c-language-macros" title="Permalink to this headline"></a></h2>
+<p>The following macros are required only if the target C++ version does not support the corresponding attribute</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_STD_VER</span></code></p></td>
+<td><p>C++ standard version, e.g. <code class="docutils literal notranslate"><span class="pre">#if</span> <span class="pre">_CCCL_STD_VER</span> <span class="pre">&gt;=</span> <span class="pre">2017</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CONSTEXPR_CXX20</span></code></p></td>
+<td><p>Enable <code class="docutils literal notranslate"><span class="pre">constexpr</span></code> for C++20 or newer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CONSTEXPR_CXX23</span></code></p></td>
+<td><p>Enable <code class="docutils literal notranslate"><span class="pre">constexpr</span></code> for C++23 or newer</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_EXCEPTIONS()</span></code></p></td>
+<td><p>Features can use exceptions, e.g <code class="docutils literal notranslate"><span class="pre">bad_optional_access</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Concept-like Macros</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_TEMPLATE(X)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">template</span></code> clause</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_REQUIRES(X)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">requires</span></code> clause</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_AND</span></code></p></td>
+<td><p>Traits conjunction only used with <code class="docutils literal notranslate"><span class="pre">_CCCL_REQUIRES</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Usage example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">_CCCL_TEMPLATE</span><span class="p">(</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"></span>
+<span class="n">_CCCL_REQUIRES</span><span class="p">(</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_CCCL_AND</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">_CCCL_TEMPLATE</span><span class="p">(</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">)</span><span class="w"></span>
+<span class="n">_CCCL_REQUIRES</span><span class="p">(</span><span class="n">is_arithmetic_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_CCCL_AND</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Portable feature testing</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 66%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_BUILTIN(X)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">__has_builtin(X)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_FEATURE(X)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">__has_feature(X)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HAS_INCLUDE(X)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">__has_include(X)</span></code> (before C++17)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Portable attributes</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ASSUME(EXPR)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">[[assume]]</span></code> attribute (before C++23)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_NO_UNIQUE_ADDRESS</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">[[no_unique_address]]</span></code> attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_DEPRECATED</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">[[deprecated]]</span></code> attribute (before C++14)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_DEPRECATED_BECAUSE(MSG)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">[[deprecated]]</span></code> attribute with custom message (before C++14)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_FORCEINLINE</span></code></p></td>
+<td><p>Portable “always inline” attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_PURE</span></code></p></td>
+<td><p>Portable “pure” function attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_CONST</span></code></p></td>
+<td><p>Portable “constant” function attribute</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Portable Builtin Macros</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_UNREACHABLE()</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">__builtin_unreachable()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_BUILTIN_EXPECT(X)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">__builtin_expected(X)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_BUILTIN_PREFETCH(X[,</span> <span class="pre">Y,</span> <span class="pre">Z])</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">__builtin_prefetch(X,</span> <span class="pre">Y,</span> <span class="pre">Z)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Portable Keyword Macros</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_RESTRICT</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">restrict</span></code> keyword</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ALIGNAS(X)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">alignas(X)</span></code> keyword (variable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ALIGNAS_TYPE(X)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">alignas(X)</span></code> keyword (type)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_PRAGMA(X)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">_Pragma(X)</span></code> keyword</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Portable Pragma Macros</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_PRAGMA_UNROLL(N)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">unroll</span> <span class="pre">N</span></code> pragma</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_PRAGMA_UNROLL_FULL()</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">unroll</span></code> pragma</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_PRAGMA_NOUNROLL()</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">nounroll</span></code> pragma</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="visibility-macros">
+<h2>Visibility Macros<a class="headerlink" href="#visibility-macros" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_VISIBILITY_HIDDEN</span></code></p></td>
+<td><p>Hidden visibility attribute (e.g. <code class="docutils literal notranslate"><span class="pre">__attribute__((visibility(&quot;hidden&quot;)))</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_HIDE_FROM_ABI</span></code></p></td>
+<td><p>Hidden visibility (i.e. <code class="docutils literal notranslate"><span class="pre">inline</span></code>, not exported, not instantiated)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_API</span></code></p></td>
+<td><p>Host/device function with hidden visibility. Most CCCL functions are hidden with this attribute</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="other-common-macros">
+<h2>Other Common Macros<a class="headerlink" href="#other-common-macros" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CUDA_VSTD</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cuda::std</span></code> namespace. To use in libcu++</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_TO_STRING(X)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">X</span></code> to literal string</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DOXYGEN_INVOKED</span></code></p></td>
+<td><p>Defined during Doxygen parsing</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="debugging-macros">
+<h2>Debugging Macros<a class="headerlink" href="#debugging-macros" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ASSERT(COND,</span> <span class="pre">MSG)</span></code></p></td>
+<td><p>Portable CCCL assert macro. Requires (<code class="docutils literal notranslate"><span class="pre">CCCL_ENABLE_HOST_ASSERTIONS</span></code> or <code class="docutils literal notranslate"><span class="pre">CCCL_ENABLE_DEVICE_ASSERTIONS</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_VERIFY(COND,</span> <span class="pre">MSG)</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">alignas(X)</span></code> keyword (variable)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ENABLE_ASSERTIONS</span></code></p></td>
+<td><p>Enable assertions</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_ENABLE_HOST_ASSERTIONS</span></code></p></td>
+<td><p>Enable host-side assertions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CCCL_ENABLE_DEVICE_ASSERTIONS</span></code></p></td>
+<td><p>Enable device-side assertions</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_ENABLE_DEBUG_MODE</span></code></p></td>
+<td><p>Enable debug mode (and assertions)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="warning-suppression-macros">
+<h2>Warning Suppression Macros<a class="headerlink" href="#warning-suppression-macros" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DIAG_PUSH</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">push</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DIAG_POP</span></code></p></td>
+<td><p>Portable <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">pop</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Compiler-specific Suppression Macros</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 62%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DIAG_SUPPRESS_CLANG(X)</span></code></p></td>
+<td><p>Suppress clang warning, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;-Wattributes&quot;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DIAG_SUPPRESS_GCC(X)</span></code></p></td>
+<td><p>Suppress gcc warning, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;-Wattributes&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DIAG_SUPPRESS_NVHPC(X)</span></code></p></td>
+<td><p>Suppress nvhpc warning, e.g. <code class="docutils literal notranslate"><span class="pre">expr_has_no_effect</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_DIAG_SUPPRESS_MSVC(X)</span></code></p></td>
+<td><p>Suppress msvc warning, e.g. <code class="docutils literal notranslate"><span class="pre">4127</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_BEGIN_NV_DIAG_SUPPRESS(X)</span></code></p></td>
+<td><p>Start to suppress nvcc warning, e.g. <code class="docutils literal notranslate"><span class="pre">177</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_CCCL_END_NV_DIAG_SUPPRESS()</span></code></p></td>
+<td><p>End to suppress nvcc warning</p></td>
+</tr>
+</tbody>
+</table>
+<p>Usage example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">_CCCL_DIAG_PUSH</span><span class="w"></span>
+<span class="n">_CCCL_DIAG_SUPPRESS_GCC</span><span class="p">(</span><span class="s">&quot;-Wattributes&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="c1">// code ..</span>
+<span class="n">_CCCL_DIAG_POP</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

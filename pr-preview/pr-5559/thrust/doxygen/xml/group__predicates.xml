@@ -1,0 +1,1102 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__predicates" kind="group">
+    <compoundname>predicates</compoundname>
+    <title>Predicates</title>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__predicates_1ga91da05b683fadd078eb90bf126de0e52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::is_partitioned</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, Predicate pred)</argsstring>
+        <name>is_partitioned</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>is_partitioned</computeroutput> returns <computeroutput>true</computeroutput> if the given range is partitioned with respect to a predicate, and <computeroutput>false</computeroutput> otherwise.</para>
+<para>Specifically, <computeroutput>is_partitioned</computeroutput> returns <computeroutput>true</computeroutput> if <computeroutput>[first, last)</computeroutput> is empty of if <computeroutput>[first, last)</computeroutput> is partitioned by <computeroutput>pred</computeroutput>, i.e. if all elements that satisfy <computeroutput>pred</computeroutput> appear before those that do not.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the range <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if the range <computeroutput>[first, last)</computeroutput> is partitioned with respect to <computeroutput>pred</computeroutput>, or if <computeroutput>[first, last)</computeroutput> is empty. <computeroutput>false</computeroutput>, otherwise.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::is_partitioned(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>10,<sp/>is_even());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::is_partitioned(thrust::host,<sp/>B,<sp/>B<sp/>+<sp/>10,<sp/>is_even());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="1327" column="7" declfile="thrust/partition.h" declline="1327" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1ga39f90d87ed0ed524e90551a1c97c71d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::is_partitioned</definition>
+        <argsstring>(InputIterator first, InputIterator last, Predicate pred)</argsstring>
+        <name>is_partitioned</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>is_partitioned</computeroutput> returns <computeroutput>true</computeroutput> if the given range is partitioned with respect to a predicate, and <computeroutput>false</computeroutput> otherwise.</para>
+<para>Specifically, <computeroutput>is_partitioned</computeroutput> returns <computeroutput>true</computeroutput> if <computeroutput>[first, last)</computeroutput> is empty of if <computeroutput>[first, last)</computeroutput> is partitioned by <computeroutput>pred</computeroutput>, i.e. if all elements that satisfy <computeroutput>pred</computeroutput> appear before those that do not.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the range <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if the range <computeroutput>[first, last)</computeroutput> is partitioned with respect to <computeroutput>pred</computeroutput>, or if <computeroutput>[first, last)</computeroutput> is empty. <computeroutput>false</computeroutput>, otherwise.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[]<sp/>=<sp/>{1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9,<sp/>10};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::is_partitioned(A,<sp/>A<sp/>+<sp/>10,<sp/>is_even());<sp/>//<sp/>returns<sp/>true</highlight></codeline>
+<codeline><highlight class="normal">thrust::is_partitioned(B,<sp/>B<sp/>+<sp/>10,<sp/>is_even());<sp/>//<sp/>returns<sp/>false</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="1375" column="6" declfile="thrust/partition.h" declline="1375" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1ga06a2b6225f76986d2861b435c2e1f7f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::is_sorted</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last)</argsstring>
+        <name>is_sorted</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>is_sorted</computeroutput> returns <computeroutput>true</computeroutput> if the range <computeroutput>[first, last)</computeroutput> is sorted in ascending order, and <computeroutput>false</computeroutput> otherwise.</para>
+<para>Specifically, this version of <computeroutput>is_sorted</computeroutput> returns <computeroutput>false</computeroutput> if for some iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last - 1)</computeroutput> the expression <computeroutput>*(i + 1) &lt; *i</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput>, if the sequence is sorted; <computeroutput>false</computeroutput>, otherwise.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</ulink>, and the ordering on objects of <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is a <emphasis>strict weak ordering</emphasis>, as defined in the <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</ulink> requirements.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code demonstrates how to use <computeroutput>is_sorted</computeroutput> to test whether the contents of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">device_vector</ref></computeroutput> are stored in ascending order using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>v(6);</highlight></codeline>
+<codeline><highlight class="normal">v[0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline><highlight class="normal">v[1]<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal">v[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">v[3]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">v[4]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">v[5]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">bool<sp/>result<sp/>=<sp/>thrust::is_sorted(thrust::device,<sp/>v.begin(),<sp/>v.end());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>false</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::sort(v.begin(),<sp/>v.end());</highlight></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::is_sorted(thrust::device,<sp/>v.begin(),<sp/>v.end());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>true</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/is_sorted">https://en.cppreference.com/w/cpp/algorithm/is_sorted</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>is_sorted_until </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>less&lt;T&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="974" column="7" declfile="thrust/sort.h" declline="974" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1gaf221abd8c79d647c7957a66be19d68d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::is_sorted</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last)</argsstring>
+        <name>is_sorted</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>is_sorted</computeroutput> returns <computeroutput>true</computeroutput> if the range <computeroutput>[first, last)</computeroutput> is sorted in ascending order, and <computeroutput>false</computeroutput> otherwise.</para>
+<para>Specifically, this version of <computeroutput>is_sorted</computeroutput> returns <computeroutput>false</computeroutput> if for some iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last - 1)</computeroutput> the expression <computeroutput>*(i + 1) &lt; *i</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput>, if the sequence is sorted; <computeroutput>false</computeroutput>, otherwise.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</ulink>, and the ordering on objects of <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is a <emphasis>strict weak ordering</emphasis>, as defined in the <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</ulink> requirements.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code demonstrates how to use <computeroutput>is_sorted</computeroutput> to test whether the contents of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">device_vector</ref></computeroutput> are stored in ascending order.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>v(6);</highlight></codeline>
+<codeline><highlight class="normal">v[0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline><highlight class="normal">v[1]<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal">v[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">v[3]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">v[4]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">v[5]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">bool<sp/>result<sp/>=<sp/>thrust::is_sorted(v.begin(),<sp/>v.end());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>false</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::sort(v.begin(),<sp/>v.end());</highlight></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::is_sorted(v.begin(),<sp/>v.end());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>true</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/is_sorted">https://en.cppreference.com/w/cpp/algorithm/is_sorted</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>is_sorted_until </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>less&lt;T&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="1028" column="6" declfile="thrust/sort.h" declline="1028" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1ga875b0200f33e77e846f6148d47a031f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Compare</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::is_sorted</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, Compare comp)</argsstring>
+        <name>is_sorted</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Compare</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>is_sorted</computeroutput> returns <computeroutput>true</computeroutput> if the range <computeroutput>[first, last)</computeroutput> is sorted in ascending order according to a user-defined comparison operation, and <computeroutput>false</computeroutput> otherwise.</para>
+<para>Specifically, this version of <computeroutput>is_sorted</computeroutput> returns <computeroutput>false</computeroutput> if for some iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last - 1)</computeroutput> the expression <computeroutput>comp(*(i + 1), *i)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput>, if the sequence is sorted according to comp; <computeroutput>false</computeroutput>, otherwise.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>StrictWeakOrdering&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Compare</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>is_sorted</computeroutput> to test whether the contents of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">device_vector</ref></computeroutput> are stored in descending order using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>v(6);</highlight></codeline>
+<codeline><highlight class="normal">v[0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline><highlight class="normal">v[1]<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal">v[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">v[3]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">v[4]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">v[5]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::std::greater&lt;int&gt;<sp/>comp;</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/>result<sp/>=<sp/>thrust::is_sorted(thrust::device,<sp/>v.begin(),<sp/>v.end(),<sp/>comp);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>false</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::sort(v.begin(),<sp/>v.end(),<sp/>comp);</highlight></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::is_sorted(thrust::device,<sp/>v.begin(),<sp/>v.end(),<sp/>comp);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>true</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/is_sorted">https://en.cppreference.com/w/cpp/algorithm/is_sorted</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>less&lt;T&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="1086" column="1" declfile="thrust/sort.h" declline="1086" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1gaa45997c2cf929bf5ddce1ca2e33d4769" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Compare</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool thrust::is_sorted</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, Compare comp)</argsstring>
+        <name>is_sorted</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Compare</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>is_sorted</computeroutput> returns <computeroutput>true</computeroutput> if the range <computeroutput>[first, last)</computeroutput> is sorted in ascending order according to a user-defined comparison operation, and <computeroutput>false</computeroutput> otherwise.</para>
+<para>Specifically, this version of <computeroutput>is_sorted</computeroutput> returns <computeroutput>false</computeroutput> if for some iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last - 1)</computeroutput> the expression <computeroutput>comp(*(i + 1), *i)</computeroutput> is <computeroutput>true</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Comparison operator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput>, if the sequence is sorted according to comp; <computeroutput>false</computeroutput>, otherwise.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>StrictWeakOrdering&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Compare</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>is_sorted</computeroutput> to test whether the contents of a <computeroutput><ref refid="classthrust_1_1device__vector" kindref="compound">device_vector</ref></computeroutput> are stored in descending order.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>v(6);</highlight></codeline>
+<codeline><highlight class="normal">v[0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline><highlight class="normal">v[1]<sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal">v[2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">v[3]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">v[4]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">v[5]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::std::greater&lt;int&gt;<sp/>comp;</highlight></codeline>
+<codeline><highlight class="normal">bool<sp/>result<sp/>=<sp/>thrust::is_sorted(v.begin(),<sp/>v.end(),<sp/>comp);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>false</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::sort(v.begin(),<sp/>v.end(),<sp/>comp);</highlight></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::is_sorted(v.begin(),<sp/>v.end(),<sp/>comp);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>true</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/is_sorted">https://en.cppreference.com/w/cpp/algorithm/is_sorted</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>less&lt;T&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="1141" column="6" declfile="thrust/sort.h" declline="1141" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1gac74f3dcb01dc6d861373297e8154ea5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::is_sorted_until</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last)</argsstring>
+        <name>is_sorted_until</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This version of <computeroutput>is_sorted_until</computeroutput> returns the last iterator <computeroutput>i</computeroutput> in <computeroutput>[first,last]</computeroutput> for which the range <computeroutput>[first,last)</computeroutput> is sorted using <computeroutput>operator&lt;</computeroutput>. If <computeroutput>distance(first,last) &lt; 2</computeroutput>, <computeroutput>is_sorted_until</computeroutput> simply returns <computeroutput>last</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The last iterator in the input range for which it is sorted.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink> and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>is_sorted_until</computeroutput> to find the first position in an array where the data becomes unsorted using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[8]<sp/>=<sp/>{0,<sp/>1,<sp/>2,<sp/>3,<sp/>0,<sp/>1,<sp/>2,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>*<sp/>B<sp/>=<sp/>thrust::is_sorted_until(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>8);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>B<sp/>-<sp/>A<sp/>is<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>[A,<sp/>B)<sp/>is<sp/>sorted</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>is_sorted</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort_by_key</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort_by_key</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="1184" column="18" declfile="thrust/sort.h" declline="1184" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1ga2943fb1a51132798bb1b548a02874784" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::is_sorted_until</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last)</argsstring>
+        <name>is_sorted_until</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This version of <computeroutput>is_sorted_until</computeroutput> returns the last iterator <computeroutput>i</computeroutput> in <computeroutput>[first,last]</computeroutput> for which the range <computeroutput>[first,last)</computeroutput> is sorted using <computeroutput>operator&lt;</computeroutput>. If <computeroutput>distance(first,last) &lt; 2</computeroutput>, <computeroutput>is_sorted_until</computeroutput> simply returns <computeroutput>last</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The last iterator in the input range for which it is sorted.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink> and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>is_sorted_until</computeroutput> to find the first position in an array where the data becomes unsorted:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[8]<sp/>=<sp/>{0,<sp/>1,<sp/>2,<sp/>3,<sp/>0,<sp/>1,<sp/>2,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>*<sp/>B<sp/>=<sp/>thrust::is_sorted_until(A,<sp/>A<sp/>+<sp/>8);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>B<sp/>-<sp/>A<sp/>is<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>[A,<sp/>B)<sp/>is<sp/>sorted</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>is_sorted</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort_by_key</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort_by_key</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="1222" column="17" declfile="thrust/sort.h" declline="1222" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1ga4a38ef536df3bb59eb413b66a60ae8ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Compare</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::is_sorted_until</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, Compare comp)</argsstring>
+        <name>is_sorted_until</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Compare</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This version of <computeroutput>is_sorted_until</computeroutput> returns the last iterator <computeroutput>i</computeroutput> in <computeroutput>[first,last]</computeroutput> for which the range <computeroutput>[first,last)</computeroutput> is sorted using the function object <computeroutput>comp</computeroutput>. If <computeroutput>distance(first,last) &lt; 2</computeroutput>, <computeroutput>is_sorted_until</computeroutput> simply returns <computeroutput>last</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization: </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function object to use for comparison. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The last iterator in the input range for which it is sorted.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink> and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Compare&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Compare</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>is_sorted_until</computeroutput> to find the first position in an array where the data becomes unsorted in descending order using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[8]<sp/>=<sp/>{3,<sp/>2,<sp/>1,<sp/>0,<sp/>3,<sp/>2,<sp/>1,<sp/>0};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::std::greater&lt;int&gt;<sp/>comp;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*<sp/>B<sp/>=<sp/>thrust::is_sorted_until(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>8,<sp/>comp);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>B<sp/>-<sp/>A<sp/>is<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>[A,<sp/>B)<sp/>is<sp/>sorted<sp/>in<sp/>descending<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>is_sorted</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort_by_key</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort_by_key</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="1268" column="18" declfile="thrust/sort.h" declline="1268" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__predicates_1ga5587ccf7ee81a0f591567a1ae14c967f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Compare</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::is_sorted_until</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, Compare comp)</argsstring>
+        <name>is_sorted_until</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Compare</type>
+          <declname>comp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This version of <computeroutput>is_sorted_until</computeroutput> returns the last iterator <computeroutput>i</computeroutput> in <computeroutput>[first,last]</computeroutput> for which the range <computeroutput>[first,last)</computeroutput> is sorted using the function object <computeroutput>comp</computeroutput>. If <computeroutput>distance(first,last) &lt; 2</computeroutput>, <computeroutput>is_sorted_until</computeroutput> simply returns <computeroutput>last</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range of interest. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>comp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function object to use for comparison. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The last iterator in the input range for which it is sorted.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink> and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Compare&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Compare</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>is_sorted_until</computeroutput> to find the first position in an array where the data becomes unsorted in descending order:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/sort.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[8]<sp/>=<sp/>{3,<sp/>2,<sp/>1,<sp/>0,<sp/>3,<sp/>2,<sp/>1,<sp/>0};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::std::greater&lt;int&gt;<sp/>comp;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*<sp/>B<sp/>=<sp/>thrust::is_sorted_until(A,<sp/>A<sp/>+<sp/>8,<sp/>comp);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>B<sp/>-<sp/>A<sp/>is<sp/>4</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>[A,<sp/>B)<sp/>is<sp/>sorted<sp/>in<sp/>descending<sp/>order</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>is_sorted</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>sort_by_key</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>stable_sort_by_key</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/sort.h" line="1312" column="17" declfile="thrust/sort.h" declline="1312" declcolumn="17"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

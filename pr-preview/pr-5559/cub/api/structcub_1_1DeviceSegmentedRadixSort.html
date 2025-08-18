@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::DeviceSegmentedRadixSort &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::DeviceSegmentedReduce" href="structcub_1_1DeviceSegmentedReduce.html" />
+    <link rel="prev" title="cub::DeviceScan" href="structcub_1_1DeviceScan.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1CachingDeviceAllocator.html">cub::CachingDeviceAllocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceAdjacentDifference.html">cub::DeviceAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceCopy.html">cub::DeviceCopy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceFor.html">cub::DeviceFor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceHistogram.html">cub::DeviceHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMemcpy.html">cub::DeviceMemcpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMerge.html">cub::DeviceMerge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMergeSort.html">cub::DeviceMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DevicePartition.html">cub::DevicePartition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRadixSort.html">cub::DeviceRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceReduce.html">cub::DeviceReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRunLengthEncode.html">cub::DeviceRunLengthEncode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceScan.html">cub::DeviceScan</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::DeviceSegmentedRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedReduce.html">cub::DeviceSegmentedReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedSort.html">cub::DeviceSegmentedSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSelect.html">cub::DeviceSelect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceTransform.html">cub::DeviceTransform</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../device_wide.html">Device-Wide Primitives</a> &raquo;</li>
+      <li>cub::DeviceSegmentedRadixSort</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-devicesegmentedradixsort">
+<h1>cub::DeviceSegmentedRadixSort<a class="headerlink" href="#cub-devicesegmentedradixsort" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_device_device_segmented_radix_sort.cuh.html#device-segmented-radix-sort-8cuh"><span class="std std-ref">cub/device/device_segmented_radix_sort.cuh</span></a></p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub24DeviceSegmentedRadixSortE">
+<span id="_CPPv3N3cub24DeviceSegmentedRadixSortE"></span><span id="_CPPv2N3cub24DeviceSegmentedRadixSortE"></span><span id="cub::DeviceSegmentedRadixSort"></span><span class="target" id="structcub_1_1devicesegmentedradixsort"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeviceSegmentedRadixSort</span></span></span><a class="headerlink" href="#_CPPv4N3cub24DeviceSegmentedRadixSortE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p><p>DeviceSegmentedRadixSort provides device-wide, parallel operations
+for computing a batched radix sort across multiple, non-overlapping
+sequences of data items residing within device-accessible memory.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<p>The <a class="reference external" href="http://en.wikipedia.org/wiki/Radix_sort">radix sorting method</a>
+arranges items into ascending (or descending) order. The algorithm relies
+upon a positional representation for keys, i.e., each key is comprised of an
+ordered sequence of symbols (e.g., digits, characters, etc.) specified from
+least-significant to most-significant.  For a given input sequence of keys
+and a set of rules specifying a total ordering of the symbolic alphabet, the
+radix sorting method produces a lexicographic ordering of those keys.</p>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline"></a></h2>
+<p>DeviceSegmentedRadixSort shares its implementation with DeviceRadixSort. See
+that algorithm’s documentation for more information.</p>
+<p>Segments are not required to be contiguous. Any element of input(s) or
+output(s) outside the specified segments will not be accessed nor modified.</p>
+</section>
+<section id="usage-considerations">
+<h2>Usage Considerations<a class="headerlink" href="#usage-considerations" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Dynamic parallelism. DeviceSegmentedRadixSort methods can be called within kernel code on devices in which CUDA dynamic parallelism is supported.</p></li>
+</ul>
+</div></blockquote>
+</section>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-key-value-pairs">Key-value pairs</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I0000EN3cub24DeviceSegmentedRadixSort9SortPairsEPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I0000EN3cub24DeviceSegmentedRadixSort9SortPairsEPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1ae7b1ce369a8cdfff656f19f30a86eb41"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortPairs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_in</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_out</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_values_in</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_values_out</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of key-value pairs into ascending order. (<code class="docutils literal notranslate"><span class="pre">~2N</span></code> auxiliary storage required)</p>
+<ul class="simple">
+<li><p>The contents of the input data are not altered by the sorting operation</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased
+for both the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where
+the latter is specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and
+yield a corresponding performance improvement.</p></li>
+<li><p>Let <code class="docutils literal notranslate"><span class="pre">in</span></code> be one of <code class="docutils literal notranslate"><span class="pre">{d_keys_in,</span> <span class="pre">d_values_in}</span></code> and <code class="docutils literal notranslate"><span class="pre">out</span></code> be any of
+<code class="docutils literal notranslate"><span class="pre">{d_keys_out,</span> <span class="pre">d_values_out}</span></code>. The range <code class="docutils literal notranslate"><span class="pre">[out,</span> <span class="pre">out</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall
+not overlap <code class="docutils literal notranslate"><span class="pre">[in,</span> <span class="pre">in</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>This operation requires an allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(N+P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the length of the input and <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device. For sorting using only <code class="docutils literal notranslate"><span class="pre">O(P)</span></code> temporary storage, see
+the sorting interface using DoubleBuffer wrappers below.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys_in[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_values_in[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_keys_out[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_values_out[i]</span></code> will not be accessed nor modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="snippet">
+<h2>Snippet<a class="headerlink" href="#snippet" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys with associated vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1"> // or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span><span class="cp"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_in</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_out</span><span class="p">;</span><span class="w">        </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values_in</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [0, 1, 2, 3, 4, 5, 6]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values_out</span><span class="p">;</span><span class="w">      </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys_out            &lt;-- [6, 7, 8, 0, 3, 5, 9]</span>
+<span class="c1">// d_values_out          &lt;-- [1, 2, 0, 5, 4, 3, 6]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>ValueT</strong> – <strong>[inferred]</strong> Value type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys_in</strong> – <strong>[in]</strong> Device-accessible pointer to the input data of key data to sort</p></li>
+<li><p><strong>d_keys_out</strong> – <strong>[out]</strong> Device-accessible pointer to the sorted output sequence of key data</p></li>
+<li><p><strong>d_values_in</strong> – <strong>[in]</strong> Device-accessible pointer to the corresponding input sequence of associated value items</p></li>
+<li><p><strong>d_values_out</strong> – <strong>[out]</strong> Device-accessible pointer to the correspondingly-reordered output sequence of associated value items</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> Random-access input iterator to the sequence of beginning offsets of length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>. If
+<code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., <code class="docutils literal notranslate"><span class="pre">sizeof(unsigned</span> <span class="pre">int)</span> <span class="pre">*</span> <span class="pre">8</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I0000EN3cub24DeviceSegmentedRadixSort9SortPairsEPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I0000EN3cub24DeviceSegmentedRadixSort9SortPairsEPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1a48498c337a8ae5fecd304dd03dd7ca91"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortPairs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="n"><span class="pre">DoubleBuffer</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d_keys</span></span>, <span class="n"><span class="pre">DoubleBuffer</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d_values</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairs::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort9SortPairsE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of key-value pairs into ascending order. (<code class="docutils literal notranslate"><span class="pre">~N</span></code> auxiliary storage required)</p>
+<ul class="simple">
+<li><p>The sorting operation is given a pair of key buffers and a corresponding
+pair of associated value buffers. Each pair is managed by a DoubleBuffer
+structure that indicates which of the two buffers is “current” (and thus
+contains the input data to be sorted).</p></li>
+<li><p>The contents of both buffers within each pair may be altered by the sorting operation.</p></li>
+<li><p>Upon completion, the sorting operation will update the “current”
+indicator within each DoubleBuffer wrapper to reference which of the two
+buffers now contains the sorted output sequence (a function of the number
+of key bits specified and the targeted device architecture).</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased for both
+the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where the latter is
+specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and yield
+a corresponding performance improvement.</p></li>
+<li><p>Let <code class="docutils literal notranslate"><span class="pre">cur</span></code> be one of <code class="docutils literal notranslate"><span class="pre">{d_keys.Current(),</span> <span class="pre">d_values.Current()}</span></code> and <code class="docutils literal notranslate"><span class="pre">alt</span></code>
+be any of <code class="docutils literal notranslate"><span class="pre">{d_keys.Alternate(),</span> <span class="pre">d_values.Alternate()}</span></code>. The range
+<code class="docutils literal notranslate"><span class="pre">[cur,</span> <span class="pre">cur</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[alt,</span> <span class="pre">alt</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>. Both ranges shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys.Current()[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_values.Current()[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_keys.Alternate()[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_values.Alternate()[i]</span></code> will not be accessed nor modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>This operation requires a relatively small allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device (and is typically a small constant relative to the input size <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id1">
+<h2>Snippet<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <cite>int</cite> keys with associated vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1"> // or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span><span class="cp"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_buf</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_alt_buf</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_value_buf</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [0, 1, 2, 3, 4, 5, 6]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_value_alt_buf</span><span class="p">;</span><span class="w">   </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Create a set of DoubleBuffers to wrap pairs of device pointers</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DoubleBuffer</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_keys</span><span class="p">(</span><span class="n">d_key_buf</span><span class="p">,</span><span class="w"> </span><span class="n">d_key_alt_buf</span><span class="p">);</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DoubleBuffer</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_values</span><span class="p">(</span><span class="n">d_value_buf</span><span class="p">,</span><span class="w"> </span><span class="n">d_value_alt_buf</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys.Current()      &lt;-- [6, 7, 8, 0, 3, 5, 9]</span>
+<span class="c1">// d_values.Current()    &lt;-- [5, 4, 3, 1, 2, 0, 6]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>ValueT</strong> – <strong>[inferred]</strong> Value type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Reference to the double-buffer of keys whose “current” device-accessible buffer contains the unsorted input keys and, upon return, is updated to point to the sorted output keys</p></li>
+<li><p><strong>d_values</strong> – <strong>[inout]</strong> Double-buffer of values whose “current” device-accessible buffer contains the unsorted input values and, upon return, is updated to point to the sorted output values</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of beginning offsets of
+length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first
+element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p>
+</p>
+</p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., <code class="docutils literal notranslate"><span class="pre">sizeof(unsigned</span> <span class="pre">int)</span> <span class="pre">*</span> <span class="pre">8</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingEPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingEPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1a7d921bbf31c1105442ce003013c57fb7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortPairsDescending</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_in</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_out</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_values_in</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_values_out</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTPK6ValueTP6ValueTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of key-value pairs into descending order. (<code class="docutils literal notranslate"><span class="pre">~2N</span></code> auxiliary storage required).</p>
+<ul class="simple">
+<li><p>The contents of the input data are not altered by the sorting operation</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased for both
+the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where the latter is
+specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and
+yield a corresponding performance improvement.</p></li>
+<li><p>Let <code class="docutils literal notranslate"><span class="pre">in</span></code> be one of <code class="docutils literal notranslate"><span class="pre">{d_keys_in,</span> <span class="pre">d_values_in}</span></code> and <cite>out</cite> be any of
+<code class="docutils literal notranslate"><span class="pre">{d_keys_out,</span> <span class="pre">d_values_out}</span></code>. The range <code class="docutils literal notranslate"><span class="pre">[out,</span> <span class="pre">out</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall
+not overlap <code class="docutils literal notranslate"><span class="pre">[in,</span> <span class="pre">in</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>This operation requires an allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(N+P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the length of the input and <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device. For sorting using only <code class="docutils literal notranslate"><span class="pre">O(P)</span></code> temporary storage, see
+the sorting interface using DoubleBuffer wrappers below.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys_in[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_values_in[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_keys_out[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_values_out[i]</span></code> will not be accessed nor modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id2">
+<h2>Snippet<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys with associated vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1"> // or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span><span class="cp"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_in</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_out</span><span class="p">;</span><span class="w">        </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values_in</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [0, 1, 2, 3, 4, 5, 6]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values_out</span><span class="p">;</span><span class="w">      </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairsDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairsDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_values_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys_out            &lt;-- [8, 7, 6, 9, 5, 3, 0]</span>
+<span class="c1">// d_values_out          &lt;-- [0, 2, 1, 6, 3, 4, 5]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>ValueT</strong> – <strong>[inferred]</strong> Value type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys_in</strong> – <strong>[in]</strong> Device-accessible pointer to the input data of key data to sort</p></li>
+<li><p><strong>d_keys_out</strong> – <strong>[out]</strong> Device-accessible pointer to the sorted output sequence of key data</p></li>
+<li><p><strong>d_values_in</strong> – <strong>[in]</strong> Device-accessible pointer to the corresponding input sequence of associated value items</p></li>
+<li><p><strong>d_values_out</strong> – <strong>[out]</strong> Device-accessible pointer to the correspondingly-reordered output sequence of associated value items</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of beginning offsets of
+length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first
+element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p>
+</p>
+</p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., <code class="docutils literal notranslate"><span class="pre">sizeof(unsigned</span> <span class="pre">int)</span> <span class="pre">*</span> <span class="pre">8</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingEPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingEPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1a47765b7f2f510b3e2f5da7b75f828dd8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortPairsDescending</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="n"><span class="pre">DoubleBuffer</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d_keys</span></span>, <span class="n"><span class="pre">DoubleBuffer</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::ValueT"><span class="n"><span class="pre">ValueT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d_values</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortPairsDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub24DeviceSegmentedRadixSort19SortPairsDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTER12DoubleBufferI6ValueTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of key-value pairs into descending order. (<code class="docutils literal notranslate"><span class="pre">~N</span></code> auxiliary storage required).</p>
+<ul class="simple">
+<li><p>The sorting operation is given a pair of key buffers and a corresponding
+pair of associated value buffers.  Each pair is managed by a DoubleBuffer
+structure that indicates which of the two buffers is “current” (and thus
+contains the input data to be sorted).</p></li>
+<li><p>The contents of both buffers within each pair may be altered by the
+sorting operation.</p></li>
+<li><p>Upon completion, the sorting operation will update the “current”
+indicator within each DoubleBuffer wrapper to reference which of the two
+buffers now contains the sorted output sequence (a function of the number
+of key bits specified and the targeted device architecture).</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased for both
+the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where the latter is
+specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and
+yield a corresponding performance improvement.</p></li>
+<li><p>Let <code class="docutils literal notranslate"><span class="pre">cur</span></code> be one of <code class="docutils literal notranslate"><span class="pre">{d_keys.Current(),</span> <span class="pre">d_values.Current()}</span></code> and <code class="docutils literal notranslate"><span class="pre">alt</span></code>
+be any of <code class="docutils literal notranslate"><span class="pre">{d_keys.Alternate(),</span> <span class="pre">d_values.Alternate()}</span></code>. The range
+<code class="docutils literal notranslate"><span class="pre">[cur,</span> <span class="pre">cur</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[alt,</span> <span class="pre">alt</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>. Both ranges shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys.Current()[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_values.Current()[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_keys.Alternate()[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_values.Alternate()[i]</span></code> will not be accessed nor modified.
+not to be modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>This operation requires a relatively small allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device (and is typically a small constant relative to the input size <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id3">
+<h2>Snippet<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys with associated vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1"> // or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span><span class="cp"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_buf</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_alt_buf</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_value_buf</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [0, 1, 2, 3, 4, 5, 6]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_value_alt_buf</span><span class="p">;</span><span class="w">   </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Create a set of DoubleBuffers to wrap pairs of device pointers</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DoubleBuffer</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_keys</span><span class="p">(</span><span class="n">d_key_buf</span><span class="p">,</span><span class="w"> </span><span class="n">d_key_alt_buf</span><span class="p">);</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DoubleBuffer</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_values</span><span class="p">(</span><span class="n">d_value_buf</span><span class="p">,</span><span class="w"> </span><span class="n">d_value_alt_buf</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairsDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortPairsDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys.Current()      &lt;-- [8, 7, 6, 9, 5, 3, 0]</span>
+<span class="c1">// d_values.Current()    &lt;-- [0, 2, 1, 6, 3, 4, 5]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>ValueT</strong> – <strong>[inferred]</strong> Value type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Reference to the double-buffer of keys whose “current” device-accessible buffer contains the unsorted input keys and, upon return, is updated to point to the sorted output keys</p></li>
+<li><p><strong>d_values</strong> – <strong>[inout]</strong> Double-buffer of values whose “current” device-accessible buffer contains the unsorted input values and, upon return, is updated to point to the sorted output values</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of beginning offsets of
+length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first
+element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p>
+</p>
+</p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., <code class="docutils literal notranslate"><span class="pre">sizeof(unsigned</span> <span class="pre">int)</span> <span class="pre">*</span> <span class="pre">8</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-keys-only">Keys-only</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I000EN3cub24DeviceSegmentedRadixSort8SortKeysEPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I000EN3cub24DeviceSegmentedRadixSort8SortKeysEPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1a85de543199ed09044a6a6f71d6e834f2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortKeys</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_in</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_out</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of keys into ascending order. (<code class="docutils literal notranslate"><span class="pre">~2N</span></code> auxiliary storage required)</p>
+<ul class="simple">
+<li><p>The contents of the input data are not altered by the sorting operation</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and
+yield a corresponding performance improvement.</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased for both
+the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where the latter
+is specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>The range <code class="docutils literal notranslate"><span class="pre">[d_keys_out,</span> <span class="pre">d_keys_out</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[d_keys_in,</span> <span class="pre">d_keys_in</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>This operation requires an allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(N+P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the length of the input and <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device. For sorting using only <code class="docutils literal notranslate"><span class="pre">O(P)</span></code> temporary storage, see
+the sorting interface using DoubleBuffer wrappers below.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys_in[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_keys_out[i]</span></code> will not
+be accessed nor modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id4">
+<h2>Snippet<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <cite>int</cite> keys.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_in</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_out</span><span class="p">;</span><span class="w">        </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys_out            &lt;-- [6, 7, 8, 0, 3, 5, 9]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys_in</strong> – <strong>[in]</strong> Device-accessible pointer to the input data of key data to sort</p></li>
+<li><p><strong>d_keys_out</strong> – <strong>[out]</strong> Device-accessible pointer to the sorted output sequence of key data</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of beginning offsets of
+length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first
+element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p>
+</p>
+</p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., <code class="docutils literal notranslate"><span class="pre">sizeof(unsigned</span> <span class="pre">int)</span> <span class="pre">*</span> <span class="pre">8</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I000EN3cub24DeviceSegmentedRadixSort8SortKeysEPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I000EN3cub24DeviceSegmentedRadixSort8SortKeysEPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1a572c745a6f39ce920971b65e8d8eefb4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortKeys</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="n"><span class="pre">DoubleBuffer</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d_keys</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeys::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort8SortKeysE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of keys into ascending order. (<code class="docutils literal notranslate"><span class="pre">~N</span></code> auxiliary storage required).</p>
+<ul class="simple">
+<li><p>The sorting operation is given a pair of key buffers managed by a
+DoubleBuffer structure that indicates which of the two buffers is
+“current” (and thus contains the input data to be sorted).</p></li>
+<li><p>The contents of both buffers may be altered by the sorting operation.</p></li>
+<li><p>Upon completion, the sorting operation will update the “current”
+indicator within the DoubleBuffer wrapper to reference which of the two
+buffers now contains the sorted output sequence (a function of the
+number of key bits specified and the targeted device architecture).</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased for both
+the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where the latter
+is specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and
+yield a corresponding performance improvement.</p></li>
+<li><p>Let <code class="docutils literal notranslate"><span class="pre">cur</span> <span class="pre">=</span> <span class="pre">d_keys.Current()</span></code> and <code class="docutils literal notranslate"><span class="pre">alt</span> <span class="pre">=</span> <span class="pre">d_keys.Alternate()</span></code>.
+The range <code class="docutils literal notranslate"><span class="pre">[cur,</span> <span class="pre">cur</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[alt,</span> <span class="pre">alt</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>. Both ranges shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys.Current()[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_keys[i].Alternate()[i]</span></code> will not be accessed nor modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>This operation requires a relatively small allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device (and is typically a small constant relative to the input size <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id5">
+<h2>Snippet<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for</span>
+<span class="c1">// sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_buf</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_alt_buf</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Create a DoubleBuffer to wrap the pair of device pointers</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DoubleBuffer</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_keys</span><span class="p">(</span><span class="n">d_key_buf</span><span class="p">,</span><span class="w"> </span><span class="n">d_key_alt_buf</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys.Current()      &lt;-- [6, 7, 8, 0, 3, 5, 9]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Reference to the double-buffer of keys whose “current” device-accessible buffer contains the unsorted input keys and, upon return, is updated to point to the sorted output keys</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of beginning offsets of
+length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first
+element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p>
+</p>
+</p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., <code class="docutils literal notranslate"><span class="pre">sizeof(unsigned</span> <span class="pre">int)</span> <span class="pre">*</span> <span class="pre">8</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingEPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingEPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1a1fd4c10d0b7f341be0495b505074249c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortKeysDescending</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_in</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_keys_out</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tPK4KeyTP4KeyTN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of keys into descending order. (<code class="docutils literal notranslate"><span class="pre">~2N</span></code> auxiliary storage required).</p>
+<ul class="simple">
+<li><p>The contents of the input data are not altered by the sorting operation</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased for both
+the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where the latter
+is specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and
+yield a corresponding performance improvement.</p></li>
+<li><p>The range <code class="docutils literal notranslate"><span class="pre">[d_keys_out,</span> <span class="pre">d_keys_out</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[d_keys_in,</span> <span class="pre">d_keys_in</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>This operation requires an allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(N+P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the length of the input and <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device. For sorting using only <code class="docutils literal notranslate"><span class="pre">O(P)</span></code> temporary storage, see
+the sorting interface using DoubleBuffer wrappers below.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys_in[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">d_keys_out[i]</span></code> will not
+be accessed nor modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id6">
+<h2>Snippet<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_in</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys_out</span><span class="p">;</span><span class="w">        </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Create a DoubleBuffer to wrap the pair of device pointers</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DoubleBuffer</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_keys</span><span class="p">(</span><span class="n">d_key_buf</span><span class="p">,</span><span class="w"> </span><span class="n">d_key_alt_buf</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeysDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeysDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys_out            &lt;-- [8, 7, 6, 9, 5, 3, 0]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys_in</strong> – <strong>[in]</strong> Device-accessible pointer to the input data of key data to sort</p></li>
+<li><p><strong>d_keys_out</strong> – <strong>[out]</strong> Device-accessible pointer to the sorted output sequence of key data</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of beginning offsets of
+length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first
+element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p>
+</p>
+</p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., sizeof(unsigned int) * 8)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t">
+<span id="_CPPv3I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingEPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span id="_CPPv2I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingEPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicesegmentedradixsort_1a9ad2e060c49067345cd48e259785343b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortKeysDescending</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <span class="n"><span class="pre">DoubleBuffer</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d_keys</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_segments</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::BeginOffsetIteratorT"><span class="n"><span class="pre">BeginOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_begin_offsets</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::EndOffsetIteratorT"><span class="n"><span class="pre">EndOffsetIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_end_offsets</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">begin_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">end_bit</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">sizeof</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="cub::DeviceSegmentedRadixSort::SortKeysDescending::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub24DeviceSegmentedRadixSort18SortKeysDescendingE11cudaError_tPvR6size_tR12DoubleBufferI4KeyTEN4cudaSt7int64_tEN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorTii12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Sorts segments of keys into descending order. (<code class="docutils literal notranslate"><span class="pre">~N</span></code> auxiliary storage required).</p>
+<ul class="simple">
+<li><p>The sorting operation is given a pair of key buffers managed by a
+DoubleBuffer structure that indicates which of the two buffers is
+“current” (and thus contains the input data to be sorted).</p></li>
+<li><p>The contents of both buffers may be altered by the sorting operation.</p></li>
+<li><p>Upon completion, the sorting operation will update the “current”
+indicator within the DoubleBuffer wrapper to reference which of the two
+buffers now contains the sorted output sequence (a function of the
+number of key bits specified and the targeted device architecture).</p></li>
+<li><p>When input a contiguous sequence of segments, a single sequence
+<code class="docutils literal notranslate"><span class="pre">segment_offsets</span></code> (of length <code class="docutils literal notranslate"><span class="pre">num_segments</span> <span class="pre">+</span> <span class="pre">1</span></code>) can be aliased
+for both the <code class="docutils literal notranslate"><span class="pre">d_begin_offsets</span></code> and <code class="docutils literal notranslate"><span class="pre">d_end_offsets</span></code> parameters (where
+the latter is specified as <code class="docutils literal notranslate"><span class="pre">segment_offsets</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></li>
+<li><p>An optional bit subrange <code class="docutils literal notranslate"><span class="pre">[begin_bit,</span> <span class="pre">end_bit)</span></code> of differentiating key
+bits can be specified. This can reduce overall sorting overhead and
+yield a corresponding performance improvement.</p></li>
+<li><p>Let <code class="docutils literal notranslate"><span class="pre">cur</span> <span class="pre">=</span> <span class="pre">d_keys.Current()</span></code> and <code class="docutils literal notranslate"><span class="pre">alt</span> <span class="pre">=</span> <span class="pre">d_keys.Alternate()</span></code>.
+The range <code class="docutils literal notranslate"><span class="pre">[cur,</span> <span class="pre">cur</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[alt,</span> <span class="pre">alt</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>. Both ranges shall not overlap
+<code class="docutils literal notranslate"><span class="pre">[d_begin_offsets,</span> <span class="pre">d_begin_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code> in any way.</p></li>
+<li><p>Segments are not required to be contiguous. For all index values <code class="docutils literal notranslate"><span class="pre">i</span></code>
+outside the specified segments <code class="docutils literal notranslate"><span class="pre">d_keys.Current()[i]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">d_keys[i].Alternate()[i]</span></code> will not be accessed nor modified.</p></li>
+<li><p>Note, the size of any segment may not exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>. Please consider using <code class="docutils literal notranslate"><span class="pre">DeviceSegmentedSort</span></code> instead,
+if the size of at least one of your segments could exceed <code class="docutils literal notranslate"><span class="pre">INT_MAX</span></code>.</p></li>
+<li><p>This operation requires a relatively small allocation of temporary device storage that is <code class="docutils literal notranslate"><span class="pre">O(P)</span></code>, where <code class="docutils literal notranslate"><span class="pre">P</span></code> is the number of streaming multiprocessors on the device (and is typically a small constant relative to the input size <code class="docutils literal notranslate"><span class="pre">N</span></code>).</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id7">
+<h2>Snippet<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the batched sorting of three segments
+(with one zero-length segment) of <cite>int</cite> keys.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_segmented_radix_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_segments</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 3</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_offsets</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [0, 3, 3, 7]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_buf</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_key_alt_buf</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., [-, -, -, -, -, -, -]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Create a DoubleBuffer to wrap the pair of device pointers</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DoubleBuffer</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_keys</span><span class="p">(</span><span class="n">d_key_buf</span><span class="p">,</span><span class="w"> </span><span class="n">d_key_alt_buf</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeysDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceSegmentedRadixSort</span><span class="o">::</span><span class="n">SortKeysDescending</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_keys</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">num_segments</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys.Current()      &lt;-- [8, 7, 6, 9, 5, 3, 0]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – <strong>[inferred]</strong> Key type</p></li>
+<li><p><strong>BeginOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment beginning offsets (may be a simple pointer type)</p></li>
+<li><p><strong>EndOffsetIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading segment ending offsets (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Reference to the double-buffer of keys whose “current” device-accessible buffer contains the unsorted input keys and, upon return, is updated to point to the sorted output keys</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> The total number of items within the segmented array, including items not covered by segments. <code class="docutils literal notranslate"><span class="pre">num_items</span></code> should match the largest element within the range <code class="docutils literal notranslate"><span class="pre">[d_end_offsets,</span> <span class="pre">d_end_offsets</span> <span class="pre">+</span> <span class="pre">num_segments)</span></code>.</p></li>
+<li><p><strong>num_segments</strong> – <strong>[in]</strong> The number of segments that comprise the sorting data</p></li>
+<li><p><strong>d_begin_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of beginning offsets of
+length <code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_begin_offsets[i]</span></code> is the first
+element of the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code></p>
+</p>
+</p></li>
+<li><p><strong>d_end_offsets</strong> – <strong>[in]</strong> <p><p>Random-access input iterator to the sequence of ending offsets of length
+<code class="docutils literal notranslate"><span class="pre">num_segments</span></code>, such that <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span></code> is the last element of
+the <em>i</em><sup>th</sup> data segment in <code class="docutils literal notranslate"><span class="pre">d_keys_*</span></code> and <code class="docutils literal notranslate"><span class="pre">d_values_*</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">d_begin_offsets[i]</span></code>, the <em>i</em><sup>th</sup> is considered empty.</p>
+</p>
+</p></li>
+<li><p><strong>begin_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The least-significant bit index (inclusive) needed for key comparison</p></li>
+<li><p><strong>end_bit</strong> – <strong>[in]</strong> <strong>[optional]</strong> The most-significant bit index (exclusive) needed for key comparison (e.g., <code class="docutils literal notranslate"><span class="pre">sizeof(unsigned</span> <span class="pre">int)</span> <span class="pre">*</span> <span class="pre">8</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

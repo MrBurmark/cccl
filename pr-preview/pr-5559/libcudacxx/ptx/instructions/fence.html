@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fence &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/mermaid-init.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../_static/version.js"></script>
+        <script src="../../_static/social-media.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="getctarank" href="getctarank.html" />
+    <link rel="prev" title="exit" href="exit.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extended_api.html">Extended API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../ptx.html">PTX</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../instructions.html">PTX Instructions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ld.html">ld</a></li>
+<li class="toctree-l3"><a class="reference internal" href="st.html">st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shr.html">shr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shl.html">shl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bmsk.html">bmsk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elect_sync.html">elect.sync</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prmt.html">prmt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="barrier_cluster.html">barrier.cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bfind.html">bfind</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clusterlaunchcontrol.html">clusterlaunchcontrol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_bulk.html">cp.async.bulk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_bulk_commit_group.html">cp.async.bulk.commit_group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_bulk_wait_group.html">cp.async.bulk.wait_group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_bulk_tensor.html">cp.async.bulk.tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_mbarrier_arrive.html">cp.async.mbarrier.arrive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_reduce_async_bulk.html">cp.reduce.async.bulk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_reduce_async_bulk_tensor.html">cp.reduce.async.bulk.tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exit.html">exit</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">fence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fence-1">fence</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#fence-sc-cta">fence.sc.cta</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-sc-gpu">fence.sc.gpu</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-sc-sys">fence.sc.sys</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-sc-cluster">fence.sc.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acq-rel-cta">fence.acq_rel.cta</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acq-rel-gpu">fence.acq_rel.gpu</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acq-rel-sys">fence.acq_rel.sys</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acq-rel-cluster">fence.acq_rel.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acquire-cta">fence.acquire.cta</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acquire-cluster">fence.acquire.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acquire-gpu">fence.acquire.gpu</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acquire-sys">fence.acquire.sys</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-release-cta">fence.release.cta</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-release-cluster">fence.release.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-release-gpu">fence.release.gpu</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-release-sys">fence.release.sys</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#fence-sync-restrict">fence.sync_restrict</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#fence-acquire-sync-restrict-shared-cluster-cluster">fence.acquire.sync_restrict::shared::cluster.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-release-sync-restrict-shared-cta-cluster">fence.release.sync_restrict::shared::cta.cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#fence-mbarrier-init">fence.mbarrier_init</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#fence-mbarrier-init-release-cluster">fence.mbarrier_init.release.cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#fence-proxy-alias">fence.proxy.alias</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id2">fence.proxy.alias</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#fence-proxy-async">fence.proxy.async</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id3">fence.proxy.async</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-async-global">fence.proxy.async.global</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-async-shared-cluster">fence.proxy.async.shared::cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-async-shared-cta">fence.proxy.async.shared::cta</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#fence-proxy-async-sync-restrict">fence.proxy.async.sync_restrict</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-async-generic-acquire-sync-restrict-shared-cluster-cluster">fence.proxy.async::generic.acquire.sync_restrict::shared::cluster.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-async-generic-release-sync-restrict-shared-cta-cluster">fence.proxy.async::generic.release.sync_restrict::shared::cta.cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#fence-proxy-tensormap">fence.proxy.tensormap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-release-cta">fence.proxy.tensormap::generic.release.cta</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-release-cluster">fence.proxy.tensormap::generic.release.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-release-gpu">fence.proxy.tensormap::generic.release.gpu</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-release-sys">fence.proxy.tensormap::generic.release.sys</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-acquire-cta">fence.proxy.tensormap::generic.acquire.cta</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-acquire-cluster">fence.proxy.tensormap::generic.acquire.cluster</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-acquire-gpu">fence.proxy.tensormap::generic.acquire.gpu</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fence-proxy-tensormap-generic-acquire-sys">fence.proxy.tensormap::generic.acquire.sys</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="getctarank.html">getctarank</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mapa.html">mapa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_init.html">mbarrier.init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_arrive.html">mbarrier.arrive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_expect_tx.html">mbarrier.expect_tx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_test_wait.html">mbarrier.test_wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_try_wait.html">mbarrier.try_wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimem_ld_reduce.html">multimem.ld_reduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimem_red.html">multimem.red</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimem_st.html">multimem.st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="red_async.html">red.async</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shfl_sync.html">shfl.sync</a></li>
+<li class="toctree-l3"><a class="reference internal" href="st_async.html">st.async</a></li>
+<li class="toctree-l3"><a class="reference internal" href="st_bulk.html">st.bulk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_alloc.html">tcgen05.alloc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_commit.html">tcgen05.commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_cp.html">tcgen05.cp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_fence.html">tcgen05.fence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_ld.html">tcgen05.ld</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_mma.html">tcgen05.mma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_mma_ws.html">tcgen05.mma.ws</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_shift.html">tcgen05.shift</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_st.html">tcgen05.st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_wait.html">tcgen05.wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensormap_replace.html">tensormap.replace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensormap_cp_fenceproxy.html">tensormap.cp_fenceproxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trap.html">trap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="special_registers.html">Special registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../instructions.html#instructions-by-section">Instructions by section</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ptx.html#versions-and-compatibility">Versions and compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../ptx.html">PTX</a> &raquo;</li>
+          <li><a href="../instructions.html">PTX Instructions</a> &raquo;</li>
+      <li>fence</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fence">
+<span id="libcudacxx-ptx-instructions-fence"></span><h1>fence<a class="headerlink" href="#fence" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p>PTX ISA:
+<a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-membar-fence">fence</a></p></li>
+</ul>
+<section id="fence-1">
+<span id="id1"></span><h2>fence<a class="headerlink" href="#fence-1" title="Permalink to this headline"></a></h2>
+<section id="fence-sc-cta">
+<h3>fence.sc.cta<a class="headerlink" href="#fence-sc-cta" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 1. PTX ISA 60, SM_70</span>
+<span class="c1">// .sem       = { .sc }</span>
+<span class="c1">// .scope     = { .cta, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_sc_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-sc-gpu">
+<h3>fence.sc.gpu<a class="headerlink" href="#fence-sc-gpu" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 1. PTX ISA 60, SM_70</span>
+<span class="c1">// .sem       = { .sc }</span>
+<span class="c1">// .scope     = { .cta, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_sc_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-sc-sys">
+<h3>fence.sc.sys<a class="headerlink" href="#fence-sc-sys" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 1. PTX ISA 60, SM_70</span>
+<span class="c1">// .sem       = { .sc }</span>
+<span class="c1">// .scope     = { .cta, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_sc_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-sc-cluster">
+<h3>fence.sc.cluster<a class="headerlink" href="#fence-sc-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 2. PTX ISA 78, SM_90</span>
+<span class="c1">// .sem       = { .sc }</span>
+<span class="c1">// .scope     = { .cluster }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_sc_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_cluster_t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acq-rel-cta">
+<h3>fence.acq_rel.cta<a class="headerlink" href="#fence-acq-rel-cta" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 1. PTX ISA 60, SM_70</span>
+<span class="c1">// .sem       = { .acq_rel }</span>
+<span class="c1">// .scope     = { .cta, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acq_rel_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acq-rel-gpu">
+<h3>fence.acq_rel.gpu<a class="headerlink" href="#fence-acq-rel-gpu" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 1. PTX ISA 60, SM_70</span>
+<span class="c1">// .sem       = { .acq_rel }</span>
+<span class="c1">// .scope     = { .cta, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acq_rel_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acq-rel-sys">
+<h3>fence.acq_rel.sys<a class="headerlink" href="#fence-acq-rel-sys" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 1. PTX ISA 60, SM_70</span>
+<span class="c1">// .sem       = { .acq_rel }</span>
+<span class="c1">// .scope     = { .cta, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acq_rel_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acq-rel-cluster">
+<h3>fence.acq_rel.cluster<a class="headerlink" href="#fence-acq-rel-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // 2. PTX ISA 78, SM_90</span>
+<span class="c1">// .sem       = { .acq_rel }</span>
+<span class="c1">// .scope     = { .cluster }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acq_rel_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_cluster_t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acquire-cta">
+<h3>fence.acquire.cta<a class="headerlink" href="#fence-acquire-cta" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acquire-cluster">
+<h3>fence.acquire.cluster<a class="headerlink" href="#fence-acquire-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acquire-gpu">
+<h3>fence.acquire.gpu<a class="headerlink" href="#fence-acquire-gpu" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-acquire-sys">
+<h3>fence.acquire.sys<a class="headerlink" href="#fence-acquire-sys" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-release-cta">
+<h3>fence.release.cta<a class="headerlink" href="#fence-release-cta" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-release-cluster">
+<h3>fence.release.cluster<a class="headerlink" href="#fence-release-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-release-gpu">
+<h3>fence.release.gpu<a class="headerlink" href="#fence-release-gpu" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-release-sys">
+<h3>fence.release.sys<a class="headerlink" href="#fence-release-sys" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fence-sync-restrict">
+<h2>fence.sync_restrict<a class="headerlink" href="#fence-sync-restrict" title="Permalink to this headline"></a></h2>
+<section id="fence-acquire-sync-restrict-shared-cluster-cluster">
+<h3>fence.acquire.sync_restrict::shared::cluster.cluster<a class="headerlink" href="#fence-acquire-sync-restrict-shared-cluster-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.sync_restrict::space.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .space     = { .shared::cluster }</span>
+<span class="c1">// .scope     = { .cluster }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_sync_restrict</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_cluster_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_cluster_t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-release-sync-restrict-shared-cta-cluster">
+<h3>fence.release.sync_restrict::shared::cta.cluster<a class="headerlink" href="#fence-release-sync-restrict-shared-cta-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.sem.sync_restrict::space.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .space     = { .shared::cta }</span>
+<span class="c1">// .scope     = { .cluster }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_sync_restrict</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_shared_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_cluster_t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fence-mbarrier-init">
+<h2>fence.mbarrier_init<a class="headerlink" href="#fence-mbarrier-init" title="Permalink to this headline"></a></h2>
+<section id="fence-mbarrier-init-release-cluster">
+<h3>fence.mbarrier_init.release.cluster<a class="headerlink" href="#fence-mbarrier-init-release-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.mbarrier_init.sem.scope; // 3. PTX ISA 80, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cluster }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_mbarrier_init</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_cluster_t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fence-proxy-alias">
+<h2>fence.proxy.alias<a class="headerlink" href="#fence-proxy-alias" title="Permalink to this headline"></a></h2>
+<section id="id2">
+<h3>fence.proxy.alias<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.alias; // 4. PTX ISA 75, SM_70</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_alias</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fence-proxy-async">
+<h2>fence.proxy.async<a class="headerlink" href="#fence-proxy-async" title="Permalink to this headline"></a></h2>
+<section id="id3">
+<h3>fence.proxy.async<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.async; // 5. PTX ISA 80, SM_90</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_async</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-async-global">
+<h3>fence.proxy.async.global<a class="headerlink" href="#fence-proxy-async-global" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.async.space; // 6. PTX ISA 80, SM_90</span>
+<span class="c1">// .space     = { .global, .shared::cluster, .shared::cta }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_space</span><span class="w"> </span><span class="n">Space</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_async</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_t</span><span class="o">&lt;</span><span class="n">Space</span><span class="o">&gt;</span><span class="w"> </span><span class="n">space</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-async-shared-cluster">
+<h3>fence.proxy.async.shared::cluster<a class="headerlink" href="#fence-proxy-async-shared-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.async.space; // 6. PTX ISA 80, SM_90</span>
+<span class="c1">// .space     = { .global, .shared::cluster, .shared::cta }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_space</span><span class="w"> </span><span class="n">Space</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_async</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_t</span><span class="o">&lt;</span><span class="n">Space</span><span class="o">&gt;</span><span class="w"> </span><span class="n">space</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-async-shared-cta">
+<h3>fence.proxy.async.shared::cta<a class="headerlink" href="#fence-proxy-async-shared-cta" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.async.space; // 6. PTX ISA 80, SM_90</span>
+<span class="c1">// .space     = { .global, .shared::cluster, .shared::cta }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_space</span><span class="w"> </span><span class="n">Space</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_async</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_t</span><span class="o">&lt;</span><span class="n">Space</span><span class="o">&gt;</span><span class="w"> </span><span class="n">space</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fence-proxy-async-sync-restrict">
+<h2>fence.proxy.async.sync_restrict<a class="headerlink" href="#fence-proxy-async-sync-restrict" title="Permalink to this headline"></a></h2>
+<section id="fence-proxy-async-generic-acquire-sync-restrict-shared-cluster-cluster">
+<h3>fence.proxy.async::generic.acquire.sync_restrict::shared::cluster.cluster<a class="headerlink" href="#fence-proxy-async-generic-acquire-sync-restrict-shared-cluster-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.async::generic.sem.sync_restrict::space.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .space     = { .shared::cluster }</span>
+<span class="c1">// .scope     = { .cluster }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_async_generic_sync_restrict</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_cluster_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_cluster_t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-async-generic-release-sync-restrict-shared-cta-cluster">
+<h3>fence.proxy.async::generic.release.sync_restrict::shared::cta.cluster<a class="headerlink" href="#fence-proxy-async-generic-release-sync-restrict-shared-cta-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.async::generic.sem.sync_restrict::space.scope; // PTX ISA 86, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .space     = { .shared::cta }</span>
+<span class="c1">// .scope     = { .cluster }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_async_generic_sync_restrict</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_shared_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_cluster_t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fence-proxy-tensormap">
+<h2>fence.proxy.tensormap<a class="headerlink" href="#fence-proxy-tensormap" title="Permalink to this headline"></a></h2>
+<section id="fence-proxy-tensormap-generic-release-cta">
+<h3>fence.proxy.tensormap::generic.release.cta<a class="headerlink" href="#fence-proxy-tensormap-generic-release-cta" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.release.scope; // 7. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-tensormap-generic-release-cluster">
+<h3>fence.proxy.tensormap::generic.release.cluster<a class="headerlink" href="#fence-proxy-tensormap-generic-release-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.release.scope; // 7. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-tensormap-generic-release-gpu">
+<h3>fence.proxy.tensormap::generic.release.gpu<a class="headerlink" href="#fence-proxy-tensormap-generic-release-gpu" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.release.scope; // 7. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-tensormap-generic-release-sys">
+<h3>fence.proxy.tensormap::generic.release.sys<a class="headerlink" href="#fence-proxy-tensormap-generic-release-sys" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.release.scope; // 7. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .release }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_release_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-tensormap-generic-acquire-cta">
+<h3>fence.proxy.tensormap::generic.acquire.cta<a class="headerlink" href="#fence-proxy-tensormap-generic-acquire-cta" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.sem.scope [addr], size; // 8. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">N32</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">n32_t</span><span class="o">&lt;</span><span class="n">N32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-tensormap-generic-acquire-cluster">
+<h3>fence.proxy.tensormap::generic.acquire.cluster<a class="headerlink" href="#fence-proxy-tensormap-generic-acquire-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.sem.scope [addr], size; // 8. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">N32</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">n32_t</span><span class="o">&lt;</span><span class="n">N32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-tensormap-generic-acquire-gpu">
+<h3>fence.proxy.tensormap::generic.acquire.gpu<a class="headerlink" href="#fence-proxy-tensormap-generic-acquire-gpu" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.sem.scope [addr], size; // 8. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">N32</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">n32_t</span><span class="o">&lt;</span><span class="n">N32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="fence-proxy-tensormap-generic-acquire-sys">
+<h3>fence.proxy.tensormap::generic.acquire.sys<a class="headerlink" href="#fence-proxy-tensormap-generic-acquire-sys" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// fence.proxy.tensormap::generic.sem.scope [addr], size; // 8. PTX ISA 83, SM_90</span>
+<span class="c1">// .sem       = { .acquire }</span>
+<span class="c1">// .scope     = { .cta, .cluster, .gpu, .sys }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">N32</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">dot_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fence_proxy_tensormap_generic</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">sem_acquire_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">scope_t</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">n32_t</span><span class="o">&lt;</span><span class="n">N32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

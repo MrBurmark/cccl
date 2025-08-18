@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>include/cuda/experimental/__stf/internal/backend_ctx.cuh &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="include/cuda/experimental/__stf/internal/constants.cuh" href="file_include_cuda_experimental___stf_internal_constants.cuh.html" />
+    <link rel="prev" title="include/cuda/experimental/__stf/internal/backend_ctx.cuh" href="file_include_cuda_experimental___stf_internal_backend_ctx.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stf.html">CUDASTF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cudax_api.html">Cudax: Experimental new features API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cudax_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_include.html">include</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_include.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="dir_include_cuda.html">include/cuda</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_include_cuda.html#directories">Directories</a><ul class="current">
+<li class="toctree-l7 current"><a class="reference internal" href="dir_include_cuda_experimental.html">include/cuda/experimental</a><ul class="current">
+<li class="toctree-l8 current"><a class="reference internal" href="dir_include_cuda_experimental.html#directories">Directories</a><ul class="current">
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___container.html">include/cuda/experimental/__container</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___device.html">include/cuda/experimental/__device</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___graph.html">include/cuda/experimental/__graph</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___hierarchy.html">include/cuda/experimental/__hierarchy</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___launch.html">include/cuda/experimental/__launch</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___memory_resource.html">include/cuda/experimental/__memory_resource</a></li>
+<li class="toctree-l9 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a><ul class="current">
+<li class="toctree-l10 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html#directories">Directories</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___stream.html">include/cuda/experimental/__stream</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="dir_include_cuda_experimental.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cudax_api.html">Cudax: Experimental new features API</a> &raquo;</li>
+          <li><a href="dir_include.html">include</a> &raquo;</li>
+          <li><a href="dir_include_cuda.html">include/cuda</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental.html">include/cuda/experimental</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf_internal.html">include/cuda/experimental/__stf/internal</a> &raquo;</li>
+          <li><a href="file_include_cuda_experimental___stf_internal_backend_ctx.cuh.html">include/cuda/experimental/__stf/internal/backend_ctx.cuh</a> &raquo;</li>
+      <li>include/cuda/experimental/__stf/internal/backend_ctx.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="include-cuda-experimental-stf-internal-backend-ctx-cuh">
+<h1>include/cuda/experimental/__stf/internal/backend_ctx.cuh<a class="headerlink" href="#include-cuda-experimental-stf-internal-backend-ctx-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_include_cuda_experimental___stf_internal_backend_ctx.cuh.html#backend-ctx-8cuh"><span class="std std-ref">include/cuda/experimental/__stf/internal/backend_ctx.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">//===----------------------------------------------------------------------===//</span>
+<span class="c1">//</span>
+<span class="c1">// Part of CUDASTF in CUDA C++ Core Libraries,</span>
+<span class="c1">// under the Apache License v2.0 with LLVM Exceptions.</span>
+<span class="c1">// See https://llvm.org/LICENSE.txt for license information.</span>
+<span class="c1">// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span>
+<span class="c1">// SPDX-FileCopyrightText: Copyright (c) 2022-2024 NVIDIA CORPORATION &amp; AFFILIATES.</span>
+<span class="c1">//</span>
+<span class="c1">//===----------------------------------------------------------------------===//</span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__cccl_config&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/allocators/block_allocator.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/async_resources_handle.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/execution_policy.cuh&gt;</span><span class="c1"> // backend_ctx&lt;T&gt;::launch() uses execution_policy</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/hooks.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/interpreted_execution_policy.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/machine.cuh&gt;</span><span class="c1"> // backend_ctx_untyped::impl usese machine</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/reorderer.cuh&gt;</span><span class="c1"> // backend_ctx_untyped::impl uses reorderer</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/repeat.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/scheduler.cuh&gt;</span><span class="c1"> // backend_ctx_untyped::impl uses scheduler</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/slice.cuh&gt;</span><span class="c1"> // backend_ctx&lt;T&gt; uses shape_of</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/thread_hierarchy.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/void_interface.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/localization/composite_slice.cuh&gt;</span><span class="cp"></span>
+
+<span class="c1">// XXX there is currently a dependency on this header for places.h</span>
+<span class="c1">// Until we find a solution we need to include this</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/places/exec/green_context.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unordered_map&gt;</span><span class="cp"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">cuda</span><span class="o">::</span><span class="nn">experimental</span><span class="o">::</span><span class="nn">stf</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">logical_data</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">frozen_logical_data</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">graph_ctx</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">null_partition</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">stream_ctx</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Ctx</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">exec_place_t</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">shape_t</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">partitioner_t</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">DepsAndOps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">parallel_for_scope</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Ctx</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">thread_hierarchy_spec_t</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">launch_scope</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">called_from_launch</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">host_launch_scope</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">chained</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">cuda_kernel_scope</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// We need to have a map of logical data stored in the ctx.</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">logical_data_untyped_impl</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">backend_ctx_untyped</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">phase</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">setup</span><span class="p">,</span><span class="w"> </span><span class="c1">// the context is getting initialized</span>
+<span class="w">    </span><span class="n">submitted</span><span class="p">,</span><span class="w"> </span><span class="c1">// between acquire and release</span>
+<span class="w">    </span><span class="n">finalized</span><span class="p">,</span><span class="w"> </span><span class="c1">// we have called finalize</span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="k">protected</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="nc">impl</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">friend</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">backend_ctx_untyped</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">impl</span><span class="p">(</span><span class="n">async_resources_handle</span><span class="w"> </span><span class="n">async_resources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">async_resources_handle</span><span class="p">())</span><span class="w"></span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">auto_scheduler</span><span class="p">(</span><span class="n">reserved</span><span class="o">::</span><span class="n">scheduler</span><span class="o">::</span><span class="n">make</span><span class="p">(</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;CUDASTF_SCHEDULE&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="n">auto_reorderer</span><span class="p">(</span><span class="n">reserved</span><span class="o">::</span><span class="n">reorderer</span><span class="o">::</span><span class="n">make</span><span class="p">(</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;CUDASTF_TASK_ORDER&quot;</span><span class="p">)))</span><span class="w"></span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="n">async_resources</span><span class="p">(</span><span class="n">async_resources</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">async_resources</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">async_resources_handle</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Forces init</span>
+<span class="w">      </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaFree</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// If we are running the task in the context of a CUDA callback, we are</span>
+<span class="w">      </span><span class="c1">// not allowed to issue any CUDA API call.</span>
+<span class="w">      </span><span class="n">EXPECT</span><span class="p">((</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cudaErrorNotPermitted</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Enable peer memory accesses (if not done already)</span>
+<span class="w">      </span><span class="n">reserved</span><span class="o">::</span><span class="n">machine</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">enable_peer_accesses</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// If CUDASTF_DISPLAY_STATS is set to a non 0 value, record stats</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">record_stats_env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;CUDASTF_DISPLAY_STATS&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">record_stats_env</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">record_stats_env</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">is_recording_stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Initialize a structure to generate a visualization of the activity in this context</span>
+<span class="w">      </span><span class="n">dot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">reserved</span><span class="o">::</span><span class="n">per_ctx_dot</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">reserved</span><span class="o">::</span><span class="n">dot</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">is_tracing</span><span class="p">(),</span><span class="w"></span>
+<span class="w">        </span><span class="n">reserved</span><span class="o">::</span><span class="n">dot</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">is_tracing_prereqs</span><span class="p">(),</span><span class="w"></span>
+<span class="w">        </span><span class="n">reserved</span><span class="o">::</span><span class="n">dot</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">is_timing</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// We generate symbols if we may use them</span>
+<span class="w">      </span><span class="n">generate_event_symbols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dot</span><span class="o">-&gt;</span><span class="n">is_tracing_prereqs</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Record it in the list of all traced contexts</span>
+<span class="w">      </span><span class="n">reserved</span><span class="o">::</span><span class="n">dot</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">track_ctx</span><span class="p">(</span><span class="n">dot</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">impl</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Make sure everything is clean before leaving that context</span>
+<span class="w">      </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">dangling_events</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Otherwise there are tasks which were not completed</span>
+<span class="w">      </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">leaves</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="cp">#ifndef NDEBUG</span>
+<span class="w">      </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">total_task_cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">total_finished_task_cnt</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Not all tasks were finished.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#endif</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">logical_data_stats_enabled</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">print_logical_data_summary</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">is_recording_stats</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">display_transfers</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">impl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">impl</span><span class="o">&amp;</span><span class="p">)</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">impl</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">impl</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Due to circular dependencies, every context defines the same, but we</span>
+<span class="w">    </span><span class="c1">// cannot implement it here.</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update_uncached_allocator</span><span class="p">(</span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">custom</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">cudaGraph_t</span><span class="w"> </span><span class="nf">graph</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">set_graph_cache_policy</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fn</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">cache_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">()</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">get_graph_cache_policy</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">executable_graph_cache_stat</span><span class="o">*</span><span class="w"> </span><span class="n">graph_get_cache_stat</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="cp">#if _CCCL_COMPILER(MSVC)</span>
+<span class="w">    </span><span class="n">_CCCL_DIAG_PUSH</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_DIAG_SUPPRESS_MSVC</span><span class="p">(</span><span class="mi">4702</span><span class="p">)</span><span class="w"> </span><span class="c1">// unreachable code</span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_COMPILER(MSVC)</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">event_list</span><span class="w"> </span><span class="n">stream_to_event_list</span><span class="p">(</span><span class="n">cudaStream_t</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Internal error.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">abort</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">event_list</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="cp">#if _CCCL_COMPILER(MSVC)</span>
+<span class="w">    </span><span class="n">_CCCL_DIAG_POP</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_COMPILER(MSVC)</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">stage</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="mi">-1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">to_string</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">track_dangling_events</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_default_allocator</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">default_allocator</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_uncached_allocator</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">uncached_allocator</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">erase_all_logical_data</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">logical_data_stats_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">previous_logical_data_stats</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// We need logical_data_untyped_impl to be defined to print this</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">print_logical_data_summary</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">logical_data_untyped_impl</span><span class="o">&amp;&gt;</span><span class="w"> </span><span class="n">logical_data_ids</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">mutable</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">logical_data_ids_mutex</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">attach_allocator</span><span class="p">(</span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">attached_allocators</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">a</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">detach_allocators</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bctx</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">track_dangling</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bctx</span><span class="p">.</span><span class="n">track_dangling_events</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Deinitialize all attached allocators in reversed order</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">each</span><span class="p">(</span><span class="n">attached_allocators</span><span class="p">.</span><span class="n">rbegin</span><span class="p">(),</span><span class="w"> </span><span class="n">attached_allocators</span><span class="p">.</span><span class="n">rend</span><span class="p">()))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">deinit_res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">it</span><span class="o">-&gt;</span><span class="n">deinit</span><span class="p">(</span><span class="n">bctx</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">track_dangling</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">add_dangling_events</span><span class="p">(</span><span class="n">bctx</span><span class="p">,</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deinit_res</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Erase the vector of allocators now that they were deinitialized</span>
+<span class="w">      </span><span class="n">attached_allocators</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// We &quot;duplicate&quot; the code of the deinit to remove any storage and avoid a move</span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">composite_deinit_res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">composite_cache</span><span class="p">.</span><span class="n">deinit</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">track_dangling</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">add_dangling_events</span><span class="p">(</span><span class="n">bctx</span><span class="p">,</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">composite_deinit_res</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">display_transfers</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">//            fprintf(stderr, &quot;display_transfers() =&gt; transfers.size() %ld\n&quot;, transfers.size());</span>
+<span class="w">      </span><span class="c1">//            if (transfers.size() == 0)</span>
+<span class="w">      </span><span class="c1">//                return;</span>
+
+<span class="w">      </span><span class="kt">size_t</span><span class="w"> </span><span class="n">total_cnt</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="kt">size_t</span><span class="w"> </span><span class="n">total_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CTX STATS</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">transfers</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nodes</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">first</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\t</span><span class="s">%d-&gt;%d : cnt %zu (%zu bytes)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">nodes</span><span class="p">.</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">nodes</span><span class="p">.</span><span class="n">second</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">second</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">total_cnt</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">first</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">total_bytes</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;TOTAL: %zu transfers (%zu bytes)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">total_cnt</span><span class="p">,</span><span class="w"> </span><span class="n">total_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">attached_allocators</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Leave custom_allocator, auto_scheduler, and auto_reordered as they were.</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* Current context-wide allocator (same as default_allocator unless it is changed) */</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">custom_allocator</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">default_allocator</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">uncached_allocator</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// A vector of all allocators used in this ctx, so that they are</span>
+<span class="w">    </span><span class="c1">// destroyed when calling finalize()</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">block_allocator_untyped</span><span class="o">&gt;</span><span class="w"> </span><span class="n">attached_allocators</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">reserved</span><span class="o">::</span><span class="n">composite_slice_cache</span><span class="w"> </span><span class="n">composite_cache</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">reserved</span><span class="o">::</span><span class="n">scheduler</span><span class="o">&gt;</span><span class="w"> </span><span class="n">auto_scheduler</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">reserved</span><span class="o">::</span><span class="n">reorderer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">auto_reorderer</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Stats-related stuff</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">cuda</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">stf</span><span class="o">::</span><span class="n">hash</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;&gt;&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="n">transfers</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_recording_stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Keep track of the number of tasks generated in the context</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">total_task_cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#ifndef NDEBUG</span>
+<span class="w">    </span><span class="c1">// Keep track of the number of completed tasks in that context</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">total_finished_task_cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="cp">#endif</span>
+
+<span class="w">    </span><span class="c1">// This data structure contains all resources useful for an efficient</span>
+<span class="w">    </span><span class="c1">// asynchronous execution. This will for example contain pools of CUDA</span>
+<span class="w">    </span><span class="c1">// streams which are costly to create.</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">// We use an optional to avoid instantiating it until we have initialized it</span>
+<span class="w">    </span><span class="n">async_resources_handle</span><span class="w"> </span><span class="n">async_resources</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Do we need to generate symbols for events ? This is true when we are</span>
+<span class="w">    </span><span class="c1">// in debug mode (as we may inspect structures with a debugger, or when</span>
+<span class="w">    </span><span class="c1">// generating a dot output)</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">generate_event_symbols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">reserved</span><span class="o">::</span><span class="n">per_ctx_dot</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">get_dot</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">dot</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">reserved</span><span class="o">::</span><span class="n">per_ctx_dot</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">get_dot</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">dot</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">get_phase</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">ctx_phase</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">set_phase</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">::</span><span class="n">phase</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">ctx_phase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     *</span>
+<span class="cm">     *  Start events : keep track of what events any work in a context depends on</span>
+<span class="cm">     *</span>
+<span class="cm">     */</span><span class="w"></span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">has_start_events</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">start_events</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">add_start_events</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">lst</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">start_events</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">lst</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// We only add events at the beginning of the context, but use them</span>
+<span class="w">      </span><span class="c1">// often, so it&#39;s good to optimize anyhow</span>
+<span class="w">      </span><span class="n">start_events</span><span class="p">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">bctx</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_start_events</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">start_events</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Events which denote the beginning of the context : any task with no</span>
+<span class="w">    </span><span class="c1">// dependency, or logical data with a reference copy should depend on it.</span>
+<span class="w">    </span><span class="n">event_list</span><span class="w"> </span><span class="n">start_events</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">     * Dangling events : events that we need to synchronize automatically</span>
+<span class="cm">     * because they would be leaked otherwise (eg. waiting for the events</span>
+<span class="cm">     * generated by the destructor of a logical data)</span>
+<span class="cm">     */</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">add_dangling_events</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">lst</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="p">(</span><span class="n">dangling_events_mutex</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">dangling_events</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">lst</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="cm">/* If the number of dangling events gets too high, we try to optimize</span>
+<span class="cm">       * the list to avoid keeping events alive for no reason. */</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dangling_events</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">dangling_events</span><span class="p">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">bctx</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Some asynchronous operations cannot be waited on when they occur.</span>
+<span class="w">    </span><span class="c1">// For example, when destroying a logical data, it is possible that</span>
+<span class="w">    </span><span class="c1">// asynchronous operations are not completed immediately (write back</span>
+<span class="w">    </span><span class="c1">// copies, deallocations, ...). A fence can be used to wait on these</span>
+<span class="w">    </span><span class="c1">// &quot;dangling&quot; events.</span>
+<span class="w">    </span><span class="n">event_list</span><span class="w"> </span><span class="n">dangling_events</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">mutable</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">dangling_events_mutex</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">leaf_tasks</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="cm">/* Add one task to the leaf tasks */</span><span class="w"></span>
+<span class="w">      </span><span class="kt">void</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">task</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// this will create a new key in the map</span>
+<span class="w">        </span><span class="n">leaf_tasks_mutex</span><span class="p">.</span><span class="n">lock</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">done_prereqs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leaf_tasks</span><span class="p">[</span><span class="n">t</span><span class="p">.</span><span class="n">get_unique_id</span><span class="p">()];</span><span class="w"></span>
+<span class="w">        </span><span class="n">leaf_tasks_mutex</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// XXX we need a copy method for event_list</span>
+<span class="w">        </span><span class="n">done_prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">get_done_prereqs</span><span class="p">());</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="cm">/* Remove one task (if it is still a leaf task, otherwise do nothing) */</span><span class="w"></span>
+<span class="w">      </span><span class="kt">void</span><span class="w"> </span><span class="n">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">task_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Erase that leaf task if it is found, or do nothing</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="p">(</span><span class="n">leaf_tasks_mutex</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">leaf_tasks</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">task_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_leaf_tasks</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">leaf_tasks</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_leaf_tasks</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">leaf_tasks</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">leaf_tasks</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="kt">void</span><span class="w"> </span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">leaf_tasks</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">leaf_tasks_mutex</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// To synchronize with all work submitted in this context, we need to</span>
+<span class="w">      </span><span class="c1">// synchronize will all &quot;leaf tasks&quot;. Leaf tasks are task that have no</span>
+<span class="w">      </span><span class="c1">// outgoing dependencies. Leaf tasks will eventually depend on tasks which</span>
+<span class="w">      </span><span class="c1">// are not leaf, so it is sufficient to wait for leaf tasks.</span>
+<span class="w">      </span><span class="c1">//</span>
+<span class="w">      </span><span class="c1">// Instead of storing tasks, we store a map of id to event lists</span>
+<span class="w">      </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="cm">/* task_id */</span><span class="p">,</span><span class="w"> </span><span class="n">event_list</span><span class="o">&gt;</span><span class="w"> </span><span class="n">leaf_tasks</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Insert a fence with all pending asynchronous operations on the current context</span>
+<span class="w">    </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">event_list</span><span class="w"> </span><span class="n">insert_fence</span><span class="p">(</span><span class="n">reserved</span><span class="o">::</span><span class="n">per_ctx_dot</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dot</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">prereqs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event_list</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Create a node in the DOT output (if any)</span>
+<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">fence_unique_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="kt">bool</span><span class="w"> </span><span class="n">dot_is_tracing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dot</span><span class="p">.</span><span class="n">is_tracing</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dot_is_tracing</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">fence_unique_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">unique_id_t</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="n">dot</span><span class="p">.</span><span class="n">add_fence_vertex</span><span class="p">(</span><span class="n">fence_unique_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="p">(</span><span class="n">leaves</span><span class="p">.</span><span class="n">leaf_tasks_mutex</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Sync with the events of all leaf tasks</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">t_id</span><span class="p">,</span><span class="w"> </span><span class="n">t_done_prereqs</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">leaves</span><span class="p">.</span><span class="n">get_leaf_tasks</span><span class="p">())</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Add the events associated with the termination of that leaf tasks to the list of events</span>
+<span class="w">          </span><span class="n">prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">t_done_prereqs</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">          </span><span class="c1">// Add an edge between that leaf task and the fence node in the DOT output</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dot_is_tracing</span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">dot</span><span class="p">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">t_id</span><span class="p">,</span><span class="w"> </span><span class="n">fence_unique_id</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">edge_type</span><span class="o">::</span><span class="n">fence</span><span class="p">);</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="cm">/* Remove all leaf tasks */</span><span class="w"></span>
+<span class="w">        </span><span class="n">leaves</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">        </span><span class="cm">/* Erase start events if any */</span><span class="w"></span>
+<span class="w">        </span><span class="n">start_events</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">leaves</span><span class="p">.</span><span class="n">get_leaf_tasks</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Wait for all pending get() operations associated to frozen logical data</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="p">(</span><span class="n">pending_freeze_mutex</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">fake_t_id</span><span class="p">,</span><span class="w"> </span><span class="n">get_prereqs</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">pending_freeze</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Depend on the get() operation</span>
+<span class="w">          </span><span class="n">prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">get_prereqs</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">          </span><span class="c1">// Add an edge between that freeze and the fence node in the DOT output</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dot_is_tracing</span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">dot</span><span class="p">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">fake_t_id</span><span class="p">,</span><span class="w"> </span><span class="n">fence_unique_id</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">edge_type</span><span class="o">::</span><span class="n">fence</span><span class="p">);</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">pending_freeze</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Sync with events which have not been synchronized with, and which are</span>
+<span class="w">      </span><span class="c1">// not &quot;reachable&quot;. For example if some async operations occurred in a data</span>
+<span class="w">      </span><span class="c1">// handle destructor there could be some remaining events to sync with to</span>
+<span class="w">      </span><span class="c1">// make sure data were properly deallocated.</span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="p">(</span><span class="n">dangling_events_mutex</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dangling_events</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">dangling_events</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// We consider that dangling events have been sync&#39;ed with, so there is</span>
+<span class="w">        </span><span class="c1">// no need to keep track of them.</span>
+<span class="w">        </span><span class="n">dangling_events</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">dangling_events</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">prereqs</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">add_pending_freeze</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">task</span><span class="o">&amp;</span><span class="w"> </span><span class="n">fake_t</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">events</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="p">(</span><span class="n">pending_freeze_mutex</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// This creates an entry if necessary (there can be multiple gets)</span>
+<span class="w">      </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pending_freeze</span><span class="p">[</span><span class="n">fake_t</span><span class="p">.</span><span class="n">get_unique_id</span><span class="p">()];</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Add these events to the stored list</span>
+<span class="w">      </span><span class="n">prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">events</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// When we unfreeze a logical data, there is no need to automatically sync</span>
+<span class="w">    </span><span class="c1">// with the get events because unfreezing implies the get events where</span>
+<span class="w">    </span><span class="c1">// sync&#39;ed with</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">remove_pending_freeze</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">task</span><span class="o">&amp;</span><span class="w"> </span><span class="n">fake_t</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="p">(</span><span class="n">pending_freeze_mutex</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">pending_freeze</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">fake_t</span><span class="p">.</span><span class="n">get_unique_id</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">leaf_tasks</span><span class="w"> </span><span class="n">leaves</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Used if we print the task graph using DOT</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">reserved</span><span class="o">::</span><span class="n">per_ctx_dot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dot</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">backend_ctx_untyped</span><span class="o">::</span><span class="n">phase</span><span class="w"> </span><span class="n">ctx_phase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backend_ctx_untyped</span><span class="o">::</span><span class="n">phase</span><span class="o">::</span><span class="n">setup</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">()</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// To automatically synchronize with pending get() operartion for</span>
+<span class="w">    </span><span class="c1">// frozen_logical_data, we keep track of the events. The freeze operation</span>
+<span class="w">    </span><span class="c1">// is identified by the id of the &quot;fake&quot; task, and this map should be</span>
+<span class="w">    </span><span class="c1">// cleaned when unfreezing which means it has been synchronized with.</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="cm">/* fake_task_id */</span><span class="p">,</span><span class="w"> </span><span class="n">event_list</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pending_freeze</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">pending_freeze_mutex</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">backend_ctx_untyped</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">backend_ctx_untyped</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">impl</span><span class="o">&gt;</span><span class="w"> </span><span class="n">impl</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">pimpl</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">impl</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="kt">bool</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">rhs</span><span class="p">.</span><span class="n">pimpl</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">rhs</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">async_resources_handle</span><span class="o">&amp;</span><span class="w"> </span><span class="n">async_resources</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">async_resources</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">async_resources</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">reordering_tasks</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">auto_reorderer</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_composite_cache</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">composite_cache</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">schedule_task</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">task</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">auto_scheduler</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">auto_scheduler</span><span class="o">-&gt;</span><span class="n">schedule_task</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">reorder_tasks</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tasks</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">reorderer_payload</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">task_map</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">auto_reorderer</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">auto_reorderer</span><span class="o">-&gt;</span><span class="n">reorder_tasks</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span><span class="w"> </span><span class="n">task_map</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">increment_task_count</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">++</span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">total_task_cnt</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="cp">#ifndef NDEBUG</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">increment_finished_task_count</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">++</span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">total_finished_task_cnt</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="cp">#endif</span>
+
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">task_count</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">total_task_cnt</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* Customize the allocator used by all logical data */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_allocator</span><span class="p">(</span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">custom</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">custom_allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">custom</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* Customize the uncached allocator used by other allocators */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_uncached_allocator</span><span class="p">(</span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">custom</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">uncached_allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">custom</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_allocator</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">custom_allocator</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_allocator</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">custom_allocator</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_default_allocator</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_default_allocator</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_uncached_allocator</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_uncached_allocator</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">update_uncached_allocator</span><span class="p">(</span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">uncached_allocator</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">update_uncached_allocator</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">uncached_allocator</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">attach_allocator</span><span class="p">(</span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">attach_allocator</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">a</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">add_transfer</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src_node</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dst_node</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">is_recording_stats</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nodes</span><span class="p">(</span><span class="n">device_ordinal</span><span class="p">(</span><span class="n">src_node</span><span class="p">),</span><span class="w"> </span><span class="n">device_ordinal</span><span class="p">(</span><span class="n">dst_node</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Increment the count for the pair</span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">transfers</span><span class="p">[</span><span class="n">nodes</span><span class="p">].</span><span class="n">first</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Add the value of s to the sum for the pair</span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">transfers</span><span class="p">[</span><span class="n">nodes</span><span class="p">].</span><span class="n">second</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">generate_event_symbols</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">generate_event_symbols</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">enable_logical_data_stats</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">logical_data_stats_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cudaGraph_t</span><span class="w"> </span><span class="n">graph</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">graph</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_graph_cache_policy</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">policy</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">set_graph_cache_policy</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">policy</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">get_graph_cache_policy</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_graph_cache_policy</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">executable_graph_cache_stat</span><span class="o">*</span><span class="w"> </span><span class="n">graph_get_cache_stat</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">graph_get_cache_stat</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">event_list</span><span class="w"> </span><span class="n">stream_to_event_list</span><span class="p">(</span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">event_symbol</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">stream_to_event_list</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">event_symbol</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">stage</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">stage</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">to_string</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">to_string</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">track_dangling_events</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">track_dangling_events</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// protected:</span>
+<span class="w">  </span><span class="n">impl</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_state</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="n">pimpl</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">impl</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_state</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="n">pimpl</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_dot</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_dot</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_dot</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_dot</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">parent_ctx_t</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_parent_ctx</span><span class="p">(</span><span class="n">parent_ctx_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">parent_ctx</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">reserved</span><span class="o">::</span><span class="n">per_ctx_dot</span><span class="o">::</span><span class="n">set_parent_ctx</span><span class="p">(</span><span class="n">parent_ctx</span><span class="p">.</span><span class="n">get_dot</span><span class="p">(),</span><span class="w"> </span><span class="n">get_dot</span><span class="p">());</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">dot_section</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">symbol</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">dot</span><span class="o">::</span><span class="n">section</span><span class="o">::</span><span class="n">guard</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">symbol</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">get_phase</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_phase</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_phase</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">::</span><span class="n">phase</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">set_phase</span><span class="p">(</span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">has_start_events</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">has_start_events</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_start_events</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_start_events</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Shortcuts to manipulate the current affinity stored in the async_resources_handle of the ctx</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">push_affinity</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">async_resources</span><span class="p">().</span><span class="n">push_affinity</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">p</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">push_affinity</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">async_resources</span><span class="p">().</span><span class="n">push_affinity</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">p</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">pop_affinity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">async_resources</span><span class="p">().</span><span class="n">pop_affinity</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">current_affinity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">async_resources</span><span class="p">().</span><span class="n">current_affinity</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">exec_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">current_exec_place</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">has_affinity</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;current_exec_place() cannot be called without setting the affinity first.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">current_affinity</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">current_affinity</span><span class="p">()[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">has_affinity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">async_resources</span><span class="p">().</span><span class="n">has_affinity</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Determines the default execution place for a given context, which</span>
+<span class="w">  </span><span class="c1">// corresponds to the execution place when no place is provided.</span>
+<span class="w">  </span><span class="c1">//</span>
+<span class="w">  </span><span class="c1">// By default, we select the current device, unless an affinity was set in the</span>
+<span class="w">  </span><span class="c1">// context, in which case we take the first execution place in the current</span>
+<span class="w">  </span><span class="c1">// places.</span>
+<span class="w">  </span><span class="n">exec_place</span><span class="w"> </span><span class="n">default_exec_place</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">has_affinity</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">current_exec_place</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">exec_place</span><span class="o">::</span><span class="n">current_device</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Automatically pick a CUDA stream from the pool attached to the current</span>
+<span class="w">  </span><span class="c1">// execution place</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">pick_dstream</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">default_exec_place</span><span class="p">().</span><span class="n">get_stream_pool</span><span class="p">(</span><span class="n">async_resources</span><span class="p">(),</span><span class="w"> </span><span class="nb">true</span><span class="p">).</span><span class="n">next</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">pick_stream</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pick_dstream</span><span class="p">().</span><span class="n">stream</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">impl</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pimpl</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Engine</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">backend_ctx</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">backend_ctx_untyped</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">backend_ctx</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">impl</span><span class="o">&gt;</span><span class="w"> </span><span class="n">impl</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">backend_ctx_untyped</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">impl</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;Derived value type cannot add state.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">~</span><span class="n">backend_ctx</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">stf</span><span class="o">::</span><span class="n">logical_data</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">shape_of</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">shape</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">stf</span><span class="o">::</span><span class="n">logical_data</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">make_data_interface</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">invalid</span><span class="p">());</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">prototype</span><span class="p">,</span><span class="w"> </span><span class="n">data_place</span><span class="w"> </span><span class="n">dplace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">host</span><span class="p">())</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">dplace</span><span class="p">.</span><span class="n">is_invalid</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">self</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">stf</span><span class="o">::</span><span class="n">logical_data</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">make_data_interface</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">prototype</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">dplace</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="n">n</span><span class="p">],</span><span class="w"> </span><span class="n">data_place</span><span class="w"> </span><span class="n">dplace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">host</span><span class="p">())</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">dplace</span><span class="p">.</span><span class="n">is_invalid</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">make_slice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">dplace</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Sizes</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">elements</span><span class="p">,</span><span class="w"> </span><span class="n">Sizes</span><span class="p">...</span><span class="w"> </span><span class="n">more_sizes</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">num_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">...(</span><span class="n">Sizes</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">shape_of</span><span class="o">&lt;</span><span class="n">slice</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">num_sizes</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span><span class="w"> </span><span class="n">more_sizes</span><span class="p">...));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">data_place</span><span class="w"> </span><span class="n">dplace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">host</span><span class="p">())</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">dplace</span><span class="p">.</span><span class="n">is_invalid</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;invalid data place&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">make_slice</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">dplace</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">token</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// We do not use a shape because we want the first rw() access to succeed</span>
+<span class="w">    </span><span class="c1">// without an initial write()</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">// Note that we do not disable write back as the write-back mechanism is</span>
+<span class="w">    </span><span class="c1">// handling void_interface specifically to ignore it anyway.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">logical_data</span><span class="p">(</span><span class="n">void_interface</span><span class="p">{});</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">frozen_logical_data</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">freeze</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">stf</span><span class="o">::</span><span class="n">logical_data</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">access_mode</span><span class="w"> </span><span class="n">m</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">access_mode</span><span class="o">::</span><span class="n">read</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">data_place</span><span class="w"> </span><span class="n">where</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">invalid</span><span class="p">(),</span><span class="w"></span>
+<span class="w">         </span><span class="kt">bool</span><span class="w"> </span><span class="n">user_freeze</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">frozen_logical_data</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">d</span><span class="p">),</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">where</span><span class="p">),</span><span class="w"> </span><span class="n">user_freeze</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">task</span><span class="p">(</span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">().</span><span class="n">task</span><span class="p">(</span><span class="n">self</span><span class="p">().</span><span class="n">default_exec_place</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">host_launch</span><span class="p">(</span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">host_launch_scope</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">cuda_kernel</span><span class="p">(</span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">cuda_kernel_scope</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">cuda_kernel_chain</span><span class="p">(</span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">cuda_kernel_scope</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">thread_hierarchy_spec_t</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">launch</span><span class="p">(</span><span class="n">thread_hierarchy_spec_t</span><span class="w"> </span><span class="n">spec</span><span class="p">,</span><span class="w"> </span><span class="n">exec_place</span><span class="w"> </span><span class="n">e_place</span><span class="p">,</span><span class="w"> </span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">launch_scope</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="n">thread_hierarchy_spec_t</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">spec</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">e_place</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* Using ctx.launch with a host place */</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">launch</span><span class="p">(</span><span class="n">exec_place_host</span><span class="p">,</span><span class="w"> </span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">host_launch_scope</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* Default execution policy, explicit place */</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// default depth to avoid breaking all codes (XXX temporary)</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">launch</span><span class="p">(</span><span class="n">exec_place</span><span class="w"> </span><span class="n">e_place</span><span class="p">,</span><span class="w"> </span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">launch</span><span class="p">(</span><span class="n">par</span><span class="p">(</span><span class="n">par</span><span class="p">()),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">e_place</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* Default execution policy, on automatically selected device */</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">launch</span><span class="p">(</span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">launch</span><span class="p">(</span><span class="n">self</span><span class="p">().</span><span class="n">default_exec_place</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">repeat</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">count</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">repeat_scope</span><span class="p">(</span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">count</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">repeat</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">condition</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">repeat_scope</span><span class="p">(</span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">condition</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/*</span>
+<span class="cm">   * parallel_for : apply an operation over a shaped index space</span>
+<span class="cm">   */</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">exec_place_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">S</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">enable_if_t</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="p">,</span><span class="w"> </span><span class="n">exec_place_t</span><span class="o">&gt;&gt;&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">parallel_for</span><span class="p">(</span><span class="n">exec_place_t</span><span class="w"> </span><span class="n">e_place</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">S</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">parallel_for</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">e_place</span><span class="p">),</span><span class="w"> </span><span class="n">box</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">parallel_for_scope</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="n">exec_place_t</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">null_partition</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">e_place</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">partitioner_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">exec_place_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">S</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="p">,</span><span class="w"> </span><span class="n">exec_place_t</span><span class="o">&gt;&gt;&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">parallel_for</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="n">partitioner_t</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">exec_place_t</span><span class="w"> </span><span class="n">e_place</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">S</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">parallel_for</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">p</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">e_place</span><span class="p">),</span><span class="w"> </span><span class="n">box</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">parallel_for_scope</span><span class="o">&lt;</span><span class="n">Engine</span><span class="p">,</span><span class="w"> </span><span class="n">exec_place_t</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">partitioner_t</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">self</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">e_place</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">S</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">parallel_for</span><span class="p">(</span><span class="n">exec_place_grid</span><span class="w"> </span><span class="n">e_place</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">S</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">parallel_for</span><span class="p">(</span><span class="n">S</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">Deps</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">parallel_for</span><span class="p">(</span><span class="n">self</span><span class="p">().</span><span class="n">default_exec_place</span><span class="p">(),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">Engine</span><span class="o">&amp;</span><span class="w"> </span><span class="n">self</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">backend_ctx</span><span class="o">&lt;</span><span class="n">Engine</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">Engine</span><span class="o">&gt;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Engine</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">P</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">make_data_interface</span><span class="p">(</span><span class="n">P</span><span class="o">&amp;&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Engine</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">data_interface</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">P</span><span class="o">&gt;</span><span class="p">(</span><span class="n">p</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace cuda::experimental::stf</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

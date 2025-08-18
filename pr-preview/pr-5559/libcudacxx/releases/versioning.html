@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Versioning &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing" href="../contributing.html" />
+    <link rel="prev" title="Changelog" href="changelog.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standard_api.html">Standard API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extended_api.html">Extended API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptx.html">PTX</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../releases.html">Releases</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Versioning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#application-programming-interface-api">Application Programming Interface (API)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-api">What is API?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#libcu-api-versioning">libcu++ API Versioning</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#application-binary-interface-abi">Application Binary Interface (ABI)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-abi">What is ABI?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#libcu-abi-versioning">libcu++ ABI Versioning</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#experimental-namespaces"><code class="docutils literal notranslate"><span class="pre">experimental</span></code> Namespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecation">Deprecation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../releases.html">Releases</a> &raquo;</li>
+      <li>Versioning</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="versioning">
+<span id="libcudacxx-releases-versioning"></span><h1>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline"></a></h1>
+<p>libcu++ is versioned along two axes:</p>
+<ul class="simple">
+<li><p>API Version: A 3-component semantic version for the programmatic
+interface.</p>
+<ul>
+<li><p>Follows <a class="reference external" href="https://semver.org">semantic versioning</a>.</p></li>
+<li><p>A single API version is supported in a given snapshot of the
+codebase.</p></li>
+<li><p>An API version is released when completed. The name of the release
+is the API version.</p></li>
+<li><p>Major API breaking changes are only made when a new major <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capability">CUDA
+Compute
+Capability</a>
+is released.</p></li>
+</ul>
+</li>
+<li><p>ABI Version: An integer version for the binary interface.</p>
+<ul>
+<li><p>Multiple ABI versions may be supported in a given snapshot of the
+codebase.</p></li>
+<li><p>New ABI versions may be introduced at any time. The latest
+available ABI version is always the default.</p></li>
+<li><p>When a new major <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capability">CUDA Compute
+Capability</a>
+is released, a new ABI version is always introduced and support
+for all old ABI versions is dropped.</p></li>
+</ul>
+</li>
+</ul>
+<section id="application-programming-interface-api">
+<h2>Application Programming Interface (API)<a class="headerlink" href="#application-programming-interface-api" title="Permalink to this headline"></a></h2>
+<section id="what-is-api">
+<h3>What is API?<a class="headerlink" href="#what-is-api" title="Permalink to this headline"></a></h3>
+<p>The Application Programming Interface (API) of a software library is
+programming model and set of entities, represented by programming
+language constructs, that are intentionally exposed to provide the
+functionality of the library.</p>
+<p>A library’s API includes, but is not limited to:</p>
+<ul class="simple">
+<li><p>The structure and filenames of headers intended for direct inclusion
+in user code.</p></li>
+<li><p>The namespaces intended for direct use in user code.</p></li>
+<li><p>The declarations and/or definitions of functions, classes, and
+variables located in headers and intended for direct use in user
+code.</p></li>
+<li><p>The semantics of functions, classes, and variables intended for
+direct use in user code.</p></li>
+<li><p>Any identifiers intended to be found by <a class="reference external" href="https://en.cppreference.com/w/cpp/language/adl">Argument Dependent
+Lookup</a>,
+regardless of which namespaces they are in.</p></li>
+</ul>
+</section>
+<section id="libcu-api-versioning">
+<h3>libcu++ API Versioning<a class="headerlink" href="#libcu-api-versioning" title="Permalink to this headline"></a></h3>
+<p>The NVIDIA C++ Standard Library API uses <a class="reference external" href="https://semver.org">semantic
+versioning</a>. The versioning scheme,
+<code class="docutils literal notranslate"><span class="pre">MMM.mmm.ppp</span></code>, consists of three components and four macros defined in
+<code class="docutils literal notranslate"><span class="pre">&lt;cuda/std/version&gt;</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MMM</span></code>/<code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_CUDA_API_VERSION_MAJOR</span></code>: Major version, an 8
+bit unsigned integer. The major version represents API stability to
+the best of our ability (outstanding, but not perfect). When
+API-backwards-incompatible changes are made, this component is
+incremented. Such changes are only made when a new major <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capability">CUDA
+Compute
+Capability</a>
+is released. ABI changes that do not have an associated
+API-backwards-incompatible change do not trigger a new major release.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mmm</span></code>/<code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_CUDA_API_VERSION_MINOR</span></code>: Minor version, an 8
+bit unsigned integer. When API-backwards-compatible features are
+added are made, this component is incremented. Such changes may be
+made at any time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ppp</span></code>/<code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_CUDA_API_VERSION_PATCH</span></code>: Subminor version, an
+8 bit unsigned integer. When changes are made that do not qualify for
+an increase in either of the other two versions, it is incremented.
+Such changes may be made at any time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MMMmmmppp</span></code>/<code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_CUDA_API_VERSION</span></code>: A concatenation of
+the decimal digits of all three components, a 32 bit unsigned
+integer.</p></li>
+</ul>
+<p>A single API version is supported in any given snapshot of the codebase.
+Only the latest API version is supported and maintained. For more
+information on specific API versions, [please see the changelog],</p>
+<p>When work completes on an API version on the main development branch, a
+release is snapped. The name of that release is the API version. After a
+release is snapped, the API version on the main development branch is
+incremented and work begins on the next release.</p>
+</section>
+</section>
+<section id="application-binary-interface-abi">
+<h2>Application Binary Interface (ABI)<a class="headerlink" href="#application-binary-interface-abi" title="Permalink to this headline"></a></h2>
+<section id="what-is-abi">
+<h3>What is ABI?<a class="headerlink" href="#what-is-abi" title="Permalink to this headline"></a></h3>
+<p>The Application Binary Interface (ABI) of a software library is the
+convention for how:</p>
+<ul class="simple">
+<li><p>The library’s entities are represented in machine code, and</p></li>
+<li><p>Library entities built in one translation unit interact with entities
+from another.</p></li>
+</ul>
+<p>A library’s ABI includes, but is not limited to:</p>
+<ul class="simple">
+<li><p>The mangled names of functions.</p></li>
+<li><p>The mangled names of types, including instantiations of class
+templates.</p></li>
+<li><p>The number of bytes (<code class="docutils literal notranslate"><span class="pre">sizeof</span></code>) and the alignment of objects and
+types.</p></li>
+<li><p>The semantics of the bytes in the binary representation of an object.</p></li>
+<li><p>The register-level calling conventions governing parameter passing
+and function invocation.</p></li>
+</ul>
+<p>Parts of this section were based on <a class="reference external" href="https://wg21.link/P2028R0">P2028R0: What is ABI, and what
+Should Standard C++ Do About It?</a>.</p>
+</section>
+<section id="libcu-abi-versioning">
+<h3>libcu++ ABI Versioning<a class="headerlink" href="#libcu-abi-versioning" title="Permalink to this headline"></a></h3>
+<p>The NVIDIA C++ Standard Library ABI version scheme is a single 16 bit
+unsigned integer value. An ABI version represents stability in the ABI
+to the best of our ability (excellent, but not perfect). When any
+changes are made to the ABI, even seemingly minor ones, the ABI version
+is incremented.</p>
+<p>The NVIDIA C++ Standard Library does not maintain long-term ABI
+stability. Promising long-term ABI stability would prevent us from
+fixing mistakes and providing best in class performance. So, we make no
+such promises.</p>
+<p>Whenever a new major <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#compute-capability">CUDA Compute
+Capability</a>
+is released, the ABI is broken. A new NVIDIA C++ Standard Library ABI
+version is introduced and becomes the default and support for all older
+ABI versions is dropped.</p>
+<p>A snapshot of the codebase may support multiple ABI versions at the same
+time. They always use the latest available ABI version by default. The
+macro <code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_CUDA_ABI_VERSION_LATEST</span></code> from
+<code class="docutils literal notranslate"><span class="pre">&lt;cuda/std/version&gt;</span></code> defines the value of the latest ABI version.</p>
+<p>New ABI versions may be introduced at any point in time, which means
+that the default ABI version may change in any release. A subset of
+older ABI versions can be used instead by defining
+<code class="docutils literal notranslate"><span class="pre">_LIBCUDACXX_CUDA_ABI_VERSION</span></code> to the desired version.</p>
+<p>For more information on specific ABI versions, please see the
+<a class="reference internal" href="../releases.html#libcudacxx-releases"><span class="std std-ref">release section</span></a> and
+<a class="reference internal" href="changelog.html#libcudacxx-releases-changelog"><span class="std std-ref">changelog</span></a>.</p>
+<p>A program is ill-formed, no diagnostic required, if it uses two
+different translation units compiled with a different NVIDIA C++
+Standard Library ABI version. For example, all of the following is
+disallowed:</p>
+<ul class="simple">
+<li><p>Compiling <code class="docutils literal notranslate"><span class="pre">foo.cu</span></code> with ABI version 1, <code class="docutils literal notranslate"><span class="pre">bar.cu</span></code> with ABI version
+2, and linking <code class="docutils literal notranslate"><span class="pre">foo.cu</span></code> and <code class="docutils literal notranslate"><span class="pre">bar.cu</span></code> into one program.</p></li>
+<li><p>Compiling <code class="docutils literal notranslate"><span class="pre">foo.cu</span></code> with ABI version 2 and linking it with a
+library, <code class="docutils literal notranslate"><span class="pre">libbar.so</span></code>, compiled with ABI version 1.</p></li>
+<li><p>Compiling <code class="docutils literal notranslate"><span class="pre">foo.cu</span></code> with ABI version 1 and linking it with a
+library, <code class="docutils literal notranslate"><span class="pre">libbar.a</span></code>, compiled with ABI version 2.</p></li>
+</ul>
+<p>Every namespace used by the NVIDIA C++ Standard Library has an <a class="reference external" href="https://en.cppreference.com/w/cpp/language/namespace#Inline_namespaces">inline
+namespace</a>
+<code class="docutils literal notranslate"><span class="pre">__N</span></code> (where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the ABI version); this is known as an ABI
+namespace. Nested namespaces have their own ABI namespace,
+e.g. <code class="docutils literal notranslate"><span class="pre">cuda::__N::</span></code> and <code class="docutils literal notranslate"><span class="pre">cuda::std::__N::</span></code>. Some library facilities
+which are tightly coupled with the C++ compiler, such as
+<code class="docutils literal notranslate"><span class="pre">std::initializer_list</span></code>, are not in the ABI namespace. The ABI
+namespace will be rarely be encountered, because, in most circumstances,
+all the members of an inline namespace are introduced into the enclosing
+namespace. So, <code class="docutils literal notranslate"><span class="pre">cuda::std::__N::barrier</span></code> is available as
+<code class="docutils literal notranslate"><span class="pre">cuda::std::barrier</span></code>.</p>
+<p>When including the NVIDIA C++ Standard Library in a translation unit, a
+single ABI version and single ABI namespace will be defined. You cannot
+utilize two different ABI versions in a single translation unit by
+explicitly using ABI namespaces.</p>
+<p>ABI namespaces aid in diagnosing the use of translation units compiled
+with different ABI versions. We want to try and help anyone who is
+mixing code from different ABIs by loudly breaking them at compile time
+instead of quietly failing them at runtime. Suppose we have one
+translation unit that uses ABI version 3 and defines a function
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">negate(cuda::atomic&lt;float&gt;&amp;)</span></code>. <code class="docutils literal notranslate"><span class="pre">cuda::atomic&lt;float&gt;</span></code> is just
+another name for <code class="docutils literal notranslate"><span class="pre">cuda::__3::atomic&lt;float&gt;</span></code>, so <code class="docutils literal notranslate"><span class="pre">negate</span></code>‘s
+signature is really <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">negate(cuda::__3::atomic&lt;float&gt;&amp;)</span></code>. If we
+use <code class="docutils literal notranslate"><span class="pre">negate</span></code> in another translation unit which was compiled with ABI
+version 4, we will get an error when we try to link these two
+translation units together. The second translation unit is looking for a
+function <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">negate(cuda::__3::atomic&lt;float&gt;&amp;)</span></code>, which does not
+exist.</p>
+<p>However, we must be careful, because ABI namespaces cannot diagnosis all
+mixing of different ABI versions. Let’s say we a translation unit
+compiled with ABI version 3 that contains this code:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">sum</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">negate</span><span class="p">(</span><span class="n">sum</span><span class="o">&amp;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If we try to use <code class="docutils literal notranslate"><span class="pre">negate</span></code> in a second translation unit compiled with
+ABI version 4, our program will be ill-formed but we will not get a
+link-time failure, because while <code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code> is in an ABI
+namespace, <code class="docutils literal notranslate"><span class="pre">sum</span></code> is not. <code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code>‘s size and layout may have
+changed across ABI versions, so the size and layout of <code class="docutils literal notranslate"><span class="pre">sum</span></code> may be
+different in each translation unit. Our program has violated the <a class="reference external" href="https://en.cppreference.com/w/cpp/language/definition#One_Definition_Rule">One
+Definition
+Rule</a>
+and thus has undefined behavior. It will likely fail in unpredictable
+ways at run-time.</p>
+<p>If ABI stability is critical to us, we could explicitly use
+<code class="docutils literal notranslate"><span class="pre">cuda::__3::atomic&lt;float&gt;</span></code> in <code class="docutils literal notranslate"><span class="pre">sum</span></code>. Then, we would get a
+compile-time error when attempting to compile the second translation
+unit using ABI version 4, because <code class="docutils literal notranslate"><span class="pre">cuda::__3::atomic&lt;float&gt;</span></code> would not
+be defined. However, this is generally not recommended because it has
+the significant downside that our code does not automatically migrate to
+newer ABI versions.</p>
+<p>We recommend that you always recompile your code and dependencies with
+the latest NVIDIA SDKs and use the latest NVIDIA C++ Standard Library
+ABI. <a class="reference external" href="https://www.youtube.com/watch?v=tISy7EJQPzI&amp;t=1032s">Live at
+head</a>.</p>
+</section>
+</section>
+<section id="experimental-namespaces">
+<h2><code class="docutils literal notranslate"><span class="pre">experimental</span></code> Namespaces<a class="headerlink" href="#experimental-namespaces" title="Permalink to this headline"></a></h2>
+<p>Some NVIDIA C++ Standard Library facilities live in a nested
+<code class="docutils literal notranslate"><span class="pre">experimental</span></code> namespace. We make absolutely no guarantees about such
+features. Their API and ABI is subject to change or wholesale removeal
+at any time without any notice.</p>
+</section>
+<section id="deprecation">
+<h2>Deprecation<a class="headerlink" href="#deprecation" title="Permalink to this headline"></a></h2>
+<p>Prior to making substantial API-backwards-incompatible changes, making
+ABI changes, or modifying the platforms and compilers we support, we
+will typically notify users by deprecating the things that are changing.
+Deprecations will come in the form of programmatic warnings which can be
+disabled with a macro. The deprecation period will depend on the impact
+of the change, but will usually last three to six months.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

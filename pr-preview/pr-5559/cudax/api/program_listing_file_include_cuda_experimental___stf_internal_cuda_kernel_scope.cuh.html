@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>include/cuda/experimental/__stf/internal/cuda_kernel_scope.cuh &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="include/cuda/experimental/__stf/internal/data_interface.cuh" href="file_include_cuda_experimental___stf_internal_data_interface.cuh.html" />
+    <link rel="prev" title="include/cuda/experimental/__stf/internal/cuda_kernel_scope.cuh" href="file_include_cuda_experimental___stf_internal_cuda_kernel_scope.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stf.html">CUDASTF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cudax_api.html">Cudax: Experimental new features API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cudax_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_include.html">include</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_include.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="dir_include_cuda.html">include/cuda</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_include_cuda.html#directories">Directories</a><ul class="current">
+<li class="toctree-l7 current"><a class="reference internal" href="dir_include_cuda_experimental.html">include/cuda/experimental</a><ul class="current">
+<li class="toctree-l8 current"><a class="reference internal" href="dir_include_cuda_experimental.html#directories">Directories</a><ul class="current">
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___container.html">include/cuda/experimental/__container</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___device.html">include/cuda/experimental/__device</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___graph.html">include/cuda/experimental/__graph</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___hierarchy.html">include/cuda/experimental/__hierarchy</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___launch.html">include/cuda/experimental/__launch</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___memory_resource.html">include/cuda/experimental/__memory_resource</a></li>
+<li class="toctree-l9 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a><ul class="current">
+<li class="toctree-l10 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html#directories">Directories</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___stream.html">include/cuda/experimental/__stream</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="dir_include_cuda_experimental.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cudax_api.html">Cudax: Experimental new features API</a> &raquo;</li>
+          <li><a href="dir_include.html">include</a> &raquo;</li>
+          <li><a href="dir_include_cuda.html">include/cuda</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental.html">include/cuda/experimental</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf_internal.html">include/cuda/experimental/__stf/internal</a> &raquo;</li>
+          <li><a href="file_include_cuda_experimental___stf_internal_cuda_kernel_scope.cuh.html">include/cuda/experimental/__stf/internal/cuda_kernel_scope.cuh</a> &raquo;</li>
+      <li>include/cuda/experimental/__stf/internal/cuda_kernel_scope.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="include-cuda-experimental-stf-internal-cuda-kernel-scope-cuh">
+<h1>include/cuda/experimental/__stf/internal/cuda_kernel_scope.cuh<a class="headerlink" href="#include-cuda-experimental-stf-internal-cuda-kernel-scope-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_include_cuda_experimental___stf_internal_cuda_kernel_scope.cuh.html#cuda-kernel-scope-8cuh"><span class="std std-ref">include/cuda/experimental/__stf/internal/cuda_kernel_scope.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">//===----------------------------------------------------------------------===//</span>
+<span class="c1">//</span>
+<span class="c1">// Part of CUDASTF in CUDA C++ Core Libraries,</span>
+<span class="c1">// under the Apache License v2.0 with LLVM Exceptions.</span>
+<span class="c1">// See https://llvm.org/LICENSE.txt for license information.</span>
+<span class="c1">// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span>
+<span class="c1">// SPDX-FileCopyrightText: Copyright (c) 2022-2024 NVIDIA CORPORATION &amp; AFFILIATES.</span>
+<span class="c1">//</span>
+<span class="c1">//===----------------------------------------------------------------------===//</span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__cccl_config&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/backend_ctx.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/task_dep.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/task_statistics.cuh&gt;</span><span class="cp"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">cuda</span><span class="o">::</span><span class="nn">experimental</span><span class="o">::</span><span class="nn">stf</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">graph_ctx</span><span class="p">;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">stream_ctx</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_cufunction_or_cukernel_v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">CUfunction</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">CUkernel</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">cuda_kernel_desc</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda_kernel_desc</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Fun</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda_kernel_desc</span><span class="p">(</span><span class="n">Fun</span><span class="w"> </span><span class="n">func</span><span class="p">,</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="n">gridDim_</span><span class="p">,</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="n">blockDim_</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sharedMem_</span><span class="p">,</span><span class="w"> </span><span class="n">Args</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">configure</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">func</span><span class="p">),</span><span class="w"> </span><span class="n">gridDim_</span><span class="p">,</span><span class="w"> </span><span class="n">blockDim_</span><span class="p">,</span><span class="w"> </span><span class="n">sharedMem_</span><span class="p">,</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Fun</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Args</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">configure</span><span class="p">(</span><span class="n">Fun</span><span class="w"> </span><span class="n">func</span><span class="p">,</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="n">gridDim_</span><span class="p">,</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="n">blockDim_</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sharedMem_</span><span class="p">,</span><span class="w"> </span><span class="n">Args</span><span class="p">...</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Ensure we are packing arguments of the proper types to call func (only</span>
+<span class="w">    </span><span class="c1">// valid with the runtime API)</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="n">reserved</span><span class="o">::</span><span class="n">is_cufunction_or_cukernel_v</span><span class="o">&lt;</span><span class="n">Fun</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_invocable_v</span><span class="o">&lt;</span><span class="n">Fun</span><span class="p">,</span><span class="w"> </span><span class="n">Args</span><span class="p">...</span><span class="o">&gt;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">TupleType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">decay_t</span><span class="o">&lt;</span><span class="n">Args</span><span class="o">&gt;</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">configured</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cuda_kernel_desc was already configured&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">func_variant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">store_func</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">func</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">gridDim</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim_</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">blockDim</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim_</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">sharedMem</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">sharedMem_</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// We first copy all arguments into a tuple because the kernel</span>
+<span class="w">    </span><span class="c1">// implementation needs pointers to the argument, so we cannot use</span>
+<span class="w">    </span><span class="c1">// directly those passed in the pack of arguments</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">arg_tuple</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">TupleType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Get the address of every tuple entry</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="k">auto</span><span class="o">&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">elems</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Push back the addresses of each tuple element into the args vector</span>
+<span class="w">        </span><span class="p">(</span><span class="n">args_ptr</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="o">&amp;</span><span class="n">elems</span><span class="p">),</span><span class="w"> </span><span class="p">...);</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="o">*</span><span class="n">arg_tuple</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Save the tuple in a typed erased value</span>
+<span class="w">    </span><span class="n">arg_tuple_type_erased</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">arg_tuple</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">configured</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// It is the responsibility of the caller to unsure arguments are valid until</span>
+<span class="w">  </span><span class="c1">// the CUDA kernel construct ends</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Fun</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">configure_raw</span><span class="p">(</span><span class="n">Fun</span><span class="w"> </span><span class="n">func</span><span class="p">,</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="n">gridDim_</span><span class="p">,</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="n">blockDim_</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sharedMem_</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">arg_cnt</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">**</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">configured</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cuda_kernel_desc was already configured&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">func_variant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">store_func</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">func</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">gridDim</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim_</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">blockDim</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim_</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">sharedMem</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">sharedMem_</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">arg_cnt</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// We can safely forget the const here because CUDA will not modify the</span>
+<span class="w">      </span><span class="c1">// argument</span>
+<span class="w">      </span><span class="n">args_ptr</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">configured</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="cm">/* CUfunction/CUkernel (CUDA driver API) or __global__ function (CUDA runtime API) */</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">func_variant_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">variant</span><span class="o">&lt;</span><span class="n">CUfunction</span><span class="p">,</span><span class="w"> </span><span class="n">CUkernel</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">func_variant_t</span><span class="w"> </span><span class="n">func_variant</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">dim3</span><span class="w"> </span><span class="n">gridDim</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">dim3</span><span class="w"> </span><span class="n">blockDim</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sharedMem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Vector of pointers to the arg_tuple which saves arguments in a typed-erased way</span>
+<span class="w">  </span><span class="c1">// Mutable so that launch can be const</span>
+<span class="w">  </span><span class="k">mutable</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">args_ptr</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Helper to launch the kernel using CUDA stream based API</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">launch</span><span class="p">(</span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">func_variant</span><span class="p">.</span><span class="n">index</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">variant_npos</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;uninitialized variant&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaLaunchKernel</span><span class="p">(</span><span class="o">*</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">gridDim</span><span class="p">,</span><span class="w"> </span><span class="n">blockDim</span><span class="p">,</span><span class="w"> </span><span class="n">args_ptr</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">sharedMem</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">ker_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="n">CUfunction</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ker_ptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// If this is a CUkernel, the cast to a CUfunction is sufficient</span>
+<span class="w">        </span><span class="n">ker_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">CUfunction</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="n">CUkernel</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cuLaunchKernel</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="o">*</span><span class="n">ker_ptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">gridDim</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">gridDim</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">blockDim</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">sharedMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">stream</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">args_ptr</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"></span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">launch_in_graph</span><span class="p">(</span><span class="n">cudaGraphNode_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">cudaGraph_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">graph</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">func_variant</span><span class="p">.</span><span class="n">index</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">variant_npos</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;uninitialized variant&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">cudaKernelNodeParams</span><span class="w"> </span><span class="n">params</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">func</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">f</span><span class="p">),</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">gridDim</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">blockDim</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">sharedMemBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sharedMem</span><span class="p">),</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">kernelParams</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">args_ptr</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">extra</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">};</span><span class="w"></span>
+<span class="w">      </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaGraphAddKernelNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">params</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">func_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="n">CUfunction</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">CUDA_KERNEL_NODE_PARAMS</span><span class="w"> </span><span class="n">params</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">func</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">func_ptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">gridDimX</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">gridDimY</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">gridDimZ</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">blockDimX</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">blockDimY</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">blockDimZ</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">sharedMemBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sharedMem</span><span class="p">),</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">kernelParams</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">**&gt;</span><span class="p">(</span><span class="n">args_ptr</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">extra</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">kern</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">ctx</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">};</span><span class="w"></span>
+<span class="w">      </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cuGraphAddKernelNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">params</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">ker_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="n">CUkernel</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">ker_ptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;invalid function&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">CUDA_KERNEL_NODE_PARAMS</span><span class="w"> </span><span class="n">params</span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">func</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">gridDimX</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">gridDimY</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">gridDimZ</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">blockDimX</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">blockDimY</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">blockDimZ</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">sharedMemBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sharedMem</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">kernelParams</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">**&gt;</span><span class="p">(</span><span class="n">args_ptr</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">extra</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">kern</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ker_ptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// ctx=nullptr means current context</span>
+<span class="w">      </span><span class="p">.</span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cuGraphAddKernelNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">params</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Utility to query the number of registers used by this kernel</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">get_num_registers</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">func_variant</span><span class="p">.</span><span class="n">index</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">variant_npos</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;uninitialized variant&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">cudaFuncAttributes</span><span class="w"> </span><span class="n">func_attr</span><span class="p">{};</span><span class="w"></span>
+<span class="w">      </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaFuncGetAttributes</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_attr</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">func_attr</span><span class="p">.</span><span class="n">numRegs</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">fun_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="n">CUfunction</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fun_ptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">cuda_try</span><span class="o">&lt;</span><span class="n">cuFuncGetAttribute</span><span class="o">&gt;</span><span class="p">(</span><span class="n">CU_FUNC_ATTRIBUTE_NUM_REGS</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">fun_ptr</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">ker_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">get_if</span><span class="o">&lt;</span><span class="n">CUkernel</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">func_variant</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">ker_ptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;invalid kernel&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">current_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_try</span><span class="o">&lt;</span><span class="n">cuCtxGetDevice</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cuda_try</span><span class="o">&lt;</span><span class="n">cuKernelGetAttribute</span><span class="o">&gt;</span><span class="p">(</span><span class="n">CU_FUNC_ATTRIBUTE_NUM_REGS</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">ker_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">current_dev</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// This type-erased smart pointer keeps the argument tuple valid until the</span>
+<span class="w">  </span><span class="c1">// object is destroyed, so that the pointer to these arguments remain valid</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span><span class="w"> </span><span class="n">arg_tuple_type_erased</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">func_variant_t</span><span class="w"> </span><span class="nf">store_func</span><span class="p">(</span><span class="n">CUfunction</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">func_variant_t</span><span class="w"> </span><span class="nf">store_func</span><span class="p">(</span><span class="n">CUkernel</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">k</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">func_variant_t</span><span class="w"> </span><span class="n">store_func</span><span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">f</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// We can only configure the kernel descriptor once</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">chained</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Deps</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">cuda_kernel_scope</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda_kernel_scope</span><span class="p">(</span><span class="n">Ctx</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">deps</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Provide an explicit execution place</span>
+<span class="w">  </span><span class="n">cuda_kernel_scope</span><span class="p">(</span><span class="n">Ctx</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">exec_place</span><span class="w"> </span><span class="n">e_place</span><span class="p">,</span><span class="w"> </span><span class="n">task_dep</span><span class="o">&lt;</span><span class="n">Deps</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="n">deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">deps</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">deps</span><span class="p">)...)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">e_place</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">e_place</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cuda_kernel_scope</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">cuda_kernel_scope</span><span class="o">&amp;</span><span class="p">)</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda_kernel_scope</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">cuda_kernel_scope</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// move-constructible</span>
+<span class="w">  </span><span class="n">cuda_kernel_scope</span><span class="p">(</span><span class="n">cuda_kernel_scope</span><span class="o">&amp;&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Pack</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">add_deps</span><span class="p">(</span><span class="n">task_dep_untyped</span><span class="w"> </span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">Pack</span><span class="o">&amp;&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">pack</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">dynamic_deps</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">first</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">...(</span><span class="n">Pack</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">add_deps</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Pack</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pack</span><span class="p">)...);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">submitted_index</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT</span><span class="p">(</span><span class="n">support_task</span><span class="p">.</span><span class="n">has_value</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;uninitialized task&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">support_task</span><span class="o">-&gt;</span><span class="k">template</span><span class="w"> </span><span class="n">get</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">submitted_index</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">set_symbol</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">symbol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">start</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// If a place is specified, use it</span>
+<span class="w">    </span><span class="n">support_task</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e_place</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">e_place</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">task</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">support_task</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">add_deps</span><span class="p">(</span><span class="n">deps</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Append all dynamic deps</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">dynamic_deps</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">t</span><span class="p">.</span><span class="n">add_deps</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">d</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">dynamic_deps</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">symbol</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">t</span><span class="p">.</span><span class="n">set_symbol</span><span class="p">(</span><span class="n">symbol</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Do we need to measure the duration of the kernel(s) ?</span>
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">statistics</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">task_statistics</span><span class="o">::</span><span class="n">instance</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">record_time</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">schedule_task</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">statistics</span><span class="p">.</span><span class="n">is_calibrating_to_file</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">record_time_device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">stream_ctx</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">record_time</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaGetDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">record_time_device</span><span class="p">));</span><span class="w"> </span><span class="c1">// We will use this to force it during the next run</span>
+<span class="w">        </span><span class="c1">// Events must be created here to avoid issues with multi-gpu</span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaEventCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start_event</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaEventCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_event</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaEventRecord</span><span class="p">(</span><span class="n">start_event</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get_stream</span><span class="p">()));</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">.</span><span class="n">get_dot</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dot</span><span class="p">.</span><span class="n">is_tracing</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">dot</span><span class="p">.</span><span class="k">template</span><span class="w"> </span><span class="n">add_vertex</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Ctx</span><span class="o">::</span><span class="n">task_type</span><span class="p">,</span><span class="w"> </span><span class="n">logical_data_untyped</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">end</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">support_task</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Do submit kernels</span>
+<span class="w">    </span><span class="n">launch_kernels</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// We need to access the task structures (eg. to get the stream) so we do</span>
+<span class="w">    </span><span class="c1">// not clear all its resources yet.</span>
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">end_uncleared</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">stream_ctx</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">record_time</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaEventRecord</span><span class="p">(</span><span class="n">end_event</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get_stream</span><span class="p">()));</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaEventSynchronize</span><span class="p">(</span><span class="n">end_event</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">milliseconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaEventElapsedTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">milliseconds</span><span class="p">,</span><span class="w"> </span><span class="n">start_event</span><span class="p">,</span><span class="w"> </span><span class="n">end_event</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">.</span><span class="n">get_dot</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dot</span><span class="p">.</span><span class="n">is_tracing</span><span class="p">())</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">dot</span><span class="p">.</span><span class="k">template</span><span class="w"> </span><span class="n">add_vertex_timing</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Ctx</span><span class="o">::</span><span class="n">task_type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">milliseconds</span><span class="p">,</span><span class="w"> </span><span class="n">record_time_device</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reserved</span><span class="o">::</span><span class="n">task_statistics</span><span class="o">::</span><span class="n">instance</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">statistics</span><span class="p">.</span><span class="n">is_calibrating</span><span class="p">())</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">statistics</span><span class="p">.</span><span class="n">log_task_time</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">milliseconds</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">t</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Do release to the task structure as we don&#39;t need to reference it when</span>
+<span class="w">    </span><span class="c1">// we have called end()</span>
+<span class="w">    </span><span class="n">support_task</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Fun</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="o">-&gt;*</span><span class="p">(</span><span class="n">Fun</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">start</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">SCOPE</span><span class="p">(</span><span class="n">exit</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">end</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">support_task</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Get the vector of kernel(s) to perform</span>
+<span class="w">    </span><span class="c1">// When chained is enable, we expect a vector of kernel description which</span>
+<span class="w">    </span><span class="c1">// should be executed one after the other.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">chained</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">kernel_descs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">deps</span><span class="p">.</span><span class="n">instance</span><span class="p">(</span><span class="n">t</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">empty</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// We have an unchained cuda_kernel, which means there is a single</span>
+<span class="w">      </span><span class="c1">// CUDA kernel described, and the function should return a single</span>
+<span class="w">      </span><span class="c1">// descriptor, not a vector</span>
+<span class="w">      </span><span class="k">static_assert</span><span class="p">(</span><span class="o">!</span><span class="n">chained</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">cuda_kernel_desc</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">deps</span><span class="p">.</span><span class="n">instance</span><span class="p">(</span><span class="n">t</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">res</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Manually add one kernel</span>
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">add_kernel_desc</span><span class="p">(</span><span class="n">cuda_kernel_desc</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">d</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Manually add a vector of kernels</span>
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">add_kernel_desc</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cuda_kernel_desc</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">descs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">descs</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">add_kernel_desc</span><span class="p">(</span><span class="n">d</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// This does submit all kernels and print statistics if needed</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">launch_kernels</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// If CUDASTF_CUDA_KERNEL_DEBUG is set, we display the number of registers</span>
+<span class="w">    </span><span class="c1">// used by the kernel(s)</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">display_register_cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;CUDASTF_CUDA_KERNEL_DEBUG&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">atoi</span><span class="p">(</span><span class="n">env</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}();</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Print some statistics if needed</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">display_register_cnt</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cuda_kernel_chain (%s):</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">symbol</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;- kernel %ld uses %d register(s)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">kernel_descs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">get_num_registers</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cuda_kernel (%s): uses %d register(s)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">symbol</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="n">kernel_descs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">get_num_registers</span><span class="p">());</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">support_task</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">graph_ctx</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">lock_ctx_graph</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">g</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get_ctx_graph</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// We have two situations : either there is a single kernel and we put the kernel in the context&#39;s</span>
+<span class="w">      </span><span class="c1">// graph, or we rely on a child graph</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">kernel_descs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">launch_in_graph</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">get_node</span><span class="p">(),</span><span class="w"> </span><span class="n">g</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cudaGraphNode_t</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">get_node_chain</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="n">chain</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Create a chain of kernels</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">kernel_descs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">kernel_descs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">launch_in_graph</span><span class="p">(</span><span class="n">chain</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">g</span><span class="p">);</span><span class="w"></span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaGraphAddDependencies</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">chain</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="o">&amp;</span><span class="n">chain</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Rely on stream semantic to have a dependency between the kernels</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">kernel_descs</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">k</span><span class="p">.</span><span class="n">launch</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">get_stream</span><span class="p">());</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">symbol</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">Ctx</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Statically defined deps</span>
+<span class="w">  </span><span class="n">task_dep_vector</span><span class="o">&lt;</span><span class="n">Deps</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="n">deps</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// To store a task that implements cuda_kernel(_chain). Note that we do not</span>
+<span class="w">  </span><span class="c1">// store the task with Deps... but a &quot;dynamic&quot; task where all dependencies</span>
+<span class="w">  </span><span class="c1">// are added using add_deps.</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">underlying_task_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">declval</span><span class="o">&lt;</span><span class="n">Ctx</span><span class="o">&gt;</span><span class="p">().</span><span class="n">task</span><span class="p">());</span><span class="w"></span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">underlying_task_type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">support_task</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Dependencies added with add_deps</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">task_dep_untyped</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dynamic_deps</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="o">&gt;</span><span class="w"> </span><span class="n">e_place</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// What kernel(s) must be done ? We also store this in a vector if there is a</span>
+<span class="w">  </span><span class="c1">// single kernel (with the cuda_kernel construct)</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cuda_kernel_desc</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kernel_descs</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Are we making some measurements ?</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">record_time</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">record_time_device</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cudaEvent_t</span><span class="w"> </span><span class="n">start_event</span><span class="p">,</span><span class="w"> </span><span class="n">end_event</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace cuda::experimental::stf</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

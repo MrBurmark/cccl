@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda::latch &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/mermaid-init.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../_static/version.js"></script>
+        <script src="../../_static/social-media.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="cuda::barrier" href="barrier.html" />
+    <link rel="prev" title="cuda::atomic_ref" href="atomic_ref.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../bit.html">Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../execution_model.html">Execution model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../synchronization_primitives.html">Synchronization Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomic.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomic_ref.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic_ref</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#concurrency-restrictions">Concurrency Restrictions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-defined-behavior">Implementation-Defined Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="barrier.html"><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="counting_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::counting_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::binary_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipeline.html"><code class="docutils literal notranslate"><span class="pre">cuda::pipeline</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../asynchronous_operations.html">Asynchronous Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility.html">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../work_stealing.html">Work stealing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../extended_api.html">Extended API</a> &raquo;</li>
+          <li><a href="../synchronization_primitives.html">Synchronization Primitives</a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-latch">
+<span id="libcudacxx-extended-api-synchronization-latch"></span><h1><code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code><a class="headerlink" href="#cuda-latch" title="Permalink to this headline"></a></h1>
+<p>Defined in header <code class="docutils literal notranslate"><span class="pre">&lt;cuda/latch&gt;</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope</span><span class="w"> </span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">cuda</span><span class="o">::</span><span class="n">latch</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The class template <code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code> is an extended form of <a class="reference external" href="https://en.cppreference.com/w/cpp/thread/latch">cuda::std::latch</a>
+takes an additional <a class="reference internal" href="../memory_model.html#libcudacxx-extended-api-memory-model-thread-scopes"><span class="std std-ref">cuda::thread_scope</span></a> argument.
+It has the same interface and semantics as <a class="reference external" href="https://en.cppreference.com/w/cpp/thread/latch">cuda::std::latch</a>.</p>
+<section id="concurrency-restrictions">
+<h2>Concurrency Restrictions<a class="headerlink" href="#concurrency-restrictions" title="Permalink to this headline"></a></h2>
+<p>An object of type <code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code> or <a class="reference external" href="https://en.cppreference.com/w/cpp/thread/latch">cuda::std::latch</a> shall not
+be accessed concurrently by CPU and GPU threads unless:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>it is in unified memory and the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/structcudaDeviceProp.html#structcudaDeviceProp_116f9619ccc85e93bc456b8c69c80e78b">concurrentManagedAccess property</a>
+is 1, or</p></li>
+<li><p>it is in CPU memory and the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/structcudaDeviceProp.html#structcudaDeviceProp_1ef82fd7d1d0413c7d6f33287e5b6306f">hostNativeAtomicSupported property</a>
+is 1.</p></li>
+</ul>
+</div></blockquote>
+<p>Note, for objects of scopes other than <code class="docutils literal notranslate"><span class="pre">cuda::thread_scope_system</span></code> this is a data-race, and therefore also prohibited
+regardless of memory characteristics.</p>
+<p>Under CUDA Compute Capability 6 (Pascal) or prior, an object of type <code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code> or
+<a class="reference external" href="https://en.cppreference.com/w/cpp/thread/latch">cuda::std::latch</a> may not be used.</p>
+</section>
+<section id="implementation-defined-behavior">
+<h2>Implementation-Defined Behavior<a class="headerlink" href="#implementation-defined-behavior" title="Permalink to this headline"></a></h2>
+<p>For each <a class="reference internal" href="../memory_model.html#libcudacxx-extended-api-memory-model-thread-scopes"><span class="std std-ref">cuda::thread_scope</span></a> <code class="docutils literal notranslate"><span class="pre">S</span></code>, the value of
+<code class="docutils literal notranslate"><span class="pre">cuda::latch&lt;S&gt;::max()</span></code> is as follows:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../memory_model.html#libcudacxx-extended-api-memory-model-thread-scopes"><span class="std std-ref">cuda::thread_scope</span></a> <code class="docutils literal notranslate"><span class="pre">S</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cuda::latch&lt;S&gt;::max()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Any thread scope</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cuda::std::numeric_limits&lt;cuda::std::ptrdiff_t&gt;::max()</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/latch&gt;</span><span class="cp"></span>
+
+<span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">example_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// This latch is suitable for all threads in the system.</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">latch</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// This latch has the same type as the previous one (`a`).</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">latch</span><span class="w"> </span><span class="nf">b</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// This latch is suitable for all threads on the current processor (e.g. GPU).</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">latch</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// This latch is suitable for all threads in the same thread block.</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">latch</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://godbolt.org/z/8v4dcK7fa">See it on Godbolt</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

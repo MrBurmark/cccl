@@ -1,0 +1,1152 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1WarpReduce" kind="class" language="C++" prot="public">
+    <compoundname>cub::WarpReduce</compoundname>
+    <innerclass refid="structcub_1_1WarpReduce_1_1TempStorage" prot="public">cub::WarpReduce::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>LogicalWarpThreads</declname>
+        <defname>LogicalWarpThreads</defname>
+        <defval>detail::warp_threads</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1afadb1e883c360d7476c4d388ccdd04c0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::WarpReduce</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>WarpReduce</name>
+        <param>
+          <type><ref refid="structcub_1_1WarpReduce_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Collective constructor using the specified memory allocation as temporary storage.
+Logical warp and lane identifiers are constructed from ``threadIdx.x``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to memory allocation having layout type <ref refid="structcub_1_1WarpReduce_1_1TempStorage" kindref="compound">TempStorage</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="184" column="5" bodyfile="cub/warp/warp_reduce.cuh" bodystart="184" bodyend="186"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Summation reductions</header>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a590cc4f4b6cc53c5b9b713bb0f2876b3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Sum</definition>
+        <argsstring>(T input)</argsstring>
+        <name>Sum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a warp-wide sum in the calling warp.
+The output is valid in warp *lane*\ :sub:`0`.
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp sum reductions within a block of 128 threads
+(one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+       // Allocate WarpReduce shared memory for 4 warps
+       __shared__ typename WarpReduce::TempStorage temp_storage[4];
+       // Obtain one input item per thread
+       int thread_data = ...
+       // Return the warp-wide sums to each lane0
+       int warp_id = threadIdx.x / 32;
+       int aggregate = WarpReduce(temp_storage[warp_id]).Sum(thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is ``{0, 1, 2, 3, ..., 127}``.
+The corresponding output ``aggregate`` in threads 0, 32, 64, and 96 will ``496``, ``1520``, ``2544``, and
+``3568``, respectively (and is undefined in other threads).
+</verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="225" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="225" bodyend="228"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a9261a9c4a3d1db5befc17f7f552539a2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputType</type>
+          </param>
+          <param>
+            <type>::cuda::std::enable_if_t&lt; detail::is_fixed_size_random_access_range_v&lt; InputType &gt;, int &gt;</type>
+            <defval>0</defval>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Sum</definition>
+        <argsstring>(const InputType &amp;input)</argsstring>
+        <name>Sum</name>
+        <param>
+          <type>const InputType &amp;</type>
+          <declname>input</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="232" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="232" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1ace32825b4dafe087edc136348f4c7caf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Max</definition>
+        <argsstring>(T input)</argsstring>
+        <name>Max</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="239" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="239" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a5eb889598585bc3088cfdcdb2bdc3e52" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputType</type>
+          </param>
+          <param>
+            <type>::cuda::std::enable_if_t&lt; detail::is_fixed_size_random_access_range_v&lt; InputType &gt;, int &gt;</type>
+            <defval>0</defval>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Max</definition>
+        <argsstring>(const InputType &amp;input)</argsstring>
+        <name>Max</name>
+        <param>
+          <type>const InputType &amp;</type>
+          <declname>input</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="246" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="246" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1ad5458cdea939b39799a9855c55ec0490" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Min</definition>
+        <argsstring>(T input)</argsstring>
+        <name>Min</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="253" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="253" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a20cee5c27c302ce00c2974b98844a936" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputType</type>
+          </param>
+          <param>
+            <type>::cuda::std::enable_if_t&lt; detail::is_fixed_size_random_access_range_v&lt; InputType &gt;, int &gt;</type>
+            <defval>0</defval>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Min</definition>
+        <argsstring>(const InputType &amp;input)</argsstring>
+        <name>Min</name>
+        <param>
+          <type>const InputType &amp;</type>
+          <declname>input</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="260" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="260" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a148a22664583f8a558ab557d585b0271" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Sum</definition>
+        <argsstring>(T input, int valid_items)</argsstring>
+        <name>Sum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a partially-full warp-wide sum in the calling warp.
+The output is valid in warp *lane*\ :sub:`0`.
+
+All threads across the calling warp must agree on the same value for ``valid_items``.
+Otherwise the result is undefined.
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a sum reduction within a single, partially-full
+block of 32 threads (one warp).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, int valid_items)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+
+       // Allocate WarpReduce shared memory for one warp
+       __shared__ typename WarpReduce::TempStorage temp_storage;
+
+       // Obtain one input item per thread if in range
+       int thread_data;
+       if (threadIdx.x &lt; valid_items)
+           thread_data = d_data[threadIdx.x];
+
+       // Return the warp-wide sums to each lane0
+       int aggregate = WarpReduce(temp_storage).Sum(
+           thread_data, valid_items);
+
+Suppose the input ``d_data`` is ``{0, 1, 2, 3, 4, ...`` and ``valid_items`` is ``4``.
+The corresponding output ``aggregate`` in *lane*\ :sub:`0` is ``6``
+(and is undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">valid_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of valid items in the calling thread&apos;s logical warp (may be less than <computeroutput>LogicalWarpThreads</computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="314" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="314" bodyend="318"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a9132a853afd50aa0ff656129e1d7102f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Max</definition>
+        <argsstring>(T input, int valid_items)</argsstring>
+        <name>Max</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="320" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="320" bodyend="324"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a39ae32c73851966c0bd68c7d2b8dc244" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Min</definition>
+        <argsstring>(T input, int valid_items)</argsstring>
+        <name>Min</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="326" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="326" bodyend="330"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a45a77f8b4bd36309dc2e1b433bf6cf30" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FlagT</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::HeadSegmentedSum</definition>
+        <argsstring>(T input, FlagT head_flag)</argsstring>
+        <name>HeadSegmentedSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>FlagT</type>
+          <declname>head_flag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a segmented sum in the calling warp where segments are defined by head-flags.
+The sum of each segment is returned to the first lane in that segment
+(which always includes *lane*\ :sub:`0`).
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a head-segmented warp sum
+reduction within a block of 32 threads (one warp).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+
+       // Allocate WarpReduce shared memory for one warp
+       __shared__ typename WarpReduce::TempStorage temp_storage;
+
+       // Obtain one input item and flag per thread
+       int thread_data = ...
+       int head_flag = ...
+
+       // Return the warp-wide sums to each lane0
+       int aggregate = WarpReduce(temp_storage).HeadSegmentedSum(
+           thread_data, head_flag);
+
+Suppose the set of input ``thread_data`` and ``head_flag`` across the block of threads
+is ``{0, 1, 2, 3, ..., 31`` and is ``{1, 0, 0, 0, 1, 0, 0, 0, ..., 1, 0, 0, 0``,
+respectively. The corresponding output ``aggregate`` in threads 0, 4, 8, etc. will be
+``6``, ``22``, ``38``, etc. (and is undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ReductionOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary reduction operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">head_flag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Head flag denoting whether or not <computeroutput>input</computeroutput> is the start of a new segment </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="381" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="381" bodyend="384"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1aeb69a2304ecdb19e363fec3fa5d0188c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FlagT</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::TailSegmentedSum</definition>
+        <argsstring>(T input, FlagT tail_flag)</argsstring>
+        <name>TailSegmentedSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>FlagT</type>
+          <declname>tail_flag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a segmented sum in the calling warp where segments are defined by tail-flags.
+The sum of each segment is returned to the first lane in that segment
+(which always includes *lane*\ :sub:`0`).
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a tail-segmented warp sum reduction within a block of 32
+threads (one warp).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+
+       // Allocate WarpReduce shared memory for one warp
+       __shared__ typename WarpReduce::TempStorage temp_storage;
+
+       // Obtain one input item and flag per thread
+       int thread_data = ...
+       int tail_flag = ...
+
+       // Return the warp-wide sums to each lane0
+       int aggregate = WarpReduce(temp_storage).TailSegmentedSum(
+           thread_data, tail_flag);
+
+Suppose the set of input ``thread_data`` and ``tail_flag`` across the block of threads
+is ``{0, 1, 2, 3, ..., 31}`` and is ``{0, 0, 0, 1, 0, 0, 0, 1, ..., 0, 0, 0, 1}``,
+respectively. The corresponding output ``aggregate`` in threads 0, 4, 8, etc. will be
+``6``, ``22``, ``38``, etc. (and is undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ReductionOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary reduction operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tail_flag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Head flag denoting whether or not <computeroutput>input</computeroutput> is the start of a new segment </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="435" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="435" bodyend="438"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Generic reductions</header>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a6c4c9d5dfe1bea85022f455681105c19" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ReductionOp</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Reduce</definition>
+        <argsstring>(T input, ReductionOp reduction_op)</argsstring>
+        <name>Reduce</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>ReductionOp</type>
+          <declname>reduction_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a warp-wide reduction in the calling warp using the specified binary reduction
+functor. The output is valid in warp *lane*\ :sub:`0`.
+
+Supports non-commutative reduction operators
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp max reductions within a block of
+128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+
+       // Allocate WarpReduce shared memory for 4 warps
+       __shared__ typename WarpReduce::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Return the warp-wide reductions to each lane0
+       int warp_id = threadIdx.x / 32;
+       int aggregate = WarpReduce(temp_storage[warp_id]).Reduce(
+           thread_data, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, 1, 2, 3, ..., 127}``. The corresponding output ``aggregate`` in threads 0, 32, 64, and
+96 will be ``31``, ``63``, ``95``, and ``127``, respectively
+(and is undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ReductionOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary reduction operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">reduction_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary reduction operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="494" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="494" bodyend="497"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a5289933ff5baef602268728cbbaf96a7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputType</type>
+          </param>
+          <param>
+            <type>typename ReductionOp</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Reduce</definition>
+        <argsstring>(const InputType &amp;input, ReductionOp reduction_op)</argsstring>
+        <name>Reduce</name>
+        <param>
+          <type>const InputType &amp;</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>ReductionOp</type>
+          <declname>reduction_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="501" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="501" bodyend="505"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a8c215131bfa5584a2313d3072aca2f30" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ReductionOp</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::Reduce</definition>
+        <argsstring>(T input, ReductionOp reduction_op, int valid_items)</argsstring>
+        <name>Reduce</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>ReductionOp</type>
+          <declname>reduction_op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>valid_items</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a partially-full warp-wide reduction in the calling warp using the specified binary
+reduction functor. The output is valid in warp *lane*\ :sub:`0`.
+
+All threads across the calling warp must agree on the same value for ``valid_items``.
+Otherwise the result is undefined.
+
+Supports non-commutative reduction operators
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a max reduction within a single, partially-full
+block of 32 threads (one warp).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(int *d_data, int valid_items)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+
+       // Allocate WarpReduce shared memory for one warp
+       __shared__ typename WarpReduce::TempStorage temp_storage;
+
+       // Obtain one input item per thread if in range
+       int thread_data;
+       if (threadIdx.x &lt; valid_items)
+           thread_data = d_data[threadIdx.x];
+
+       // Return the warp-wide reductions to each lane0
+       int aggregate = WarpReduce(temp_storage).Reduce(
+           thread_data, cuda::maximum&lt;&gt;{}, valid_items);
+
+Suppose the input ``d_data`` is ``{0, 1, 2, 3, 4, ... }`` and ``valid_items``
+is ``4``. The corresponding output ``aggregate`` in thread0 is ``3`` (and is
+undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ReductionOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary reduction operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">reduction_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary reduction operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">valid_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of valid items in the calling thread&apos;s logical warp (may be less than <computeroutput>LogicalWarpThreads</computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="563" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="563" bodyend="566"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1a0c0c101589b8f5b629c4fc6476467d49" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ReductionOp</type>
+          </param>
+          <param>
+            <type>typename FlagT</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::HeadSegmentedReduce</definition>
+        <argsstring>(T input, FlagT head_flag, ReductionOp reduction_op)</argsstring>
+        <name>HeadSegmentedReduce</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>FlagT</type>
+          <declname>head_flag</declname>
+        </param>
+        <param>
+          <type>ReductionOp</type>
+          <declname>reduction_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a segmented reduction in the calling warp where segments are defined by head-flags.
+The reduction of each segment is returned to the first lane in that segment
+(which always includes *lane*\ :sub:`0`).
+
+Supports non-commutative reduction operators
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a head-segmented warp max
+reduction within a block of 32 threads (one warp).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+
+       // Allocate WarpReduce shared memory for one warp
+       __shared__ typename WarpReduce::TempStorage temp_storage;
+
+       // Obtain one input item and flag per thread
+       int thread_data = ...
+       int head_flag = ...
+
+       // Return the warp-wide reductions to each lane0
+       int aggregate = WarpReduce(temp_storage).HeadSegmentedReduce(
+           thread_data, head_flag, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` and ``head_flag`` across the block of threads
+is ``{0, 1, 2, 3, ..., 31}`` and is ``{1, 0, 0, 0, 1, 0, 0, 0, ..., 1, 0, 0, 0}``,
+respectively. The corresponding output ``aggregate`` in threads 0, 4, 8, etc. will be
+``3``, ``7``, ``11``, etc. (and is undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ReductionOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary reduction operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">head_flag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Head flag denoting whether or not <computeroutput>input</computeroutput> is the start of a new segment</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">reduction_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reduction operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="622" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="622" bodyend="625"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpReduce_1ac86a41f00ffb325ce78877abe32b34d0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ReductionOp</type>
+          </param>
+          <param>
+            <type>typename FlagT</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::TailSegmentedReduce</definition>
+        <argsstring>(T input, FlagT tail_flag, ReductionOp reduction_op)</argsstring>
+        <name>TailSegmentedReduce</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>FlagT</type>
+          <declname>tail_flag</declname>
+        </param>
+        <param>
+          <type>ReductionOp</type>
+          <declname>reduction_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes a segmented reduction in the calling warp where segments are defined by tail-flags.
+The reduction of each segment is returned to the first lane in that segment
+(which always includes *lane*\ :sub:`0`).
+
+Supports non-commutative reduction operators
+
+A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a tail-segmented warp max
+reduction within a block of 32 threads (one warp).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+
+       // Allocate WarpReduce shared memory for one warp
+       __shared__ typename WarpReduce::TempStorage temp_storage;
+
+       // Obtain one input item and flag per thread
+       int thread_data = ...
+       int tail_flag = ...
+
+       // Return the warp-wide reductions to each lane0
+       int aggregate = WarpReduce(temp_storage).TailSegmentedReduce(
+           thread_data, tail_flag, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` and ``tail_flag`` across the block of threads
+is ``{0, 1, 2, 3, ..., 31}`` and is ``{0, 0, 0, 1, 0, 0, 0, 1, ..., 0, 0, 0, 1}``,
+respectively. The corresponding output ``aggregate`` in threads 0, 4, 8, etc. will be
+``3``, ``7``, ``11``, etc. (and is undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ReductionOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary reduction operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tail_flag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tail flag denoting whether or not <computeroutput>input</computeroutput> is the end of the current segment</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">reduction_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reduction operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="681" column="8" bodyfile="cub/warp/warp_reduce.cuh" bodystart="681" bodyend="684"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classcub_1_1WarpReduce_1a68126c88a5f048c832744ff4af97b7ac" prot="private" static="no">
+        <type>typename InternalWarpReduce::TempStorage</type>
+        <definition>using cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::_TempStorage =  typename InternalWarpReduce::TempStorage</definition>
+        <argsstring></argsstring>
+        <name>_TempStorage</name>
+        <briefdescription>
+<para>Shared memory storage layout type for <ref refid="classcub_1_1WarpReduce" kindref="compound">WarpReduce</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="165" column="3" bodyfile="cub/warp/warp_reduce.cuh" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classcub_1_1WarpReduce_1a80a8839d3bf9636ba822d34c3146ccd6" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::is_full_warp</definition>
+        <argsstring></argsstring>
+        <name>is_full_warp</name>
+        <initializer>= (LogicalWarpThreads == detail::warp_threads)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="150" column="25" bodyfile="cub/warp/warp_reduce.cuh" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1WarpReduce_1ad14e766bc0a87a52e4e8625ba65bda97" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::is_power_of_two</definition>
+        <argsstring></argsstring>
+        <name>is_power_of_two</name>
+        <initializer>= cuda::std::has_single_bit(uint32_t{LogicalWarpThreads})</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="151" column="25" bodyfile="cub/warp/warp_reduce.cuh" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1WarpReduce_1a76061546f3ac59a5088c90a5b69269f7" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::WarpReduce&lt; T, LogicalWarpThreads &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+<para>Shared storage reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_reduce.cuh" line="168" column="16" bodyfile="cub/warp/warp_reduce.cuh" bodystart="168" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+The ``WarpReduce`` class provides :ref:`collective &lt;collective-primitives&gt;` methods for computing a parallel
+reduction of items partitioned across a CUDA thread warp.
+
+.. image:: ../../img/warp_reduce_logo.png
+    :align: center
+
+Overview
+++++++++
+
+- A `reduction &lt;http://en.wikipedia.org/wiki/Reduce_(higher-order_function)&gt;`__ (or *fold*) uses a binary combining
+  operator to compute a single aggregate from a list of input elements.
+- Supports &quot;logical&quot; warps smaller than the physical warp size (e.g., logical warps of 8 threads)
+- The number of entrant threads must be an multiple of ``LogicalWarpThreads``
+
+Performance Considerations
+++++++++++++++++++++++++++
+
+- Uses special instructions when applicable (e.g., warp ``SHFL`` instructions)
+- Uses synchronization-free communication between warp lanes when applicable
+- Incurs zero bank conflicts for most types
+- Computation is slightly more efficient (i.e., having lower instruction overhead) for:
+
+  - Summation (**vs.** generic reduction)
+  - The architecture&apos;s warp size is a whole multiple of ``LogicalWarpThreads``
+
+Simple Examples
++++++++++++++++
+
+Every thread in the warp uses the WarpReduce class by first specializing the WarpReduce type, then instantiating an instance with parameters for communication, and finally invoking or more collective member functions.
+
+The code snippet below illustrates four concurrent warp sum reductions within a block of 128 threads (one per each
+of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+       // Allocate WarpReduce shared memory for 4 warps
+       __shared__ typename WarpReduce::TempStorage temp_storage[4];
+       // Obtain one input item per thread
+       int thread_data = ...
+       // Return the warp-wide sums to each lane0 (threads 0, 32, 64, and 96)
+       int warp_id   = threadIdx.x / 32;
+       int aggregate = WarpReduce(temp_storage[warp_id]).Sum(thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is ``{0, 1, 2, 3, ..., 127}``.
+The corresponding output ``aggregate`` in threads 0, 32, 64, and 96 will be
+``496``, ``1520``, ``2544``, and ``3568``, respectively (and is undefined in other threads).
+
+The code snippet below illustrates a single warp sum reduction within a block of 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpReduce for type int
+       using WarpReduce = cub::WarpReduce&lt;int&gt;;
+       // Allocate WarpReduce shared memory for one warp
+       __shared__ typename WarpReduce::TempStorage temp_storage;
+       ...
+       // Only the first warp performs a reduction
+       if (threadIdx.x &lt; 32)
+       {
+           // Obtain one input item per thread
+           int thread_data = ...
+           // Return the warp-wide sum to lane0
+           int aggregate = WarpReduce(temp_storage).Sum(thread_data);
+
+Suppose the set of input ``thread_data`` across the warp of threads is ``{0, 1, 2, 3, ..., 31}``.
+The corresponding output ``aggregate`` in thread0 will be ``496`` (and is undefined in other threads).
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The reduction input/output element type</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LogicalWarpThreads</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The number of threads per &quot;logical&quot; warp (may be less than the number of hardware warp threads). Default is the warp size of the targeted CUDA compute-capability (e.g., 32 threads for SM20). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/warp/warp_reduce.cuh" line="145" column="1" bodyfile="cub/warp/warp_reduce.cuh" bodystart="146" bodyend="687"/>
+    <listofallmembers>
+      <member refid="classcub_1_1WarpReduce_1a68126c88a5f048c832744ff4af97b7ac" prot="private" virt="non-virtual"><scope>cub::WarpReduce</scope><name>_TempStorage</name></member>
+      <member refid="classcub_1_1WarpReduce_1a0c0c101589b8f5b629c4fc6476467d49" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>HeadSegmentedReduce</name></member>
+      <member refid="classcub_1_1WarpReduce_1a45a77f8b4bd36309dc2e1b433bf6cf30" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>HeadSegmentedSum</name></member>
+      <member refid="classcub_1_1WarpReduce_1a80a8839d3bf9636ba822d34c3146ccd6" prot="private" virt="non-virtual"><scope>cub::WarpReduce</scope><name>is_full_warp</name></member>
+      <member refid="classcub_1_1WarpReduce_1ad14e766bc0a87a52e4e8625ba65bda97" prot="private" virt="non-virtual"><scope>cub::WarpReduce</scope><name>is_power_of_two</name></member>
+      <member refid="classcub_1_1WarpReduce_1ace32825b4dafe087edc136348f4c7caf" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Max</name></member>
+      <member refid="classcub_1_1WarpReduce_1a5eb889598585bc3088cfdcdb2bdc3e52" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Max</name></member>
+      <member refid="classcub_1_1WarpReduce_1a9132a853afd50aa0ff656129e1d7102f" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Max</name></member>
+      <member refid="classcub_1_1WarpReduce_1ad5458cdea939b39799a9855c55ec0490" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Min</name></member>
+      <member refid="classcub_1_1WarpReduce_1a20cee5c27c302ce00c2974b98844a936" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Min</name></member>
+      <member refid="classcub_1_1WarpReduce_1a39ae32c73851966c0bd68c7d2b8dc244" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Min</name></member>
+      <member refid="classcub_1_1WarpReduce_1a6c4c9d5dfe1bea85022f455681105c19" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Reduce</name></member>
+      <member refid="classcub_1_1WarpReduce_1a5289933ff5baef602268728cbbaf96a7" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Reduce</name></member>
+      <member refid="classcub_1_1WarpReduce_1a8c215131bfa5584a2313d3072aca2f30" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Reduce</name></member>
+      <member refid="classcub_1_1WarpReduce_1a590cc4f4b6cc53c5b9b713bb0f2876b3" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Sum</name></member>
+      <member refid="classcub_1_1WarpReduce_1a9261a9c4a3d1db5befc17f7f552539a2" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Sum</name></member>
+      <member refid="classcub_1_1WarpReduce_1a148a22664583f8a558ab557d585b0271" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>Sum</name></member>
+      <member refid="classcub_1_1WarpReduce_1ac86a41f00ffb325ce78877abe32b34d0" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>TailSegmentedReduce</name></member>
+      <member refid="classcub_1_1WarpReduce_1aeb69a2304ecdb19e363fec3fa5d0188c" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>TailSegmentedSum</name></member>
+      <member refid="classcub_1_1WarpReduce_1a76061546f3ac59a5088c90a5b69269f7" prot="private" virt="non-virtual"><scope>cub::WarpReduce</scope><name>temp_storage</name></member>
+      <member refid="classcub_1_1WarpReduce_1afadb1e883c360d7476c4d388ccdd04c0" prot="public" virt="non-virtual"><scope>cub::WarpReduce</scope><name>WarpReduce</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

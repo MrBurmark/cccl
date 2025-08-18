@@ -1,0 +1,1233 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__copying" kind="group">
+    <compoundname>copying</compoundname>
+    <title>Copying</title>
+    <innergroup refid="group__scattering">Scattering</innergroup>
+    <innergroup refid="group__gathering">Gathering</innergroup>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__copying_1gad26f989a9260881c5df7707b57694fe9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::uninitialized_copy</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, ForwardIterator result)</argsstring>
+        <name>uninitialized_copy</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>In <computeroutput>thrust</computeroutput>, the function <computeroutput>thrust::device_new</computeroutput> allocates memory for an object and then creates an object at that location by calling a constructor. Occasionally, however, it is useful to separate those two operations. If each iterator in the range <computeroutput>[result, result + (last - first))</computeroutput> points to uninitialized memory, then <computeroutput>uninitialized_copy</computeroutput> creates a copy of <computeroutput>[first, last)</computeroutput> in that range. That is, for each iterator <computeroutput>i</computeroutput> in the input, <computeroutput>uninitialized_copy</computeroutput> creates a copy of <computeroutput>*i</computeroutput> in the location pointed to by the corresponding iterator in the output range by <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type&apos;s</computeroutput> copy constructor with *i as its argument.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the input range to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The last element of the input range to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the output range to copy to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator pointing to the last element of the output range.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, <computeroutput>ForwardIterator</computeroutput> is mutable, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> has a constructor that takes a single argument whose type is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput>, but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>uninitialized_copy</computeroutput> to initialize a range of uninitialized memory using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/uninitialized_copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_malloc.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>Int</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>Int(int<sp/>x)<sp/>:<sp/>val(x)<sp/>{}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>int<sp/>val;</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>137;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Int<sp/>val(46);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;Int&gt;<sp/>input(N,<sp/>val);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_ptr&lt;Int&gt;<sp/>array<sp/>=<sp/>thrust::device_malloc&lt;Int&gt;(N);</highlight></codeline>
+<codeline><highlight class="normal">thrust::uninitialized_copy(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>array);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Int<sp/>x<sp/>=<sp/>array[i];</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>x.val<sp/>==<sp/>46<sp/>for<sp/>all<sp/>0<sp/>&lt;=<sp/>i<sp/>&lt;<sp/>N</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/memory/uninitialized_copy">https://en.cppreference.com/w/cpp/memory/uninitialized_copy</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>uninitialized_fill</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_new</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_malloc</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/uninitialized_copy.h" line="103" column="18" declfile="thrust/uninitialized_copy.h" declline="103" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1ga50ecdff4f2b8c7606f837e1cfeb70f24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::uninitialized_copy</definition>
+        <argsstring>(InputIterator first, InputIterator last, ForwardIterator result)</argsstring>
+        <name>uninitialized_copy</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>In <computeroutput>thrust</computeroutput>, the function <computeroutput>thrust::device_new</computeroutput> allocates memory for an object and then creates an object at that location by calling a constructor. Occasionally, however, it is useful to separate those two operations. If each iterator in the range <computeroutput>[result, result + (last - first))</computeroutput> points to uninitialized memory, then <computeroutput>uninitialized_copy</computeroutput> creates a copy of <computeroutput>[first, last)</computeroutput> in that range. That is, for each iterator <computeroutput>i</computeroutput> in the input, <computeroutput>uninitialized_copy</computeroutput> creates a copy of <computeroutput>*i</computeroutput> in the location pointed to by the corresponding iterator in the output range by <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type&apos;s</computeroutput> copy constructor with *i as its argument.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the input range to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The last element of the input range to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the output range to copy to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator pointing to the last element of the output range.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, <computeroutput>ForwardIterator</computeroutput> is mutable, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> has a constructor that takes a single argument whose type is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput>, but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>uninitialized_copy</computeroutput> to initialize a range of uninitialized memory.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/uninitialized_copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_malloc.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>Int</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>Int(int<sp/>x)<sp/>:<sp/>val(x)<sp/>{}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>int<sp/>val;</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>137;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Int<sp/>val(46);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;Int&gt;<sp/>input(N,<sp/>val);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_ptr&lt;Int&gt;<sp/>array<sp/>=<sp/>thrust::device_malloc&lt;Int&gt;(N);</highlight></codeline>
+<codeline><highlight class="normal">thrust::uninitialized_copy(input.begin(),<sp/>input.end(),<sp/>array);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Int<sp/>x<sp/>=<sp/>array[i];</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>x.val<sp/>==<sp/>46<sp/>for<sp/>all<sp/>0<sp/>&lt;=<sp/>i<sp/>&lt;<sp/>N</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/memory/uninitialized_copy">https://en.cppreference.com/w/cpp/memory/uninitialized_copy</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>uninitialized_fill</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_new</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_malloc</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/uninitialized_copy.h" line="166" column="17" declfile="thrust/uninitialized_copy.h" declline="166" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1gacf44f607e6db43cd1acd0fc17ac5e988" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Size</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::uninitialized_copy_n</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, Size n, ForwardIterator result)</argsstring>
+        <name>uninitialized_copy_n</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>Size</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>In <computeroutput>thrust</computeroutput>, the function <computeroutput>thrust::device_new</computeroutput> allocates memory for an object and then creates an object at that location by calling a constructor. Occasionally, however, it is useful to separate those two operations. If each iterator in the range <computeroutput>[result, result + n)</computeroutput> points to uninitialized memory, then <computeroutput>uninitialized_copy_n</computeroutput> creates a copy of <computeroutput>[first, first + n)</computeroutput> in that range. That is, for each iterator <computeroutput>i</computeroutput> in the input, <computeroutput>uninitialized_copy_n</computeroutput> creates a copy of <computeroutput>*i</computeroutput> in the location pointed to by the corresponding iterator in the output range by <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type&apos;s</computeroutput> copy constructor with *i as its argument.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the input range to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of elements to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the output range to copy to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator pointing to the last element of the output range.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is an integral type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, <computeroutput>ForwardIterator</computeroutput> is mutable, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> has a constructor that takes a single argument whose type is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput>, but the range <computeroutput>[first, first + n)</computeroutput> and the range <computeroutput>[result, result + n)</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>uninitialized_copy</computeroutput> to initialize a range of uninitialized memory using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/uninitialized_copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_malloc.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>Int</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>Int(int<sp/>x)<sp/>:<sp/>val(x)<sp/>{}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>int<sp/>val;</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>137;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Int<sp/>val(46);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;Int&gt;<sp/>input(N,<sp/>val);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_ptr&lt;Int&gt;<sp/>array<sp/>=<sp/>thrust::device_malloc&lt;Int&gt;(N);</highlight></codeline>
+<codeline><highlight class="normal">thrust::uninitialized_copy_n(thrust::device,<sp/>input.begin(),<sp/>N,<sp/>array);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Int<sp/>x<sp/>=<sp/>array[i];</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>x.val<sp/>==<sp/>46<sp/>for<sp/>all<sp/>0<sp/>&lt;=<sp/>i<sp/>&lt;<sp/>N</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/memory/uninitialized_copy">https://en.cppreference.com/w/cpp/memory/uninitialized_copy</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>uninitialized_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>uninitialized_fill</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_new</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_malloc</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/uninitialized_copy.h" line="232" column="18" declfile="thrust/uninitialized_copy.h" declline="232" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1gabe36cff9b0dcf6a52869a725379eb726" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Size</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::uninitialized_copy_n</definition>
+        <argsstring>(InputIterator first, Size n, ForwardIterator result)</argsstring>
+        <name>uninitialized_copy_n</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>Size</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>In <computeroutput>thrust</computeroutput>, the function <computeroutput>thrust::device_new</computeroutput> allocates memory for an object and then creates an object at that location by calling a constructor. Occasionally, however, it is useful to separate those two operations. If each iterator in the range <computeroutput>[result, result + n)</computeroutput> points to uninitialized memory, then <computeroutput>uninitialized_copy_n</computeroutput> creates a copy of <computeroutput>[first, first + n)</computeroutput> in that range. That is, for each iterator <computeroutput>i</computeroutput> in the input, <computeroutput>uninitialized_copy_n</computeroutput> creates a copy of <computeroutput>*i</computeroutput> in the location pointed to by the corresponding iterator in the output range by <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type&apos;s</computeroutput> copy constructor with *i as its argument.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the input range to copy from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of elements to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The first element of the output range to copy to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator pointing to the last element of the output range.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is an integral type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, <computeroutput>ForwardIterator</computeroutput> is mutable, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> has a constructor that takes a single argument whose type is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput>, but the range <computeroutput>[first, first + n)</computeroutput> and the range <computeroutput>[result, result + n)</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>uninitialized_copy</computeroutput> to initialize a range of uninitialized memory.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/uninitialized_copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_malloc.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>Int</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>Int(int<sp/>x)<sp/>:<sp/>val(x)<sp/>{}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>int<sp/>val;</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>137;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Int<sp/>val(46);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;Int&gt;<sp/>input(N,<sp/>val);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_ptr&lt;Int&gt;<sp/>array<sp/>=<sp/>thrust::device_malloc&lt;Int&gt;(N);</highlight></codeline>
+<codeline><highlight class="normal">thrust::uninitialized_copy_n(input.begin(),<sp/>N,<sp/>array);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Int<sp/>x<sp/>=<sp/>array[i];</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>x.val<sp/>==<sp/>46<sp/>for<sp/>all<sp/>0<sp/>&lt;=<sp/>i<sp/>&lt;<sp/>N</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/memory/uninitialized_copy">https://en.cppreference.com/w/cpp/memory/uninitialized_copy</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>uninitialized_copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>copy</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>uninitialized_fill</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_new</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>device_malloc</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/uninitialized_copy.h" line="293" column="17" declfile="thrust/uninitialized_copy.h" declline="293" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1ga2a5f58c36e53be600582478365ec7108" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator1</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator2</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator2</type>
+        <definition>ForwardIterator2 thrust::swap_ranges</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2)</argsstring>
+        <name>swap_ranges</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>ForwardIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>ForwardIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>swap_ranges</computeroutput> swaps each of the elements in the range <computeroutput>[first1, last1)</computeroutput> with the corresponding element in the range <computeroutput>[first2, first2 + (last1 - first1))</computeroutput>. That is, for each integer <computeroutput>n</computeroutput> such that <computeroutput>0 &lt;= n &lt; (last1 - first1)</computeroutput>, it swaps <computeroutput>*(first1 + n)</computeroutput> and <computeroutput>*(first2 + n)</computeroutput>. The return value is <computeroutput>first2 + (last1 - first1)</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence to swap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the first sequence to swap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence to swap. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator pointing to one position past the last element of the second sequence to swap.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>ForwardIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>ForwardIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first1</computeroutput> may equal <computeroutput>first2</computeroutput>, but the range <computeroutput>[first1, last1)</computeroutput> shall not overlap the range <computeroutput>[first2, first2 + (last1 - first1))</computeroutput> otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>swap_ranges</computeroutput> to swap the contents of two <computeroutput>thrust::device_vectors</computeroutput> using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/swap.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>v1(2),<sp/>v2(2);</highlight></codeline>
+<codeline><highlight class="normal">v1[0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline><highlight class="normal">v1[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">v2[0]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal">v2[1]<sp/>=<sp/>4;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::swap_ranges(thrust::device,<sp/>v1.begin(),<sp/>v1.end(),<sp/>v2.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>v1[0]<sp/>==<sp/>3,<sp/>v1[1]<sp/>==<sp/>4,<sp/>v2[0]<sp/>==<sp/>1,<sp/>v2[1]<sp/>==<sp/>2</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/swap_ranges">https://en.cppreference.com/w/cpp/algorithm/swap_ranges</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>swap</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/swap.h" line="92" column="19" declfile="thrust/swap.h" declline="92" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1ga24337437822d9f7ca85f0c48b9248f6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator1</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator2</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator2</type>
+        <definition>ForwardIterator2 thrust::swap_ranges</definition>
+        <argsstring>(ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2)</argsstring>
+        <name>swap_ranges</name>
+        <param>
+          <type>ForwardIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>ForwardIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>ForwardIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>swap_ranges</computeroutput> swaps each of the elements in the range <computeroutput>[first1, last1)</computeroutput> with the corresponding element in the range <computeroutput>[first2, first2 + (last1 - first1))</computeroutput>. That is, for each integer <computeroutput>n</computeroutput> such that <computeroutput>0 &lt;= n &lt; (last1 - first1)</computeroutput>, it swaps <computeroutput>*(first1 + n)</computeroutput> and <computeroutput>*(first2 + n)</computeroutput>. The return value is <computeroutput>first2 + (last1 - first1)</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence to swap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One position past the last element of the first sequence to swap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence to swap. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator pointing to one position past the last element of the second sequence to swap.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>ForwardIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>ForwardIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first1</computeroutput> may equal <computeroutput>first2</computeroutput>, but the range <computeroutput>[first1, last1)</computeroutput> shall not overlap the range <computeroutput>[first2, first2 + (last1 - first1))</computeroutput> otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>swap_ranges</computeroutput> to swap the contents of two <computeroutput>thrust::device_vectors</computeroutput>.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/swap.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>v1(2),<sp/>v2(2);</highlight></codeline>
+<codeline><highlight class="normal">v1[0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline><highlight class="normal">v1[1]<sp/>=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal">v2[0]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal">v2[1]<sp/>=<sp/>4;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::swap_ranges(v1.begin(),<sp/>v1.end(),<sp/>v2.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>v1[0]<sp/>==<sp/>3,<sp/>v1[1]<sp/>==<sp/>4,<sp/>v2[0]<sp/>==<sp/>1,<sp/>v2[1]<sp/>==<sp/>2</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/swap_ranges">https://en.cppreference.com/w/cpp/algorithm/swap_ranges</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>swap</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/swap.h" line="140" column="18" declfile="thrust/swap.h" declline="140" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1ga83d834a518f336cc996e22639f5e4bee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::copy</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator result)</argsstring>
+        <name>copy</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>copy</computeroutput> copies elements from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range [<computeroutput>result</computeroutput>, <computeroutput>result</computeroutput> + (<computeroutput>last</computeroutput> - <computeroutput>first</computeroutput>)). That is, it performs the assignments *<computeroutput>result</computeroutput> = *<computeroutput>first</computeroutput>, *(<computeroutput>result</computeroutput> + <computeroutput>1</computeroutput>) = *(<computeroutput>first</computeroutput> + <computeroutput>1</computeroutput>), and so on. Generally, for every integer <computeroutput>n</computeroutput> from <computeroutput>0</computeroutput> to <computeroutput>last</computeroutput> - <computeroutput>first</computeroutput>, <computeroutput>copy</computeroutput> performs the assignment *(<computeroutput>result</computeroutput> + <computeroutput>n</computeroutput>) = *(<computeroutput>first</computeroutput> + <computeroutput>n</computeroutput>). Unlike <computeroutput>std::copy</computeroutput>, <computeroutput>copy</computeroutput> offers no guarantee on order of operation. As a result, calling <computeroutput>copy</computeroutput> with overlapping source and destination ranges has undefined behavior.</para>
+<para>The return value is <computeroutput>result</computeroutput> + (<computeroutput>last</computeroutput> - <computeroutput>first</computeroutput>).</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the destination sequence. </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/copy">https://en.cppreference.com/w/cpp/algorithm/copy</ulink></para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>result</computeroutput> may be equal to <computeroutput>first</computeroutput>, but <computeroutput>result</computeroutput> shall not be in the range <computeroutput>[first, last)</computeroutput> otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>copy</computeroutput> to copy from one range to another using the <computeroutput>thrust::device</computeroutput> parallelization policy:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec0(100);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(100);</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::copy(thrust::device,<sp/>vec0.begin(),<sp/>vec0.end(),<sp/>vec1.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>vec1<sp/>is<sp/>now<sp/>a<sp/>copy<sp/>of<sp/>vec0</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/copy.h" line="92" column="1" declfile="thrust/copy.h" declline="92" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1ga4eb33fdcfcf991eaf1c0ae209046922d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Size</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::copy_n</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, Size n, OutputIterator result)</argsstring>
+        <name>copy_n</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>Size</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>copy_n</computeroutput> copies elements from the range <computeroutput>[first, first + n)</computeroutput> to the range <computeroutput>[result, result + n)</computeroutput>. That is, it performs the assignments <computeroutput>*result = *first, *(result + 1) = *(first + 1)</computeroutput>, and so on. Generally, for every integer <computeroutput>i</computeroutput> from <computeroutput>0</computeroutput> to <computeroutput>n</computeroutput>, <computeroutput>copy</computeroutput> performs the assignment *(<computeroutput>result</computeroutput> <itemizedlist>
+<listitem><para><computeroutput>i</computeroutput>) = *(<computeroutput>first</computeroutput> + <computeroutput>i</computeroutput>). Unlike <computeroutput>std::copy_n</computeroutput>, <computeroutput>copy_n</computeroutput> offers no guarantee on order of operation. As a result, calling <computeroutput>copy_n</computeroutput> with overlapping source and destination ranges has undefined behavior.</para>
+<para>The return value is <computeroutput>result</computeroutput> + <computeroutput>n</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of elements to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning destination range. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the destination range.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is an integral type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>result</computeroutput> may be equal to <computeroutput>first</computeroutput>, but <computeroutput>result</computeroutput> shall not be in the range <computeroutput>[first, first + n)</computeroutput> otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>copy</computeroutput> to copy from one range to another using the <computeroutput>thrust::device</computeroutput> parallelization policy:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">size_t<sp/>n<sp/>=<sp/>100;</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec0(n);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(n);</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::copy_n(thrust::device,<sp/>vec0.begin(),<sp/>n,<sp/>vec1.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>vec1<sp/>is<sp/>now<sp/>a<sp/>copy<sp/>of<sp/>vec0</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/copy_n">https://en.cppreference.com/w/cpp/algorithm/copy_n</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>thrust::copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/copy.h" line="143" column="17" declfile="thrust/copy.h" declline="143" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1ga24ccfaaa706a9163ec5117758fdb71b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::copy</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator result)</argsstring>
+        <name>copy</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>copy</computeroutput> copies elements from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range [<computeroutput>result</computeroutput>, <computeroutput>result</computeroutput> + (<computeroutput>last</computeroutput> - <computeroutput>first</computeroutput>)). That is, it performs the assignments *<computeroutput>result</computeroutput> = *<computeroutput>first</computeroutput>, *(<computeroutput>result</computeroutput> + <computeroutput>1</computeroutput>) = *(<computeroutput>first</computeroutput> + <computeroutput>1</computeroutput>), and so on. Generally, for every integer <computeroutput>n</computeroutput> from <computeroutput>0</computeroutput> to <computeroutput>last</computeroutput> - <computeroutput>first</computeroutput>, <computeroutput>copy</computeroutput> performs the assignment *(<computeroutput>result</computeroutput> + <computeroutput>n</computeroutput>) = *(<computeroutput>first</computeroutput> + <computeroutput>n</computeroutput>). Unlike <computeroutput>std::copy</computeroutput>, <computeroutput>copy</computeroutput> offers no guarantee on order of operation. As a result, calling <computeroutput>copy</computeroutput> with overlapping source and destination ranges has undefined behavior.</para>
+<para>The return value is <computeroutput>result</computeroutput> + (<computeroutput>last</computeroutput> - <computeroutput>first</computeroutput>).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the destination sequence. </para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/copy">https://en.cppreference.com/w/cpp/algorithm/copy</ulink></para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>result</computeroutput> may be equal to <computeroutput>first</computeroutput>, but <computeroutput>result</computeroutput> shall not be in the range <computeroutput>[first, last)</computeroutput> otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>copy</computeroutput> to copy from one range to another.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec0(100);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(100);</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::copy(vec0.begin(),<sp/>vec0.end(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vec1.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>vec1<sp/>is<sp/>now<sp/>a<sp/>copy<sp/>of<sp/>vec0</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/copy.h" line="189" column="16" declfile="thrust/copy.h" declline="189" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__copying_1gab3d33f1aa1d078b5f6b579f07313d058" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Size</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::copy_n</definition>
+        <argsstring>(InputIterator first, Size n, OutputIterator result)</argsstring>
+        <name>copy_n</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>Size</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>copy_n</computeroutput> copies elements from the range <computeroutput>[first, first + n)</computeroutput> to the range <computeroutput>[result, result + n)</computeroutput>. That is, it performs the assignments <computeroutput>*result = *first, *(result + 1) = *(first + 1)</computeroutput>, and so on. Generally, for every integer <computeroutput>i</computeroutput> from <computeroutput>0</computeroutput> to <computeroutput>n</computeroutput>, <computeroutput>copy</computeroutput> performs the assignment *(<computeroutput>result</computeroutput> <itemizedlist>
+<listitem><para><computeroutput>i</computeroutput>) = *(<computeroutput>first</computeroutput> + <computeroutput>i</computeroutput>). Unlike <computeroutput>std::copy_n</computeroutput>, <computeroutput>copy_n</computeroutput> offers no guarantee on order of operation. As a result, calling <computeroutput>copy_n</computeroutput> with overlapping source and destination ranges has undefined behavior.</para>
+<para>The return value is <computeroutput>result</computeroutput> + <computeroutput>n</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of elements to copy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning destination range. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the destination range.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is an integral type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>result</computeroutput> may be equal to <computeroutput>first</computeroutput>, but <computeroutput>result</computeroutput> shall not be in the range <computeroutput>[first, first + n)</computeroutput> otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>copy</computeroutput> to copy from one range to another.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/copy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">size_t<sp/>n<sp/>=<sp/>100;</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec0(n);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(n);</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::copy_n(vec0.begin(),<sp/>n,<sp/>vec1.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>vec1<sp/>is<sp/>now<sp/>a<sp/>copy<sp/>of<sp/>vec0</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/copy_n">https://en.cppreference.com/w/cpp/algorithm/copy_n</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>thrust::copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/copy.h" line="232" column="16" declfile="thrust/copy.h" declline="232" declcolumn="16"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

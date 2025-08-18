@@ -1,0 +1,1561 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__prefixsums" kind="group">
+    <compoundname>prefixsums</compoundname>
+    <title>Prefix Sums</title>
+    <innergroup refid="group__transformed__prefixsums">Transformed Prefix Sums</innergroup>
+    <innergroup refid="group__segmentedprefixsums">Segmented Prefix Sums</innergroup>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__prefixsums_1ga32e405cc5a138a6ef20dc2000b3f42df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::inclusive_scan</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator result)</argsstring>
+        <name>inclusive_scan</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inclusive_scan</computeroutput> computes an inclusive prefix sum operation. The term &apos;inclusive&apos; means that each result includes the corresponding input operand in the partial sum. More precisely, <computeroutput>*first</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the sum of <computeroutput>*first</computeroutput> and <computeroutput>*(first + 1)</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of <computeroutput>inclusive_scan</computeroutput> assumes plus as the associative operator. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para><computeroutput>inclusive_scan</computeroutput> is similar to <computeroutput>std::partial_sum</computeroutput> in the STL. The primary difference between the two functions is that <computeroutput>std::partial_sum</computeroutput> guarantees a serial summation order, while <computeroutput>inclusive_scan</computeroutput> requires associativity of the binary operation to parallelize the prefix sum.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>, and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined. If <computeroutput>T</computeroutput> is <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>inclusive_scan</computeroutput> to compute an in-place prefix sum using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::inclusive_scan(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>6,<sp/>data);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>3,<sp/>5,<sp/>6,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="99" column="17" declfile="thrust/scan.h" declline="99" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1gad57155adfbf01ba6660839aafe16ad71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::inclusive_scan</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator result)</argsstring>
+        <name>inclusive_scan</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inclusive_scan</computeroutput> computes an inclusive prefix sum operation. The term &apos;inclusive&apos; means that each result includes the corresponding input operand in the partial sum. More precisely, <computeroutput>*first</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the sum of <computeroutput>*first</computeroutput> and <computeroutput>*(first + 1)</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of <computeroutput>inclusive_scan</computeroutput> assumes plus as the associative operator. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para><computeroutput>inclusive_scan</computeroutput> is similar to <computeroutput>std::partial_sum</computeroutput> in the STL. The primary difference between the two functions is that <computeroutput>std::partial_sum</computeroutput> guarantees a serial summation order, while <computeroutput>inclusive_scan</computeroutput> requires associativity of the binary operation to parallelize the prefix sum.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>, and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined. If <computeroutput>T</computeroutput> is <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>inclusive_scan</computeroutput> </para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::inclusive_scan(data,<sp/>data<sp/>+<sp/>6,<sp/>data);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>3,<sp/>5,<sp/>6,<sp/>9}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="153" column="16" declfile="thrust/scan.h" declline="153" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1ga3ee07457799ed36979f02d92ef0b25f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename AssociativeOperator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::inclusive_scan</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator result, AssociativeOperator binary_op)</argsstring>
+        <name>inclusive_scan</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>AssociativeOperator</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inclusive_scan</computeroutput> computes an inclusive prefix sum operation. The term &apos;inclusive&apos; means that each result includes the corresponding input operand in the partial sum. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para><computeroutput>inclusive_scan</computeroutput> is similar to <computeroutput>std::partial_sum</computeroutput> in the STL. The primary difference between the two functions is that <computeroutput>std::partial_sum</computeroutput> guarantees a serial summation order, while <computeroutput>inclusive_scan</computeroutput> requires associativity of the binary operation to parallelize the prefix sum.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The associative operator used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>AssociativeOperator&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AssociativeOperator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>inclusive_scan</computeroutput> to compute an in-place prefix sum using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">int<sp/>data[10]<sp/>=<sp/>{-5,<sp/>0,<sp/>2,<sp/>-3,<sp/>2,<sp/>4,<sp/>0,<sp/>-1,<sp/>2,<sp/>8};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::maximum&lt;int&gt;<sp/>binary_op;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::inclusive_scan(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>10,<sp/>data,<sp/>binary_op);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{-5,<sp/>0,<sp/>2,<sp/>2,<sp/>2,<sp/>4,<sp/>4,<sp/>4,<sp/>4,<sp/>8}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="205" column="17" declfile="thrust/scan.h" declline="205" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1ga7109170b96a48fab736e52b75f423464" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename AssociativeOperator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::inclusive_scan</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator result, AssociativeOperator binary_op)</argsstring>
+        <name>inclusive_scan</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>AssociativeOperator</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inclusive_scan</computeroutput> computes an inclusive prefix sum operation. The term &apos;inclusive&apos; means that each result includes the corresponding input operand in the partial sum. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para><computeroutput>inclusive_scan</computeroutput> is similar to <computeroutput>std::partial_sum</computeroutput> in the STL. The primary difference between the two functions is that <computeroutput>std::partial_sum</computeroutput> guarantees a serial summation order, while <computeroutput>inclusive_scan</computeroutput> requires associativity of the binary operation to parallelize the prefix sum.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The associative operator used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>AssociativeOperator&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AssociativeOperator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>inclusive_scan</computeroutput> </para>
+<para><programlisting><codeline><highlight class="normal">int<sp/>data[10]<sp/>=<sp/>{-5,<sp/>0,<sp/>2,<sp/>-3,<sp/>2,<sp/>4,<sp/>0,<sp/>-1,<sp/>2,<sp/>8};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::maximum&lt;int&gt;<sp/>binary_op;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::inclusive_scan(data,<sp/>data<sp/>+<sp/>10,<sp/>data,<sp/>binary_op);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{-5,<sp/>0,<sp/>2,<sp/>2,<sp/>2,<sp/>4,<sp/>4,<sp/>4,<sp/>4,<sp/>8}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="258" column="1" declfile="thrust/scan.h" declline="258" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1gabec8d54c607dd56aa0e7f8c424e3757b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename AssociativeOperator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::inclusive_scan</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator result, T init, AssociativeOperator binary_op)</argsstring>
+        <name>inclusive_scan</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>AssociativeOperator</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inclusive_scan</computeroutput> computes an inclusive prefix sum operation. The term &apos;inclusive&apos; means that each result includes the corresponding input operand in the partial sum. More precisely, <computeroutput>binary_op(init, *first)</computeroutput> is assigned to <computeroutput>*result</computeroutput> and so on. This version of <computeroutput>inclusive_scan</computeroutput> requires both an associative operator and an initial value <computeroutput>init</computeroutput>. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The associative operator used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>AssociativeOperator&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AssociativeOperator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>inclusive_scan</computeroutput> with initial value to compute an in-place prefix sum using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">int<sp/>data[10]<sp/>=<sp/>{-5,<sp/>0,<sp/>2,<sp/>-3,<sp/>2,<sp/>4,<sp/>0,<sp/>-1,<sp/>2,<sp/>8};</highlight></codeline>
+<codeline><highlight class="normal">thrust::inclusive_scan(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>10,<sp/>data,<sp/>1,<sp/>::cuda::maximum&lt;&gt;{});<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>2,<sp/>2,<sp/>2,<sp/>4,<sp/>4,<sp/>4,<sp/>4,<sp/>8}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="305" column="17" declfile="thrust/scan.h" declline="305" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1ga88178012310104145d0f3169e7fc371e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename AssociativeOperator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::inclusive_scan</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator result, T init, AssociativeOperator binary_op)</argsstring>
+        <name>inclusive_scan</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>AssociativeOperator</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inclusive_scan</computeroutput> computes an inclusive prefix sum operation. The term &apos;inclusive&apos; means that each result includes the corresponding input operand in the partial sum. More precisely, <computeroutput>binary_op(init, *first)</computeroutput> is assigned to <computeroutput>*result</computeroutput> and so on. This version of <computeroutput>inclusive_scan</computeroutput> requires both an associative operator and an initial value <computeroutput>init</computeroutput>. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The associative operator used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>AssociativeOperator&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AssociativeOperator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>inclusive_scan</computeroutput> with initial value:</para>
+<para><programlisting><codeline><highlight class="normal">int<sp/>data[10]<sp/>=<sp/>{-5,<sp/>0,<sp/>2,<sp/>-3,<sp/>2,<sp/>4,<sp/>0,<sp/>-1,<sp/>2,<sp/>8};</highlight></codeline>
+<codeline><highlight class="normal">::cuda::maximum&lt;int&gt;<sp/>binary_op;</highlight></codeline>
+<codeline><highlight class="normal">thrust::inclusive_scan(data,<sp/>data<sp/>+<sp/>10,<sp/>data,<sp/>1,<sp/>::cuda::maximum&lt;&gt;{});<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>2,<sp/>2,<sp/>2,<sp/>4,<sp/>4,<sp/>4,<sp/>4,<sp/>8}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="355" column="1" declfile="thrust/scan.h" declline="355" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1gae5d3cdb73f9532b0a9692624988f3ab1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::exclusive_scan</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator result)</argsstring>
+        <name>exclusive_scan</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>exclusive_scan</computeroutput> computes an exclusive prefix sum operation. The term &apos;exclusive&apos; means that each result does not include the corresponding input operand in the partial sum. More precisely, <computeroutput>0</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the sum of <computeroutput>0</computeroutput> and <computeroutput>*first</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of <computeroutput>exclusive_scan</computeroutput> assumes plus as the associative operator and <computeroutput>0</computeroutput> as the initial value. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>, and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined. If <computeroutput>T</computeroutput> is <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>exclusive_scan</computeroutput> to compute an in-place prefix sum using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::exclusive_scan(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>6,<sp/>data);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{0,<sp/>1,<sp/>1,<sp/>3,<sp/>5,<sp/>6}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="406" column="17" declfile="thrust/scan.h" declline="406" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1ga333bd4f34742dcf68d3ac5a0933f67db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::exclusive_scan</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator result)</argsstring>
+        <name>exclusive_scan</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>exclusive_scan</computeroutput> computes an exclusive prefix sum operation. The term &apos;exclusive&apos; means that each result does not include the corresponding input operand in the partial sum. More precisely, <computeroutput>0</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the sum of <computeroutput>0</computeroutput> and <computeroutput>*first</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of <computeroutput>exclusive_scan</computeroutput> assumes plus as the associative operator and <computeroutput>0</computeroutput> as the initial value. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>, and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined. If <computeroutput>T</computeroutput> is <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>exclusive_scan</computeroutput> </para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::exclusive_scan(data,<sp/>data<sp/>+<sp/>6,<sp/>data);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{0,<sp/>1,<sp/>1,<sp/>3,<sp/>5,<sp/>6}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="454" column="16" declfile="thrust/scan.h" declline="454" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1ga89d7b142693ad061fb5b5ba6b1f82c67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::exclusive_scan</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator result, T init)</argsstring>
+        <name>exclusive_scan</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>exclusive_scan</computeroutput> computes an exclusive prefix sum operation. The term &apos;exclusive&apos; means that each result does not include the corresponding input operand in the partial sum. More precisely, <computeroutput>init</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the sum of <computeroutput>init</computeroutput> and <computeroutput>*first</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of <computeroutput>exclusive_scan</computeroutput> assumes plus as the associative operator but requires an initial value <computeroutput>init</computeroutput>. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>, and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>exclusive_scan</computeroutput> to compute an in-place prefix sum using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::exclusive_scan(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>6,<sp/>data,<sp/>4);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{4,<sp/>5,<sp/>5,<sp/>7,<sp/>9,<sp/>10}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="505" column="17" declfile="thrust/scan.h" declline="505" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1ga3d973b51246f3d869339c08e3cbdc6fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::exclusive_scan</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator result, T init)</argsstring>
+        <name>exclusive_scan</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>exclusive_scan</computeroutput> computes an exclusive prefix sum operation. The term &apos;exclusive&apos; means that each result does not include the corresponding input operand in the partial sum. More precisely, <computeroutput>init</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the sum of <computeroutput>init</computeroutput> and <computeroutput>*first</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of <computeroutput>exclusive_scan</computeroutput> assumes plus as the associative operator but requires an initial value <computeroutput>init</computeroutput>. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>, and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>exclusive_scan</computeroutput> </para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::exclusive_scan(data,<sp/>data<sp/>+<sp/>6,<sp/>data,<sp/>4);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{4,<sp/>5,<sp/>5,<sp/>7,<sp/>9,<sp/>10}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="555" column="16" declfile="thrust/scan.h" declline="555" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1ga8dbe92b545e14800f567c69624238d17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename AssociativeOperator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::exclusive_scan</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator result, T init, AssociativeOperator binary_op)</argsstring>
+        <name>exclusive_scan</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>AssociativeOperator</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>exclusive_scan</computeroutput> computes an exclusive prefix sum operation. The term &apos;exclusive&apos; means that each result does not include the corresponding input operand in the partial sum. More precisely, <computeroutput>init</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the value <computeroutput>binary_op(init, *first)</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of the function requires both an associative operator and an initial value <computeroutput>init</computeroutput>. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The associative operator used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>AssociativeOperator&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AssociativeOperator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>exclusive_scan</computeroutput> to compute an in-place prefix sum using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[10]<sp/>=<sp/>{-5,<sp/>0,<sp/>2,<sp/>-3,<sp/>2,<sp/>4,<sp/>0,<sp/>-1,<sp/>2,<sp/>8};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::maximum&lt;int&gt;<sp/>binary_op;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::exclusive_scan(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>10,<sp/>data,<sp/>1,<sp/>binary_op);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>2,<sp/>2,<sp/>2,<sp/>4,<sp/>4,<sp/>4,<sp/>4<sp/>}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="613" column="17" declfile="thrust/scan.h" declline="613" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__prefixsums_1gaa3f981950f16c9dae693590b79a9ff90" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename AssociativeOperator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::exclusive_scan</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator result, T init, AssociativeOperator binary_op)</argsstring>
+        <name>exclusive_scan</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>AssociativeOperator</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>exclusive_scan</computeroutput> computes an exclusive prefix sum operation. The term &apos;exclusive&apos; means that each result does not include the corresponding input operand in the partial sum. More precisely, <computeroutput>init</computeroutput> is assigned to <computeroutput>*result</computeroutput> and the value <computeroutput>binary_op(init, *first)</computeroutput> is assigned to <computeroutput>*(result + 1)</computeroutput>, and so on. This version of the function requires both an associative operator and an initial value <computeroutput>init</computeroutput>. When the input and output sequences are the same, the scan is performed in-place.</para>
+<para>Results are not deterministic for pseudo-associative operators (e.g., addition of floating-point types). Results for pseudo-associative operators may vary from run to run.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The associative operator used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The end of the output sequence.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to both <computeroutput>AssociativeOperator&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>AssociativeOperator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para><computeroutput>first</computeroutput> may equal <computeroutput>result</computeroutput> but the range <computeroutput>[first, last)</computeroutput> and the range <computeroutput>[result, result + (last - first))</computeroutput> shall not overlap otherwise.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>exclusive_scan</computeroutput> </para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/scan.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[10]<sp/>=<sp/>{-5,<sp/>0,<sp/>2,<sp/>-3,<sp/>2,<sp/>4,<sp/>0,<sp/>-1,<sp/>2,<sp/>8};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">::cuda::maximum&lt;int&gt;<sp/>binary_op;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::exclusive_scan(data,<sp/>data<sp/>+<sp/>10,<sp/>data,<sp/>1,<sp/>binary_op);<sp/>//<sp/>in-place<sp/>scan</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>data<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>2,<sp/>2,<sp/>2,<sp/>4,<sp/>4,<sp/>4,<sp/>4<sp/>}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/partial_sum">https://en.cppreference.com/w/cpp/algorithm/partial_sum</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/scan.h" line="671" column="1" declfile="thrust/scan.h" declline="671" declcolumn="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

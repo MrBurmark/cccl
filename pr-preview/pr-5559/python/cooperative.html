@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cooperative: Cooperative Algorithms &mdash; python 3.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Resources" href="resources.html" />
+    <link rel="prev" title="parallel: Device-Level Parallel Algorithms" href="parallel.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallel.html"><code class="docutils literal notranslate"><span class="pre">parallel</span></code>: Device-Level Parallel Algorithms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">cooperative</span></code>: Cooperative Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-collections">Example Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-api-references">External API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">cooperative</span></code>: Cooperative Algorithms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cooperative-cooperative-algorithms">
+<span id="cccl-python-cooperative"></span><h1><code class="docutils literal notranslate"><span class="pre">cooperative</span></code>: Cooperative Algorithms<a class="headerlink" href="#cooperative-cooperative-algorithms" title="Permalink to this headline"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">cuda.cccl.cooperative</span></code> library provides cooperative algorithms that operate
+at the level of blocks and warps. It is designed to be used within
+<a class="reference external" href="https://numba.readthedocs.io/en/stable/cuda/kernels.html">Numba CUDA kernels</a>.</p>
+<p>Here’s an example showing how to use the <code class="docutils literal notranslate"><span class="pre">cuda.cccl.cooperative</span></code> library to
+perform block-level reduction within a Numba CUDA kernel.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Block-level reduction example. <a class="reference external" href="https://github.com/NVIDIA/cccl/blob/main/python/cuda_cccl/tests/cooperative/examples/block/reduce.py">View complete source on GitHub</a></span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_reduce_example</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Demonstrate block reduction with custom operator (maximum).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">max_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="k">else</span> <span class="n">b</span>
+
+    <span class="n">threads_per_block</span> <span class="o">=</span> <span class="mi">128</span>
+    <span class="n">block_reduce</span> <span class="o">=</span> <span class="n">coop</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">numba</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">threads_per_block</span><span class="p">,</span> <span class="n">max_op</span><span class="p">)</span>
+
+    <span class="nd">@cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">block_reduce</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="c1"># Each thread contributes one element</span>
+        <span class="n">block_output</span> <span class="o">=</span> <span class="n">block_reduce</span><span class="p">(</span><span class="nb">input</span><span class="p">[</span><span class="n">cuda</span><span class="o">.</span><span class="n">threadIdx</span><span class="o">.</span><span class="n">x</span><span class="p">])</span>
+
+        <span class="c1"># Only thread 0 writes the result</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="o">.</span><span class="n">threadIdx</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">block_output</span>
+
+    <span class="c1"># Create test data</span>
+    <span class="n">h_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">threads_per_block</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="n">d_input</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">h_input</span><span class="p">)</span>
+    <span class="n">d_output</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">device_array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+    <span class="c1"># Launch kernel</span>
+    <span class="n">kernel</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">threads_per_block</span><span class="p">](</span><span class="n">d_input</span><span class="p">,</span> <span class="n">d_output</span><span class="p">)</span>
+    <span class="n">h_output</span> <span class="o">=</span> <span class="n">d_output</span><span class="o">.</span><span class="n">copy_to_host</span><span class="p">()</span>
+    <span class="n">h_expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">h_input</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">h_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">h_expected</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Block max reduction: </span><span class="si">{</span><span class="n">h_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (expected: </span><span class="si">{</span><span class="n">h_expected</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">h_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<section id="example-collections">
+<h2>Example Collections<a class="headerlink" href="#example-collections" title="Permalink to this headline"></a></h2>
+<p>For complete runnable examples and more advanced usage patterns, see our
+full collection of <a class="reference external" href="https://github.com/NVIDIA/CCCL/tree/main/python/cuda_cccl/tests/cooperative/examples">examples</a>.</p>
+</section>
+<section id="external-api-references">
+<h2>External API References<a class="headerlink" href="#external-api-references" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="cooperative_api.html#cuda-cooperative-module"><span class="std std-ref">cuda.cccl.cooperative API Reference</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda::make_pipeline &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/mermaid-init.js"></script>
+        <script src="../../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../../_static/version.js"></script>
+        <script src="../../../_static/social-media.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="cuda::pipeline::quit" href="quit.html" />
+    <link rel="prev" title="cuda::pipeline::~pipeline" href="destructor.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../bit.html">Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_model.html">Execution model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../synchronization_primitives.html">Synchronization Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../atomic.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../atomic_ref.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic_ref</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../latch.html"><code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../barrier.html"><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../counting_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::counting_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../binary_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::binary_semaphore</span></code></a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../pipeline.html"><code class="docutils literal notranslate"><span class="pre">cuda::pipeline</span></code></a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="role.html">cuda::pipeline_role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shared_state.html">cuda::pipeline_shared_state</a></li>
+<li class="toctree-l4"><a class="reference internal" href="destructor.html">cuda::pipeline::~pipeline</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cuda::make_pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quit.html">cuda::pipeline::quit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="consumer_release.html">cuda::pipeline::consumer_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="consumer_wait.html">cuda::pipeline::consumer_wait</a></li>
+<li class="toctree-l4"><a class="reference internal" href="consumer_wait_prior.html">cuda::pipeline_consumer_wait_prior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pipeline_producer_commit.html">cuda::pipeline_producer_commit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="producer_acquire.html">cuda::pipeline::producer_acquire</a></li>
+<li class="toctree-l4"><a class="reference internal" href="producer_commit.html">cuda::pipeline::producer_commit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../asynchronous_operations.html">Asynchronous Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utility.html">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../work_stealing.html">Work stealing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../extended_api.html">Extended API</a> &raquo;</li>
+          <li><a href="../../synchronization_primitives.html">Synchronization Primitives</a> &raquo;</li>
+          <li><a href="../pipeline.html"><code class="docutils literal notranslate"><span class="pre">cuda::pipeline</span></code></a> &raquo;</li>
+      <li>cuda::make_pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-make-pipeline">
+<span id="libcudacxx-extended-api-synchronization-pipeline-pipeline-make-pipeline"></span><h1>cuda::make_pipeline<a class="headerlink" href="#cuda-make-pipeline" title="Permalink to this headline"></a></h1>
+<p>Defined in header <code class="docutils literal notranslate"><span class="pre">&lt;cuda/pipeline&gt;</span></code>:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// (1)</span>
+<span class="kr">__host__</span><span class="w"> </span><span class="kt">__device__</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_thread</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">();</span><span class="w"></span>
+
+<span class="c1">// (2)</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">Group</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope</span><span class="w"> </span><span class="n">Scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">StagesCount</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">__host__</span><span class="w"> </span><span class="kt">__device__</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">Group</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">group</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_shared_state</span><span class="o">&lt;</span><span class="n">Scope</span><span class="p">,</span><span class="w"> </span><span class="n">StagesCount</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">shared_state</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// (3)</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">Group</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope</span><span class="w"> </span><span class="n">Scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">StagesCount</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">__host__</span><span class="w"> </span><span class="kt">__device__</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">Group</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">group</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_shared_state</span><span class="o">&lt;</span><span class="n">Scope</span><span class="p">,</span><span class="w"> </span><span class="n">StagesCount</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">shared_state</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">producer_count</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// (4)</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">Group</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope</span><span class="w"> </span><span class="n">Scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">StagesCount</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">__host__</span><span class="w"> </span><span class="kt">__device__</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">Scope</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">Group</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">group</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_shared_state</span><span class="o">&lt;</span><span class="n">Scope</span><span class="p">,</span><span class="w"> </span><span class="n">StagesCount</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">shared_state</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_role</span><span class="w"> </span><span class="n">role</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Creates a <em>unified pipeline</em> such that the calling thread is the only participating thread and performs both
+producer and consumer actions.</p></li>
+<li><p>Creates a <em>unified pipeline</em> such that all the threads in <code class="docutils literal notranslate"><span class="pre">group</span></code> are performing both producer and consumer actions.</p></li>
+<li><p>Creates a <em>partitioned pipeline</em> such that <code class="docutils literal notranslate"><span class="pre">producer_threads</span></code> number of threads in <code class="docutils literal notranslate"><span class="pre">group</span></code> are performing
+producer actions while the others are performing consumer actions.</p></li>
+<li><p>Creates a <em>partitioned pipeline</em> where each thread’s role is explicitly specified.</p></li>
+</ol>
+<p class="rubric">Template Parameters</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Group</span></code></p></td>
+<td><p>A type satisfying the <a class="reference internal" href="../../thread_groups.html#libcudacxx-extended-api-thread-groups"><span class="std std-ref">ThreadGroup</span></a> concept.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Parameters</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
+<td><p>The group of threads.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shared_state</span></code></p></td>
+<td><p>A pointer to an object of type <a class="reference internal" href="shared_state.html#libcudacxx-extended-api-synchronization-pipeline-pipeline-shared-state"><span class="std std-ref">cuda::pipeline_shared_state&lt;Scope&gt;</span></a>
+with <code class="docutils literal notranslate"><span class="pre">Scope</span></code> including all the threads in <code class="docutils literal notranslate"><span class="pre">group</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">producer_count</span></code></p></td>
+<td><p>The number of <em>producer threads</em> in the pipeline.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">role</span></code></p></td>
+<td><p>The role of the current thread in the pipeline.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Return Value</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">cuda::pipeline</span></code> object.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>All threads in <code class="docutils literal notranslate"><span class="pre">group</span></code> acquire collective ownership of the <code class="docutils literal notranslate"><span class="pre">shared_state</span></code> storage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code> must be invoked by every threads in <code class="docutils literal notranslate"><span class="pre">group</span></code> such that <code class="docutils literal notranslate"><span class="pre">group::sync</span></code> may be invoked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shared_state</span></code> and <code class="docutils literal notranslate"><span class="pre">producer_count</span></code> must be the same across all threads in <code class="docutils literal notranslate"><span class="pre">group</span></code>, else the behavior is undefined.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">producer_count</span></code> must be strictly inferior to <code class="docutils literal notranslate"><span class="pre">group::size</span></code>, otherwise the behavior is undefined.</p></li>
+</ul>
+</div>
+<p class="rubric" id="libcudacxx-extended-api-synchronization-pipeline-pipeline-make-pipeline-example">Example</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/pipeline&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cooperative_groups.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Disables `pipeline_shared_state` initialization warning.</span>
+<span class="cp">#pragma nv_diag_suppress static_var_with_dynamic_init</span>
+
+<span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">example_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">__shared__</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_shared_state</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pss0</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">__shared__</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_shared_state</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pss1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">__shared__</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_shared_state</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pss2</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cooperative_groups</span><span class="o">::</span><span class="n">this_thread_block</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Create a single thread scoped pipeline.</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_thread</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Create a unified block-scoped pipeline.</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">group</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pss0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Create a partitioned block-scoped pipeline where half the threads are producers.</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">producer_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">group</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p2</span><span class="w"></span>
+<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">group</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pss1</span><span class="p">,</span><span class="w"> </span><span class="n">producer_count</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Create a partitioned block-scoped pipeline where all threads with an even</span>
+<span class="w">  </span><span class="c1">// `thread_rank` are producers.</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">thread_role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">group</span><span class="p">.</span><span class="n">thread_rank</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">                     </span><span class="o">?</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_role</span><span class="o">::</span><span class="n">producer</span><span class="w"></span>
+<span class="w">                    </span><span class="o">:</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline_role</span><span class="o">::</span><span class="n">consumer</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">pipeline</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p3</span><span class="w"></span>
+<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">group</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pss2</span><span class="p">,</span><span class="w"> </span><span class="n">thread_role</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://godbolt.org/z/aPcGEr64j">See it on Godbolt</a></p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

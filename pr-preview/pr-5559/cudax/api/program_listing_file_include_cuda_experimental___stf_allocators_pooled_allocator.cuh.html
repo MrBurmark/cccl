@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>include/cuda/experimental/__stf/allocators/pooled_allocator.cuh &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="include/cuda/experimental/__stf/allocators/uncached_allocator.cuh" href="file_include_cuda_experimental___stf_allocators_uncached_allocator.cuh.html" />
+    <link rel="prev" title="include/cuda/experimental/__stf/allocators/pooled_allocator.cuh" href="file_include_cuda_experimental___stf_allocators_pooled_allocator.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stf.html">CUDASTF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cudax_api.html">Cudax: Experimental new features API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cudax_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_include.html">include</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_include.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="dir_include_cuda.html">include/cuda</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_include_cuda.html#directories">Directories</a><ul class="current">
+<li class="toctree-l7 current"><a class="reference internal" href="dir_include_cuda_experimental.html">include/cuda/experimental</a><ul class="current">
+<li class="toctree-l8 current"><a class="reference internal" href="dir_include_cuda_experimental.html#directories">Directories</a><ul class="current">
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___container.html">include/cuda/experimental/__container</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___device.html">include/cuda/experimental/__device</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___graph.html">include/cuda/experimental/__graph</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___hierarchy.html">include/cuda/experimental/__hierarchy</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___launch.html">include/cuda/experimental/__launch</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___memory_resource.html">include/cuda/experimental/__memory_resource</a></li>
+<li class="toctree-l9 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a><ul class="current">
+<li class="toctree-l10 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html#directories">Directories</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___stream.html">include/cuda/experimental/__stream</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="dir_include_cuda_experimental.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cudax_api.html">Cudax: Experimental new features API</a> &raquo;</li>
+          <li><a href="dir_include.html">include</a> &raquo;</li>
+          <li><a href="dir_include_cuda.html">include/cuda</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental.html">include/cuda/experimental</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf_allocators.html">include/cuda/experimental/__stf/allocators</a> &raquo;</li>
+          <li><a href="file_include_cuda_experimental___stf_allocators_pooled_allocator.cuh.html">include/cuda/experimental/__stf/allocators/pooled_allocator.cuh</a> &raquo;</li>
+      <li>include/cuda/experimental/__stf/allocators/pooled_allocator.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="include-cuda-experimental-stf-allocators-pooled-allocator-cuh">
+<h1>include/cuda/experimental/__stf/allocators/pooled_allocator.cuh<a class="headerlink" href="#include-cuda-experimental-stf-allocators-pooled-allocator-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_include_cuda_experimental___stf_allocators_pooled_allocator.cuh.html#pooled-allocator-8cuh"><span class="std std-ref">include/cuda/experimental/__stf/allocators/pooled_allocator.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">//===----------------------------------------------------------------------===//</span>
+<span class="c1">//</span>
+<span class="c1">// Part of CUDASTF in CUDA C++ Core Libraries,</span>
+<span class="c1">// under the Apache License v2.0 with LLVM Exceptions.</span>
+<span class="c1">// See https://llvm.org/LICENSE.txt for license information.</span>
+<span class="c1">// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span>
+<span class="c1">// SPDX-FileCopyrightText: Copyright (c) 2022-2024 NVIDIA CORPORATION &amp; AFFILIATES.</span>
+<span class="c1">//</span>
+<span class="c1">//===----------------------------------------------------------------------===//</span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__cccl_config&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/allocators/block_allocator.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/backend_ctx.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/utility/pretty_print.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;optional&gt;</span><span class="cp"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">cuda</span><span class="o">::</span><span class="nn">experimental</span><span class="o">::</span><span class="nn">stf</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">block_data_pool_set</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">block_data_pool</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">metadata</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">event_list</span><span class="w"> </span><span class="n">prereqs</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">block_data_pool</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">root_allocator_</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">data_place</span><span class="w"> </span><span class="n">place</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nentries</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">max_ratio</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">place</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">place</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">(</span><span class="n">block_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">root_allocator_</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">place</span><span class="p">.</span><span class="n">is_host</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">place</span><span class="p">.</span><span class="n">is_managed</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="cm">/* Pinned memory is not cheap, so we currently only allocate 4 blocks (arbitrarily) */</span><span class="w"></span>
+<span class="w">      </span><span class="n">nentries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">device_ordinal</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">place</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">dev</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">cudaDeviceProp</span><span class="w"> </span><span class="n">prop</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaGetDeviceProperties</span><span class="p">(</span><span class="o">&amp;</span><span class="n">prop</span><span class="p">,</span><span class="w"> </span><span class="n">dev</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">      </span><span class="kt">size_t</span><span class="w"> </span><span class="n">max_mem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prop</span><span class="p">.</span><span class="n">totalGlobalMem</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// We cap the memory at a certain fraction of total memory</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;USER_ALLOC_POOLS_MEM_CAP&quot;</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">max_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atof</span><span class="p">(</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;USER_ALLOC_POOLS_MEM_CAP&quot;</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nentries</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">max_ratio</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">max_mem</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">nentries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">size_t</span><span class="p">((</span><span class="n">max_ratio</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">max_mem</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;Capping pool size at %f %%: nentries = %zu of %s...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">max_ratio</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">nentries</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">pretty_print_bytes</span><span class="p">(</span><span class="n">block_size</span><span class="p">).</span><span class="n">c_str</span><span class="p">());</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">block_size</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">base</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">place</span><span class="p">,</span><span class="w"> </span><span class="n">sz</span><span class="p">,</span><span class="w"> </span><span class="n">prereqs</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">sz</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">base</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">allocated_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sz</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">entries</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">nentries</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">entries</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Every entry depends on the allocation of the underlying buffer</span>
+<span class="w">      </span><span class="n">e</span><span class="p">.</span><span class="n">prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">prereqs</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">available_cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nentries</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">get_entry</span><span class="p">(</span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">metadata</span><span class="o">*</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">find_avail_pool_entry</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">e</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">available_cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// We do not rely on a specific stream here so we do not join but</span>
+<span class="w">    </span><span class="c1">// simply use existing deps to avoid useless hw dependencies</span>
+<span class="w">    </span><span class="n">prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">e</span><span class="o">-&gt;</span><span class="n">prereqs</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// This list will be used again when deallocating the entry, but we</span>
+<span class="w">    </span><span class="c1">// have transferred existing dependencies to the allocate method</span>
+<span class="w">    </span><span class="n">e</span><span class="o">-&gt;</span><span class="n">prereqs</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">available_cnt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">available_cnt</span><span class="o">--</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute and return the pointer to data</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">&amp;</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">offset</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="p">(</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">base</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">block_size</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">release_entry</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Find the index of the entry given the offset between ptr and base addresses</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">base</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">offset</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">block_size</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">entries</span><span class="p">[</span><span class="n">index</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">used</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">prereqs</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// To reuse this buffer, we need to wait for all users to finish using it</span>
+<span class="w">    </span><span class="n">e</span><span class="p">.</span><span class="n">prereqs</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">prereqs</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">e</span><span class="p">.</span><span class="n">used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">available_cnt</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Set the last found to this, it will be next available</span>
+<span class="w">    </span><span class="c1">//        last_found = index;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// This indicates whether a pointer corresponds to an entry in this pool</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_inside</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">base</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Add an assertion that offset % block_size == 0 ?</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">ptrdiff_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Free the memory allocated for this block of allocations</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">unpopulate</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">root_allocator</span><span class="p">.</span><span class="n">deallocate</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">place</span><span class="p">,</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">allocated_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Find one entry that is not used</span>
+<span class="w">  </span><span class="n">metadata</span><span class="o">*</span><span class="w"> </span><span class="n">find_avail_pool_entry</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">each</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Start from the item after the last found : the rationale is that</span>
+<span class="w">      </span><span class="c1">// we want to avoid using a buffer that was recently discarded to</span>
+<span class="w">      </span><span class="c1">// prevent implicit dependencies between presumably independent</span>
+<span class="w">      </span><span class="c1">// tasks using the same memory buffers</span>
+<span class="w">      </span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">last_found</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">j</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">entries</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">used</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">last_found</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">entries</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">used</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">entries</span><span class="p">[</span><span class="n">j</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Cache the last entry found</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">last_found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Number of unallocated blocks</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">available_cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Start of memory hunk</span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">base</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">allocated_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Memory belongs here</span>
+<span class="w">  </span><span class="n">data_place</span><span class="w"> </span><span class="n">place</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Each block in the hunk has this size</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// One entry per block</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">metadata</span><span class="o">&gt;</span><span class="w"> </span><span class="n">entries</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// The allocator used to create the base blocks</span>
+<span class="w">  </span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// To enable access to entries</span>
+<span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">block_data_pool_set</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">pooled_allocator_config</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Maximum number of allocations per data place</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">max_entries_per_place</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Maximum amount of memory allocated per data place (as a ratio with the</span>
+<span class="w">  </span><span class="c1">// total amount of memory)</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">max_ratio</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Maximum number of bytes allocated per data place</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">max_footprint_per_place</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="nf">get_max_entries_per_place</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">max_entries_per_place</span><span class="p">.</span><span class="n">has_value</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">max_entries_per_place</span><span class="p">.</span><span class="n">value</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="nf">get_max_ratio</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">max_ratio</span><span class="p">.</span><span class="n">has_value</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">max_ratio</span><span class="p">.</span><span class="n">value</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">0.9</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reserved</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">block_data_pool_set</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">block_data_pool_set</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Disable copy constructor and assignment operator</span>
+<span class="w">  </span><span class="n">block_data_pool_set</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">block_data_pool_set</span><span class="o">&amp;</span><span class="p">)</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">block_data_pool_set</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">block_data_pool_set</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">get_pool_entry</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">block_allocator_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Get the pool or create it lazily</span>
+<span class="w">    </span><span class="n">block_data_pool</span><span class="o">*</span><span class="w"> </span><span class="n">pool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_pool</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">,</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pool</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Select an entry from it</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pool</span><span class="o">-&gt;</span><span class="n">get_entry</span><span class="p">(</span><span class="n">prereqs</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">release_pool_entry</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">padded_sz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_power_of_two</span><span class="p">(</span><span class="n">block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">key</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">to_index</span><span class="p">(</span><span class="n">memory_node</span><span class="p">),</span><span class="w"> </span><span class="n">padded_sz</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">.</span><span class="n">equal_range</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* Try to find an existing allocation that has at least an available slot */</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">range</span><span class="p">.</span><span class="n">first</span><span class="p">;</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">range</span><span class="p">.</span><span class="n">second</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">it</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">is_inside</span><span class="p">(</span><span class="n">ptr</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">release_entry</span><span class="p">(</span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Should not be reached</span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Error: pointer %p was released, but does not belong to a known pool.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">abort</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">event_list</span><span class="w"> </span><span class="nf">deinit_pools</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">event_list</span><span class="w"> </span><span class="n">res</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">entry</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">map</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">event_list</span><span class="w"> </span><span class="n">per_place_res</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">block_data_pool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">entry</span><span class="p">.</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// fprintf(stderr, &quot;UNPOPULATE pool %p for size %zu on node %zu\n&quot;, &amp;entry.second, entry.first.first,</span>
+<span class="w">      </span><span class="c1">//         entry.first.second);</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">entries</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">per_place_res</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">prereqs</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">p</span><span class="p">.</span><span class="n">unpopulate</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">per_place_res</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">res</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">per_place_res</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set_max_ratio</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">max_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set_pool_size</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">max_entries_per_place</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set_config</span><span class="p">(</span><span class="n">pooled_allocator_config</span><span class="w"> </span><span class="n">_config</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">_config</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="cm">/* Compute the power of 2 next to n (inclusive) */</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">next_power_of_two</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Multiply by 2 until we reach a number greater or equal than n</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">powerOfTwo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">powerOfTwo</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">powerOfTwo</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">powerOfTwo</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">block_data_pool</span><span class="o">*</span><span class="w"> </span><span class="n">get_pool</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_allocator_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sz</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">padded_sz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_power_of_two</span><span class="p">(</span><span class="n">sz</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">key</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">to_index</span><span class="p">(</span><span class="n">memory_node</span><span class="p">),</span><span class="w"> </span><span class="n">padded_sz</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* Try to find an existing allocation that has at least an available slot */</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">.</span><span class="n">equal_range</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">each</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">range</span><span class="p">.</span><span class="n">second</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">available_cnt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* There is no entry with an available slot so we need a new one */</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Default number of entries per block of data</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">map</span><span class="w"></span>
+<span class="w">              </span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">block_data_pool</span><span class="p">(</span><span class="w"></span>
+<span class="w">                         </span><span class="n">ctx</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">root_allocator</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">prereqs</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">memory_node</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">padded_sz</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">config</span><span class="p">.</span><span class="n">get_max_entries_per_place</span><span class="p">(),</span><span class="w"></span>
+<span class="w">                         </span><span class="n">config</span><span class="p">.</span><span class="n">get_max_ratio</span><span class="p">()))</span><span class="w"></span>
+<span class="w">              </span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// For each memory node, a map of size_t to block_data_pool</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unordered_multimap</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                            </span><span class="n">block_data_pool</span><span class="p">,</span><span class="w"></span>
+<span class="w">                            </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">stf</span><span class="o">::</span><span class="n">hash</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="o">&gt;&gt;&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="n">map</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">pooled_allocator_config</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">max_entries_per_place</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">max_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">max_footprint_per_place</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">nullopt</span><span class="p">};</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace reserved</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">pooled_allocator</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">block_allocator_interface</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// TODO pass two with std::optional or a structure pool_allocator_config with optionals ?</span>
+<span class="w">  </span><span class="n">pooled_allocator</span><span class="p">(</span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">root_allocator_</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">max_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">root_allocator_</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool_set</span><span class="p">.</span><span class="n">set_max_ratio</span><span class="p">(</span><span class="n">max_ratio</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="n">pooled_allocator</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">max_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool_set</span><span class="p">.</span><span class="n">set_max_ratio</span><span class="p">(</span><span class="n">max_ratio</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">pooled_allocator</span><span class="p">(</span><span class="n">pooled_allocator_config</span><span class="w"> </span><span class="n">config</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool_set</span><span class="p">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">config</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="n">allocate</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pool_set</span><span class="p">.</span><span class="n">get_pool_entry</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">root_allocator</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">root_allocator</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">get_uncached_allocator</span><span class="p">(),</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">prereqs</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">deallocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool_set</span><span class="p">.</span><span class="n">release_pool_entry</span><span class="p">(</span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">event_list</span><span class="w"> </span><span class="n">deinit</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pool_set</span><span class="p">.</span><span class="n">deinit_pools</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">to_string</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;pooled&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">reserved</span><span class="o">::</span><span class="n">block_data_pool_set</span><span class="w"> </span><span class="n">pool_set</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">block_allocator_untyped</span><span class="w"> </span><span class="n">root_allocator</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">fixed_size_allocator</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">block_allocator_interface</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">fixed_size_allocator</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">block_size</span><span class="p">(</span><span class="n">block_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">fixed_size_allocator</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">pooled_allocator_config</span><span class="w"> </span><span class="n">config</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">block_size</span><span class="p">(</span><span class="n">block_size</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool_set</span><span class="p">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">config</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">fixed_size_allocator</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"></span>
+<span class="w">  </span><span class="nf">allocate</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pool_set</span><span class="p">.</span><span class="n">get_pool_entry</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">get_uncached_allocator</span><span class="p">(),</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">prereqs</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"></span>
+<span class="w">  </span><span class="nf">deallocate</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">event_list</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sz</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">sz</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool_set</span><span class="p">.</span><span class="n">release_pool_entry</span><span class="p">(</span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">block_size</span><span class="p">,</span><span class="w"> </span><span class="n">prereqs</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">event_list</span><span class="w"> </span><span class="nf">deinit</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pool_set</span><span class="p">.</span><span class="n">deinit_pools</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">to_string</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;fixed size &quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">reserved</span><span class="o">::</span><span class="n">block_data_pool_set</span><span class="w"> </span><span class="n">pool_set</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// The (fixed) size of all blocks</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// end namespace cuda::experimental::stf</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implementation of the matrix class &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lower-level API" href="lower_level_api.html" />
+    <link rel="prev" title="CUDASTF" href="../stf.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../stf.html">CUDASTF</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#the-sequential-task-flow-stf-programming-model">The Sequential Task Flow (STF) programming model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#getting-started-with-cudastf">Getting started with CUDASTF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#backends-and-contexts">Backends and contexts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../stf.html#logical-data">Logical data</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../stf.html#data-interfaces">Data interfaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stf.html#defining-custom-data-interfaces-advanced">Defining custom data interfaces (advanced)</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Implementation of the <code class="docutils literal notranslate"><span class="pre">matrix</span></code> class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#defining-the-shape-of-a-matrix">Defining the shape of a matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hash-of-a-matrix">Hash of a matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#defining-a-data-interface">Defining a data interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#associating-a-data-interface-with-the-cuda-stream-backend">Associating a data interface with the CUDA stream backend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-of-code-using-the-matrix-data-interface">Example of code using the <code class="docutils literal notranslate"><span class="pre">matrix</span></code> data interface</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../stf.html#write-back-policy">Write-back policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stf.html#slices">Slices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stf.html#defining-logical-data-from-a-shape">Defining logical data from a shape</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#tasks">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#synchronization">Synchronization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#places">Places</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#parallel-for-construct"><code class="docutils literal notranslate"><span class="pre">parallel_for</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#launch-construct"><code class="docutils literal notranslate"><span class="pre">launch</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#cuda-kernel-construct"><code class="docutils literal notranslate"><span class="pre">cuda_kernel</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#cuda-kernel-chain-construct"><code class="docutils literal notranslate"><span class="pre">cuda_kernel_chain</span></code> construct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#c-types-of-logical-data-and-tasks">C++ Types of logical data and tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#modular-use-of-cudastf">Modular use of CUDASTF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#tools">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stf.html#cudastf-reference-card">CUDASTF Reference Card</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/cudax_api.html">Cudax: Experimental new features API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../stf.html">CUDASTF</a> &raquo;</li>
+      <li>Implementation of the <code class="docutils literal notranslate"><span class="pre">matrix</span></code> class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p id="stf-custom-data-interface">CUDASTF offers an extensible API that allows users to implement their
+own data interface.</p>
+<p>Let us for example go through the different steps to implement a data
+interface for a very simple simple implementation of a matrix class.</p>
+<p>For the sake of simplicity, we here only consider the CUDA stream
+backend, but adding support for the CUDA graph backend simply require
+some extra steps which use the CUDA graph API.</p>
+<section id="implementation-of-the-matrix-class">
+<h1>Implementation of the <code class="docutils literal notranslate"><span class="pre">matrix</span></code> class<a class="headerlink" href="#implementation-of-the-matrix-class" title="Permalink to this headline"></a></h1>
+<p>For the sake of simplicity, we consider a very simple representation of
+matrix, only defined by the dimensions m and n, and by the base address
+of the matrix which we assume to be contiguous.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">matrix</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">matrix</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">base</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m</span><span class="p">(</span><span class="n">m</span><span class="p">),</span><span class="w"> </span><span class="n">n</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">base</span><span class="p">(</span><span class="n">base</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">    </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">base</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m</span><span class="p">];</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">base</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m</span><span class="p">];</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">base</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="defining-the-shape-of-a-matrix">
+<h1>Defining the shape of a matrix<a class="headerlink" href="#defining-the-shape-of-a-matrix" title="Permalink to this headline"></a></h1>
+<p>The first step consists in defining what is the <em>shape</em> of a matrix. The
+shape of a matrix should be a class that defines all parameters which
+are the same for all data instances, <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span></code>. On the other hand,
+the base address should not be part of this shape class, because each
+data instance will have its own base address.</p>
+<p>To define what is the shape of a matrix, we need to specialize the
+<code class="docutils literal notranslate"><span class="pre">cudastf::shape_of</span></code> trait class.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">cudastf</span><span class="o">::</span><span class="n">shape_of</span><span class="o">&lt;</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * @brief The default constructor.</span>
+<span class="cm">     *</span>
+<span class="cm">     * All `shape_of` specializations must define this constructor.</span>
+<span class="cm">     */</span><span class="w"></span>
+<span class="w">    </span><span class="n">shape_of</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">explicit</span><span class="w"> </span><span class="n">shape_of</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m</span><span class="p">(</span><span class="n">m</span><span class="p">),</span><span class="w"> </span><span class="n">n</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * @name Copies a shape.</span>
+<span class="cm">     *</span>
+<span class="cm">     * All `shape_of` specializations must define this constructor.</span>
+<span class="cm">     */</span><span class="w"></span>
+<span class="w">    </span><span class="n">shape_of</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">shape_of</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * @brief Extracts the shape from a matrix</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param M matrix to get the shape from</span>
+<span class="cm">     *</span>
+<span class="cm">     * All `shape_of` specializations must define this constructor.</span>
+<span class="cm">     */</span><span class="w"></span>
+<span class="w">    </span><span class="n">shape_of</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">shape_of</span><span class="o">&lt;</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// Mandatory method : defined the total number of elements in the shape</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We here see that <code class="docutils literal notranslate"><span class="pre">shape_of&lt;matrix&lt;T&gt;&gt;</span></code> contains two <code class="docutils literal notranslate"><span class="pre">size_t</span></code> fields
+<code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<p>In addition, we need to define a default constructor and a copy
+constructors.</p>
+<p>To implement the <code class="docutils literal notranslate"><span class="pre">.shape()</span></code> member of the <code class="docutils literal notranslate"><span class="pre">logical_data</span></code> class, we
+need to define a constructor which takes a const reference to a matrix.</p>
+<p>Finally, if the <code class="docutils literal notranslate"><span class="pre">ctx.parallel_for</span></code> construct is needed, we must define
+a <code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size()</span> <span class="pre">const</span></code> method which computes the total number of
+elements in a shape.</p>
+</section>
+<section id="hash-of-a-matrix">
+<h1>Hash of a matrix<a class="headerlink" href="#hash-of-a-matrix" title="Permalink to this headline"></a></h1>
+<p>For internal needs, such as using (unordered) maps of data instances,
+CUDASTF need to have specialized forms of the <code class="docutils literal notranslate"><span class="pre">std::hash</span></code> trait class.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">()</span></code> operator of this class should compute a unique identifier
+associated to the description of the data instance. This typically means
+computing a hash of the matrix sizes, and of the base address. Note that
+this hash <em>does not</em> depend on the actual content of the matrix.</p>
+<p>In code snippet, we are using the <code class="docutils literal notranslate"><span class="pre">cudastf::hash_combine</span></code> helper which
+updates a hash value with another value. This function is available from
+the <code class="docutils literal notranslate"><span class="pre">cudastf/utility/hash.h</span></code> header.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">std</span><span class="o">::</span><span class="n">hash</span><span class="o">&lt;</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="nf">operator</span><span class="p">()(</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Combine hashes from the base address and sizes</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">cudastf</span><span class="o">::</span><span class="n">hash_all</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">base</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="defining-a-data-interface">
+<h1>Defining a data interface<a class="headerlink" href="#defining-a-data-interface" title="Permalink to this headline"></a></h1>
+<p>We can now implement the actual data interface for a matrix class, which
+defines the basic operations that CUDASTF need to perform on a matrix.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">matrix_stream_interface</span></code> class inherits from the
+<code class="docutils literal notranslate"><span class="pre">data_interface</span></code> class, but to implement a data interface using APIs
+based on CUDA streams, <code class="docutils literal notranslate"><span class="pre">matrix_stream_interface</span></code> inherits from
+<code class="docutils literal notranslate"><span class="pre">stream_data_interface_simple&lt;matrix&lt;T&gt;&gt;</span></code> which contains pure virtual
+functions that need to be implemented.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">matrix_stream_interface</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">stream_data_interface_simple</span><span class="o">&lt;</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stream_data_interface_simple</span><span class="o">&lt;</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">base</span><span class="o">::</span><span class="n">shape_t</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// Initialize from an existing matrix</span>
+<span class="w">    </span><span class="n">matrix_stream_interface</span><span class="p">(</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">base</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">m</span><span class="p">))</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// Initialize from a shape of matrix</span>
+<span class="w">    </span><span class="n">matrix_stream_interface</span><span class="p">(</span><span class="n">shape_t</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">base</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// Copy the content of an instance to another instance</span>
+<span class="w">    </span><span class="c1">///</span>
+<span class="w">    </span><span class="c1">/// This implementation assumes that we have registered memory if one of the data place is the host</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">stream_data_copy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dst_memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">instance_id_t</span><span class="w"> </span><span class="n">dst_instance_id</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">src_memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">instance_id_t</span><span class="w"> </span><span class="n">src_instance_id</span><span class="p">,</span><span class="w"> </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">assert</span><span class="p">(</span><span class="n">src_memory_node</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">dst_memory_node</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">cudaMemcpyKind</span><span class="w"> </span><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToDevice</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">src_memory_node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">host</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dst_memory_node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">host</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">src_instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">instance</span><span class="p">(</span><span class="n">src_instance_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">dst_instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">instance</span><span class="p">(</span><span class="n">dst_instance_id</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">src_instance</span><span class="p">.</span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">src_instance</span><span class="p">.</span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaMemcpyAsync</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">dst_instance</span><span class="p">.</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">src_instance</span><span class="p">.</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">sz</span><span class="p">,</span><span class="w"> </span><span class="n">kind</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// allocate an instance on a specific data place</span>
+<span class="w">    </span><span class="c1">///</span>
+<span class="w">    </span><span class="c1">/// setting *s to a negative value informs CUDASTF that the allocation</span>
+<span class="w">    </span><span class="c1">/// failed, and that a memory reclaiming mechanism need to be performed.</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">stream_data_allocate</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">instance_id_t</span><span class="w"> </span><span class="n">instance_id</span><span class="p">,</span><span class="w"> </span><span class="kt">ssize_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="kt">void</span><span class="o">**</span><span class="w"> </span><span class="n">extra_args</span><span class="p">,</span><span class="w"> </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">base_ptr</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">memory_node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">host</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Fallback to a synchronous method as there is no asynchronous host allocation API</span>
+<span class="w">            </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaStreamSynchronize</span><span class="p">(</span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">            </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaHostAlloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">base_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">sz</span><span class="p">,</span><span class="w"> </span><span class="n">cudaHostAllocMapped</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaMallocAsync</span><span class="p">(</span><span class="o">&amp;</span><span class="n">base_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">sz</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// By filling a positive number, we notify that the allocation was successful</span>
+<span class="w">        </span><span class="o">*</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sz</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">instance</span><span class="p">.</span><span class="n">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base_ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// deallocate an instance</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">stream_data_deallocate</span><span class="p">(</span><span class="n">backend_ctx_untyped</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">data_place</span><span class="o">&amp;</span><span class="w"> </span><span class="n">memory_node</span><span class="p">,</span><span class="w"> </span><span class="n">instance_id_t</span><span class="w"> </span><span class="n">instance_id</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">extra_args</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">memory_node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">data_place</span><span class="o">::</span><span class="n">host</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Fallback to a synchronous method as there is no asynchronous host deallocation API</span>
+<span class="w">            </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaStreamSynchronize</span><span class="p">(</span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">            </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaFreeHost</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">base</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaFreeAsync</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// Register the host memory associated to an instance of matrix</span>
+<span class="w">    </span><span class="c1">///</span>
+<span class="w">    </span><span class="c1">/// Note that this pin_host_memory method is not mandatory, but then it is</span>
+<span class="w">    </span><span class="c1">/// the responsibility of the user to only passed memory that is already</span>
+<span class="w">    </span><span class="c1">/// registered, and the allocation method on the host must allocate</span>
+<span class="w">    </span><span class="c1">/// registered memory too. Otherwise, copy methods need to be synchronous.</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">pin_host_memory</span><span class="p">(</span><span class="n">instance_id_t</span><span class="w"> </span><span class="n">instance_id</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">instance</span><span class="p">.</span><span class="n">base</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">pin_memory</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">base</span><span class="p">,</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">instance</span><span class="p">.</span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)));</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">/// Unregister memory pinned by pin_host_memory</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">unpin_host_memory</span><span class="p">(</span><span class="n">instance_id_t</span><span class="w"> </span><span class="n">instance_id</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">unpin_memory</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">base</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">matrix_stream_interface</span></code> must meet the following requirements so that
+they can be used in the CUDA stream backend : - It must provide
+constructors which take either a matrix, or a shape of matrix as
+arguments. - It must implement the <code class="docutils literal notranslate"><span class="pre">stream_data_copy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">stream_data_allocate</span></code> and <code class="docutils literal notranslate"><span class="pre">stream_data_deallocate</span></code> virtual methods,
+which respectively define how to copy an instance into another instance,
+how to allocate an instance, and how to deallocate an instance. - It may
+implement the <code class="docutils literal notranslate"><span class="pre">pin_host_memory</span></code> and <code class="docutils literal notranslate"><span class="pre">unpin_host_memory</span></code> virtual
+methods which respectively register and unregister the memory associated
+to an instance allocated on the host. These two methods are not
+mandatory, but it is the responsibility of the user to either only pass
+and allocate registered host buffers, or to ensure that the copy method
+does not require such memory pinning. Similarly, accessing an instance
+located in host memory from a device typically requires to access
+registered memory.</p>
+</section>
+<section id="associating-a-data-interface-with-the-cuda-stream-backend">
+<h1>Associating a data interface with the CUDA stream backend<a class="headerlink" href="#associating-a-data-interface-with-the-cuda-stream-backend" title="Permalink to this headline"></a></h1>
+<p>To ensure that we can initialize a logical data from a matrix, or from
+the shape of a matrix with <code class="docutils literal notranslate"><span class="pre">stream_ctx::logical_data</span></code>, we then need to
+specialize the <code class="docutils literal notranslate"><span class="pre">cudastf::streamed_interface_of</span></code> trait class.</p>
+<p>The resulting class must simply define a type named <code class="docutils literal notranslate"><span class="pre">type</span></code> which is
+the type of the data interface for the CUDA stream backend.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">cudastf</span><span class="o">::</span><span class="n">streamed_interface_of</span><span class="o">&lt;</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix_stream_interface</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Once we have defined this trait class, it is for example possible to
+initialize a logical data from a matrix, or from a matrix shape :</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="n">matrix</span><span class="w"> </span><span class="nf">M</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+
+<span class="c1">// Initialize from a matrix</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">logical_data</span><span class="p">(</span><span class="n">M</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Initialize from a shape</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">lM2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">logical_data</span><span class="p">(</span><span class="n">shape_of</span><span class="o">&lt;</span><span class="n">matrix</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="example-of-code-using-the-matrix-data-interface">
+<h1>Example of code using the <code class="docutils literal notranslate"><span class="pre">matrix</span></code> data interface<a class="headerlink" href="#example-of-code-using-the-matrix-data-interface" title="Permalink to this headline"></a></h1>
+<p>We can now use the <code class="docutils literal notranslate"><span class="pre">matrix</span></code> class in CUDASTF, and access it from
+tasks. In this code, we first initialize a matrix on the host, we then
+apply a task which will update its content on the current device. We
+finally check that the content is correct, by the means of the
+write-back mechanism that automatically updates the reference data
+instance of a logical data when calling <code class="docutils literal notranslate"><span class="pre">ctx.sync()</span></code>t.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">kernel</span><span class="p">(</span><span class="n">matrix</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tid_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nthreads_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tid_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nthreads_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gridDim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tid_x</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nthreads_x</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tid_y</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nthreads_y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">M</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">stream_ctx</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">23</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">matrix</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">M</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">lM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">logical_data</span><span class="p">(</span><span class="n">M</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// M(i,j) +=  -i + 7*i</span>
+<span class="w">    </span><span class="n">ctx</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">lM</span><span class="p">.</span><span class="n">rw</span><span class="p">())</span><span class="o">-&gt;*</span><span class="p">[](</span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">dM</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">dim3</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="n">dim3</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">dM</span><span class="p">);</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ctx</span><span class="p">.</span><span class="n">sync</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">assert</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="mi">17</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">23</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">7</span><span class="o">*</span><span class="n">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

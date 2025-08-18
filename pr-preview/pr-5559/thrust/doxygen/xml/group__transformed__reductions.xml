@@ -1,0 +1,955 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__transformed__reductions" kind="group">
+    <compoundname>transformed_reductions</compoundname>
+    <title>Transformed Reductions</title>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__transformed__reductions_1ga4c406cbac000071a167617ad41a3c12a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputType</type>
+          </param>
+        </templateparamlist>
+        <type>OutputType</type>
+        <definition>OutputType thrust::inner_product</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputType init)</argsstring>
+        <name>inner_product</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <param>
+          <type>OutputType</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inner_product</computeroutput> calculates an inner product of the ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput>.</para>
+<para>Specifically, this version of <computeroutput>inner_product</computeroutput> computes the sum <computeroutput>init + (*first1 * *first2) + (*(first1+1) * *(first2+1)) + ... </computeroutput></para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value of the result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The inner product of sequences <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, last2)</computeroutput> plus <computeroutput>init</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and if <computeroutput>x</computeroutput> is an object of type <computeroutput>OutputType</computeroutput>, and <computeroutput>y</computeroutput> is an object of <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, and <computeroutput>z</computeroutput> is an object of <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y * z</computeroutput> is defined and is convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code demonstrates how to use <computeroutput>inner_product</computeroutput> to compute the dot product of two vectors using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/inner_product.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec1[3]<sp/>=<sp/>{1.0f,<sp/>2.0f,<sp/>5.0f};</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec2[3]<sp/>=<sp/>{4.0f,<sp/>1.0f,<sp/>5.0f};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">float<sp/>result<sp/>=<sp/>thrust::inner_product(thrust::host,<sp/>vec1,<sp/>vec1<sp/>+<sp/>3,<sp/>vec2,<sp/>0.0f);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>31.0f</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/inner_product">https://en.cppreference.com/w/cpp/algorithm/inner_product</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/inner_product.h" line="85" column="13" declfile="thrust/inner_product.h" declline="85" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__transformed__reductions_1ga295676877375893891b3e06fac5be34a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputType</type>
+          </param>
+        </templateparamlist>
+        <type>OutputType</type>
+        <definition>OutputType thrust::inner_product</definition>
+        <argsstring>(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputType init)</argsstring>
+        <name>inner_product</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <param>
+          <type>OutputType</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inner_product</computeroutput> calculates an inner product of the ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput>.</para>
+<para>Specifically, this version of <computeroutput>inner_product</computeroutput> computes the sum <computeroutput>init + (*first1 * *first2) + (*(first1+1) * *(first2+1)) + ... </computeroutput></para>
+<para>Unlike the C++ Standard Template Library function <computeroutput>std::inner_product</computeroutput>, this version offers no guarantee on order of execution.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value of the result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The inner product of sequences <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, last2)</computeroutput> plus <computeroutput>init</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and if <computeroutput>x</computeroutput> is an object of type <computeroutput>OutputType</computeroutput>, and <computeroutput>y</computeroutput> is an object of <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, and <computeroutput>z</computeroutput> is an object of <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y * z</computeroutput> is defined and is convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code demonstrates how to use <computeroutput>inner_product</computeroutput> to compute the dot product of two vectors.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/inner_product.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec1[3]<sp/>=<sp/>{1.0f,<sp/>2.0f,<sp/>5.0f};</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec2[3]<sp/>=<sp/>{4.0f,<sp/>1.0f,<sp/>5.0f};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">float<sp/>result<sp/>=<sp/>thrust::inner_product(vec1,<sp/>vec1<sp/>+<sp/>3,<sp/>vec2,<sp/>0.0f);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>31.0f</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/inner_product">https://en.cppreference.com/w/cpp/algorithm/inner_product</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/inner_product.h" line="132" column="12" declfile="thrust/inner_product.h" declline="132" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="group__transformed__reductions_1ga7dd3c0d0f64ef48165e5d56ebda94739" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputType</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction1</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction2</type>
+          </param>
+        </templateparamlist>
+        <type>OutputType</type>
+        <definition>OutputType thrust::inner_product</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputType init, BinaryFunction1 binary_op1, BinaryFunction2 binary_op2)</argsstring>
+        <name>inner_product</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <param>
+          <type>OutputType</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction1</type>
+          <declname>binary_op1</declname>
+        </param>
+        <param>
+          <type>BinaryFunction2</type>
+          <declname>binary_op2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inner_product</computeroutput> calculates an inner product of the ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput>.</para>
+<para>This version of <computeroutput>inner_product</computeroutput> is identical to the first, except that is uses two user-supplied function objects instead of <computeroutput>operator+</computeroutput> and <computeroutput>operator*</computeroutput>.</para>
+<para>Specifically, this version of <computeroutput>inner_product</computeroutput> computes the sum <computeroutput>binary_op1( init, binary_op2(*first1, *first2) ), ... </computeroutput></para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value of the result. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Generalized addition operation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Generalized multiplication operation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The inner product of sequences <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, last2)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>BinaryFunction2&apos;s</computeroutput> first argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>BinaryFunction2&apos;s</computeroutput> second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and <computeroutput>OutputType</computeroutput> is convertible to <computeroutput>BinaryFunction1&apos;s</computeroutput> first argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>BinaryFunction1&apos;s</computeroutput> second argument type.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/inner_product.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec1[3]<sp/>=<sp/>{1.0f,<sp/>2.0f,<sp/>5.0f};</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec2[3]<sp/>=<sp/>{4.0f,<sp/>1.0f,<sp/>5.0f};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">float<sp/>init<sp/>=<sp/>0.0f;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::plus&lt;float&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>binary_op1;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::multiplies&lt;float&gt;<sp/>binary_op2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">float<sp/>result<sp/>=<sp/>thrust::inner_product(thrust::host,<sp/>vec1,<sp/>vec1<sp/>+<sp/>3,<sp/>vec2,<sp/>init,<sp/>binary_op1,<sp/>binary_op2);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>31.0f</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/inner_product">https://en.cppreference.com/w/cpp/algorithm/inner_product</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/inner_product.h" line="189" column="13" declfile="thrust/inner_product.h" declline="189" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__transformed__reductions_1gad9df36f7648745ca572037727b66b48d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputType</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction1</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction2</type>
+          </param>
+        </templateparamlist>
+        <type>OutputType</type>
+        <definition>OutputType thrust::inner_product</definition>
+        <argsstring>(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputType init, BinaryFunction1 binary_op1, BinaryFunction2 binary_op2)</argsstring>
+        <name>inner_product</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <param>
+          <type>OutputType</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction1</type>
+          <declname>binary_op1</declname>
+        </param>
+        <param>
+          <type>BinaryFunction2</type>
+          <declname>binary_op2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>inner_product</computeroutput> calculates an inner product of the ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput>.</para>
+<para>This version of <computeroutput>inner_product</computeroutput> is identical to the first, except that is uses two user-supplied function objects instead of <computeroutput>operator+</computeroutput> and <computeroutput>operator*</computeroutput>.</para>
+<para>Specifically, this version of <computeroutput>inner_product</computeroutput> computes the sum <computeroutput>binary_op1( init, binary_op2(*first1, *first2) ), ... </computeroutput></para>
+<para>Unlike the C++ Standard Template Library function <computeroutput>std::inner_product</computeroutput>, this version offers no guarantee on order of execution.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value of the result. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Generalized addition operation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Generalized multiplication operation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The inner product of sequences <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, last2)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>BinaryFunction2&apos;s</computeroutput> first argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>BinaryFunction2&apos;s</computeroutput> second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and <computeroutput>OutputType</computeroutput> is convertible to <computeroutput>BinaryFunction1&apos;s</computeroutput> first argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>BinaryFunction1&apos;s</computeroutput> second argument type.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/inner_product.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec1[3]<sp/>=<sp/>{1.0f,<sp/>2.0f,<sp/>5.0f};</highlight></codeline>
+<codeline><highlight class="normal">float<sp/>vec2[3]<sp/>=<sp/>{4.0f,<sp/>1.0f,<sp/>5.0f};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">float<sp/>init<sp/>=<sp/>0.0f;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::plus&lt;float&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>binary_op1;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::multiplies&lt;float&gt;<sp/>binary_op2;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">float<sp/>result<sp/>=<sp/>thrust::inner_product(vec1,<sp/>vec1<sp/>+<sp/>3,<sp/>vec2,<sp/>init,<sp/>binary_op1,<sp/>binary_op2);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>31.0f</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/inner_product">https://en.cppreference.com/w/cpp/algorithm/inner_product</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/inner_product.h" line="250" column="12" declfile="thrust/inner_product.h" declline="250" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="group__transformed__reductions_1ga096f193143e236850baaf3369b861137" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename UnaryFunction</type>
+          </param>
+          <param>
+            <type>typename OutputType</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>OutputType</type>
+        <definition>OutputType thrust::transform_reduce</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, UnaryFunction unary_op, OutputType init, BinaryFunction binary_op)</argsstring>
+        <name>transform_reduce</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>unary_op</declname>
+        </param>
+        <param>
+          <type>OutputType</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>transform_reduce</computeroutput> fuses the <computeroutput>transform</computeroutput> and <computeroutput>reduce</computeroutput> operations. <computeroutput>transform_reduce</computeroutput> is equivalent to performing a transformation defined by <computeroutput>unary_op</computeroutput> into a temporary sequence and then performing <computeroutput>reduce</computeroutput> on the transformed sequence. In most cases, fusing these two operations together is more efficient, since fewer memory reads and writes are required.</para>
+<para><computeroutput>transform_reduce</computeroutput> performs a reduction on the transformation of the sequence <computeroutput>[first, last)</computeroutput> according to <computeroutput>unary_op</computeroutput>. Specifically, <computeroutput>unary_op</computeroutput> is applied to each element of the sequence and then the result is reduced to a single value with <computeroutput>binary_op</computeroutput> using the initial value <computeroutput>init</computeroutput>. Note that the transformation <computeroutput>unary_op</computeroutput> is not applied to the initial value <computeroutput>init</computeroutput>. The order of reduction is not specified, so <computeroutput>binary_op</computeroutput> must be both commutative and associative.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>unary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function to apply to each element of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The result is initialized to this value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The reduction operation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the transformed reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>UnaryFunction&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>UnaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and is convertible to <computeroutput>BinaryFunction&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>transform_reduce</computeroutput> to compute the maximum value of the absolute value of the elements of a range using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/transform_reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template&lt;typename<sp/>T&gt;</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>absolute_value</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__<sp/>T<sp/>operator()(const<sp/>T<sp/>&amp;x)<sp/>const</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&lt;<sp/>T(0)<sp/>?<sp/>-x<sp/>:<sp/>x;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{-1,<sp/>0,<sp/>-2,<sp/>-2,<sp/>1,<sp/>-3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::transform_reduce(thrust::host,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>data,<sp/>data<sp/>+<sp/>6,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>absolute_value&lt;int&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>::cuda::maximum&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>3</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>transform</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>reduce</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/transform_reduce.h" line="113" column="13" declfile="thrust/transform_reduce.h" declline="113" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__transformed__reductions_1ga0d4232a9685675f488c3cc847111e48d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename UnaryFunction</type>
+          </param>
+          <param>
+            <type>typename OutputType</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>OutputType</type>
+        <definition>OutputType thrust::transform_reduce</definition>
+        <argsstring>(InputIterator first, InputIterator last, UnaryFunction unary_op, OutputType init, BinaryFunction binary_op)</argsstring>
+        <name>transform_reduce</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>unary_op</declname>
+        </param>
+        <param>
+          <type>OutputType</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>transform_reduce</computeroutput> fuses the <computeroutput>transform</computeroutput> and <computeroutput>reduce</computeroutput> operations. <computeroutput>transform_reduce</computeroutput> is equivalent to performing a transformation defined by <computeroutput>unary_op</computeroutput> into a temporary sequence and then performing <computeroutput>reduce</computeroutput> on the transformed sequence. In most cases, fusing these two operations together is more efficient, since fewer memory reads and writes are required.</para>
+<para><computeroutput>transform_reduce</computeroutput> performs a reduction on the transformation of the sequence <computeroutput>[first, last)</computeroutput> according to <computeroutput>unary_op</computeroutput>. Specifically, <computeroutput>unary_op</computeroutput> is applied to each element of the sequence and then the result is reduced to a single value with <computeroutput>binary_op</computeroutput> using the initial value <computeroutput>init</computeroutput>. Note that the transformation <computeroutput>unary_op</computeroutput> is not applied to the initial value <computeroutput>init</computeroutput>. The order of reduction is not specified, so <computeroutput>binary_op</computeroutput> must be both commutative and associative.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>unary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function to apply to each element of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The result is initialized to this value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The reduction operation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the transformed reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>UnaryFunction&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>UnaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and is convertible to <computeroutput>BinaryFunction&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>transform_reduce</computeroutput> to compute the maximum value of the absolute value of the elements of a range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/transform_reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template&lt;typename<sp/>T&gt;</highlight></codeline>
+<codeline><highlight class="normal">struct<sp/>absolute_value</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__<sp/>T<sp/>operator()(const<sp/>T<sp/>&amp;x)<sp/>const</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&lt;<sp/>T(0)<sp/>?<sp/>-x<sp/>:<sp/>x;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{-1,<sp/>0,<sp/>-2,<sp/>-2,<sp/>1,<sp/>-3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::transform_reduce(data,<sp/>data<sp/>+<sp/>6,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>absolute_value&lt;int&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>::cuda::maximum&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>3</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>transform</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>reduce</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/transform_reduce.h" line="181" column="12" declfile="thrust/transform_reduce.h" declline="181" declcolumn="12"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

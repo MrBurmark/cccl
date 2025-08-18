@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>st.global.b8 &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/mermaid-init.js"></script>
+        <script src="../../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../../_static/version.js"></script>
+        <script src="../../../_static/social-media.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extended_api.html">Extended API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>st.global.b8</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="st-global-b8">
+<h1>st.global.b8<a class="headerlink" href="#st-global-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.b8 [addr], src; // PTX ISA 10, SM_50</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-b16">
+<h1>st.global.b16<a class="headerlink" href="#st-global-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.b16 [addr], src; // PTX ISA 10, SM_50</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-b32">
+<h1>st.global.b32<a class="headerlink" href="#st-global-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.b32 [addr], src; // PTX ISA 10, SM_50</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-b64">
+<h1>st.global.b64<a class="headerlink" href="#st-global-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.b64 [addr], src; // PTX ISA 10, SM_50</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-b128">
+<h1>st.global.b128<a class="headerlink" href="#st-global-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.b128 [addr], src; // PTX ISA 83, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-v4-b64">
+<h1>st.global.v4.b64<a class="headerlink" href="#st-global-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.v4.b64 [addr], src; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l2-cache-hint-b8">
+<h1>st.global.L2::cache_hint.b8<a class="headerlink" href="#st-global-l2-cache-hint-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L2::cache_hint.b8 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l2-cache-hint-b16">
+<h1>st.global.L2::cache_hint.b16<a class="headerlink" href="#st-global-l2-cache-hint-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L2::cache_hint.b16 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l2-cache-hint-b32">
+<h1>st.global.L2::cache_hint.b32<a class="headerlink" href="#st-global-l2-cache-hint-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L2::cache_hint.b32 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l2-cache-hint-b64">
+<h1>st.global.L2::cache_hint.b64<a class="headerlink" href="#st-global-l2-cache-hint-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L2::cache_hint.b64 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l2-cache-hint-b128">
+<h1>st.global.L2::cache_hint.b128<a class="headerlink" href="#st-global-l2-cache-hint-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L2::cache_hint.b128 [addr], src, cache_policy; // PTX ISA 83, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l2-cache-hint-v4-b64">
+<h1>st.global.L2::cache_hint.v4.b64<a class="headerlink" href="#st-global-l2-cache-hint-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L2::cache_hint.v4.b64 [addr], src, cache_policy; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-b8">
+<h1>st.global.L1::evict_first.b8<a class="headerlink" href="#st-global-l1-evict-first-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.b8 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-b16">
+<h1>st.global.L1::evict_first.b16<a class="headerlink" href="#st-global-l1-evict-first-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.b16 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-b32">
+<h1>st.global.L1::evict_first.b32<a class="headerlink" href="#st-global-l1-evict-first-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.b32 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-b64">
+<h1>st.global.L1::evict_first.b64<a class="headerlink" href="#st-global-l1-evict-first-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.b64 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-b128">
+<h1>st.global.L1::evict_first.b128<a class="headerlink" href="#st-global-l1-evict-first-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.b128 [addr], src; // PTX ISA 83, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-v4-b64">
+<h1>st.global.L1::evict_first.v4.b64<a class="headerlink" href="#st-global-l1-evict-first-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.v4.b64 [addr], src; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-l2-cache-hint-b8">
+<h1>st.global.L1::evict_first.L2::cache_hint.b8<a class="headerlink" href="#st-global-l1-evict-first-l2-cache-hint-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.L2::cache_hint.b8 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-l2-cache-hint-b16">
+<h1>st.global.L1::evict_first.L2::cache_hint.b16<a class="headerlink" href="#st-global-l1-evict-first-l2-cache-hint-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.L2::cache_hint.b16 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-l2-cache-hint-b32">
+<h1>st.global.L1::evict_first.L2::cache_hint.b32<a class="headerlink" href="#st-global-l1-evict-first-l2-cache-hint-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.L2::cache_hint.b32 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-l2-cache-hint-b64">
+<h1>st.global.L1::evict_first.L2::cache_hint.b64<a class="headerlink" href="#st-global-l1-evict-first-l2-cache-hint-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.L2::cache_hint.b64 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-l2-cache-hint-b128">
+<h1>st.global.L1::evict_first.L2::cache_hint.b128<a class="headerlink" href="#st-global-l1-evict-first-l2-cache-hint-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.L2::cache_hint.b128 [addr], src, cache_policy; // PTX ISA 83, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-first-l2-cache-hint-v4-b64">
+<h1>st.global.L1::evict_first.L2::cache_hint.v4.b64<a class="headerlink" href="#st-global-l1-evict-first-l2-cache-hint-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_first.L2::cache_hint.v4.b64 [addr], src, cache_policy; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_first_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-b8">
+<h1>st.global.L1::evict_last.b8<a class="headerlink" href="#st-global-l1-evict-last-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.b8 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-b16">
+<h1>st.global.L1::evict_last.b16<a class="headerlink" href="#st-global-l1-evict-last-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.b16 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-b32">
+<h1>st.global.L1::evict_last.b32<a class="headerlink" href="#st-global-l1-evict-last-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.b32 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-b64">
+<h1>st.global.L1::evict_last.b64<a class="headerlink" href="#st-global-l1-evict-last-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.b64 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-b128">
+<h1>st.global.L1::evict_last.b128<a class="headerlink" href="#st-global-l1-evict-last-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.b128 [addr], src; // PTX ISA 83, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-v4-b64">
+<h1>st.global.L1::evict_last.v4.b64<a class="headerlink" href="#st-global-l1-evict-last-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.v4.b64 [addr], src; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-l2-cache-hint-b8">
+<h1>st.global.L1::evict_last.L2::cache_hint.b8<a class="headerlink" href="#st-global-l1-evict-last-l2-cache-hint-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.L2::cache_hint.b8 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-l2-cache-hint-b16">
+<h1>st.global.L1::evict_last.L2::cache_hint.b16<a class="headerlink" href="#st-global-l1-evict-last-l2-cache-hint-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.L2::cache_hint.b16 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-l2-cache-hint-b32">
+<h1>st.global.L1::evict_last.L2::cache_hint.b32<a class="headerlink" href="#st-global-l1-evict-last-l2-cache-hint-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.L2::cache_hint.b32 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-l2-cache-hint-b64">
+<h1>st.global.L1::evict_last.L2::cache_hint.b64<a class="headerlink" href="#st-global-l1-evict-last-l2-cache-hint-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.L2::cache_hint.b64 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-l2-cache-hint-b128">
+<h1>st.global.L1::evict_last.L2::cache_hint.b128<a class="headerlink" href="#st-global-l1-evict-last-l2-cache-hint-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.L2::cache_hint.b128 [addr], src, cache_policy; // PTX ISA 83, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-evict-last-l2-cache-hint-v4-b64">
+<h1>st.global.L1::evict_last.L2::cache_hint.v4.b64<a class="headerlink" href="#st-global-l1-evict-last-l2-cache-hint-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::evict_last.L2::cache_hint.v4.b64 [addr], src, cache_policy; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_evict_last_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-b8">
+<h1>st.global.L1::no_allocate.b8<a class="headerlink" href="#st-global-l1-no-allocate-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.b8 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-b16">
+<h1>st.global.L1::no_allocate.b16<a class="headerlink" href="#st-global-l1-no-allocate-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.b16 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-b32">
+<h1>st.global.L1::no_allocate.b32<a class="headerlink" href="#st-global-l1-no-allocate-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.b32 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-b64">
+<h1>st.global.L1::no_allocate.b64<a class="headerlink" href="#st-global-l1-no-allocate-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.b64 [addr], src; // PTX ISA 74, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-b128">
+<h1>st.global.L1::no_allocate.b128<a class="headerlink" href="#st-global-l1-no-allocate-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.b128 [addr], src; // PTX ISA 83, SM_70</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-v4-b64">
+<h1>st.global.L1::no_allocate.v4.b64<a class="headerlink" href="#st-global-l1-no-allocate-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.v4.b64 [addr], src; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-l2-cache-hint-b8">
+<h1>st.global.L1::no_allocate.L2::cache_hint.b8<a class="headerlink" href="#st-global-l1-no-allocate-l2-cache-hint-b8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.L2::cache_hint.b8 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B8</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B8</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B8</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-l2-cache-hint-b16">
+<h1>st.global.L1::no_allocate.L2::cache_hint.b16<a class="headerlink" href="#st-global-l1-no-allocate-l2-cache-hint-b16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.L2::cache_hint.b16 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B16</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B16</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B16</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-l2-cache-hint-b32">
+<h1>st.global.L1::no_allocate.L2::cache_hint.b32<a class="headerlink" href="#st-global-l1-no-allocate-l2-cache-hint-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.L2::cache_hint.b32 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-l2-cache-hint-b64">
+<h1>st.global.L1::no_allocate.L2::cache_hint.b64<a class="headerlink" href="#st-global-l1-no-allocate-l2-cache-hint-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.L2::cache_hint.b64 [addr], src, cache_policy; // PTX ISA 74, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B64</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B64</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B64</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-l2-cache-hint-b128">
+<h1>st.global.L1::no_allocate.L2::cache_hint.b128<a class="headerlink" href="#st-global-l1-no-allocate-l2-cache-hint-b128" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.L2::cache_hint.b128 [addr], src, cache_policy; // PTX ISA 83, SM_80</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B128</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B128</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B128</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="st-global-l1-no-allocate-l2-cache-hint-v4-b64">
+<h1>st.global.L1::no_allocate.L2::cache_hint.v4.b64<a class="headerlink" href="#st-global-l1-no-allocate-l2-cache-hint-v4-b64" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// st.space.L1::no_allocate.L2::cache_hint.v4.b64 [addr], src, cache_policy; // PTX ISA 88, SM_100</span>
+<span class="c1">// .space     = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B256</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">st_L1_no_allocate_L2_cache_hint</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="o">*</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B256</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">cache_policy</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

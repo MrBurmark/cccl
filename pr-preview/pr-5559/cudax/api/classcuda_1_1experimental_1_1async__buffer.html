@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda::experimental::async_buffer &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cuda::experimental::basic_resource_ref" href="classcuda_1_1experimental_1_1basic__resource__ref.html" />
+    <link rel="prev" title="cuda::experimental" href="namespace_cuda__experimental.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stf.html">CUDASTF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cudax_api.html">Cudax: Experimental new features API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#defines">Defines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#directories">Directories</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cudax_api.html#namespaces">Namespaces</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="namespace_cuda.html">cuda</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="namespace_cuda.html#namespaces">Namespaces</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="namespace_cuda__experimental.html">cuda::experimental</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="namespace_cuda__experimental.html#classes">Classes</a><ul class="current">
+<li class="toctree-l7 current"><a class="current reference internal" href="#">cuda::experimental::async_buffer</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1basic__any__resource.html">cuda::experimental::basic_any_resource</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1basic__resource__ref.html">cuda::experimental::basic_resource_ref</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1device__memory__pool.html">cuda::experimental::device_memory_pool</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1device__memory__resource.html">cuda::experimental::device_memory_resource</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1heterogeneous__iterator.html">cuda::experimental::heterogeneous_iterator</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1legacy__pinned__memory__resource.html">cuda::experimental::legacy_pinned_memory_resource</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1logical__device.html">cuda::experimental::logical_device</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1managed__memory__resource.html">cuda::experimental::managed_memory_resource</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1pinned__memory__pool.html">cuda::experimental::pinned_memory_pool</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1pinned__memory__resource.html">cuda::experimental::pinned_memory_resource</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1uninitialized__async__buffer.html">cuda::experimental::uninitialized_async_buffer</a></li>
+<li class="toctree-l7"><a class="reference internal" href="classcuda_1_1experimental_1_1uninitialized__buffer.html">cuda::experimental::uninitialized_buffer</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="namespace_cuda__experimental.html#enums">Enums</a></li>
+<li class="toctree-l6"><a class="reference internal" href="namespace_cuda__experimental.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="namespace_cuda__experimental.html#namespaces">Namespaces</a></li>
+<li class="toctree-l6"><a class="reference internal" href="namespace_cuda__experimental.html#structs">Structs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="namespace_cuda__experimental.html#typedefs">Typedefs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="namespace_cuda__experimental.html#variables">Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="namespace_cuda__std.html">cuda::std</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cudax_api.html">Cudax: Experimental new features API</a> &raquo;</li>
+          <li><a href="namespace_cuda.html">cuda</a> &raquo;</li>
+          <li><a href="namespace_cuda__experimental.html">cuda::experimental</a> &raquo;</li>
+      <li>cuda::experimental::async_buffer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-experimental-async-buffer">
+<h1>cuda::experimental::async_buffer<a class="headerlink" href="#cuda-experimental-async-buffer" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_include_cuda_experimental___container_async_buffer.cuh.html#async-buffer-8cuh"><span class="std std-ref">include/cuda/experimental/__container/async_buffer.cuh</span></a></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN4cuda12experimental12async_bufferE">
+<span id="_CPPv3I0DpEN4cuda12experimental12async_bufferE"></span><span id="_CPPv2I0DpEN4cuda12experimental12async_bufferE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_Tp</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">_Properties</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcuda_1_1experimental_1_1async__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><a class="headerlink" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p><span class="target" id="cudax-containers-async-vector"></span><section id="async-buffer">
+<h2>async_buffer<a class="headerlink" href="#async-buffer" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">async_buffer</span></code> is a container that provides resizable typed storage allocated from a given <a class="reference external" href="../../../libcudacxx/3.2/extended_api/memory_resource/resource.html#libcudacxx-extended-api-memory-resources-resource" title="(in libcudacxx)"><span class="xref std std-ref">memory resource</span></a>. It handles alignment, release and growth of the allocation.
+The elements are initialized during construction, which may require a kernel launch.</p>
+<p>In addition to being type-safe, <code class="docutils literal notranslate"><span class="pre">async_buffer</span></code> also takes a set of <a class="reference external" href="../../../libcudacxx/3.2/extended_api/memory_resource/properties.html#libcudacxx-extended-api-memory-resources-properties" title="(in libcudacxx)"><span class="xref std std-ref">properties</span></a> to ensure that e.g. execution space constraints are checked
+at compile time. However, only stateless properties can be forwarded. To use a stateful property,
+implement <a class="reference external" href="../../../libcudacxx/3.2/extended_api/memory_resource/properties.html#libcudacxx-extended-api-memory-resources-properties" title="(in libcudacxx)"><span class="xref std std-ref">get_property(const async_buffer&amp;, Property)</span></a>.</p>
+</section>
+</p>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_Tp</strong> – the type to be stored in the buffer </p></li>
+<li><p><strong>_Properties...</strong> – The properties the allocated memory satisfies </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer10value_typeE">
+<span id="_CPPv3N4cuda12experimental12async_buffer10value_typeE"></span><span id="_CPPv2N4cuda12experimental12async_buffer10value_typeE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a037f0009bfc0c25d19fba6a566c15129"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer10value_typeE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer9referenceE">
+<span id="_CPPv3N4cuda12experimental12async_buffer9referenceE"></span><span id="_CPPv2N4cuda12experimental12async_buffer9referenceE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1aaf923e6c37c7cb9baa77b5de5ead0022"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer9referenceE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer15const_referenceE">
+<span id="_CPPv3N4cuda12experimental12async_buffer15const_referenceE"></span><span id="_CPPv2N4cuda12experimental12async_buffer15const_referenceE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a1260cef8cdc98301c0e7e567deac9d6a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer15const_referenceE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer7pointerE">
+<span id="_CPPv3N4cuda12experimental12async_buffer7pointerE"></span><span id="_CPPv2N4cuda12experimental12async_buffer7pointerE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1aba655cc22c8ec9c0162e07dddae44b5d"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pointer</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">*</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer7pointerE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer13const_pointerE">
+<span id="_CPPv3N4cuda12experimental12async_buffer13const_pointerE"></span><span id="_CPPv2N4cuda12experimental12async_buffer13const_pointerE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1ade46a9496c46eea9c1f4094e070cb9d3"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_pointer</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">*</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer13const_pointerE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer8iteratorE">
+<span id="_CPPv3N4cuda12experimental12async_buffer8iteratorE"></span><span id="_CPPv2N4cuda12experimental12async_buffer8iteratorE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a11a29705cb8f59f41c13b352b490d586"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="classcuda_1_1experimental_1_1heterogeneous__iterator.html#_CPPv4I0DpEN4cuda12experimental22heterogeneous_iteratorE" title="cuda::experimental::heterogeneous_iterator"><span class="n"><span class="pre">heterogeneous_iterator</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Properties"><span class="n"><span class="pre">_Properties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer8iteratorE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer14const_iteratorE">
+<span id="_CPPv3N4cuda12experimental12async_buffer14const_iteratorE"></span><span id="_CPPv2N4cuda12experimental12async_buffer14const_iteratorE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a00ef11aebf8e778b8f45590a1b5c458f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="classcuda_1_1experimental_1_1heterogeneous__iterator.html#_CPPv4I0DpEN4cuda12experimental22heterogeneous_iteratorE" title="cuda::experimental::heterogeneous_iterator"><span class="n"><span class="pre">heterogeneous_iterator</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Properties"><span class="n"><span class="pre">_Properties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer14const_iteratorE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer16reverse_iteratorE">
+<span id="_CPPv3N4cuda12experimental12async_buffer16reverse_iteratorE"></span><span id="_CPPv2N4cuda12experimental12async_buffer16reverse_iteratorE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1ace2ac76d22c6db998ff40dbe8e44c884"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reverse_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">reverse_iterator</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer8iteratorE" title="cuda::experimental::async_buffer::iterator"><span class="n"><span class="pre">iterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer16reverse_iteratorE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer22const_reverse_iteratorE">
+<span id="_CPPv3N4cuda12experimental12async_buffer22const_reverse_iteratorE"></span><span id="_CPPv2N4cuda12experimental12async_buffer22const_reverse_iteratorE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1aab38523561a1e6ce018ffdd9b4c8a810"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_reverse_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">reverse_iterator</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer14const_iteratorE" title="cuda::experimental::async_buffer::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer22const_reverse_iteratorE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer9size_typeE">
+<span id="_CPPv3N4cuda12experimental12async_buffer9size_typeE"></span><span id="_CPPv2N4cuda12experimental12async_buffer9size_typeE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a9b14f1a81c8e769a4ab0a35cdd0b98e6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer9size_typeE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer15difference_typeE">
+<span id="_CPPv3N4cuda12experimental12async_buffer15difference_typeE"></span><span id="_CPPv2N4cuda12experimental12async_buffer15difference_typeE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a81cab20c8b6830c16cfa9176205e431b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">difference_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ptrdiff_t</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer15difference_typeE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer12async_bufferERK12async_buffer">
+<span id="_CPPv3N4cuda12experimental12async_buffer12async_bufferERK12async_buffer"></span><span id="_CPPv2N4cuda12experimental12async_buffer12async_bufferERK12async_buffer"></span><span id="cuda::experimental::async_buffer::async_buffer__async_bufferCR"></span><span class="target" id="group__construction_1gade8a95c00b4da0e435c01635ecb3e722"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERK12async_buffer" title="cuda::experimental::async_buffer::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERK12async_buffer" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy-constructs from a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__other</strong> – The other <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer12async_bufferERR12async_buffer">
+<span id="_CPPv3N4cuda12experimental12async_buffer12async_bufferERR12async_buffer"></span><span id="_CPPv2N4cuda12experimental12async_buffer12async_bufferERR12async_buffer"></span><span id="cuda::experimental::async_buffer::async_buffer__async_bufferRR"></span><span class="target" id="group__construction_1ga8658768f8e061af4a56ca692a0945de5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERR12async_buffer" title="cuda::experimental::async_buffer::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERR12async_buffer" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Move-constructs from a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__other</strong> – The other <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. After move construction, the other buffer can only be assigned to or destroyed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERK12async_bufferI3_TpDp16_OtherPropertiesE">
+<span id="_CPPv3IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERK12async_bufferI3_TpDp16_OtherPropertiesE"></span><span id="_CPPv2IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERK12async_bufferI3_TpDp16_OtherPropertiesE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">_OtherProperties</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">__properties_match</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERK12async_bufferI3_TpDp16_OtherPropertiesE" title="cuda::experimental::async_buffer::async_buffer::_OtherProperties"><span class="n"><span class="pre">_OtherProperties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__construction_1ga430743d28bc9ab87253ffec1b8e84df8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERK12async_bufferI3_TpDp16_OtherPropertiesE" title="cuda::experimental::async_buffer::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERK12async_bufferI3_TpDp16_OtherPropertiesE" title="cuda::experimental::async_buffer::async_buffer::_OtherProperties"><span class="n"><span class="pre">_OtherProperties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERK12async_bufferI3_TpDp16_OtherPropertiesE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Copy-constructs from a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> with matching properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__other</strong> – The other <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERR12async_bufferI3_TpDp16_OtherPropertiesE">
+<span id="_CPPv3IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERR12async_bufferI3_TpDp16_OtherPropertiesE"></span><span id="_CPPv2IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERR12async_bufferI3_TpDp16_OtherPropertiesE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">_OtherProperties</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">__properties_match</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERR12async_bufferI3_TpDp16_OtherPropertiesE" title="cuda::experimental::async_buffer::async_buffer::_OtherProperties"><span class="n"><span class="pre">_OtherProperties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__construction_1ga0809841d4f08068c06991d11aef5badc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERR12async_bufferI3_TpDp16_OtherPropertiesE" title="cuda::experimental::async_buffer::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERR12async_bufferI3_TpDp16_OtherPropertiesE" title="cuda::experimental::async_buffer::async_buffer::_OtherProperties"><span class="n"><span class="pre">_OtherProperties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4IDp_N4cudaSt11enable_if_tI18__properties_matchIDp16_OtherPropertiesEiEEEN4cuda12experimental12async_buffer12async_bufferERR12async_bufferI3_TpDp16_OtherPropertiesE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Move-constructs from a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> with matching properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__other</strong> – The other <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. After move construction, the other buffer can only be assigned to or destroyed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_t">
+<span id="_CPPv3N4cuda12experimental12async_buffer12async_bufferERK7__env_t"></span><span id="_CPPv2N4cuda12experimental12async_buffer12async_bufferERK7__env_t"></span><span id="cuda::experimental::async_buffer::async_buffer____env_tCR"></span><span class="target" id="group__construction_1ga22eaee726124db5e8e8be7c38fbd97af"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__env_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__env</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructs an empty <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> using an environment. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No memory is allocated. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__env</strong> – The environment providing the needed information </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_type">
+<span id="_CPPv3N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_type"></span><span id="_CPPv2N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_type"></span><span id="cuda::experimental::async_buffer::async_buffer____env_tCR.size_typeC"></span><span class="target" id="group__construction_1ga818e313f27255a0ae4725010824046c5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__env_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__env</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer9size_typeE" title="cuda::experimental::async_buffer::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> of size <code class="docutils literal notranslate"><span class="pre">__size</span></code> using a memory resource and value-initializes <code class="docutils literal notranslate"><span class="pre">__size</span></code> elements. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">__size</span> <span class="pre">==</span> <span class="pre">0</span></code> then no memory is allocated. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__env</strong> – The environment used to query the memory resource. </p></li>
+<li><p><strong>__size</strong> – The size of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. Defaults to zero </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeRK3_Tp">
+<span id="_CPPv3N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeRK3_Tp"></span><span id="_CPPv2N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeRK3_Tp"></span><span id="cuda::experimental::async_buffer::async_buffer____env_tCR.size_typeC._TpCR"></span><span class="target" id="group__construction_1gab05396a86f369e2c8d36a43e2e1010e1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__env_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__env</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer9size_typeE" title="cuda::experimental::async_buffer::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__size</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeRK3_Tp" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> of size <code class="docutils literal notranslate"><span class="pre">__size</span></code> using a memory resource and copy-constructs <code class="docutils literal notranslate"><span class="pre">__size</span></code> elements from <code class="docutils literal notranslate"><span class="pre">__value</span></code>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">__size</span> <span class="pre">==</span> <span class="pre">0</span></code> then no memory is allocated. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__env</strong> – The environment used to query the memory resource. </p></li>
+<li><p><strong>__size</strong> – The size of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p></li>
+<li><p><strong>__value</strong> – The value all elements are copied from. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeN4cuda12experimental9no_init_tE">
+<span id="_CPPv3N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeN4cuda12experimental9no_init_tE"></span><span id="_CPPv2N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeN4cuda12experimental9no_init_tE"></span><span id="cuda::experimental::async_buffer::async_buffer____env_tCR.size_typeC.cuda::experimental::no_init_t"></span><span class="target" id="group__construction_1ga176efc241553fc7e2e0baa1e21c54b6f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__env_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__env</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer9size_typeE" title="cuda::experimental::async_buffer::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__size</span></span>, <span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__experimental.html#_CPPv4N4cuda12experimentalE" title="cuda::experimental"><span class="n"><span class="pre">experimental</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">no_init_t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tK9size_typeN4cuda12experimental9no_init_tE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> of size <code class="docutils literal notranslate"><span class="pre">__size</span></code> using a memory and leaves all elements uninitialized. </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This constructor does <em>NOT</em> initialize any elements. It is the user’s responsibility to ensure that the elements within <code class="docutils literal notranslate"><span class="pre">[vec.begin(),</span> <span class="pre">vec.end())</span></code> are properly initialized, e.g with <code class="docutils literal notranslate"><span class="pre">cuda::std::uninitialized_copy</span></code>. At the destruction of the <code class="docutils literal notranslate"><a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref"><span class="pre">async_buffer</span></span></a></code> all elements in the range <code class="docutils literal notranslate"><span class="pre">[vec.begin(),</span> <span class="pre">vec.end())</span></code> will be destroyed. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__env</strong> – The environment used to query the memory resource. </p></li>
+<li><p><strong>__size</strong> – The size of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_N4cudaSt11enable_if_tIN4cudaSt27__is_cpp17_forward_iteratorI5_IterE5valueEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_t5_Iter5_Iter">
+<span id="_CPPv3I0_N4cudaSt11enable_if_tIN4cudaSt27__is_cpp17_forward_iteratorI5_IterE5valueEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_t5_Iter5_Iter"></span><span id="_CPPv2I0_N4cudaSt11enable_if_tIN4cudaSt27__is_cpp17_forward_iteratorI5_IterE5valueEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_t5_Iter5_Iter"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_Iter</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">__is_cpp17_forward_iterator</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN4cudaSt27__is_cpp17_forward_iteratorI5_IterE5valueEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_t5_Iter5_Iter" title="cuda::experimental::async_buffer::async_buffer::_Iter"><span class="n"><span class="pre">_Iter</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__construction_1ga3ee1f59fe591a64d46bd8bc34d4efa62"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__env_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__env</span></span>, <a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN4cudaSt27__is_cpp17_forward_iteratorI5_IterE5valueEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_t5_Iter5_Iter" title="cuda::experimental::async_buffer::async_buffer::_Iter"><span class="n"><span class="pre">_Iter</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__first</span></span>, <a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN4cudaSt27__is_cpp17_forward_iteratorI5_IterE5valueEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_t5_Iter5_Iter" title="cuda::experimental::async_buffer::async_buffer::_Iter"><span class="n"><span class="pre">_Iter</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__last</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_N4cudaSt11enable_if_tIN4cudaSt27__is_cpp17_forward_iteratorI5_IterE5valueEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_t5_Iter5_Iter" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> using a memory resource and copy-constructs all elements from the forward range <code class="docutils literal notranslate"><span class="pre">[__first,</span> <span class="pre">__last)</span></code> </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">__first</span> <span class="pre">==</span> <span class="pre">__last</span></code> then no memory is allocated </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__env</strong> – The environment used to query the memory resource. </p></li>
+<li><p><strong>__first</strong> – The start of the input sequence. </p></li>
+<li><p><strong>__last</strong> – The end of the input sequence. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tN4cudaSt16initializer_listI3_TpEE">
+<span id="_CPPv3N4cuda12experimental12async_buffer12async_bufferERK7__env_tN4cudaSt16initializer_listI3_TpEE"></span><span id="_CPPv2N4cuda12experimental12async_buffer12async_bufferERK7__env_tN4cudaSt16initializer_listI3_TpEE"></span><span id="cuda::experimental::async_buffer::async_buffer____env_tCR.cuda::std::initializer_list:_Tp:"></span><span class="target" id="group__construction_1ga31945e0ee3dcb5b3c709fff36beba9b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__env_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__env</span></span>, <a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">__ilist</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer12async_bufferERK7__env_tN4cudaSt16initializer_listI3_TpEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> using a memory resource and copy-constructs all elements from <code class="docutils literal notranslate"><span class="pre">__ilist</span></code>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">__ilist.size()</span> <span class="pre">==</span> <span class="pre">0</span></code> then no memory is allocated </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__env</strong> – The environment used to query the memory resource. </p></li>
+<li><p><strong>__ilist</strong> – The initializer_list being copied into the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_N4cudaSt11enable_if_tIXaa18__compatible_rangeI6_RangeEaaN4cudaSt6ranges13forward_rangeI6_RangeEEN4cudaSt6ranges11sized_rangeI6_RangeEEEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range">
+<span id="_CPPv3I0_N4cudaSt11enable_if_tIXaa18__compatible_rangeI6_RangeEaaN4cudaSt6ranges13forward_rangeI6_RangeEEN4cudaSt6ranges11sized_rangeI6_RangeEEEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range"></span><span id="_CPPv2I0_N4cudaSt11enable_if_tIX__compatible_range<_Range> && cuda::std::ranges::forward_range<_Range> && cuda::std::ranges::sized_range<_Range>EiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_Range</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">__compatible_range</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIXaa18__compatible_rangeI6_RangeEaaN4cudaSt6ranges13forward_rangeI6_RangeEEN4cudaSt6ranges11sized_rangeI6_RangeEEEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range" title="cuda::experimental::async_buffer::async_buffer::_Range"><span class="n"><span class="pre">_Range</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">forward_range</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIXaa18__compatible_rangeI6_RangeEaaN4cudaSt6ranges13forward_rangeI6_RangeEEN4cudaSt6ranges11sized_rangeI6_RangeEEEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range" title="cuda::experimental::async_buffer::async_buffer::_Range"><span class="n"><span class="pre">_Range</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="o"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">sized_range</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIXaa18__compatible_rangeI6_RangeEaaN4cudaSt6ranges13forward_rangeI6_RangeEEN4cudaSt6ranges11sized_rangeI6_RangeEEEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range" title="cuda::experimental::async_buffer::async_buffer::_Range"><span class="n"><span class="pre">_Range</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__construction_1gabcbdcce153662bb149008527fb435780"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__env_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__env</span></span>, <a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIXaa18__compatible_rangeI6_RangeEaaN4cudaSt6ranges13forward_rangeI6_RangeEEN4cudaSt6ranges11sized_rangeI6_RangeEEEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range" title="cuda::experimental::async_buffer::async_buffer::_Range"><span class="n"><span class="pre">_Range</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__range</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_N4cudaSt11enable_if_tIXaa18__compatible_rangeI6_RangeEaaN4cudaSt6ranges13forward_rangeI6_RangeEEN4cudaSt6ranges11sized_rangeI6_RangeEEEiEEEN4cuda12experimental12async_buffer12async_bufferERK7__env_tRR6_Range" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> using a memory resource and an input range. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">__range.size()</span> <span class="pre">==</span> <span class="pre">0</span></code> then no memory is allocated. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__env</strong> – The environment used to query the memory resource. </p></li>
+<li><p><strong>__range</strong> – The input range to be moved into the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer5beginEv">
+<span id="_CPPv3N4cuda12experimental12async_buffer5beginEv"></span><span id="_CPPv2N4cuda12experimental12async_buffer5beginEv"></span><span id="cuda::experimental::async_buffer::begin"></span><span class="target" id="group__iterators_1ga18d6360e84e541117fec26fd36a17eb6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer8iteratorE" title="cuda::experimental::async_buffer::iterator"><span class="n"><span class="pre">iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer5beginEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer5beginEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer5beginEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer5beginEv"></span><span id="cuda::experimental::async_buffer::beginC"></span><span class="target" id="group__iterators_1gac6c678f6d63b021fcf072f7e5830cf90"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer14const_iteratorE" title="cuda::experimental::async_buffer::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer5beginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable iterator to the first element of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. If the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> is empty, the returned iterator will be equal to <a class="reference internal" href="#group__iterators_1gad6701a3b64dc16461f0b38a3ab497281"><span class="std std-ref">end()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer6cbeginEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer6cbeginEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer6cbeginEv"></span><span id="cuda::experimental::async_buffer::cbeginC"></span><span class="target" id="group__iterators_1ga2e89144670017e32ee45a6974539ff63"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer14const_iteratorE" title="cuda::experimental::async_buffer::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer6cbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable iterator to the first element of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. If the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> is empty, the returned iterator will be equal to <a class="reference internal" href="#group__iterators_1gad6701a3b64dc16461f0b38a3ab497281"><span class="std std-ref">end()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer3endEv">
+<span id="_CPPv3N4cuda12experimental12async_buffer3endEv"></span><span id="_CPPv2N4cuda12experimental12async_buffer3endEv"></span><span id="cuda::experimental::async_buffer::end"></span><span class="target" id="group__iterators_1gad6701a3b64dc16461f0b38a3ab497281"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer8iteratorE" title="cuda::experimental::async_buffer::iterator"><span class="n"><span class="pre">iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer3endEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an iterator to the element following the last element of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. This element acts as a placeholder; attempting to access it results in undefined behavior. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer3endEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer3endEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer3endEv"></span><span id="cuda::experimental::async_buffer::endC"></span><span class="target" id="group__iterators_1ga67b7cb82ffdc02e80042cacba78891c9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer14const_iteratorE" title="cuda::experimental::async_buffer::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer3endEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable iterator to the element following the last element of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. This element acts as a placeholder; attempting to access it results in undefined behavior. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer4cendEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer4cendEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer4cendEv"></span><span id="cuda::experimental::async_buffer::cendC"></span><span class="target" id="group__iterators_1gabefda40cf19eddbfbec5adbe31ebc7db"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer14const_iteratorE" title="cuda::experimental::async_buffer::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer4cendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable iterator to the element following the last element of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. This element acts as a placeholder; attempting to access it results in undefined behavior. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer6rbeginEv">
+<span id="_CPPv3N4cuda12experimental12async_buffer6rbeginEv"></span><span id="_CPPv2N4cuda12experimental12async_buffer6rbeginEv"></span><span id="cuda::experimental::async_buffer::rbegin"></span><span class="target" id="group__iterators_1ga8d433ef4e6ac353f2babebb5d39cec57"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer16reverse_iteratorE" title="cuda::experimental::async_buffer::reverse_iterator"><span class="n"><span class="pre">reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer6rbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns a reverse iterator to the first element of the reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. It corresponds to the last element of the non-reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. If the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> is empty, the returned iterator is equal to <a class="reference internal" href="#group__iterators_1ga8694cf9dfe8afe6617649d3a062c76b6"><span class="std std-ref">rend()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer6rbeginEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer6rbeginEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer6rbeginEv"></span><span id="cuda::experimental::async_buffer::rbeginC"></span><span class="target" id="group__iterators_1ga50c056fa68f7e6f38f609db2ee2b59b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer22const_reverse_iteratorE" title="cuda::experimental::async_buffer::const_reverse_iterator"><span class="n"><span class="pre">const_reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer6rbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable reverse iterator to the first element of the reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. It corresponds to the last element of the non-reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. If the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> is empty, the returned iterator is equal to <a class="reference internal" href="#group__iterators_1ga8694cf9dfe8afe6617649d3a062c76b6"><span class="std std-ref">rend()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer7crbeginEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer7crbeginEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer7crbeginEv"></span><span id="cuda::experimental::async_buffer::crbeginC"></span><span class="target" id="group__iterators_1gacfbb2a19f87e58cc2cf04c5cc9154d0b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer22const_reverse_iteratorE" title="cuda::experimental::async_buffer::const_reverse_iterator"><span class="n"><span class="pre">const_reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">crbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer7crbeginEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable reverse iterator to the first element of the reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. It corresponds to the last element of the non-reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. If the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> is empty, the returned iterator is equal to <a class="reference internal" href="#group__iterators_1ga8694cf9dfe8afe6617649d3a062c76b6"><span class="std std-ref">rend()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer4rendEv">
+<span id="_CPPv3N4cuda12experimental12async_buffer4rendEv"></span><span id="_CPPv2N4cuda12experimental12async_buffer4rendEv"></span><span id="cuda::experimental::async_buffer::rend"></span><span class="target" id="group__iterators_1ga8694cf9dfe8afe6617649d3a062c76b6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer16reverse_iteratorE" title="cuda::experimental::async_buffer::reverse_iterator"><span class="n"><span class="pre">reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer4rendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns a reverse iterator to the element following the last element of the reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. It corresponds to the element preceding the first element of the non-reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. This element acts as a placeholder, attempting to access it results in undefined behavior. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer4rendEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer4rendEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer4rendEv"></span><span id="cuda::experimental::async_buffer::rendC"></span><span class="target" id="group__iterators_1gab87b9ad47272fea87a810bee39b6c550"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer22const_reverse_iteratorE" title="cuda::experimental::async_buffer::const_reverse_iterator"><span class="n"><span class="pre">const_reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer4rendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable reverse iterator to the element following the last element of the reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. It corresponds to the element preceding the first element of the non-reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. This element acts as a placeholder, attempting to access it results in undefined behavior. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer5crendEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer5crendEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer5crendEv"></span><span id="cuda::experimental::async_buffer::crendC"></span><span class="target" id="group__iterators_1ga5fa8dd04bd8b254e9e6e7b85c4af0e02"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer22const_reverse_iteratorE" title="cuda::experimental::async_buffer::const_reverse_iterator"><span class="n"><span class="pre">const_reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">crend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer5crendEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns an immutable reverse iterator to the element following the last element of the reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. It corresponds to the element preceding the first element of the non-reversed <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. This element acts as a placeholder, attempting to access it results in undefined behavior. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer4dataEv">
+<span id="_CPPv3N4cuda12experimental12async_buffer4dataEv"></span><span id="_CPPv2N4cuda12experimental12async_buffer4dataEv"></span><span id="cuda::experimental::async_buffer::data"></span><span class="target" id="group__iterators_1gab469ba847868572f6c986352077cf0be"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer7pointerE" title="cuda::experimental::async_buffer::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer4dataEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns a pointer to the first element of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. If the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> has not allocated memory the pointer will be null. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer4dataEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer4dataEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer4dataEv"></span><span id="cuda::experimental::async_buffer::dataC"></span><span class="target" id="group__iterators_1gae871e2761d4b05534e5ac643446810e3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer13const_pointerE" title="cuda::experimental::async_buffer::const_pointer"><span class="n"><span class="pre">const_pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer4dataEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns a pointer to the first element of the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. If the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> has not allocated memory the pointer will be null. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type">
+<span id="_CPPv3N4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type"></span><span id="_CPPv2N4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type"></span><span id="cuda::experimental::async_buffer::get_unsynchronized__size_typeC"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a8afd05e5a1fad2059efc9271d1521b54"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer9referenceE" title="cuda::experimental::async_buffer::reference"><span class="n"><span class="pre">reference</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_unsynchronized</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer9size_typeE" title="cuda::experimental::async_buffer::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__n</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type">
+<span id="_CPPv3NK4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type"></span><span id="_CPPv2NK4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type"></span><span id="cuda::experimental::async_buffer::get_unsynchronized__size_typeCC"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1aad24b1ebe327afca6eaf2b028cb7ebd0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer15const_referenceE" title="cuda::experimental::async_buffer::const_reference"><span class="n"><span class="pre">const_reference</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_unsynchronized</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer9size_typeE" title="cuda::experimental::async_buffer::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__n</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer18get_unsynchronizedEK9size_type" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns a reference to the <code class="docutils literal notranslate"><span class="pre">__n</span></code> ‘th element of the async_vector. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Does not synchronize with the stored stream </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__n</strong> – The index of the element we want to access </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer4sizeEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer4sizeEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer4sizeEv"></span><span id="cuda::experimental::async_buffer::sizeC"></span><span class="target" id="group__size_1ga369a2c21d90cdb719d6c747e1955e175"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4cuda12experimental12async_buffer9size_typeE" title="cuda::experimental::async_buffer::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer4sizeEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer5emptyEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer5emptyEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer5emptyEv"></span><span id="cuda::experimental::async_buffer::emptyC"></span><span class="target" id="group__size_1ga6ca56a14e8c25b873dc2191a6090633e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">empty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer5emptyEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns true if the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> is empty. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer15memory_resourceEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer15memory_resourceEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer15memory_resourceEv"></span><span id="cuda::experimental::async_buffer::memory_resourceC"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1aa0170b262dad050f216ccdaae5b92852"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">__resource_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">memory_resource</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer15memory_resourceEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Returns a c const reference to the <a class="reference internal" href="typedef_any__resource_8cuh_1a86d10b34113375780b269dd9f9baebf4.html#cudax-memory-resource-any-resource"><span class="std std-ref">any_resource</span></a>
+that holds the memory resource used to allocate the async_buffer</p>
+ </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4cuda12experimental12async_buffer6streamEv">
+<span id="_CPPv3NK4cuda12experimental12async_buffer6streamEv"></span><span id="_CPPv2NK4cuda12experimental12async_buffer6streamEv"></span><span id="cuda::experimental::async_buffer::streamCCE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a509139800995054d839101d606d9017e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="structcuda_1_1experimental_1_1stream__ref.html#_CPPv4N4cuda12experimental10stream_refE" title="cuda::experimental::stream_ref"><span class="n"><span class="pre">stream_ref</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK4cuda12experimental12async_buffer6streamEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Returns the stored stream. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer10set_streamE10stream_ref">
+<span id="_CPPv3N4cuda12experimental12async_buffer10set_streamE10stream_ref"></span><span id="_CPPv2N4cuda12experimental12async_buffer10set_streamE10stream_ref"></span><span id="cuda::experimental::async_buffer::set_stream__stream_refCE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a39377fab132f52e289898b64d30be345"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_stream</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="structcuda_1_1experimental_1_1stream__ref.html#_CPPv4N4cuda12experimental10stream_refE" title="cuda::experimental::stream_ref"><span class="n"><span class="pre">stream_ref</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__new_stream</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer10set_streamE10stream_ref" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Replaces the stored stream. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Always synchronizes with the old stream </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__new_stream</strong> – the new stream </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer25set_stream_unsynchronizedE10stream_ref">
+<span id="_CPPv3N4cuda12experimental12async_buffer25set_stream_unsynchronizedE10stream_ref"></span><span id="_CPPv2N4cuda12experimental12async_buffer25set_stream_unsynchronizedE10stream_ref"></span><span id="cuda::experimental::async_buffer::set_stream_unsynchronized__stream_refCE"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1afdad55693b5b19912f9c4c2db1bc1e0c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_stream_unsynchronized</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="structcuda_1_1experimental_1_1stream__ref.html#_CPPv4N4cuda12experimental10stream_refE" title="cuda::experimental::stream_ref"><span class="n"><span class="pre">stream_ref</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">__new_stream</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer25set_stream_unsynchronizedE10stream_ref" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Replaces the stored stream. </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This does not synchronize between <code class="docutils literal notranslate"><span class="pre">__new_stream</span></code> and the current stream. It is the user’s responsibility to ensure proper stream order going forward </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__new_stream</strong> – the new stream </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_bufferaSERR12async_buffer">
+<span id="_CPPv3N4cuda12experimental12async_bufferaSERR12async_buffer"></span><span id="_CPPv2N4cuda12experimental12async_bufferaSERR12async_buffer"></span><span id="cuda::experimental::async_buffer::assign-operator__async_bufferRR"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a92825198b42e4c21cea94a1e74858ac0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_bufferaSERR12async_buffer" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Move assignment operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__other</strong> – The other <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. After move assignment, the other buffer can only be assigned to or destroyed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer4swapER12async_buffer">
+<span id="_CPPv3N4cuda12experimental12async_buffer4swapER12async_buffer"></span><span id="_CPPv2N4cuda12experimental12async_buffer4swapER12async_buffer"></span><span id="cuda::experimental::async_buffer::swap__async_bufferR"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1ab8f1b842c28377bc92182c29b56b8dce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">swap</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer4swapER12async_buffer" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Swaps the contents of a <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a> with those of <code class="docutils literal notranslate"><span class="pre">__other</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>__other</strong> – The other <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer7destroyEv">
+<span id="_CPPv3N4cuda12experimental12async_buffer7destroyEv"></span><span id="_CPPv2N4cuda12experimental12async_buffer7destroyEv"></span><span id="cuda::experimental::async_buffer::destroy"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a4fc659f076f915ce6a29548079df4ad5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destroy</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer7destroyEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Destroys the <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>, deallocates the buffer and destroys the memory resource. </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>After this explicit destroy call, the buffer can only be assigned to or destroyed. </p>
+</div>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">async_buffer</span></dt>
+</dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4cuda12experimental12async_buffer4swapER12async_bufferR12async_buffer">
+<span id="_CPPv3N4cuda12experimental12async_buffer4swapER12async_bufferR12async_buffer"></span><span id="_CPPv2N4cuda12experimental12async_buffer4swapER12async_bufferR12async_buffer"></span><span id="cuda::experimental::async_buffer::swap__async_bufferR.async_bufferR"></span><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1af45c30ae9efe6415c0b6c96caa7a052a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">swap</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__lhs</span></span>, <a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__rhs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N4cuda12experimental12async_buffer4swapER12async_bufferR12async_buffer" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Swaps the contents of two async_buffers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__lhs</strong> – One <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p></li>
+<li><p><strong>__rhs</strong> – The other <a class="reference internal" href="#classcuda_1_1experimental_1_1async__buffer"><span class="std std-ref">async_buffer</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EIQN4cudaSt18__is_included_in_vI17_DeviceAccessibleDp11_PropertiesEEEN4cuda12experimental12async_buffer25transform_device_argumentEN4cudaSt4spanI3_TpEEN4cuda10stream_refER12async_buffer">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_DeviceAccessible</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">device_accessible</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a69fc0ebd1a3a8e709ddc4c6239abb697"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transform_device_argument</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">stream_ref</span></span>, <a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__self</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EIQN4cudaSt18__is_included_in_vI17_DeviceAccessibleDp11_PropertiesEEEN4cuda12experimental12async_buffer25transform_device_argumentEN4cudaSt4spanI3_TpEEN4cuda10stream_refER12async_buffer" title="Permalink to this definition"></a><br /><span class="k"><span class="pre">requires</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">__is_included_in_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EIQN4cudaSt18__is_included_in_vI17_DeviceAccessibleDp11_PropertiesEEEN4cuda12experimental12async_buffer25transform_device_argumentEN4cudaSt4spanI3_TpEEN4cuda10stream_refER12async_buffer" title="cuda::experimental::async_buffer::transform_device_argument::_DeviceAccessible"><span class="n"><span class="pre">_DeviceAccessible</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Properties"><span class="n"><span class="pre">_Properties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>Causes the buffer to be treated as a span when passed to cudax::launch. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Pre</dt>
+<dd class="field-odd"><p>The buffer must have the cuda::mr::device_accessible property. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EIQN4cudaSt18__is_included_in_vI17_DeviceAccessibleDp11_PropertiesEEEN4cuda12experimental12async_buffer25transform_device_argumentEN4cudaSt4spanIK3_TpEEN4cuda10stream_refERK12async_buffer">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_DeviceAccessible</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">device_accessible</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcuda_1_1experimental_1_1async__buffer_1a881da3cd5ccb8b28231126f07cf06329"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transform_device_argument</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">stream_ref</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer"><span class="n"><span class="pre">async_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">__self</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Tp"><span class="n"><span class="pre">_Tp</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EIQN4cudaSt18__is_included_in_vI17_DeviceAccessibleDp11_PropertiesEEEN4cuda12experimental12async_buffer25transform_device_argumentEN4cudaSt4spanIK3_TpEEN4cuda10stream_refERK12async_buffer" title="Permalink to this definition"></a><br /><span class="k"><span class="pre">requires</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="namespace_cuda.html#_CPPv44cuda" title="cuda"><span class="n"><span class="pre">cuda</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="namespace_cuda__std.html#_CPPv4N4cudaStE" title="cuda::std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">__is_included_in_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EIQN4cudaSt18__is_included_in_vI17_DeviceAccessibleDp11_PropertiesEEEN4cuda12experimental12async_buffer25transform_device_argumentEN4cudaSt4spanIK3_TpEEN4cuda10stream_refERK12async_buffer" title="cuda::experimental::async_buffer::transform_device_argument::_DeviceAccessible"><span class="n"><span class="pre">_DeviceAccessible</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN4cuda12experimental12async_bufferE" title="cuda::experimental::async_buffer::_Properties"><span class="n"><span class="pre">_Properties</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>Causes the buffer to be treated as a span when passed to cudax::launch. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Pre</dt>
+<dd class="field-odd"><p>The buffer must have the cuda::mr::device_accessible property. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 18, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

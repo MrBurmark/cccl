@@ -1,0 +1,2544 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__reductions" kind="group">
+    <compoundname>reductions</compoundname>
+    <title>Reductions</title>
+    <innergroup refid="group__comparisons">Comparisons</innergroup>
+    <innergroup refid="group__predicates">Predicates</innergroup>
+    <innergroup refid="group__transformed__reductions">Transformed Reductions</innergroup>
+    <innergroup refid="group__logical">Logical</innergroup>
+    <innergroup refid="group__extrema">Extrema</innergroup>
+    <innergroup refid="group__counting">Counting</innergroup>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__reductions_1ga9ef66eea454f70b25c40b57f5b83b1bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>detail::it_value_t&lt; InputIterator &gt;</type>
+        <definition>detail::it_value_t&lt;InputIterator&gt; thrust::reduce</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last)</argsstring>
+        <name>reduce</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce</computeroutput> uses <computeroutput>0</computeroutput> as the initial value of the reduction. <computeroutput>reduce</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>thrust::reduce</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. If <computeroutput>T</computeroutput> is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce</computeroutput> to compute the sum of a sequence of integers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::reduce(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>6);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>9</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="87" column="1" declfile="thrust/reduce.h" declline="87" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga29b4e0824fb7af2b2c897d3f6e9422d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>detail::it_value_t&lt; InputIterator &gt;</type>
+        <definition>detail::it_value_t&lt;InputIterator&gt; thrust::reduce</definition>
+        <argsstring>(InputIterator first, InputIterator last)</argsstring>
+        <name>reduce</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce</computeroutput> uses <computeroutput>0</computeroutput> as the initial value of the reduction. <computeroutput>reduce</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>thrust::reduce</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. If <computeroutput>T</computeroutput> is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce</computeroutput> to compute the sum of a sequence of integers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::reduce(data,<sp/>data<sp/>+<sp/>6);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>9</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="128" column="20" declfile="thrust/reduce.h" declline="128" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga52c9e815fc0bfa4b3a8bc8a2315016dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T thrust::reduce</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, T init)</argsstring>
+        <name>reduce</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction. <computeroutput>reduce</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>thrust::reduce</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce</computeroutput> to compute the sum of a sequence of integers including an initialization value using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::reduce(thrust::host,<sp/>data,<sp/>data<sp/>+<sp/>6,<sp/>1);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>10</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="175" column="4" declfile="thrust/reduce.h" declline="175" declcolumn="4"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1gad88f81c37fb8a41039d2185f26fec99d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T thrust::reduce</definition>
+        <argsstring>(InputIterator first, InputIterator last, T init)</argsstring>
+        <name>reduce</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction. <computeroutput>reduce</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>thrust::reduce</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce</computeroutput> to compute the sum of a sequence of integers including an initialization value.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::reduce(data,<sp/>data<sp/>+<sp/>6,<sp/>1);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>10</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="217" column="3" declfile="thrust/reduce.h" declline="217" declcolumn="3"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1gaefbf2731074cabf80c1b4034e2a816cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T thrust::reduce</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, T init, BinaryFunction binary_op)</argsstring>
+        <name>reduce</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction and <computeroutput>binary_op</computeroutput> as the binary function used for summation. <computeroutput>reduce</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce</computeroutput> requires associativity of <computeroutput>binary_op</computeroutput> to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce</computeroutput> also assumes that the binary reduction operator (in this case <computeroutput>binary_op</computeroutput>) is commutative. If the reduction operator is not commutative then <computeroutput>thrust::reduce</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary function used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and is convertible to <computeroutput>BinaryFunction&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce</computeroutput> to compute the maximum value of a sequence of integers using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::reduce(thrust::host,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>data,<sp/>data<sp/>+<sp/>6,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>-1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>::cuda::maximum&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>3</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>transform_reduce </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="271" column="4" declfile="thrust/reduce.h" declline="271" declcolumn="4"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T thrust::reduce</definition>
+        <argsstring>(InputIterator first, InputIterator last, T init, BinaryFunction binary_op)</argsstring>
+        <name>reduce</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction and <computeroutput>binary_op</computeroutput> as the binary function used for summation. <computeroutput>reduce</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce</computeroutput> requires associativity of <computeroutput>binary_op</computeroutput> to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce</computeroutput> also assumes that the binary reduction operator (in this case <computeroutput>binary_op</computeroutput>) is commutative. If the reduction operator is not commutative then <computeroutput>thrust::reduce</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary function used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and is convertible to <computeroutput>BinaryFunction&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce</computeroutput> to compute the maximum value of a sequence of integers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/functional.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>data[6]<sp/>=<sp/>{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>result<sp/>=<sp/>thrust::reduce(data,<sp/>data<sp/>+<sp/>6,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>-1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>::cuda::maximum&lt;int&gt;());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result<sp/>==<sp/>3</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>transform_reduce </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="323" column="3" declfile="thrust/reduce.h" declline="323" declcolumn="3"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1gac4f1a13fe10dd1a2f4abf6ba347e09c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void thrust::reduce_into</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator output)</argsstring>
+        <name>reduce_into</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_into</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce_into</computeroutput> uses <computeroutput>0</computeroutput> as the initial value of the reduction. <computeroutput>reduce_into</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce_into</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce_into</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>reduce_into</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>Unlike <computeroutput>reduce</computeroutput>, <computeroutput>reduce_into</computeroutput> does not return the reduction result. Instead, it is written to <computeroutput>*output</computeroutput>. Thus, when <computeroutput>exec</computeroutput> is <computeroutput>thrust::cuda::par_nosync</computeroutput>, this algorithm does not wait for the work it launches to complete. Additionally, you can use <computeroutput>reduce_into</computeroutput> to avoid copying the reduction result from device memory to host memory.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The location the reduction will be written to.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. If <computeroutput>T</computeroutput> is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is assignable from <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce_into</computeroutput> to compute the sum of a sequence of integers using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>data{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>output(1);</highlight></codeline>
+<codeline><highlight class="normal">thrust::reduce_into(thrust::device,<sp/>data.begin(),<sp/>data.end(),<sp/>output.begin());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>output[0]<sp/>==<sp/>9</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>reduce </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="379" column="7" declfile="thrust/reduce.h" declline="379" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga5d0266aa6124f044b1ba68c78a5627f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void thrust::reduce_into</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator output)</argsstring>
+        <name>reduce_into</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_into</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce_into</computeroutput> uses <computeroutput>0</computeroutput> as the initial value of the reduction. <computeroutput>reduce_into</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce_into</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce_into</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>reduce_into</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>Unlike <computeroutput>reduce</computeroutput>, <computeroutput>reduce_into</computeroutput> does not return the reduction result. Instead, it is written to <computeroutput>*output</computeroutput>. Thus, when <computeroutput>exec</computeroutput> is <computeroutput>thrust::cuda::par_nosync</computeroutput>, this algorithm does not wait for the work it launches to complete. Additionally, you can use <computeroutput>reduce_into</computeroutput> to avoid copying the reduction result from device memory to host memory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The location the reduction will be written to.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. If <computeroutput>T</computeroutput> is <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>T(0)</computeroutput> is defined. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is assignable from <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce_into</computeroutput> to compute the sum of a sequence of integers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>data{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>output(1);</highlight></codeline>
+<codeline><highlight class="normal">thrust::reduce_into(data.begin(),<sp/>data.end(),<sp/>output.begin());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>output[0]<sp/>==<sp/>9</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>reduce </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="435" column="6" declfile="thrust/reduce.h" declline="435" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga21a2f16ca903ffa0e5155f0d3bbd8e16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void thrust::reduce_into</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator output, T init)</argsstring>
+        <name>reduce_into</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_into</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce_into</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction. <computeroutput>reduce_into</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce_into</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce_into</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>reduce_into</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>Unlike <computeroutput>reduce</computeroutput>, <computeroutput>reduce_into</computeroutput> does not return the reduction result. Instead, it is written to <computeroutput>*output</computeroutput>. Thus, when <computeroutput>exec</computeroutput> is <computeroutput>thrust::cuda::par_nosync</computeroutput>, this algorithm does not wait for the work it launches to complete. Additionally, you can use <computeroutput>reduce_into</computeroutput> to avoid copying the reduction result from device memory to host memory.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The location the reduction will be written to. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is assignable from <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce_into</computeroutput> to compute the sum of a sequence of integers including an initialization value using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>data{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>output(1);</highlight></codeline>
+<codeline><highlight class="normal">thrust::reduce_into(thrust::device,<sp/>data.begin(),<sp/>data.end(),<sp/>output.begin(),<sp/>1);</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>output[0]<sp/>==<sp/>10</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>reduce </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="493" column="7" declfile="thrust/reduce.h" declline="493" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1gab8ec9237fa68ed9d3820624df3d2a97c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void thrust::reduce_into</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator output, T init)</argsstring>
+        <name>reduce_into</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_into</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce_into</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction. <computeroutput>reduce_into</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce_into</computeroutput> requires associativity of the binary operation to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce_into</computeroutput> also assumes that the binary reduction operator (in this case operator+) is commutative. If the reduction operator is not commutative then <computeroutput>reduce_into</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>Unlike <computeroutput>reduce</computeroutput>, <computeroutput>reduce_into</computeroutput> does not return the reduction result. Instead, it is written to <computeroutput>*output</computeroutput>. Thus, when <computeroutput>exec</computeroutput> is <computeroutput>thrust::cuda::par_nosync</computeroutput>, this algorithm does not wait for the work it launches to complete. Additionally, you can use <computeroutput>reduce_into</computeroutput> to avoid copying the reduction result from device memory to host memory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The location the reduction will be written to. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and if <computeroutput>x</computeroutput> and <computeroutput>y</computeroutput> are objects of <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>, then <computeroutput>x + y</computeroutput> is defined and is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is assignable from <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is convertible to <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce_into</computeroutput> to compute the sum of a sequence of integers including an initialization value.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>data{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>output(1);</highlight></codeline>
+<codeline><highlight class="normal">thrust::reduce_into(data.begin(),<sp/>data.end(),<sp/>output.begin(),<sp/>1);</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>output[0]<sp/>==<sp/>10</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>reduce </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="551" column="6" declfile="thrust/reduce.h" declline="551" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga187357d2f97f7de0ec57ce5dbc1491bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void thrust::reduce_into</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, OutputIterator output, T init, BinaryFunction binary_op)</argsstring>
+        <name>reduce_into</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_into</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce_into</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction and <computeroutput>binary_op</computeroutput> as the binary function used for summation. <computeroutput>reduce_into</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce_into</computeroutput> requires associativity of <computeroutput>binary_op</computeroutput> to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce_into</computeroutput> also assumes that the binary reduction operator (in this case <computeroutput>binary_op</computeroutput>) is commutative. If the reduction operator is not commutative then <computeroutput>reduce_into</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para>Unlike <computeroutput>reduce</computeroutput>, <computeroutput>reduce_into</computeroutput> does not return the reduction result. Instead, it is written to <computeroutput>*output</computeroutput>. Thus, when <computeroutput>exec</computeroutput> is <computeroutput>thrust::cuda::par_nosync</computeroutput>, this algorithm does not wait for the work it launches to complete. Additionally, you can use <computeroutput>reduce_into</computeroutput> to avoid copying the reduction result from device memory to host memory.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The location the reduction will be written to. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary function used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is assignable from <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and is convertible to <computeroutput>BinaryFunction&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce_into</computeroutput> to compute the maximum value of a sequence of integers using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cuda/functional&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>data{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>output(1);</highlight></codeline>
+<codeline><highlight class="normal">thrust::reduce_into(thrust::device,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>data.begin(),<sp/>data.end(),<sp/>output.begin(),<sp/>-1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cuda::maximum{});</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>output[0]<sp/>==<sp/>3</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>transform_reduce </para>
+</simplesect>
+<simplesect kind="see"><para>transform_reduce_into </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="617" column="7" declfile="thrust/reduce.h" declline="617" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void thrust::reduce_into</definition>
+        <argsstring>(InputIterator first, InputIterator last, OutputIterator output, T init, BinaryFunction binary_op)</argsstring>
+        <name>reduce_into</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_into</computeroutput> is a generalization of summation: it computes the sum (or some other binary operation) of all the elements in the range <computeroutput>[first, last)</computeroutput>. This version of <computeroutput>reduce_into</computeroutput> uses <computeroutput>init</computeroutput> as the initial value of the reduction and <computeroutput>binary_op</computeroutput> as the binary function used for summation. <computeroutput>reduce_into</computeroutput> is similar to the C++ Standard Template Library&apos;s <computeroutput>std::accumulate</computeroutput>. The primary difference between the two functions is that <computeroutput>std::accumulate</computeroutput> guarantees the order of summation, while <computeroutput>reduce_into</computeroutput> requires associativity of <computeroutput>binary_op</computeroutput> to parallelize the reduction.</para>
+<para>Note that <computeroutput>reduce_into</computeroutput> also assumes that the binary reduction operator (in this case <computeroutput>binary_op</computeroutput>) is commutative. If the reduction operator is not commutative then <computeroutput>thrust::reduce_into</computeroutput> should not be used. Instead, one could use <computeroutput>inclusive_scan</computeroutput> (which does not require commutativity) and select the last element of the output array.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary function used to &apos;sum&apos; values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the reduction.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is assignable from <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">Assignable</ulink>, and is convertible to <computeroutput>BinaryFunction&apos;s</computeroutput> first and second argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputType</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The following code snippet demonstrates how to use <computeroutput>reduce_into</computeroutput> to compute the maximum value of a sequence of integers.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;cuda/functional&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>data{1,<sp/>0,<sp/>2,<sp/>2,<sp/>1,<sp/>3};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>output(1);</highlight></codeline>
+<codeline><highlight class="normal">thrust::reduce_into(data.begin(),<sp/>data.end(),<sp/>output.begin(),<sp/>-1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cuda::maximum{});</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>output[0]<sp/>==<sp/>3</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ulink url="https://en.cppreference.com/w/cpp/algorithm/accumulate">https://en.cppreference.com/w/cpp/algorithm/accumulate</ulink> </para>
+</simplesect>
+<simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>transform_reduce </para>
+</simplesect>
+<simplesect kind="see"><para>transform_reduce_into </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="676" column="6" declfile="thrust/reduce.h" declline="676" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1gac293a05a740d21a1112678b302094902" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::reduce_by_key</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 keys_first, InputIterator1 keys_last, InputIterator2 values_first, OutputIterator1 keys_output, OutputIterator2 values_output)</argsstring>
+        <name>reduce_by_key</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>values_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>keys_output</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>values_output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_by_key</computeroutput> is a generalization of <computeroutput>reduce</computeroutput> to key-value pairs. For each group of consecutive keys in the range <computeroutput>[keys_first, keys_last)</computeroutput> that are equal, <computeroutput>reduce_by_key</computeroutput> copies the first element of the group to the <computeroutput>keys_output</computeroutput>. The corresponding values in the range are reduced using the <computeroutput>plus</computeroutput> and the result copied to <computeroutput>values_output</computeroutput>.</para>
+<para>This version of <computeroutput>reduce_by_key</computeroutput> uses the function object <computeroutput>equal_to</computeroutput> to test for equality and <computeroutput>plus</computeroutput> to reduce values with equal keys.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output value range. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of iterators at end of the ranges <computeroutput>[keys_output, keys_output_last)</computeroutput> and <computeroutput>[values_output, values_output_last)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>reduce_by_key</computeroutput> to compact a sequence of key/value pairs and sum values with equal keys using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[N]<sp/>=<sp/>{1,<sp/>3,<sp/>3,<sp/>3,<sp/>2,<sp/>2,<sp/>1};<sp/>//<sp/>input<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[N]<sp/>=<sp/>{9,<sp/>8,<sp/>7,<sp/>6,<sp/>5,<sp/>4,<sp/>3};<sp/>//<sp/>input<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>C[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>D[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>values</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;int*,int*&gt;<sp/>new_end;</highlight></codeline>
+<codeline><highlight class="normal">new_end<sp/>=<sp/>thrust::reduce_by_key(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>B,<sp/>C,<sp/>D);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>keys<sp/>in<sp/>C<sp/>are<sp/>now<sp/>{1,<sp/>3,<sp/>2,<sp/>1}<sp/>and<sp/>new_end.first<sp/>-<sp/>C<sp/>is<sp/>4.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>values<sp/>in<sp/>D<sp/>are<sp/>now<sp/>{9,<sp/>21,<sp/>9,<sp/>3}<sp/>and<sp/>new_end.second<sp/>-<sp/>D<sp/>is<sp/>4.</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>unique_copy </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key_copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="740" column="15" declfile="thrust/reduce.h" declline="740" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga54b44c9eb62aab0509c0e8c9c8399362" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::reduce_by_key</definition>
+        <argsstring>(InputIterator1 keys_first, InputIterator1 keys_last, InputIterator2 values_first, OutputIterator1 keys_output, OutputIterator2 values_output)</argsstring>
+        <name>reduce_by_key</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>values_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>keys_output</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>values_output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_by_key</computeroutput> is a generalization of <computeroutput>reduce</computeroutput> to key-value pairs. For each group of consecutive keys in the range <computeroutput>[keys_first, keys_last)</computeroutput> that are equal, <computeroutput>reduce_by_key</computeroutput> copies the first element of the group to the <computeroutput>keys_output</computeroutput>. The corresponding values in the range are reduced using the <computeroutput>plus</computeroutput> and the result copied to <computeroutput>values_output</computeroutput>.</para>
+<para>This version of <computeroutput>reduce_by_key</computeroutput> uses the function object <computeroutput>equal_to</computeroutput> to test for equality and <computeroutput>plus</computeroutput> to reduce values with equal keys.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>keys_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output value range. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of iterators at end of the ranges <computeroutput>[keys_output, keys_output_last)</computeroutput> and <computeroutput>[values_output, values_output_last)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>reduce_by_key</computeroutput> to compact a sequence of key/value pairs and sum values with equal keys.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[N]<sp/>=<sp/>{1,<sp/>3,<sp/>3,<sp/>3,<sp/>2,<sp/>2,<sp/>1};<sp/>//<sp/>input<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[N]<sp/>=<sp/>{9,<sp/>8,<sp/>7,<sp/>6,<sp/>5,<sp/>4,<sp/>3};<sp/>//<sp/>input<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>C[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>D[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>values</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;int*,int*&gt;<sp/>new_end;</highlight></codeline>
+<codeline><highlight class="normal">new_end<sp/>=<sp/>thrust::reduce_by_key(A,<sp/>A<sp/>+<sp/>N,<sp/>B,<sp/>C,<sp/>D);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>keys<sp/>in<sp/>C<sp/>are<sp/>now<sp/>{1,<sp/>3,<sp/>2,<sp/>1}<sp/>and<sp/>new_end.first<sp/>-<sp/>C<sp/>is<sp/>4.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>values<sp/>in<sp/>D<sp/>are<sp/>now<sp/>{9,<sp/>21,<sp/>9,<sp/>3}<sp/>and<sp/>new_end.second<sp/>-<sp/>D<sp/>is<sp/>4.</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>unique_copy </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key_copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="800" column="14" declfile="thrust/reduce.h" declline="800" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga12501ca04b9b21b101d6a299d899d7af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename BinaryPredicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::reduce_by_key</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 keys_first, InputIterator1 keys_last, InputIterator2 values_first, OutputIterator1 keys_output, OutputIterator2 values_output, BinaryPredicate binary_pred)</argsstring>
+        <name>reduce_by_key</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>values_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>keys_output</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>values_output</declname>
+        </param>
+        <param>
+          <type>BinaryPredicate</type>
+          <declname>binary_pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_by_key</computeroutput> is a generalization of <computeroutput>reduce</computeroutput> to key-value pairs. For each group of consecutive keys in the range <computeroutput>[keys_first, keys_last)</computeroutput> that are equal, <computeroutput>reduce_by_key</computeroutput> copies the first element of the group to the <computeroutput>keys_output</computeroutput>. The corresponding values in the range are reduced using the <computeroutput>plus</computeroutput> and the result copied to <computeroutput>values_output</computeroutput>.</para>
+<para>This version of <computeroutput>reduce_by_key</computeroutput> uses the function object <computeroutput>binary_pred</computeroutput> to test for equality and <computeroutput>plus</computeroutput> to reduce values with equal keys.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary predicate used to determine equality. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of iterators at end of the ranges <computeroutput>[keys_output, keys_output_last)</computeroutput> and <computeroutput>[values_output, values_output_last)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryPredicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate">Binary Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>reduce_by_key</computeroutput> to compact a sequence of key/value pairs and sum values with equal keys using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[N]<sp/>=<sp/>{1,<sp/>3,<sp/>3,<sp/>3,<sp/>2,<sp/>2,<sp/>1};<sp/>//<sp/>input<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[N]<sp/>=<sp/>{9,<sp/>8,<sp/>7,<sp/>6,<sp/>5,<sp/>4,<sp/>3};<sp/>//<sp/>input<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>C[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>D[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>values</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;int*,int*&gt;<sp/>new_end;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::equal_to&lt;int&gt;<sp/>binary_pred;</highlight></codeline>
+<codeline><highlight class="normal">new_end<sp/>=<sp/>thrust::reduce_by_key(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>B,<sp/>C,<sp/>D,<sp/>binary_pred);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>keys<sp/>in<sp/>C<sp/>are<sp/>now<sp/>{1,<sp/>3,<sp/>2,<sp/>1}<sp/>and<sp/>new_end.first<sp/>-<sp/>C<sp/>is<sp/>4.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>values<sp/>in<sp/>D<sp/>are<sp/>now<sp/>{9,<sp/>21,<sp/>9,<sp/>3}<sp/>and<sp/>new_end.second<sp/>-<sp/>D<sp/>is<sp/>4.</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>unique_copy </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key_copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="873" column="15" declfile="thrust/reduce.h" declline="873" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1gab2a639dcea2b476c2f8f3cdd5a975e19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename BinaryPredicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::reduce_by_key</definition>
+        <argsstring>(InputIterator1 keys_first, InputIterator1 keys_last, InputIterator2 values_first, OutputIterator1 keys_output, OutputIterator2 values_output, BinaryPredicate binary_pred)</argsstring>
+        <name>reduce_by_key</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>values_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>keys_output</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>values_output</declname>
+        </param>
+        <param>
+          <type>BinaryPredicate</type>
+          <declname>binary_pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_by_key</computeroutput> is a generalization of <computeroutput>reduce</computeroutput> to key-value pairs. For each group of consecutive keys in the range <computeroutput>[keys_first, keys_last)</computeroutput> that are equal, <computeroutput>reduce_by_key</computeroutput> copies the first element of the group to the <computeroutput>keys_output</computeroutput>. The corresponding values in the range are reduced using the <computeroutput>plus</computeroutput> and the result copied to <computeroutput>values_output</computeroutput>.</para>
+<para>This version of <computeroutput>reduce_by_key</computeroutput> uses the function object <computeroutput>binary_pred</computeroutput> to test for equality and <computeroutput>plus</computeroutput> to reduce values with equal keys.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>keys_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary predicate used to determine equality. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of iterators at end of the ranges <computeroutput>[keys_output, keys_output_last)</computeroutput> and <computeroutput>[values_output, values_output_last)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryPredicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate">Binary Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>reduce_by_key</computeroutput> to compact a sequence of key/value pairs and sum values with equal keys.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[N]<sp/>=<sp/>{1,<sp/>3,<sp/>3,<sp/>3,<sp/>2,<sp/>2,<sp/>1};<sp/>//<sp/>input<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[N]<sp/>=<sp/>{9,<sp/>8,<sp/>7,<sp/>6,<sp/>5,<sp/>4,<sp/>3};<sp/>//<sp/>input<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>C[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>D[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>values</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;int*,int*&gt;<sp/>new_end;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::equal_to&lt;int&gt;<sp/>binary_pred;</highlight></codeline>
+<codeline><highlight class="normal">new_end<sp/>=<sp/>thrust::reduce_by_key(A,<sp/>A<sp/>+<sp/>N,<sp/>B,<sp/>C,<sp/>D,<sp/>binary_pred);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>keys<sp/>in<sp/>C<sp/>are<sp/>now<sp/>{1,<sp/>3,<sp/>2,<sp/>1}<sp/>and<sp/>new_end.first<sp/>-<sp/>C<sp/>is<sp/>4.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>values<sp/>in<sp/>D<sp/>are<sp/>now<sp/>{9,<sp/>21,<sp/>9,<sp/>3}<sp/>and<sp/>new_end.second<sp/>-<sp/>D<sp/>is<sp/>4.</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>unique_copy </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key_copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="941" column="14" declfile="thrust/reduce.h" declline="941" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga39ab1fa02b7a8ececa87e3a8fbe374b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename BinaryPredicate</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::reduce_by_key</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 keys_first, InputIterator1 keys_last, InputIterator2 values_first, OutputIterator1 keys_output, OutputIterator2 values_output, BinaryPredicate binary_pred, BinaryFunction binary_op)</argsstring>
+        <name>reduce_by_key</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>values_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>keys_output</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>values_output</declname>
+        </param>
+        <param>
+          <type>BinaryPredicate</type>
+          <declname>binary_pred</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_by_key</computeroutput> is a generalization of <computeroutput>reduce</computeroutput> to key-value pairs. For each group of consecutive keys in the range <computeroutput>[keys_first, keys_last)</computeroutput> that are equal, <computeroutput>reduce_by_key</computeroutput> copies the first element of the group to the <computeroutput>keys_output</computeroutput>. The corresponding values in the range are reduced using the <computeroutput>BinaryFunction</computeroutput> <computeroutput>binary_op</computeroutput> and the result copied to <computeroutput>values_output</computeroutput>. Specifically, if consecutive key iterators <computeroutput>i</computeroutput> and <computeroutput></computeroutput>(i + 1) are such that <computeroutput>binary_pred(*i, *(i+1))</computeroutput> is <computeroutput>true</computeroutput>, then the corresponding values are reduced to a single value with <computeroutput>binary_op</computeroutput>.</para>
+<para>This version of <computeroutput>reduce_by_key</computeroutput> uses the function object <computeroutput>binary_pred</computeroutput> to test for equality and <computeroutput>binary_op</computeroutput> to reduce values with equal keys.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary predicate used to determine equality. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary function used to accumulate values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of iterators at end of the ranges <computeroutput>[keys_output, keys_output_last)</computeroutput> and <computeroutput>[values_output, values_output_last)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryPredicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate">Binary Predicate</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>reduce_by_key</computeroutput> to compact a sequence of key/value pairs and sum values with equal keys using the <computeroutput>thrust::host</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[N]<sp/>=<sp/>{1,<sp/>3,<sp/>3,<sp/>3,<sp/>2,<sp/>2,<sp/>1};<sp/>//<sp/>input<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[N]<sp/>=<sp/>{9,<sp/>8,<sp/>7,<sp/>6,<sp/>5,<sp/>4,<sp/>3};<sp/>//<sp/>input<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>C[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>D[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>values</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;int*,int*&gt;<sp/>new_end;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::equal_to&lt;int&gt;<sp/>binary_pred;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::plus&lt;int&gt;<sp/>binary_op;</highlight></codeline>
+<codeline><highlight class="normal">new_end<sp/>=<sp/>thrust::reduce_by_key(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>N,<sp/>B,<sp/>C,<sp/>D,<sp/>binary_pred,<sp/>binary_op);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>keys<sp/>in<sp/>C<sp/>are<sp/>now<sp/>{1,<sp/>3,<sp/>2,<sp/>1}<sp/>and<sp/>new_end.first<sp/>-<sp/>C<sp/>is<sp/>4.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>values<sp/>in<sp/>D<sp/>are<sp/>now<sp/>{9,<sp/>21,<sp/>9,<sp/>3}<sp/>and<sp/>new_end.second<sp/>-<sp/>D<sp/>is<sp/>4.</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>unique_copy </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key_copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="1022" column="15" declfile="thrust/reduce.h" declline="1022" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__reductions_1ga561f079073556701066513f648f413d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename OutputIterator1</type>
+          </param>
+          <param>
+            <type>typename OutputIterator2</type>
+          </param>
+          <param>
+            <type>typename BinaryPredicate</type>
+          </param>
+          <param>
+            <type>typename BinaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; OutputIterator1, OutputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;OutputIterator1, OutputIterator2&gt; thrust::reduce_by_key</definition>
+        <argsstring>(InputIterator1 keys_first, InputIterator1 keys_last, InputIterator2 values_first, OutputIterator1 keys_output, OutputIterator2 values_output, BinaryPredicate binary_pred, BinaryFunction binary_op)</argsstring>
+        <name>reduce_by_key</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>keys_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>values_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator1</type>
+          <declname>keys_output</declname>
+        </param>
+        <param>
+          <type>OutputIterator2</type>
+          <declname>values_output</declname>
+        </param>
+        <param>
+          <type>BinaryPredicate</type>
+          <declname>binary_pred</declname>
+        </param>
+        <param>
+          <type>BinaryFunction</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>reduce_by_key</computeroutput> is a generalization of <computeroutput>reduce</computeroutput> to key-value pairs. For each group of consecutive keys in the range <computeroutput>[keys_first, keys_last)</computeroutput> that are equal, <computeroutput>reduce_by_key</computeroutput> copies the first element of the group to the <computeroutput>keys_output</computeroutput>. The corresponding values in the range are reduced using the <computeroutput>BinaryFunction</computeroutput> <computeroutput>binary_op</computeroutput> and the result copied to <computeroutput>values_output</computeroutput>. Specifically, if consecutive key iterators <computeroutput>i</computeroutput> and <computeroutput></computeroutput>(i + 1) are such that <computeroutput>binary_pred(*i, *(i+1))</computeroutput> is <computeroutput>true</computeroutput>, then the corresponding values are reduced to a single value with <computeroutput>binary_op</computeroutput>.</para>
+<para>This version of <computeroutput>reduce_by_key</computeroutput> uses the function object <computeroutput>binary_pred</computeroutput> to test for equality and <computeroutput>binary_op</computeroutput> to reduce values with equal keys.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>keys_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the input key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the input value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>keys_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output key range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the output value range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary predicate used to determine equality. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>binary_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary function used to accumulate values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of iterators at end of the ranges <computeroutput>[keys_output, keys_output_last)</computeroutput> and <computeroutput>[values_output, values_output_last)</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>, </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink> and and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryPredicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate">Binary Predicate</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function&apos;s return type must be convertible to <computeroutput>OutputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The input ranges shall not overlap either output range.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>reduce_by_key</computeroutput> to compact a sequence of key/value pairs and sum values with equal keys.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/reduce.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">const<sp/>int<sp/>N<sp/>=<sp/>7;</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>A[N]<sp/>=<sp/>{1,<sp/>3,<sp/>3,<sp/>3,<sp/>2,<sp/>2,<sp/>1};<sp/>//<sp/>input<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>B[N]<sp/>=<sp/>{9,<sp/>8,<sp/>7,<sp/>6,<sp/>5,<sp/>4,<sp/>3};<sp/>//<sp/>input<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>C[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>keys</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>D[N];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>output<sp/>values</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;int*,int*&gt;<sp/>new_end;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::equal_to&lt;int&gt;<sp/>binary_pred;</highlight></codeline>
+<codeline><highlight class="normal">::cuda::std::plus&lt;int&gt;<sp/>binary_op;</highlight></codeline>
+<codeline><highlight class="normal">new_end<sp/>=<sp/>thrust::reduce_by_key(A,<sp/>A<sp/>+<sp/>N,<sp/>B,<sp/>C,<sp/>D,<sp/>binary_pred,<sp/>binary_op);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>keys<sp/>in<sp/>C<sp/>are<sp/>now<sp/>{1,<sp/>3,<sp/>2,<sp/>1}<sp/>and<sp/>new_end.first<sp/>-<sp/>C<sp/>is<sp/>4.</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>The<sp/>first<sp/>four<sp/>values<sp/>in<sp/>D<sp/>are<sp/>now<sp/>{9,<sp/>21,<sp/>9,<sp/>3}<sp/>and<sp/>new_end.second<sp/>-<sp/>D<sp/>is<sp/>4.</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>reduce </para>
+</simplesect>
+<simplesect kind="see"><para>unique_copy </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key </para>
+</simplesect>
+<simplesect kind="see"><para>unique_by_key_copy </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/reduce.h" line="1098" column="14" declfile="thrust/reduce.h" declline="1098" declcolumn="14"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>
