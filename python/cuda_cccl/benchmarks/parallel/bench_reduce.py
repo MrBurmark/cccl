@@ -21,6 +21,21 @@ def reduce_pointer(input_array, build_only):
     cp.cuda.runtime.deviceSynchronize()
 
 
+def reduce_pointer_well_known(input_array, build_only):
+    size = len(input_array)
+    res = cp.empty(tuple(), dtype=input_array.dtype)
+    h_init = np.zeros(tuple(), dtype=input_array.dtype)
+
+    # Use the well-known PLUS operation from OpKind
+    alg = parallel.make_reduce_into(input_array, res, parallel.OpKind.PLUS, h_init)
+    if not build_only:
+        temp_storage_bytes = alg(None, input_array, res, size, h_init)
+        temp_storage = cp.empty(temp_storage_bytes, dtype=np.uint8)
+        alg(temp_storage, input_array, res, size, h_init)
+
+    cp.cuda.runtime.deviceSynchronize()
+
+
 def reduce_struct(input_array, build_only):
     size = len(input_array)
     res = cp.empty(tuple(), dtype=input_array.dtype)
@@ -84,6 +99,15 @@ def bench_reduce_pointer(benchmark, size):
 
     def run():
         reduce_pointer(input_array, build_only=False)
+
+    benchmark(run)
+
+
+def bench_reduce_pointer_well_known(benchmark, size):
+    input_array = cp.random.randint(0, 10, size)
+
+    def run():
+        reduce_pointer_well_known(input_array, build_only=False)
 
     benchmark(run)
 
