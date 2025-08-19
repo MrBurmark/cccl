@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda::device::memcpy_async_tx &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/mermaid-init.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../_static/version.js"></script>
+        <script src="../../_static/social-media.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="cuda::memcpy_async" href="memcpy_async.html" />
+    <link rel="prev" title="Asynchronous Operations" href="../asynchronous_operations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../bit.html">Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../execution_model.html">Execution model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../synchronization_primitives.html">Synchronization Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../asynchronous_operations.html">Asynchronous Operations</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">cuda::device::memcpy_async_tx</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#preconditions">Preconditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requires">Requires</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="memcpy_async.html"><code class="docutils literal notranslate"><span class="pre">cuda::memcpy_async</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility.html">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../work_stealing.html">Work stealing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../extended_api.html">Extended API</a> &raquo;</li>
+          <li><a href="../asynchronous_operations.html">Asynchronous Operations</a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">cuda::device::memcpy_async_tx</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-device-memcpy-async-tx">
+<span id="libcudacxx-extended-api-asynchronous-operations-memcpy-async-tx"></span><h1><code class="docutils literal notranslate"><span class="pre">cuda::device::memcpy_async_tx</span></code><a class="headerlink" href="#cuda-device-memcpy-async-tx" title="Permalink to this headline"></a></h1>
+<p>Defined in header <code class="docutils literal notranslate"><span class="pre">&lt;cuda/barrier&gt;</span></code>:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Alignment</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="kt">__device__</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">device</span><span class="o">::</span><span class="n">memcpy_async_tx</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">dest</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">aligned_size_t</span><span class="o">&lt;</span><span class="n">Alignment</span><span class="o">&gt;</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">bar</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Copies <code class="docutils literal notranslate"><span class="pre">size</span></code> bytes from global memory <code class="docutils literal notranslate"><span class="pre">src</span></code> to shared memory <code class="docutils literal notranslate"><span class="pre">dest</span></code> and decrements the transaction count of <code class="docutils literal notranslate"><span class="pre">bar</span></code> by <code class="docutils literal notranslate"><span class="pre">size</span></code> bytes.</p>
+<section id="preconditions">
+<h2>Preconditions<a class="headerlink" href="#preconditions" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>, <code class="docutils literal notranslate"><span class="pre">dest</span></code> are 16-byte aligned and <code class="docutils literal notranslate"><span class="pre">size</span></code> is a multiple of 16, i.e., <code class="docutils literal notranslate"><span class="pre">Alignment</span> <span class="pre">&gt;=</span> <span class="pre">16</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dest</span></code> points to a shared memory allocation that is at least <code class="docutils literal notranslate"><span class="pre">size</span></code> bytes wide.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code> points to a global memory allocation that is at least <code class="docutils literal notranslate"><span class="pre">size</span></code> bytes wide.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bar</span></code> is located in shared memory</p></li>
+<li><p>If either <code class="docutils literal notranslate"><span class="pre">destination</span></code> or <code class="docutils literal notranslate"><span class="pre">source</span></code> is an invalid or null pointer, the behavior is undefined (even if <code class="docutils literal notranslate"><span class="pre">count</span></code> is zero).</p></li>
+</ul>
+</section>
+<section id="requires">
+<h2>Requires<a class="headerlink" href="#requires" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is_trivially_copyable_v&lt;T&gt;</span></code> is true.</p></li>
+</ul>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline"></a></h2>
+<p>This function can only be used under CUDA Compute Capability 9.0 (Hopper) or higher.</p>
+<p>There is no feature flag to check if <code class="docutils literal notranslate"><span class="pre">cuda::device::memcpy_async_tx</span></code> is available.</p>
+<p><strong>Comparison to cuda::memcpy_async</strong>: <code class="docutils literal notranslate"><span class="pre">memcpy_async_tx</span></code> supports a subset of the operations of <code class="docutils literal notranslate"><span class="pre">memcpy_async</span></code>.
+It gives more control over the synchronization with a barrier than <code class="docutils literal notranslate"><span class="pre">memcpy_async</span></code>.
+Currently, <code class="docutils literal notranslate"><span class="pre">memcpy_async_tx</span></code> has no synchronous fallback mechanism., i.e., it currently does not work on older hardware
+(pre-CUDA Compute Capability 9.0, i.e., Hopper).</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/barrier&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/utility&gt;</span><span class="c1"> // cuda::std::move</span><span class="cp"></span>
+
+<span class="cp">#if defined(__CUDA_MINIMUM_ARCH__) &amp;&amp; __CUDA_MINIMUM_ARCH__ &lt; 900</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Insufficient CUDA Compute Capability: cuda::device::memcpy_async_tx is not available.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// __CUDA_MINIMUM_ARCH__</span>
+
+<span class="kt">__device__</span><span class="w"> </span><span class="nf">alignas</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">gmem_x</span><span class="p">[</span><span class="mi">2048</span><span class="p">];</span><span class="w"></span>
+
+<span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">example_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">alignas</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="kt">__shared__</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">smem_x</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="kt">__shared__</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">bar</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bar</span><span class="p">,</span><span class="w"> </span><span class="nb">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="nf">__syncthreads</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">barrier</span><span class="o">::</span><span class="n">arrival_token</span><span class="w"> </span><span class="n">token</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">cuda</span><span class="o">::</span><span class="n">device</span><span class="o">::</span><span class="n">memcpy_async_tx</span><span class="p">(</span><span class="n">smem_x</span><span class="p">,</span><span class="w"> </span><span class="n">gmem_x</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">aligned_size_t</span><span class="o">&lt;</span><span class="mi">16</span><span class="o">&gt;</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">smem_x</span><span class="p">)),</span><span class="w"> </span><span class="n">bar</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">device</span><span class="o">::</span><span class="n">barrier_arrive_tx</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">smem_x</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bar</span><span class="p">.</span><span class="n">arrive</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="n">bar</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">token</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// smem_x contains the contents of gmem_x[0], ..., gmem_x[1023]</span>
+<span class="w">  </span><span class="n">smem_x</span><span class="p">[</span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://godbolt.org/z/PGTa76Ef7">See it on Godbolt</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

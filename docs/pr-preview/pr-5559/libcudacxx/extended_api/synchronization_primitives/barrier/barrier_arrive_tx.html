@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda::device::barrier_arrive_tx &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/mermaid-init.js"></script>
+        <script src="../../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../../_static/version.js"></script>
+        <script src="../../../_static/social-media.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="cuda::device::barrier_expect_tx" href="barrier_expect_tx.html" />
+    <link rel="prev" title="cuda::device::barrier_native_handle" href="barrier_native_handle.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../bit.html">Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_model.html">Execution model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../synchronization_primitives.html">Synchronization Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../atomic.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../atomic_ref.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic_ref</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../latch.html"><code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code></a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../barrier.html"><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code></a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="init.html">cuda::barrier::init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barrier_native_handle.html">cuda::device::barrier_native_handle</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cuda::device::barrier_arrive_tx</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#preconditions">Preconditions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#effects">Effects</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#notes">Notes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-value">Return Value</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="barrier_expect_tx.html">cuda::device::barrier_expect_tx</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../counting_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::counting_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../binary_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::binary_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pipeline.html"><code class="docutils literal notranslate"><span class="pre">cuda::pipeline</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../asynchronous_operations.html">Asynchronous Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utility.html">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../work_stealing.html">Work stealing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../extended_api.html">Extended API</a> &raquo;</li>
+          <li><a href="../../synchronization_primitives.html">Synchronization Primitives</a> &raquo;</li>
+          <li><a href="../barrier.html"><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code></a> &raquo;</li>
+      <li>cuda::device::barrier_arrive_tx</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-device-barrier-arrive-tx">
+<span id="libcudacxx-extended-api-synchronization-barrier-barrier-arrive-tx"></span><h1>cuda::device::barrier_arrive_tx<a class="headerlink" href="#cuda-device-barrier-arrive-tx" title="Permalink to this headline"></a></h1>
+<p>Defined in header <code class="docutils literal notranslate"><span class="pre">&lt;cuda/barrier&gt;</span></code>:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="kt">__device__</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;::</span><span class="n">arrival_token</span><span class="w"></span>
+<span class="n">cuda</span><span class="o">::</span><span class="n">device</span><span class="o">::</span><span class="n">barrier_arrive_tx</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">bar</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">arrive_count_update</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">transaction_count_update</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Arrives at a barrier in shared memory, decrementing the arrival count and incrementing the expected transaction count.</p>
+<section id="preconditions">
+<h2>Preconditions<a class="headerlink" href="#preconditions" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cuda::device::is_object_from(bar,</span> <span class="pre">cuda::device::address_space::shared)</span> <span class="pre">==</span> <span class="pre">true</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">arrive_count_update</span> <span class="pre">&amp;&amp;</span> <span class="pre">transaction_count_update</span> <span class="pre">&lt;=</span> <span class="pre">(1</span> <span class="pre">&lt;&lt;</span> <span class="pre">20)</span> <span class="pre">-</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">transaction_count_update</span> <span class="pre">&amp;&amp;</span> <span class="pre">transaction_count_update</span> <span class="pre">&lt;=</span> <span class="pre">(1</span> <span class="pre">&lt;&lt;</span> <span class="pre">20)</span> <span class="pre">-</span> <span class="pre">1</span></code></p></li>
+</ul>
+</section>
+<section id="effects">
+<h2>Effects<a class="headerlink" href="#effects" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>This function constructs an arrival_token object associated with the
+phase synchronization point for the current phase. Then, decrements
+the arrival count by <code class="docutils literal notranslate"><span class="pre">arrive_count_update</span></code> and increments the
+expected transaction count by <code class="docutils literal notranslate"><span class="pre">transaction_count_update</span></code>.</p></li>
+<li><p>This function executes atomically. The call to this function strongly
+happens-before the start of the phase completion step for the current
+phase.</p></li>
+</ul>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline"></a></h2>
+<p>This function can only be used under CUDA Compute Capability 9.0 (Hopper) or higher.</p>
+<p>To check if <code class="docutils literal notranslate"><span class="pre">cuda::device::barrier_arrive_tx</span></code> is available, use the <code class="docutils literal notranslate"><span class="pre">__cccl_lib_local_barrier_arrive_tx</span></code>
+feature flag, as shown in the example code below.</p>
+</section>
+<section id="return-value">
+<h2>Return Value<a class="headerlink" href="#return-value" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cuda::device::barrier_arrive_tx</span></code> returns the constructed <code class="docutils literal notranslate"><span class="pre">arrival_token</span></code> object.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<p>Below example shows only <code class="docutils literal notranslate"><span class="pre">cuda::device::barrier_arrive_tx</span></code>. A more extensive example can be found in the
+<a class="reference internal" href="../../asynchronous_operations/memcpy_async_tx.html#libcudacxx-extended-api-asynchronous-operations-memcpy-async-tx"><span class="std std-ref">cuda::device::memcpy_async_tx</span></a> documentation.</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/barrier&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/utility&gt;</span><span class="c1"> // cuda::std::move</span><span class="cp"></span>
+
+<span class="cp">#ifndef  __cccl_lib_local_barrier_arrive_tx</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Insufficient libcu++ version: cuda::device::arrive_tx is not yet available.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// __cccl_lib_local_barrier_arrive_tx</span>
+
+<span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">example_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">__shared__</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">bar</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bar</span><span class="p">,</span><span class="w"> </span><span class="nb">blockDim</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="nf">__syncthreads</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">device</span><span class="o">::</span><span class="n">barrier_arrive_tx</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">bar</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">token</span><span class="p">));</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://godbolt.org/z/1vxcGrT8j">See it on Godbolt</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="reduce_8h" kind="file" language="C++">
+    <compoundname>reduce.h</compoundname>
+    <includes local="no">thrust/detail/config.h</includes>
+    <includes local="no">thrust/detail/execution_policy.h</includes>
+    <includes refid="iterator__traits_8h" local="no">thrust/iterator/iterator_traits.h</includes>
+    <includes refid="pair_8h" local="no">thrust/pair.h</includes>
+    <includes local="no">thrust/detail/reduce.inl</includes>
+    <incdepgraph>
+      <node id="12">
+        <label>thrust/iterator/detail/iterator_traversal_tags.h</label>
+      </node>
+      <node id="8">
+        <label>thrust/iterator/detail/iterator_category_to_traversal.h</label>
+      </node>
+      <node id="5">
+        <label>thrust/iterator/detail/any_system_tag.h</label>
+      </node>
+      <node id="15">
+        <label>cuda/std/__type_traits/void_t.h</label>
+      </node>
+      <node id="11">
+        <label>thrust/iterator/detail/iterator_category_with_system_and_traversal.h</label>
+      </node>
+      <node id="14">
+        <label>cuda/iterator</label>
+      </node>
+      <node id="6">
+        <label>thrust/iterator/detail/device_system_tag.h</label>
+      </node>
+      <node id="9">
+        <label>thrust/iterator/detail/minimum_system.h</label>
+      </node>
+      <node id="4">
+        <label>thrust/iterator/iterator_traits.h</label>
+        <link refid="iterator__traits_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cuda/std/iterator</label>
+      </node>
+      <node id="2">
+        <label>thrust/detail/config.h</label>
+      </node>
+      <node id="1">
+        <label>thrust/reduce.h</label>
+        <link refid="reduce_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>thrust/iterator/iterator_categories.h</label>
+        <link refid="iterator__categories_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>thrust/detail/execution_policy.h</label>
+      </node>
+      <node id="17">
+        <label>cuda/std/utility</label>
+      </node>
+      <node id="16">
+        <label>thrust/pair.h</label>
+        <link refid="pair_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>thrust/iterator/detail/iterator_category_to_system.h</label>
+      </node>
+      <node id="18">
+        <label>thrust/detail/reduce.inl</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacethrust">thrust</innernamespace>
+    <briefdescription>
+<para>Functions for reducing a range to a single value. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/>Copyright<sp/>2008-2013<sp/>NVIDIA<sp/>Corporation</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Licensed<sp/>under<sp/>the<sp/>Apache<sp/>License,<sp/>Version<sp/>2.0<sp/>(the<sp/>&quot;License&quot;);</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/>you<sp/>may<sp/>not<sp/>use<sp/>this<sp/>file<sp/>except<sp/>in<sp/>compliance<sp/>with<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/>You<sp/>may<sp/>obtain<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>License<sp/>at</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>http://www.apache.org/licenses/LICENSE-2.0</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/>Unless<sp/>required<sp/>by<sp/>applicable<sp/>law<sp/>or<sp/>agreed<sp/>to<sp/>in<sp/>writing,<sp/>software</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/>distributed<sp/>under<sp/>the<sp/>License<sp/>is<sp/>distributed<sp/>on<sp/>an<sp/>&quot;AS<sp/>IS&quot;<sp/>BASIS,</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/>WITHOUT<sp/>WARRANTIES<sp/>OR<sp/>CONDITIONS<sp/>OF<sp/>ANY<sp/>KIND,<sp/>either<sp/>express<sp/>or<sp/>implied.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/>See<sp/>the<sp/>License<sp/>for<sp/>the<sp/>specific<sp/>language<sp/>governing<sp/>permissions<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/>limitations<sp/>under<sp/>the<sp/>License.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/config.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/execution_policy.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="iterator__traits_8h" kindref="compound">thrust/iterator/iterator_traits.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="pair_8h" kindref="compound">thrust/pair.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">THRUST_NAMESPACE_BEGIN</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator&gt;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>detail::it_value_t&lt;InputIterator&gt;</highlight></codeline>
+<codeline lineno="87" refid="group__reductions_1ga9ef66eea454f70b25c40b57f5b83b1bf" refkind="member"><highlight class="normal"><ref refid="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" kindref="member">reduce</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,<sp/>InputIterator<sp/>first,<sp/>InputIterator<sp/>last);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator&gt;</highlight></codeline>
+<codeline lineno="128" refid="group__reductions_1ga29b4e0824fb7af2b2c897d3f6e9422d3" refkind="member"><highlight class="normal">detail::it_value_t&lt;InputIterator&gt;<sp/><ref refid="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" kindref="member">reduce</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="175" refid="group__reductions_1ga52c9e815fc0bfa4b3a8bc8a2315016dc" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>T<sp/><ref refid="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" kindref="member">reduce</ref>(</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,<sp/>InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>T<sp/>init);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="217" refid="group__reductions_1gad88f81c37fb8a41039d2185f26fec99d" refkind="member"><highlight class="normal">T<sp/><ref refid="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" kindref="member">reduce</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>T<sp/>init);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryFunction&gt;</highlight></codeline>
+<codeline lineno="271" refid="group__reductions_1gaefbf2731074cabf80c1b4034e2a816cf" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/>T<sp/><ref refid="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" kindref="member">reduce</ref>(</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/>InputIterator<sp/>last,</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/>T<sp/>init,</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/>BinaryFunction<sp/>binary_op);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="322"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryFunction&gt;</highlight></codeline>
+<codeline lineno="323" refid="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" refkind="member"><highlight class="normal">T<sp/><ref refid="group__reductions_1ga5e9cef4919927834bec50fc4829f6e6b" kindref="member">reduce</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>T<sp/>init,<sp/>BinaryFunction<sp/>binary_op);</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"></highlight></codeline>
+<codeline lineno="378"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="379" refid="group__reductions_1gac4f1a13fe10dd1a2f4abf6ba347e09c8" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" kindref="member">reduce_into</ref>(</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/>InputIterator<sp/>last,</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>output);</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight></codeline>
+<codeline lineno="434"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator&gt;</highlight></codeline>
+<codeline lineno="435" refid="group__reductions_1ga5d0266aa6124f044b1ba68c78a5627f1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" kindref="member">reduce_into</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>OutputIterator<sp/>output);</highlight></codeline>
+<codeline lineno="436"><highlight class="normal"></highlight></codeline>
+<codeline lineno="492"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="493" refid="group__reductions_1ga21a2f16ca903ffa0e5155f0d3bbd8e16" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" kindref="member">reduce_into</ref>(</highlight></codeline>
+<codeline lineno="494"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="495"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,</highlight></codeline>
+<codeline lineno="496"><highlight class="normal"><sp/><sp/>InputIterator<sp/>last,</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>output,</highlight></codeline>
+<codeline lineno="498"><highlight class="normal"><sp/><sp/>T<sp/>init);</highlight></codeline>
+<codeline lineno="499"><highlight class="normal"></highlight></codeline>
+<codeline lineno="550"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="551" refid="group__reductions_1gab8ec9237fa68ed9d3820624df3d2a97c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" kindref="member">reduce_into</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>OutputIterator<sp/>output,<sp/>T<sp/>init);</highlight></codeline>
+<codeline lineno="552"><highlight class="normal"></highlight></codeline>
+<codeline lineno="616"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryFunction&gt;</highlight></codeline>
+<codeline lineno="617" refid="group__reductions_1ga187357d2f97f7de0ec57ce5dbc1491bd" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" kindref="member">reduce_into</ref>(</highlight></codeline>
+<codeline lineno="618"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="619"><highlight class="normal"><sp/><sp/>InputIterator<sp/>first,</highlight></codeline>
+<codeline lineno="620"><highlight class="normal"><sp/><sp/>InputIterator<sp/>last,</highlight></codeline>
+<codeline lineno="621"><highlight class="normal"><sp/><sp/>OutputIterator<sp/>output,</highlight></codeline>
+<codeline lineno="622"><highlight class="normal"><sp/><sp/>T<sp/>init,</highlight></codeline>
+<codeline lineno="623"><highlight class="normal"><sp/><sp/>BinaryFunction<sp/>binary_op);</highlight></codeline>
+<codeline lineno="624"><highlight class="normal"></highlight></codeline>
+<codeline lineno="675"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryFunction&gt;</highlight></codeline>
+<codeline lineno="676" refid="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__reductions_1ga198ec1a0c411d4c74a7d58a0f3cd5b3a" kindref="member">reduce_into</ref>(InputIterator<sp/>first,<sp/>InputIterator<sp/>last,<sp/>OutputIterator<sp/>output,<sp/>T<sp/>init,<sp/>BinaryFunction<sp/>binary_op);</highlight></codeline>
+<codeline lineno="677"><highlight class="normal"></highlight></codeline>
+<codeline lineno="735"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="736"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="737"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="738"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="739"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="740" refid="group__reductions_1gac293a05a740d21a1112678b302094902" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__reductions_1ga561f079073556701066513f648f413d6" kindref="member">reduce_by_key</ref>(</highlight></codeline>
+<codeline lineno="741"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="742"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first,</highlight></codeline>
+<codeline lineno="743"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last,</highlight></codeline>
+<codeline lineno="744"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>values_first,</highlight></codeline>
+<codeline lineno="745"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_output,</highlight></codeline>
+<codeline lineno="746"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_output);</highlight></codeline>
+<codeline lineno="747"><highlight class="normal"></highlight></codeline>
+<codeline lineno="799"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2&gt;</highlight></codeline>
+<codeline lineno="800" refid="group__reductions_1ga54b44c9eb62aab0509c0e8c9c8399362" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__reductions_1ga561f079073556701066513f648f413d6" kindref="member">reduce_by_key</ref>(</highlight></codeline>
+<codeline lineno="801"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first,</highlight></codeline>
+<codeline lineno="802"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last,</highlight></codeline>
+<codeline lineno="803"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>values_first,</highlight></codeline>
+<codeline lineno="804"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_output,</highlight></codeline>
+<codeline lineno="805"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_output);</highlight></codeline>
+<codeline lineno="806"><highlight class="normal"></highlight></codeline>
+<codeline lineno="867"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="868"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="869"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="870"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="871"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="872"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="873" refid="group__reductions_1ga12501ca04b9b21b101d6a299d899d7af" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__reductions_1ga561f079073556701066513f648f413d6" kindref="member">reduce_by_key</ref>(</highlight></codeline>
+<codeline lineno="874"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="875"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first,</highlight></codeline>
+<codeline lineno="876"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last,</highlight></codeline>
+<codeline lineno="877"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>values_first,</highlight></codeline>
+<codeline lineno="878"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_output,</highlight></codeline>
+<codeline lineno="879"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_output,</highlight></codeline>
+<codeline lineno="880"><highlight class="normal"><sp/><sp/>BinaryPredicate<sp/>binary_pred);</highlight></codeline>
+<codeline lineno="881"><highlight class="normal"></highlight></codeline>
+<codeline lineno="936"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="937"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="938"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="939"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="940"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate&gt;</highlight></codeline>
+<codeline lineno="941" refid="group__reductions_1gab2a639dcea2b476c2f8f3cdd5a975e19" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__reductions_1ga561f079073556701066513f648f413d6" kindref="member">reduce_by_key</ref>(</highlight></codeline>
+<codeline lineno="942"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first,</highlight></codeline>
+<codeline lineno="943"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last,</highlight></codeline>
+<codeline lineno="944"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>values_first,</highlight></codeline>
+<codeline lineno="945"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_output,</highlight></codeline>
+<codeline lineno="946"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_output,</highlight></codeline>
+<codeline lineno="947"><highlight class="normal"><sp/><sp/>BinaryPredicate<sp/>binary_pred);</highlight></codeline>
+<codeline lineno="948"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1015"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>DerivedPolicy,</highlight></codeline>
+<codeline lineno="1016"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1017"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1018"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1019"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="1020"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate,</highlight></codeline>
+<codeline lineno="1021"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryFunction&gt;</highlight></codeline>
+<codeline lineno="1022" refid="group__reductions_1ga39ab1fa02b7a8ececa87e3a8fbe374b0" refkind="member"><highlight class="normal">_CCCL_HOST_DEVICE<sp/><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__reductions_1ga561f079073556701066513f648f413d6" kindref="member">reduce_by_key</ref>(</highlight></codeline>
+<codeline lineno="1023"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>thrust::detail::execution_policy_base&lt;DerivedPolicy&gt;&amp;<sp/>exec,</highlight></codeline>
+<codeline lineno="1024"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first,</highlight></codeline>
+<codeline lineno="1025"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last,</highlight></codeline>
+<codeline lineno="1026"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>values_first,</highlight></codeline>
+<codeline lineno="1027"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_output,</highlight></codeline>
+<codeline lineno="1028"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_output,</highlight></codeline>
+<codeline lineno="1029"><highlight class="normal"><sp/><sp/>BinaryPredicate<sp/>binary_pred,</highlight></codeline>
+<codeline lineno="1030"><highlight class="normal"><sp/><sp/>BinaryFunction<sp/>binary_op);</highlight></codeline>
+<codeline lineno="1031"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1092"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator1,</highlight></codeline>
+<codeline lineno="1093"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>InputIterator2,</highlight></codeline>
+<codeline lineno="1094"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator1,</highlight></codeline>
+<codeline lineno="1095"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>OutputIterator2,</highlight></codeline>
+<codeline lineno="1096"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryPredicate,</highlight></codeline>
+<codeline lineno="1097"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BinaryFunction&gt;</highlight></codeline>
+<codeline lineno="1098" refid="group__reductions_1ga561f079073556701066513f648f413d6" refkind="member"><highlight class="normal"><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair&lt;OutputIterator1, OutputIterator2&gt;</ref><sp/><ref refid="group__reductions_1ga561f079073556701066513f648f413d6" kindref="member">reduce_by_key</ref>(</highlight></codeline>
+<codeline lineno="1099"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_first,</highlight></codeline>
+<codeline lineno="1100"><highlight class="normal"><sp/><sp/>InputIterator1<sp/>keys_last,</highlight></codeline>
+<codeline lineno="1101"><highlight class="normal"><sp/><sp/>InputIterator2<sp/>values_first,</highlight></codeline>
+<codeline lineno="1102"><highlight class="normal"><sp/><sp/>OutputIterator1<sp/>keys_output,</highlight></codeline>
+<codeline lineno="1103"><highlight class="normal"><sp/><sp/>OutputIterator2<sp/>values_output,</highlight></codeline>
+<codeline lineno="1104"><highlight class="normal"><sp/><sp/>BinaryPredicate<sp/>binary_pred,</highlight></codeline>
+<codeline lineno="1105"><highlight class="normal"><sp/><sp/>BinaryFunction<sp/>binary_op);</highlight></codeline>
+<codeline lineno="1106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1110"><highlight class="normal">THRUST_NAMESPACE_END</highlight></codeline>
+<codeline lineno="1111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1112"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thrust/detail/reduce.inl&gt;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="thrust/reduce.h"/>
+  </compounddef>
+</doxygen>

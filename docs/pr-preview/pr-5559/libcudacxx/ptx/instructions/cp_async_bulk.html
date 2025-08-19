@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cp.async.bulk &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/mermaid-init.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../_static/version.js"></script>
+        <script src="../../_static/social-media.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="cp.async.bulk.commit_group" href="cp_async_bulk_commit_group.html" />
+    <link rel="prev" title="clusterlaunchcontrol" href="clusterlaunchcontrol.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extended_api.html">Extended API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../ptx.html">PTX</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../instructions.html">PTX Instructions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ld.html">ld</a></li>
+<li class="toctree-l3"><a class="reference internal" href="st.html">st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shr.html">shr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shl.html">shl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bmsk.html">bmsk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elect_sync.html">elect.sync</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prmt.html">prmt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="barrier_cluster.html">barrier.cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bfind.html">bfind</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clusterlaunchcontrol.html">clusterlaunchcontrol</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cp.async.bulk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-notes">Implementation notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changelog">Changelog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unicast">Unicast</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#cp-async-bulk-shared-cluster-global-mbarrier-complete-tx-bytes">cp.async.bulk.shared::cluster.global.mbarrier::complete_tx::bytes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#cp-async-bulk-shared-cta-global-mbarrier-complete-tx-bytes">cp.async.bulk.shared::cta.global.mbarrier::complete_tx::bytes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#cp-async-bulk-shared-cluster-shared-cta-mbarrier-complete-tx-bytes">cp.async.bulk.shared::cluster.shared::cta.mbarrier::complete_tx::bytes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#cp-async-bulk-global-shared-cta-bulk-group">cp.async.bulk.global.shared::cta.bulk_group</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#cp-async-bulk-global-shared-cta-bulk-group-cp-mask">cp.async.bulk.global.shared::cta.bulk_group.cp_mask</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#multicast">Multicast</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#cp-async-bulk-shared-cluster-global-mbarrier-complete-tx-bytes-multicast-cluster">cp.async.bulk.shared::cluster.global.mbarrier::complete_tx::bytes.multicast::cluster</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_bulk_commit_group.html">cp.async.bulk.commit_group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_bulk_wait_group.html">cp.async.bulk.wait_group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_bulk_tensor.html">cp.async.bulk.tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_async_mbarrier_arrive.html">cp.async.mbarrier.arrive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_reduce_async_bulk.html">cp.reduce.async.bulk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cp_reduce_async_bulk_tensor.html">cp.reduce.async.bulk.tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exit.html">exit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fence.html">fence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getctarank.html">getctarank</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mapa.html">mapa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_init.html">mbarrier.init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_arrive.html">mbarrier.arrive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_expect_tx.html">mbarrier.expect_tx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_test_wait.html">mbarrier.test_wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbarrier_try_wait.html">mbarrier.try_wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimem_ld_reduce.html">multimem.ld_reduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimem_red.html">multimem.red</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimem_st.html">multimem.st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="red_async.html">red.async</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shfl_sync.html">shfl.sync</a></li>
+<li class="toctree-l3"><a class="reference internal" href="st_async.html">st.async</a></li>
+<li class="toctree-l3"><a class="reference internal" href="st_bulk.html">st.bulk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_alloc.html">tcgen05.alloc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_commit.html">tcgen05.commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_cp.html">tcgen05.cp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_fence.html">tcgen05.fence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_ld.html">tcgen05.ld</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_mma.html">tcgen05.mma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_mma_ws.html">tcgen05.mma.ws</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_shift.html">tcgen05.shift</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_st.html">tcgen05.st</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcgen05_wait.html">tcgen05.wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensormap_replace.html">tensormap.replace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensormap_cp_fenceproxy.html">tensormap.cp_fenceproxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trap.html">trap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="special_registers.html">Special registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../instructions.html#instructions-by-section">Instructions by section</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ptx.html#versions-and-compatibility">Versions and compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../ptx.html">PTX</a> &raquo;</li>
+          <li><a href="../instructions.html">PTX Instructions</a> &raquo;</li>
+      <li>cp.async.bulk</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cp-async-bulk">
+<span id="libcudacxx-ptx-instructions-cp-async-bulk"></span><h1>cp.async.bulk<a class="headerlink" href="#cp-async-bulk" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p>PTX ISA:
+<a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-cp-async-bulk">cp.async.bulk</a></p></li>
+</ul>
+<section id="implementation-notes">
+<h2>Implementation notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline"></a></h2>
+<p><strong>NOTE.</strong> Both <code class="docutils literal notranslate"><span class="pre">srcMem</span></code> and <code class="docutils literal notranslate"><span class="pre">dstMem</span></code> must be 16-byte aligned, and
+<code class="docutils literal notranslate"><span class="pre">size</span></code> must be a multiple of 16.</p>
+</section>
+<section id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>In earlier versions, <code class="docutils literal notranslate"><span class="pre">cp_async_bulk_multicast</span></code> was enabled for
+SM_90. This has been changed to SM_90a.</p></li>
+</ul>
+</section>
+<section id="unicast">
+<h2>Unicast<a class="headerlink" href="#unicast" title="Permalink to this headline"></a></h2>
+<section id="cp-async-bulk-shared-cluster-global-mbarrier-complete-tx-bytes">
+<h3>cp.async.bulk.shared::cluster.global.mbarrier::complete_tx::bytes<a class="headerlink" href="#cp-async-bulk-shared-cluster-global-mbarrier-complete-tx-bytes" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// cp.async.bulk.dst.src.mbarrier::complete_tx::bytes [dstMem], [srcMem], size, [smem_bar]; // PTX ISA 80, SM_90</span>
+<span class="c1">// .dst       = { .shared::cluster }</span>
+<span class="c1">// .src       = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">cp_async_bulk</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_cluster_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">dstMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">srcMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="o">*</span><span class="w"> </span><span class="n">smem_bar</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="cp-async-bulk-shared-cta-global-mbarrier-complete-tx-bytes">
+<h3>cp.async.bulk.shared::cta.global.mbarrier::complete_tx::bytes<a class="headerlink" href="#cp-async-bulk-shared-cta-global-mbarrier-complete-tx-bytes" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// cp.async.bulk.dst.src.mbarrier::complete_tx::bytes [dstMem], [srcMem], size, [smem_bar]; // PTX ISA 86, SM_90</span>
+<span class="c1">// .dst       = { .shared::cta }</span>
+<span class="c1">// .src       = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">cp_async_bulk</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_shared_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">dstMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">srcMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="o">*</span><span class="w"> </span><span class="n">smem_bar</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="cp-async-bulk-shared-cluster-shared-cta-mbarrier-complete-tx-bytes">
+<h3>cp.async.bulk.shared::cluster.shared::cta.mbarrier::complete_tx::bytes<a class="headerlink" href="#cp-async-bulk-shared-cluster-shared-cta-mbarrier-complete-tx-bytes" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// cp.async.bulk.dst.src.mbarrier::complete_tx::bytes [dstMem], [srcMem], size, [rdsmem_bar]; // PTX ISA 80, SM_90</span>
+<span class="c1">// .dst       = { .shared::cluster }</span>
+<span class="c1">// .src       = { .shared::cta }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">cp_async_bulk</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_cluster_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_shared_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">dstMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">srcMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="o">*</span><span class="w"> </span><span class="n">rdsmem_bar</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="cp-async-bulk-global-shared-cta-bulk-group">
+<h3>cp.async.bulk.global.shared::cta.bulk_group<a class="headerlink" href="#cp-async-bulk-global-shared-cta-bulk-group" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// cp.async.bulk.dst.src.bulk_group [dstMem], [srcMem], size; // PTX ISA 80, SM_90</span>
+<span class="c1">// .dst       = { .global }</span>
+<span class="c1">// .src       = { .shared::cta }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">cp_async_bulk</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_shared_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">dstMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">srcMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="cp-async-bulk-global-shared-cta-bulk-group-cp-mask">
+<h3>cp.async.bulk.global.shared::cta.bulk_group.cp_mask<a class="headerlink" href="#cp-async-bulk-global-shared-cta-bulk-group-cp-mask" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// cp.async.bulk.dst.src.bulk_group.cp_mask [dstMem], [srcMem], size, byteMask; // PTX ISA 86, SM_100</span>
+<span class="c1">// .dst       = { .global }</span>
+<span class="c1">// .src       = { .shared::cta }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">cp_async_bulk_cp_mask</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_shared_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">dstMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">srcMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">byteMask</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="multicast">
+<h2>Multicast<a class="headerlink" href="#multicast" title="Permalink to this headline"></a></h2>
+<section id="cp-async-bulk-shared-cluster-global-mbarrier-complete-tx-bytes-multicast-cluster">
+<h3>cp.async.bulk.shared::cluster.global.mbarrier::complete_tx::bytes.multicast::cluster<a class="headerlink" href="#cp-async-bulk-shared-cluster-global-mbarrier-complete-tx-bytes-multicast-cluster" title="Permalink to this headline"></a></h3>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// cp.async.bulk.dst.src.mbarrier::complete_tx::bytes.multicast::cluster [dstMem], [srcMem], size, [smem_bar], ctaMask; // PTX ISA 80, SM_90a, SM_100a, SM_110a</span>
+<span class="c1">// .dst       = { .shared::cluster }</span>
+<span class="c1">// .src       = { .global }</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">cp_async_bulk</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_cluster_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">ptx</span><span class="o">::</span><span class="n">space_global_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">dstMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">srcMem</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="o">*</span><span class="w"> </span><span class="n">smem_bar</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctaMask</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

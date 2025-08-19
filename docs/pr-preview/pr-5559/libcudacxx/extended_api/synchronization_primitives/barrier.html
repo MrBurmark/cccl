@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda::barrier &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/mermaid-init.js"></script>
+        <script src="../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../_static/version.js"></script>
+        <script src="../../_static/social-media.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="cuda::barrier::init" href="barrier/init.html" />
+    <link rel="prev" title="cuda::latch" href="latch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../bit.html">Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../execution_model.html">Execution model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../synchronization_primitives.html">Synchronization Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomic.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomic_ref.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic_ref</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="latch.html"><code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="barrier/init.html">cuda::barrier::init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barrier/barrier_native_handle.html">cuda::device::barrier_native_handle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barrier/barrier_arrive_tx.html">cuda::device::barrier_arrive_tx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barrier/barrier_expect_tx.html">cuda::device::barrier_expect_tx</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="counting_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::counting_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::binary_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pipeline.html"><code class="docutils literal notranslate"><span class="pre">cuda::pipeline</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../asynchronous_operations.html">Asynchronous Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility.html">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../work_stealing.html">Work stealing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../extended_api.html">Extended API</a> &raquo;</li>
+          <li><a href="../synchronization_primitives.html">Synchronization Primitives</a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-barrier">
+<span id="libcudacxx-extended-api-synchronization-barrier"></span><h1><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code><a class="headerlink" href="#cuda-barrier" title="Permalink to this headline"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Defined in header <code class="docutils literal notranslate"><span class="pre">&lt;cuda/barrier&gt;</span></code>:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope</span><span class="w"> </span><span class="n">Scope</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="n">typename</span><span class="w"> </span><span class="n">CompletionFunction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="cm">/* unspecified */</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">class</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The class template <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> is an extended form of <a class="reference external" href="https://en.cppreference.com/w/cpp/thread/barrier">cuda::std::barrier</a>
+that takes an additional <a class="reference internal" href="../memory_model.html#libcudacxx-extended-api-memory-model-thread-scopes"><span class="std std-ref">cuda::thread_scope</span></a> argument.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">!(scope</span> <span class="pre">==</span> <span class="pre">cuda::thread_block_scope</span> <span class="pre">&amp;&amp;</span> <span class="pre">cuda::device::is_address_from(this,</span> <span class="pre">cuda::device::address_space::shared))</span></code>, then the semantics are the same as
+<a class="reference external" href="https://en.cppreference.com/w/cpp/thread/barrier">cuda::std::barrier</a>, otherwise, see below.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> class templates extends <code class="docutils literal notranslate"><span class="pre">cuda::std::barrier</span></code> with the following additional operations:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="barrier/init.html#libcudacxx-extended-api-synchronization-barrier-barrier-init"><span class="std std-ref">cuda::barrier::init</span></a></p></td>
+<td><p>Initialize a <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="barrier/barrier_native_handle.html#libcudacxx-extended-api-synchronization-barrier-barrier-native-handle"><span class="std std-ref">cuda::device::barrier_native_handle</span></a></p></td>
+<td><p>Get the native handle to a <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="barrier/barrier_arrive_tx.html#libcudacxx-extended-api-synchronization-barrier-barrier-arrive-tx"><span class="std std-ref">cuda::device::barrier_arrive_tx</span></a></p></td>
+<td><p>Arrive on a <code class="docutils literal notranslate"><span class="pre">cuda::barrier&lt;cuda::thread_scope_block&gt;</span></code> with transaction count update.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="barrier/barrier_expect_tx.html#libcudacxx-extended-api-synchronization-barrier-barrier-expect-tx"><span class="std std-ref">cuda::device::barrier_expect_tx</span></a></p></td>
+<td><p>Update transaction count of <code class="docutils literal notranslate"><span class="pre">cuda::barrier&lt;cuda::thread_scope_block&gt;</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>If <code class="docutils literal notranslate"><span class="pre">scope</span> <span class="pre">==</span> <span class="pre">cuda::thread_scope_block</span> <span class="pre">&amp;&amp;</span> <span class="pre">cuda::device::is_address_from(this,</span> <span class="pre">cuda::device::address_space::shared)</span></code>, then the semantics of <a class="reference external" href="http://eel.is/c++draft/thread.barrier.class">[thread.barrier.class]</a>
+of ISO/IEC IS 14882 (the C++ Standard) are modified as follows:</p>
+<blockquote>
+<div><p>A barrier is a thread coordination mechanism whose lifetime consists
+of a sequence of barrier phases, where each phase allows at most an
+expected number of threads to block until the expected number of
+threads <strong>and the expected number of transaction-based asynchronous
+operations</strong> arrive at the barrier. Each <em>barrier phase</em> consists of
+the following steps:</p>
+<ol class="arabic simple">
+<li><p>The <em>expected count</em> is decremented by each call to <code class="docutils literal notranslate"><span class="pre">arrive</span></code>,<code class="docutils literal notranslate"><span class="pre">arrive_and_drop</span></code><strong>,
+or cuda::device::barrier_arrive_tx</strong>.</p></li>
+<li><p><strong>The transaction count is incremented by each call to cuda::device::barrier_arrive_tx and decremented by the
+completion of transaction-based asynchronous operations such as cuda::memcpy_async_tx.</strong></p></li>
+<li><p>Exactly once after <strong>both</strong> the <em>expected count</em> <strong>and the transaction count</strong> reach zero, a thread executes the
+<em>completion step</em> during its call to <code class="docutils literal notranslate"><span class="pre">arrive</span></code>, <code class="docutils literal notranslate"><span class="pre">arrive_and_drop</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda::device::barrier_arrive_tx</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">wait</span></code>, except that it is implementation-defined whether the step executes if no thread calls <code class="docutils literal notranslate"><span class="pre">wait</span></code>.</p></li>
+<li><p>When the completion step finishes, the <em>expected count</em> is reset to what was specified by the <code class="docutils literal notranslate"><span class="pre">expected</span></code>
+argument to the constructor, possibly adjusted by calls to <code class="docutils literal notranslate"><span class="pre">arrive_and_drop</span></code>, and the next phase starts.</p></li>
+</ol>
+<p>Concurrent invocations of the member functions of barrier <strong>and the non-member barrier APIs in cuda::device</strong>,
+other than its destructor, do not introduce data races. The member functions <code class="docutils literal notranslate"><span class="pre">arrive</span></code> and <code class="docutils literal notranslate"><span class="pre">arrive_and_drop</span></code>,
+<strong>and the non-member function cuda::device::barrier_arrive_tx</strong>, execute atomically.</p>
+</div></blockquote>
+<p class="rubric">NVCC <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> Initialization Warnings</p>
+<p>When using libcu++ with NVCC, a <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> will lead to the following warning because
+<code class="docutils literal notranslate"><span class="pre">__shared__</span></code> variables are not initialized:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>warning: dynamic initialization is not supported <span class="k">for</span> a <span class="k">function</span>-scope static
+__shared__ variable within a __device__/__global__ <span class="k">function</span>
+</pre></div>
+</div>
+<p>It can be silenced using <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">nv_diag_suppress</span> <span class="pre">static_var_with_dynamic_init</span></code>.</p>
+<p>To properly initialize a <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code>, use the
+<a class="reference internal" href="barrier/init.html#libcudacxx-extended-api-synchronization-barrier-barrier-init"><span class="std std-ref">cuda::barrier::init</span></a> friend function.</p>
+<p class="rubric">Concurrency Restrictions</p>
+<p>An object of type <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> or <code class="docutils literal notranslate"><span class="pre">cuda::std::barrier</span></code> shall not be accessed concurrently by CPU and GPU threads unless:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>it is in unified memory and the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/structcudaDeviceProp.html#structcudaDeviceProp_116f9619ccc85e93bc456b8c69c80e78b">concurrentManagedAccess property</a>
+is 1, or</p></li>
+<li><p>it is in CPU memory and the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/structcudaDeviceProp.html#structcudaDeviceProp_1ef82fd7d1d0413c7d6f33287e5b6306f">hostNativeAtomicSupported property</a>
+is 1.</p></li>
+</ul>
+</div></blockquote>
+<p>Note, for objects of scopes other than <code class="docutils literal notranslate"><span class="pre">cuda::thread_scope_system</span></code> this is a data-race, and therefore also prohibited
+regardless of memory characteristics.</p>
+<p>Under CUDA Compute Capability 8 (Ampere) or above, when an object of type <code class="docutils literal notranslate"><span class="pre">cuda::barrier&lt;thread_scope_block&gt;</span></code> is
+placed in <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> memory, the member function <code class="docutils literal notranslate"><span class="pre">arrive</span></code> performs a reduction of the arrival count among
+<a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#coalesced-group-cg">coalesced threads</a> followed
+by the arrival operation in one thread. Programs shall ensure that this transformation would not introduce errors,
+for example relative to the requirements of <a class="reference external" href="https://eel.is/c++draft/thread.barrier.class#12">thread.barrier.class paragraph 12</a>
+of ISO/IEC IS 14882 (the C++ Standard).</p>
+<p>Under CUDA Compute Capability 6 (Pascal) or prior, an object of type <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> or <code class="docutils literal notranslate"><span class="pre">cuda::std::barrier</span></code> may
+not be used.</p>
+<p class="rubric">Shared memory barriers with transaction count</p>
+<p>In addition to the arrival count, a <code class="docutils literal notranslate"><span class="pre">cuda::barrier&lt;thread_scope_block&gt;</span></code> object located in shared memory supports a
+<a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#tracking-asynchronous-operations-by-the-mbarrier-object">tx-count</a>,
+which is used for tracking the completion of some asynchronous memory operations or transactions.
+The tx-count tracks the number of asynchronous transactions, in units specified by the asynchronous memory operation
+(typically bytes), that are outstanding and yet to be complete. This capability is exposed, starting with the Hopper
+architecture (CUDA Compute Capability 9).</p>
+<p>The tx-count of <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> must be set to the total amount of asynchronous memory operations, in units as
+specified by the asynchronous operations, to be tracked by the current phase. This can be achieved with the
+<a class="reference internal" href="barrier/barrier_arrive_tx.html#libcudacxx-extended-api-synchronization-barrier-barrier-arrive-tx"><span class="std std-ref">cuda::device::barrier_arrive_tx</span></a> function call.</p>
+<p>Upon completion of each of the asynchronous operations, the tx-count of the <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> will be updated and thus
+progress the <code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code> towards the completion of the current phase. This may complete the current phase.</p>
+<p class="rubric">Implementation-Defined Behavior</p>
+<p>For each <a class="reference internal" href="../memory_model.html#libcudacxx-extended-api-memory-model-thread-scopes"><span class="std std-ref">cuda::thread_scope</span></a> <code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">CompletionFunction</span></code>
+<code class="docutils literal notranslate"><span class="pre">F</span></code>, the value of <code class="docutils literal notranslate"><span class="pre">cuda::barrier&lt;S,</span> <span class="pre">F&gt;::max()</span></code> is as follows:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../memory_model.html#libcudacxx-extended-api-memory-model-thread-scopes"><span class="std std-ref">cuda::thread_scope</span></a> <code class="docutils literal notranslate"><span class="pre">S</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CompletionFunction</span></code> <code class="docutils literal notranslate"><span class="pre">F</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">barrier&lt;S,</span> <span class="pre">F&gt;::max()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cuda::thread_scope_block</span></code></p></td>
+<td><p>Default or user-provided</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">&lt;&lt;</span> <span class="pre">20)</span> <span class="pre">-</span> <span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Not</em> <code class="docutils literal notranslate"><span class="pre">cuda::thread_scope_block</span></code></p></td>
+<td><p>Default</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cuda::std::numeric_limits&lt;cuda::std::int32_t&gt;::max()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><em>Not</em> <code class="docutils literal notranslate"><span class="pre">cuda::thread_scope_block</span></code></p></td>
+<td><p>User-provided</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cuda::std::numeric_limits&lt;cuda::std::ptrdiff_t&gt;::max()</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/barrier&gt;</span><span class="cp"></span>
+
+<span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">example_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// This barrier is suitable for all threads in the system.</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// This barrier has the same type as the previous one (`a`).</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// This barrier is suitable for all threads on the current processor (e.g. GPU).</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// This barrier is suitable for all threads in the same thread block.</span>
+<span class="w">  </span><span class="n">cuda</span><span class="o">::</span><span class="n">barrier</span><span class="o">&lt;</span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_block</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://godbolt.org/z/ehdrY8Kae">See it on Godbolt</a></p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

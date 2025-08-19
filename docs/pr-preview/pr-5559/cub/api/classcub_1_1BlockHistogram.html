@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::BlockHistogram &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::BlockLoad" href="classcub_1_1BlockLoad.html" />
+    <link rel="prev" title="cub::BlockExchange" href="classcub_1_1BlockExchange.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockAdjacentDifference.html">cub::BlockAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockDiscontinuity.html">cub::BlockDiscontinuity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockExchange.html">cub::BlockExchange</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::BlockHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockLoad.html">cub::BlockLoad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockMergeSort.html">cub::BlockMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockMergeSortStrategy.html">cub::BlockMergeSortStrategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixRank.html">cub::BlockRadixRank</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixRankMatch.html">cub::BlockRadixRankMatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixSort.html">cub::BlockRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockReduce.html">cub::BlockReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRunLengthDecode.html">cub::BlockRunLengthDecode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockScan.html">cub::BlockScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockShuffle.html">cub::BlockShuffle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockStore.html">cub::BlockStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockLoadType.html">cub::BlockLoadType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRadixRankEmptyCallback.html">cub::BlockRadixRankEmptyCallback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRadixRankMatchEarlyCounts.html">cub::BlockRadixRankMatchEarlyCounts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRakingLayout.html">cub::BlockRakingLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../block_wide.html">Block-Wide “Collective” Primitives</a> &raquo;</li>
+      <li>cub::BlockHistogram</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-blockhistogram">
+<h1>cub::BlockHistogram<a class="headerlink" href="#cub-blockhistogram" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_block_block_histogram.cuh.html#block-histogram-8cuh"><span class="std std-ref">cub/block/block_histogram.cuh</span></a></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE">
+<span id="_CPPv3I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE"></span><span id="_CPPv2I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK_DIM_X</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BINS</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="enum_namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2.html#_CPPv4N3cub23BlockHistogramAlgorithmE" title="cub::BlockHistogramAlgorithm"><span class="n"><span class="pre">BlockHistogramAlgorithm</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ALGORITHM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="enum_namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2.html#_CPPv4N3cub23BlockHistogramAlgorithm16BLOCK_HISTO_SORTE" title="cub::BLOCK_HISTO_SORT"><span class="n"><span class="pre">BLOCK_HISTO_SORT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK_DIM_Y</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK_DIM_Z</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockhistogram"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockHistogram</span></span></span><a class="headerlink" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>The BlockHistogram class provides <a class="reference internal" href="../index.html#collective-primitives"><span class="std std-ref">collective</span></a> methods for
+constructing block-wide histograms from data samples partitioned across a CUDA thread block.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>A <a class="reference external" href="http://en.wikipedia.org/wiki/Histogram">histogram</a> counts the number of observations that fall into
+each of the disjoint categories (known as <em>bins</em>).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">T</span></code> type must be implicitly castable to an integer type.</p></li>
+<li><p>BlockHistogram expects each integral <code class="docutils literal notranslate"><span class="pre">input[i]</span></code> value to satisfy
+<code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">input[i]</span> <span class="pre">&lt;</span> <span class="pre">BINS</span></code>. Values outside of this range result in undefined behavior.</p></li>
+<li><p>BlockHistogram can be optionally specialized to use different algorithms:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="enum_namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2.html#_CPPv4N3cub23BlockHistogramAlgorithm16BLOCK_HISTO_SORTE" title="cub::BLOCK_HISTO_SORT"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">cub::BLOCK_HISTO_SORT</span></code></a>: Sorting followed by differentiation.</p></li>
+<li><p><a class="reference internal" href="enum_namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2.html#_CPPv4N3cub23BlockHistogramAlgorithm18BLOCK_HISTO_ATOMICE" title="cub::BLOCK_HISTO_ATOMIC"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">cub::BLOCK_HISTO_ATOMIC</span></code></a>: Use atomic addition to update byte counts directly.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="a-simple-example">
+<h2>A Simple Example<a class="headerlink" href="#a-simple-example" title="Permalink to this headline"></a></h2>
+<p>Every thread in the block uses the BlockHistogram class by first specializing the BlockHistogram type, then instantiating an instance with parameters for communication, and finally invoking one or more collective member functions.</p>
+<p>The code snippet below illustrates a 256-bin histogram of 512 integer samples that
+are partitioned across 128 threads where each thread owns 4 samples.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_histogram.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockHistogram</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockHistogram</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockHistogram</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockHistogram</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for block-wide histogram bin counts</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain input samples per thread</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide histogram</span>
+<span class="w">    </span><span class="n">BlockHistogram</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Histogram</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="performance-and-usage-considerations">
+<h2>Performance and Usage Considerations<a class="headerlink" href="#performance-and-usage-considerations" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
+<li><p>All input values must fall between <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">BINS)</span></code>, or behavior is undefined.</p></li>
+<li><p>The histogram output can be constructed in shared or device-accessible memory</p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">cub::BlockHistogramAlgorithm</span></code> for performance details regarding algorithmic alternatives</p></li>
+</ul>
+</section>
+<section id="re-using-dynamically-allocating-shared-memory">
+<h2>Re-using dynamically allocating shared memory<a class="headerlink" href="#re-using-dynamically-allocating-shared-memory" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">block/example_block_reduce_dyn_smem.cu</span></code> example illustrates usage of dynamically shared memory with
+BlockReduce and how to re-purpose the same memory region. This example can be easily adapted to the storage
+required by BlockHistogram.</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The sample type being histogrammed (must be castable to an integer bin identifier)</p></li>
+<li><p><strong>BLOCK_DIM_X</strong> – The thread block length in threads along the X dimension</p></li>
+<li><p><strong>ITEMS_PER_THREAD</strong> – The number of items per thread</p></li>
+<li><p><strong>BINS</strong> – The number bins within the histogram</p></li>
+<li><p><strong>ALGORITHM</strong> – <strong>[optional]</strong> <a class="reference internal" href="enum_namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2.html#namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2"><span class="std std-ref">cub::BlockHistogramAlgorithm</span></a> enumerator specifying the underlying algorithm to use (default: <a class="reference internal" href="enum_namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2.html#namespacecub_1a845ca81ef9b346ef7429a35d4fdc80d2ac14962247ae5693de2de53a8db40ca54"><span class="std std-ref">cub::BLOCK_HISTO_SORT</span></a>)</p></li>
+<li><p><strong>BLOCK_DIM_Y</strong> – <strong>[optional]</strong> The thread block length in threads along the Y dimension (default: 1)</p></li>
+<li><p><strong>BLOCK_DIM_Z</strong> – <strong>[optional]</strong> The thread block length in threads along the Z dimension (default: 1) </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-collective-constructors">Collective constructors</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub14BlockHistogram14BlockHistogramEv">
+<span id="_CPPv3N3cub14BlockHistogram14BlockHistogramEv"></span><span id="_CPPv2N3cub14BlockHistogram14BlockHistogramEv"></span><span id="cub::BlockHistogram::BlockHistogram"></span><span class="target" id="classcub_1_1blockhistogram_1afaf42b04f1c6399ff5a09ca688814ee9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockHistogram</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockHistogram14BlockHistogramEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Collective constructor using a private static allocation of shared memory as temporary storage. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub14BlockHistogram14BlockHistogramER11TempStorage">
+<span id="_CPPv3N3cub14BlockHistogram14BlockHistogramER11TempStorage"></span><span id="_CPPv2N3cub14BlockHistogram14BlockHistogramER11TempStorage"></span><span id="cub::BlockHistogram::BlockHistogram__TempStorageR"></span><span class="target" id="classcub_1_1blockhistogram_1a3d58db09a81bbad6cadbe7eb853b468a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockHistogram</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3cub14BlockHistogram11TempStorageE" title="cub::BlockHistogram::TempStorage"><span class="n"><span class="pre">TempStorage</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockHistogram14BlockHistogramER11TempStorage" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Collective constructor using the specified memory allocation as temporary storage. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>temp_storage</strong> – <strong>[in]</strong> Reference to memory allocation having layout type TempStorage </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-histogram-operations">Histogram operations</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub14BlockHistogram13InitHistogramEvA4BINS_8CounterT">
+<span id="_CPPv3I0EN3cub14BlockHistogram13InitHistogramEA4BINS_8CounterT"></span><span id="_CPPv2I0EN3cub14BlockHistogram13InitHistogramEABINS_8CounterT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CounterT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockhistogram_1a2a8b2449c12c0f65431aff7b43953df4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InitHistogram</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3cub14BlockHistogram13InitHistogramEvA4BINS_8CounterT" title="cub::BlockHistogram::InitHistogram::CounterT"><span class="n"><span class="pre">CounterT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">histogram</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="cub::BlockHistogram::BINS"><span class="n"><span class="pre">BINS</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockHistogram13InitHistogramEvA4BINS_8CounterT" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Initialize the shared histogram counters to zero.</p>
+<section id="snippet">
+<h2>Snippet<a class="headerlink" href="#snippet" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a the initialization and update of a
+histogram of 512 integer samples that are partitioned across 128 threads
+where each thread owns 4 samples.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_histogram.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">BlockHistogram</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockHistogram</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Allocate shared memory for BlockHistogram</span>
+<span class="w">  </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockHistogram</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Allocate shared memory for block-wide histogram bin counts</span>
+<span class="w">  </span><span class="n">__shared__</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Obtain input samples per thread</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">thread_samples</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Initialize the block-wide histogram</span>
+<span class="w">  </span><span class="n">BlockHistogram</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">InitHistogram</span><span class="p">(</span><span class="n">smem_histogram</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Update the block-wide histogram</span>
+<span class="w">  </span><span class="n">BlockHistogram</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Composite</span><span class="p">(</span><span class="n">thread_samples</span><span class="p">,</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CounterT</strong> – <strong>[inferred]</strong> Histogram counter type </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub14BlockHistogram9HistogramEvRA16ITEMS_PER_THREAD_1TA4BINS_8CounterT">
+<span id="_CPPv3I0EN3cub14BlockHistogram9HistogramERA16ITEMS_PER_THREAD_1TA4BINS_8CounterT"></span><span id="_CPPv2I0EN3cub14BlockHistogram9HistogramERAITEMS_PER_THREAD_1TABINS_8CounterT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CounterT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockhistogram_1aa8dae9addc61450a3584402165ba66d5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Histogram</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="cub::BlockHistogram::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">items</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="cub::BlockHistogram::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub14BlockHistogram9HistogramEvRA16ITEMS_PER_THREAD_1TA4BINS_8CounterT" title="cub::BlockHistogram::Histogram::CounterT"><span class="n"><span class="pre">CounterT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">histogram</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="cub::BlockHistogram::BINS"><span class="n"><span class="pre">BINS</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockHistogram9HistogramEvRA16ITEMS_PER_THREAD_1TA4BINS_8CounterT" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Constructs a block-wide histogram in shared/device-accessible memory.
+Each thread contributes an array of input elements.</p>
+<ul class="simple">
+<li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="id1">
+<h2>Snippet<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a 256-bin histogram of 512 integer samples that
+are partitioned across 128 threads where each thread owns 4 samples.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_histogram.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockHistogram</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockHistogram</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockHistogram</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockHistogram</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for block-wide histogram bin counts</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain input samples per thread</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">thread_samples</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide histogram</span>
+<span class="w">    </span><span class="n">BlockHistogram</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Histogram</span><span class="p">(</span><span class="n">thread_samples</span><span class="p">,</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CounterT</strong> – <strong>[inferred]</strong> Histogram counter type</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>items</strong> – <strong>[in]</strong> Calling thread’s input values to histogram</p></li>
+<li><p><strong>histogram</strong> – <strong>[out]</strong> Reference to shared/device-accessible memory histogram </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub14BlockHistogram9CompositeEvRA16ITEMS_PER_THREAD_1TA4BINS_8CounterT">
+<span id="_CPPv3I0EN3cub14BlockHistogram9CompositeERA16ITEMS_PER_THREAD_1TA4BINS_8CounterT"></span><span id="_CPPv2I0EN3cub14BlockHistogram9CompositeERAITEMS_PER_THREAD_1TABINS_8CounterT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CounterT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockhistogram_1ac548d058d4af18c8f6d932ca7b7d2511"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Composite</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="cub::BlockHistogram::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">items</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="cub::BlockHistogram::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub14BlockHistogram9CompositeEvRA16ITEMS_PER_THREAD_1TA4BINS_8CounterT" title="cub::BlockHistogram::Composite::CounterT"><span class="n"><span class="pre">CounterT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">histogram</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I0_i_i_i_23BlockHistogramAlgorithm_i_iEN3cub14BlockHistogramE" title="cub::BlockHistogram::BINS"><span class="n"><span class="pre">BINS</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockHistogram9CompositeEvRA16ITEMS_PER_THREAD_1TA4BINS_8CounterT" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Updates an existing block-wide histogram in shared/device-accessible memory.
+Each thread composites an array of input elements.</p>
+<ul class="simple">
+<li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="id2">
+<h2>Snippet<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a the initialization and update of a
+histogram of 512 integer samples that are partitioned across 128 threads
+where each thread owns 4 samples.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_histogram.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize a 256-bin BlockHistogram type for a 1D block of 128 threads having 4 character samples each</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockHistogram</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockHistogram</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockHistogram</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockHistogram</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for block-wide histogram bin counts</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain input samples per thread</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">thread_samples</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Initialize the block-wide histogram</span>
+<span class="w">    </span><span class="n">BlockHistogram</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">InitHistogram</span><span class="p">(</span><span class="n">smem_histogram</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Update the block-wide histogram</span>
+<span class="w">    </span><span class="n">BlockHistogram</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Composite</span><span class="p">(</span><span class="n">thread_samples</span><span class="p">,</span><span class="w"> </span><span class="n">smem_histogram</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>CounterT</strong> – <strong>[inferred]</strong> Histogram counter type</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>items</strong> – <strong>[in]</strong> Calling thread’s input values to histogram</p></li>
+<li><p><strong>histogram</strong> – <strong>[out]</strong> Reference to shared/device-accessible memory histogram </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub14BlockHistogram11TempStorageE">
+<span id="_CPPv3N3cub14BlockHistogram11TempStorageE"></span><span id="_CPPv2N3cub14BlockHistogram11TempStorageE"></span><span id="cub::BlockHistogram::TempStorage"></span><span class="target" id="structcub_1_1blockhistogram_1_1tempstorage"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TempStorage</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">Uninitialized</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">_TempStorage</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3cub14BlockHistogram11TempStorageE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The operations exposed by BlockHistogram require a temporary memory allocation of this nested type for thread communication. This opaque storage can be allocated directly using the <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> keyword. Alternatively, it can be aliased to externally allocated memory (shared or global) or <code class="docutils literal notranslate"><span class="pre">union</span></code>’d with other storage allocation types to facilitate memory reuse. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CUB Tests &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CUB Benchmarks" href="benchmarking.html" />
+    <link rel="prev" title="CUB Developer Overview" href="developer_overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">CUB Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CUB Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#directory-and-file-naming">Directory and File Naming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-structure">Test Structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base-case">Base case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generators">Generators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-lists">Type Lists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multidimensional-configuration-spaces">Multidimensional Configuration Spaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#speedup-compilation-time">Speedup Compilation Time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#final-test">Final Test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>CUB Tests</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-tests">
+<h1>CUB Tests<a class="headerlink" href="#cub-tests" title="Permalink to this headline"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>CUB is in the progress of migrating to [Catch2](<a class="reference external" href="https://github.com/catchorg/Catch2">https://github.com/catchorg/Catch2</a>) framework.</p>
+</div>
+<p>CUB tests rely on <a class="reference external" href="https://github.com/cpm-cmake/CPM.cmake">CPM</a> to fetch
+<a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a> that’s used as our main testing framework.</p>
+<p>Currently,
+legacy tests coexist with Catch2 ones.
+This guide is focused on new tests.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Instead of including <code class="docutils literal notranslate"><span class="pre">&lt;catch2/catch.hpp&gt;</span></code> directly, use <code class="docutils literal notranslate"><span class="pre">catch2_test_helper.h</span></code>.</p>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/block/block_scan.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;c2h/vector.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;c2h/catch2_test_helper.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<section id="directory-and-file-naming">
+<h2>Directory and File Naming<a class="headerlink" href="#directory-and-file-naming" title="Permalink to this headline"></a></h2>
+<p>Our tests can be found in the <code class="docutils literal notranslate"><span class="pre">test</span></code> directory.
+Legacy tests have the following naming scheme: <code class="docutils literal notranslate"><span class="pre">test_SCOPE_FACILITY.cu</span></code>.
+For instance, here are the reduce tests:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">test</span><span class="o">/</span><span class="n">test_warp_reduce</span><span class="p">.</span><span class="n">cu</span><span class="w"></span>
+<span class="n">test</span><span class="o">/</span><span class="n">test_block_reduce</span><span class="p">.</span><span class="n">cu</span><span class="w"></span>
+<span class="n">test</span><span class="o">/</span><span class="n">test_device_reduce</span><span class="p">.</span><span class="n">cu</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Catch2-based tests have a different naming scheme: <code class="docutils literal notranslate"><span class="pre">catch2_test_SCOPE_FACILITY.cu</span></code>.</p>
+<p>The prefix is essential since that’s how CMake finds tests
+and distinguishes new tests from legacy ones.</p>
+</section>
+<section id="test-structure">
+<h2>Test Structure<a class="headerlink" href="#test-structure" title="Permalink to this headline"></a></h2>
+<section id="base-case">
+<h3>Base case<a class="headerlink" href="#base-case" title="Permalink to this headline"></a></h3>
+<p>Let’s start with a simple example.
+Say there’s no need to cover many types with your test.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// 0) Define test name and tags</span>
+<span class="n">C2H_TEST</span><span class="p">(</span><span class="s">&quot;SCOPE FACILITY works with CONDITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[FACILITY][SCOPE]&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threads_per_block</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 1) Allocate device input</span>
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_input</span><span class="p">(</span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 2) Generate 3 random input arrays using Catch2 helper</span>
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">gen</span><span class="p">(</span><span class="n">C2H_SEED</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">d_input</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 3) Allocate output array</span>
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_output</span><span class="p">(</span><span class="n">d_input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 4) Copy device input to host</span>
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">host_vector</span><span class="o">&lt;</span><span class="kt">key_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">h_reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_input</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 5) Compute reference output</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">ALGORITHM</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">h_reference</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span><span class="w"></span>
+<span class="w">      </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">h_reference</span><span class="p">.</span><span class="n">data</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h_reference</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 6) Compute CUB output</span>
+<span class="w">  </span><span class="n">SCOPE_ALGORITHM</span><span class="o">&lt;</span><span class="n">threads_per_block</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_input</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"></span>
+<span class="w">                                     </span><span class="n">d_output</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"></span>
+<span class="w">                                     </span><span class="n">d_input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// 7) Compare device and host results</span>
+<span class="w">  </span><span class="n">REQUIRE</span><span class="p">(</span><span class="w"> </span><span class="n">d_input</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">d_output</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We introduce test cases with the <code class="docutils literal notranslate"><span class="pre">C2H_TEST</span></code> macro in (0).
+This macro always takes two string arguments - a free-form test name and
+one or more tags. Then, in (1), we allocate device memory using <code class="docutils literal notranslate"><span class="pre">c2h::device_vector</span></code>.
+<code class="docutils literal notranslate"><span class="pre">c2h::device_vector</span></code> and <code class="docutils literal notranslate"><span class="pre">c2h::host_vector</span></code> behave similarly to their Thrust counterparts,
+but are modified to provide more stable behavior in some testing edge cases.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Always use <code class="docutils literal notranslate"><span class="pre">c2h::host_vector&lt;T&gt;</span></code>/<code class="docutils literal notranslate"><span class="pre">c2h::device_vector&lt;T&gt;</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">thrust::host_vector&lt;T&gt;</span></code>/<code class="docutils literal notranslate"><span class="pre">thrust::device_vector&lt;T&gt;</span></code>,
+unless the test code is being used for documentation examples.</p>
+</div>
+<p>Similarly, any thrust algorithms that executed on the device must be invoked with the
+<cite>c2h::device_policy</cite> execution policy (not shown here) to support the same edge cases.
+The memory is filled with random data in (2).</p>
+<p>Generator <code class="docutils literal notranslate"><span class="pre">c2h::gen</span></code> takes at least two parameters.
+The first one is a random generator seed.
+Instead of providing a single value, we use the <code class="docutils literal notranslate"><span class="pre">C2H_SEED</span></code> macro.
+The macro expects a number of seeds that has to be generated.
+In the example above, we require three random seeds to be generated.
+This leads to the whole test being executed three times
+with different seed values.</p>
+<p>Later, in (3), we allocate device output and host reference.
+In (4), we allocate and populate the host input data.
+Then, we perform the reference computation on the host in (5).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Standard library algorithms (<code class="docutils literal notranslate"><span class="pre">std::</span></code>) have to be used where possible when computing reference solutions.</p>
+</div>
+<p>Afterwards, we launch the corresponding CUB algorithm in (6).
+At this point, we have a reference solution on the CPU and a CUB solution on the GPU.
+The two can be compared using Catch2’s <code class="docutils literal notranslate"><span class="pre">REQUIRE</span></code> macro, which stops execution upon failure (preferred).
+Catch2 also offers the <code class="docutils literal notranslate"><span class="pre">CHECK</span></code> macro, which continues test execution if the check fails.</p>
+<p>If your test has to cover floating point types,
+it’s sufficient to replace <code class="docutils literal notranslate"><span class="pre">REQUIRE(</span> <span class="pre">a</span> <span class="pre">==</span> <span class="pre">b</span> <span class="pre">)</span></code> with <code class="docutils literal notranslate"><span class="pre">REQUIRE_APPROX_EQ(a,</span> <span class="pre">b)</span></code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">c2h::gen</span></code> for producing input data is strongly advised.</p>
+</div>
+<p>Do not use <code class="docutils literal notranslate"><span class="pre">assert</span></code> in tests, which is usually only enabled in Debug mode,
+and we run CUB tests in Release mode.</p>
+<p>If a custom (non-fundamental) type has to be tested, the following helper class template should be used:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">custom_type_t</span><span class="o">&lt;</span><span class="n">c2h</span><span class="o">::</span><span class="n">accumulateable_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                </span><span class="n">c2h</span><span class="o">::</span><span class="n">equal_comparable_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we enumerate all the type properties that we are interested in.
+The produced type ends up having <code class="docutils literal notranslate"><span class="pre">operator==</span></code> (from <code class="docutils literal notranslate"><span class="pre">equal_comparable_t</span></code>)
+and <code class="docutils literal notranslate"><span class="pre">operator+</span></code> (from <code class="docutils literal notranslate"><span class="pre">accumulateable_t</span></code>).
+More properties are available.
+If a property is missing, please add it to the existing set in <code class="docutils literal notranslate"><span class="pre">c2h</span></code>
+instead of writing a custom type from scratch.</p>
+</section>
+<section id="generators">
+<h3>Generators<a class="headerlink" href="#generators" title="Permalink to this headline"></a></h3>
+<p>We often need to test CUB algorithms against different inputs or problem sizes.
+If these are <strong>runtime values</strong>, we can use the Catch2 <code class="docutils literal notranslate"><span class="pre">GENERATE</span></code> macro:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">C2H_TEST</span><span class="p">(</span><span class="s">&quot;SCOPE FACILITY works with CONDITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[FACILITY][SCOPE]&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GENERATE</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">1&#39;000&#39;000</span><span class="p">);</span><span class="w"> </span><span class="c1">// 0) Init. a variable with a generator</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This will lead to the test being executed three times, once for each argument to <code class="docutils literal notranslate"><span class="pre">GENERATE(...)</span></code>.
+Multiple generators in a test inside the same scope will form the cartesian product of all combinations.
+Please consult the <a class="reference external" href="https://github.com/catchorg/Catch2/blob/devel/docs/generators.md">Catch2 documentation</a>
+for more details.</p>
+<p><code class="docutils literal notranslate"><span class="pre">C2H_SEED(3)</span></code> uses a generator expression internally.</p>
+</section>
+<section id="type-lists">
+<h3>Type Lists<a class="headerlink" href="#type-lists" title="Permalink to this headline"></a></h3>
+<p>Since CUB is a generic library,
+it’s often required to test CUB algorithms against many types.
+To do so,
+it’s sufficient to define a type list and provide it to the <code class="docutils literal notranslate"><span class="pre">C2H_TEST</span></code> macro.
+This is useful for <strong>compile-time</strong> parameterization of tests.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// 0) Define type list</span>
+<span class="k">using</span><span class="w"> </span><span class="n">types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">type_list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">C2H_TEST</span><span class="p">(</span><span class="s">&quot;SCOPE FACILITY works with CONDITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[FACILITY][SCOPE]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">types</span><span class="p">)</span><span class="w"> </span><span class="c1">// 1) Provide it to the test case</span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// 2) Access current type with `c2h::get`</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This will lead to the test being compiled (instantiated) and run twice.
+The first run will cause <code class="docutils literal notranslate"><span class="pre">type</span></code> to be <code class="docutils literal notranslate"><span class="pre">std::uint8_t</span></code>.
+The second one will cause <code class="docutils literal notranslate"><span class="pre">type</span></code> to be <code class="docutils literal notranslate"><span class="pre">std::uint32_t</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It’s important to use types from the <code class="docutils literal notranslate"><span class="pre">&lt;cstdint&gt;</span></code> header
+instead of built-in types like <code class="docutils literal notranslate"><span class="pre">char</span></code> and <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p>
+</div>
+</section>
+<section id="multidimensional-configuration-spaces">
+<h3>Multidimensional Configuration Spaces<a class="headerlink" href="#multidimensional-configuration-spaces" title="Permalink to this headline"></a></h3>
+<p>In most cases, the input data type is not the only compile-time parameter we want to vary.
+For instance, you might need to test a block algorithm for different data types
+<strong>and</strong> different thread block sizes.
+To do so, you can add another type list as follows:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">block_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">enum_type_list</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">type_list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">C2H_TEST</span><span class="p">(</span><span class="s">&quot;SCOPE FACILITY works with CONDITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[FACILITY][SCOPE]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">types</span><span class="p">,</span><span class="w"> </span><span class="n">block_sizes</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The code above leads to the following combinations being compiled:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">128</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">256</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::int32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">128</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::int32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">256</span></code></p></li>
+</ul>
+<p>As an example, the following test case includes both multidimensional configuration spaces
+and multiple random sequence generations.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">block_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">enum_type_list</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">type_list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">C2H_TEST</span><span class="p">(</span><span class="s">&quot;SCOPE FACILITY works with CONDITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[FACILITY][SCOPE]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">types</span><span class="p">,</span><span class="w"> </span><span class="n">block_sizes</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_input</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">gen</span><span class="p">(</span><span class="n">C2H_SEED</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">d_input</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The code above leads to the following combinations being compiled:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">128</span></code>, 1st random generated input sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">256</span></code>, 1st random generated input sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::int32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">128</span></code>, 1st random generated input sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::int32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">256</span></code>, 1st random generated input sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">128</span></code>, 2nd random generated input sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::uint8_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">256</span></code>, 2nd random generated input sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::int32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">128</span></code>, 2nd random generated input sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">std::int32_t</span></code>, <code class="docutils literal notranslate"><span class="pre">threads_per_block</span> <span class="pre">=</span> <span class="pre">256</span></code>, 2nd random generated input sequence</p></li>
+</ul>
+<p>Each new generator multiplies the number of execution times by its number of seeds. That means
+that if there were further more sequence generators (<code class="docutils literal notranslate"><span class="pre">c2h::gen(C2H_SEED(X),</span> <span class="pre">...)</span></code>) on the
+example above the test would execute X more times and so on.</p>
+</section>
+<section id="speedup-compilation-time">
+<h3>Speedup Compilation Time<a class="headerlink" href="#speedup-compilation-time" title="Permalink to this headline"></a></h3>
+<p>Since type lists in the <code class="docutils literal notranslate"><span class="pre">C2H_TEST</span></code> form a Cartesian product,
+compilation time grows quickly with every new dimension.
+To keep the compilation process parallelized,
+it’s possible to rely on our <code class="docutils literal notranslate"><span class="pre">%PARAM%</span></code> machinery:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// %PARAM% BLOCK_SIZE bs 128:256</span>
+<span class="k">using</span><span class="w"> </span><span class="n">block_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">enum_type_list</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_SIZE</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">type_list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">C2H_TEST</span><span class="p">(</span><span class="s">&quot;SCOPE FACILITY works with CONDITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[FACILITY][SCOPE]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">types</span><span class="p">,</span><span class="w"> </span><span class="n">block_sizes</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The comment with <code class="docutils literal notranslate"><span class="pre">%PARAM%</span></code> is recognized by our CMake scripts.
+It leads to multiple executables being produced from a single test source.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/cub.test.scope_algorithm.bs_128
+bin/cub.test.scope_algorithm.bs_256
+</pre></div>
+</div>
+<p>Multiple <code class="docutils literal notranslate"><span class="pre">%PARAM%</span></code> comments can be specified forming another Cartesian product.</p>
+</section>
+<section id="final-test">
+<h3>Final Test<a class="headerlink" href="#final-test" title="Permalink to this headline"></a></h3>
+<p>Let’s consider the final test that illustrates all of the tools we discussed above:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// %PARAM% BLOCK_SIZE bs 128:256</span>
+<span class="k">using</span><span class="w"> </span><span class="n">block_sizes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">enum_type_list</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">BLOCK_SIZE</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">type_list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">C2H_TEST</span><span class="p">(</span><span class="s">&quot;SCOPE FACILITY works with CONDITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[FACILITY][SCOPE]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">types</span><span class="p">,</span><span class="w"> </span><span class="n">block_sizes</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">threads_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c2h</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">TestType</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">max_num_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threads_per_block</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_input</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">GENERATE_COPY</span><span class="p">(</span><span class="n">take</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">random</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">max_num_items</span><span class="p">))));</span><span class="w"></span>
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">gen</span><span class="p">(</span><span class="n">C2H_SEED</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">d_input</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">c2h</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_output</span><span class="p">(</span><span class="n">d_input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">SCOPE_ALGORITHM</span><span class="o">&lt;</span><span class="n">threads_per_block</span><span class="o">&gt;</span><span class="p">(</span><span class="n">d_input</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"></span>
+<span class="w">                                    </span><span class="n">d_output</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"></span>
+<span class="w">                                    </span><span class="n">d_input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">REQUIRE</span><span class="p">(</span><span class="w"> </span><span class="n">d_input</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">d_output</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">expected_sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">reduce</span><span class="p">(</span><span class="n">c2h</span><span class="o">::</span><span class="n">device_policy</span><span class="p">,</span><span class="w"> </span><span class="n">d_output</span><span class="p">.</span><span class="n">cbegin</span><span class="p">(),</span><span class="w"> </span><span class="n">d_output</span><span class="p">.</span><span class="n">cend</span><span class="p">());</span><span class="w"></span>
+<span class="w">  </span><span class="n">REQUIRE</span><span class="p">(</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected_sum</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Apart from discussed tools, here we also rely on <code class="docutils literal notranslate"><span class="pre">Catch2</span></code> to generate random input sizes
+in the range <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">max_num_items]</span></code> for our input vector <code class="docutils literal notranslate"><span class="pre">d_input</span></code>.
+Overall, the test will produce two executables.
+Each of these executables is going to generate <code class="docutils literal notranslate"><span class="pre">2</span></code> input problem sizes.
+For each problem size, <code class="docutils literal notranslate"><span class="pre">3</span></code> random vectors are generated.
+As a result, we have <code class="docutils literal notranslate"><span class="pre">12</span></code> different tests.
+The code also demonstrates the syntax and usage of <code class="docutils literal notranslate"><span class="pre">c2h::device_policy</span></code> with a Thrust algorithm.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

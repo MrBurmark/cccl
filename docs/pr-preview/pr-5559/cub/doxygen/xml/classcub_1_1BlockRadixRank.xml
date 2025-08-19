@@ -1,0 +1,719 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1BlockRadixRank" kind="class" language="C++" prot="public">
+    <compoundname>cub::BlockRadixRank</compoundname>
+    <innerclass refid="structcub_1_1BlockRadixRank_1_1PrefixCallBack" prot="private">cub::BlockRadixRank::PrefixCallBack</innerclass>
+    <innerclass refid="structcub_1_1BlockRadixRank_1_1TempStorage" prot="public">cub::BlockRadixRank::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_X</declname>
+        <defname>BLOCK_DIM_X</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>RADIX_BITS</declname>
+        <defname>RADIX_BITS</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>IS_DESCENDING</declname>
+        <defname>IS_DESCENDING</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>MEMOIZE_OUTER_SCAN</declname>
+        <defname>MEMOIZE_OUTER_SCAN</defname>
+        <defval>true</defval>
+      </param>
+      <param>
+        <type><ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23ab" kindref="member">BlockScanAlgorithm</ref></type>
+        <declname>INNER_SCAN_ALGORITHM</declname>
+        <defname>INNER_SCAN_ALGORITHM</defname>
+        <defval><ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba7f51e58246eb53f1a97bd1bc8c0f400f" kindref="member">BLOCK_SCAN_WARP_SCANS</ref></defval>
+      </param>
+      <param>
+        <type>cudaSharedMemConfig</type>
+        <declname>SMEM_CONFIG</declname>
+        <defname>SMEM_CONFIG</defname>
+        <defval>cudaSharedMemBankSizeFourByte</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Y</declname>
+        <defname>BLOCK_DIM_Y</defname>
+        <defval>1</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Z</declname>
+        <defname>BLOCK_DIM_Z</defname>
+        <defval>1</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1afad7cfa51fa8274e5ec05cd132f5a867" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockRadixRank</definition>
+        <argsstring>()</argsstring>
+        <name>BlockRadixRank</name>
+        <briefdescription>
+<para>Collective constructor using a private static allocation of shared memory as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="401" column="5" bodyfile="cub/block/block_radix_rank.cuh" bodystart="401" bodyend="404"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1a1be7cca3ddbd746a7be30fd91e4972d0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockRadixRank</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>BlockRadixRank</name>
+        <param>
+          <type><ref refid="structcub_1_1BlockRadixRank_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to memory allocation having layout type <ref refid="structcub_1_1BlockRadixRank_1_1TempStorage" kindref="compound">TempStorage</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="412" column="5" bodyfile="cub/block/block_radix_rank.cuh" bodystart="412" bodyend="415"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Raking</header>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1a3029c2c895eeddc2ebd656218c70fe4e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename UnsignedBits</type>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>KEYS_PER_THREAD</declname>
+            <defname>KEYS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename DigitExtractorT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::RankKeys</definition>
+        <argsstring>(UnsignedBits(&amp;keys)[KEYS_PER_THREAD], int(&amp;ranks)[KEYS_PER_THREAD], DigitExtractorT digit_extractor)</argsstring>
+        <name>RankKeys</name>
+        <param>
+          <type>UnsignedBits(&amp;)</type>
+          <declname>keys</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>DigitExtractorT</type>
+          <declname>digit_extractor</declname>
+        </param>
+        <briefdescription>
+<para>Rank keys. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys for this tile</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>For each key, the local rank within the tile</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">digit_extractor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The digit extractor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="435" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="435" bodyend="490"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1a040206a9411b639626805d24b8322747" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename UnsignedBits</type>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>KEYS_PER_THREAD</declname>
+            <defname>KEYS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename DigitExtractorT</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::RankKeys</definition>
+        <argsstring>(UnsignedBits(&amp;keys)[KEYS_PER_THREAD], int(&amp;ranks)[KEYS_PER_THREAD], DigitExtractorT digit_extractor, int(&amp;exclusive_digit_prefix)[BINS_TRACKED_PER_THREAD])</argsstring>
+        <name>RankKeys</name>
+        <param>
+          <type>UnsignedBits(&amp;)</type>
+          <declname>keys</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>ranks</declname>
+          <array>[KEYS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>DigitExtractorT</type>
+          <declname>digit_extractor</declname>
+        </param>
+        <param>
+          <type>int(&amp;)</type>
+          <declname>exclusive_digit_prefix</declname>
+          <array>[BINS_TRACKED_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+<para>Rank keys. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For the lower <computeroutput>RADIX_DIGITS</computeroutput> threads, digit counts for each digit are provided for the corresponding thread.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">keys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Keys for this tile</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">ranks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>For each key, the local rank within the tile (out parameter)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">digit_extractor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The digit extractor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_digit_prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The exclusive prefix sum for the digits [(threadIdx.x * BINS_TRACKED_PER_THREAD) ... (threadIdx.x * BINS_TRACKED_PER_THREAD) + BINS_TRACKED_PER_THREAD - 1] </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="513" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="513" bodyend="545"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95" prot="private" static="no" strong="no">
+        <type></type>
+        <name>@6</name>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a6b1075ffe0ce2c24c4e2f5c281e4fb88" prot="private">
+          <name>BLOCK_THREADS</name>
+          <initializer>= BLOCK_DIM_X * BLOCK_DIM_Y * BLOCK_DIM_Z</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95aa1d635a66d9f6906c72b3bc1ea154dd2" prot="private">
+          <name>RADIX_DIGITS</name>
+          <initializer>= 1 &lt;&lt; RADIX_BITS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a31c70f582b01a55203c704344b89a68a" prot="private">
+          <name>LOG_WARP_THREADS</name>
+          <initializer>= detail::log2_warp_threads</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95aa85b10554387d34293e41173d1b7da4d" prot="private">
+          <name>WARP_THREADS</name>
+          <initializer>= 1 &lt;&lt; LOG_WARP_THREADS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a2eb50912bfe46b9963f051f62131cacc" prot="private">
+          <name>WARPS</name>
+          <initializer>= (BLOCK_THREADS + WARP_THREADS - 1) / WARP_THREADS</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a0bc0c960508c143d854ba1b444a02286" prot="private">
+          <name>BYTES_PER_COUNTER</name>
+          <initializer>= sizeof(DigitCounter)</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a447aa211cd9075dd8fef34411ea3c756" prot="private">
+          <name>LOG_BYTES_PER_COUNTER</name>
+          <initializer>= Log2&lt;BYTES_PER_COUNTER&gt;::VALUE</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95aa92fef1e09bb0e344c2574574aa04a49" prot="private">
+          <name>PACKING_RATIO</name>
+          <initializer>= static_cast&lt;int&gt;(sizeof(PackedCounter) / sizeof(DigitCounter))</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a4d5e1ea6522706c9778c1f93568c124b" prot="private">
+          <name>LOG_PACKING_RATIO</name>
+          <initializer>= Log2&lt;PACKING_RATIO&gt;::VALUE</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a1d24a263cb17c1f3c38c06da4728d396" prot="private">
+          <name>LOG_COUNTER_LANES</name>
+          <initializer>= cuda::std::max(RADIX_BITS - LOG_PACKING_RATIO, 0)</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95ac78ebe8ab18b3f86bc28bdd088961bef" prot="private">
+          <name>COUNTER_LANES</name>
+          <initializer>= 1 &lt;&lt; LOG_COUNTER_LANES</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95ae58ee8524588cd58c511b19cf9e3fc3d" prot="private">
+          <name>PADDED_COUNTER_LANES</name>
+          <initializer>= COUNTER_LANES + 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95adfd39acb6145bdde35107ec067d27cf8" prot="private">
+          <name>RAKING_SEGMENT</name>
+          <initializer>= PADDED_COUNTER_LANES</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="229" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="230" bodyend="253"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockRadixRank_1a78e656d8a104c52de96cd0c5054160f4" prot="private" static="no">
+        <type>unsigned short</type>
+        <definition>using cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::DigitCounter =  unsigned short</definition>
+        <argsstring></argsstring>
+        <name>DigitCounter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="221" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="221" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockRadixRank_1a7f7624fb859e51ba50943e1e0b8a0205" prot="private" static="no">
+        <type>::cuda::std::_If&lt; SMEM_CONFIG==cudaSharedMemBankSizeEightByte, unsigned long long, unsigned int &gt;</type>
+        <definition>using cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::PackedCounter =  ::cuda::std::_If&lt;SMEM_CONFIG == cudaSharedMemBankSizeEightByte, unsigned long long, unsigned int&gt;</definition>
+        <argsstring></argsstring>
+        <name>PackedCounter</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="224" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="225" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockRadixRank_1aad102ddc68ece76b16e3bc1c775278d7" prot="private" static="no">
+        <type>BlockScan&lt; PackedCounter, BLOCK_DIM_X, INNER_SCAN_ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;</type>
+        <definition>using cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockScan =  BlockScan&lt;PackedCounter, BLOCK_DIM_X, INNER_SCAN_ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z&gt;</definition>
+        <argsstring></argsstring>
+        <name>BlockScan</name>
+        <briefdescription>
+<para><ref refid="classcub_1_1BlockScan" kindref="compound">BlockScan</ref> type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="264" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="264" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classcub_1_1BlockRadixRank_1a7ec981530ccfff5d1f0091414cb2fb6d" prot="public" static="no" strong="no">
+        <type></type>
+        <name>@7</name>
+        <enumvalue id="classcub_1_1BlockRadixRank_1a7ec981530ccfff5d1f0091414cb2fb6da4144cf43b19239e308809205e2370da2" prot="public">
+          <name>BINS_TRACKED_PER_THREAD</name>
+          <initializer>= cuda::std::max(1, (RADIX_DIGITS + BLOCK_THREADS - 1) / BLOCK_THREADS)</initializer>
+          <briefdescription>
+<para>Number of bin-starting offsets tracked per thread. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="256" column="3" bodyfile="cub/block/block_radix_rank.cuh" bodystart="257" bodyend="260"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockRadixRank_1a1e1b7aa4a08a5709027b45b8a8f50ede" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr DigitCounter</type>
+        <definition>constexpr DigitCounter cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::max_tile_size</definition>
+        <argsstring></argsstring>
+        <name>max_tile_size</name>
+        <initializer>= ::cuda::std::numeric_limits&lt;DigitCounter&gt;::max()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="227" column="33" bodyfile="cub/block/block_radix_rank.cuh" bodystart="227" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockRadixRank_1a9a5cb9f865c14f506f3e1b6b2a17daa6" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+<para>Shared storage reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="282" column="16" bodyfile="cub/block/block_radix_rank.cuh" bodystart="282" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockRadixRank_1a0ef438fcac196a13abbf5813844f6532" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::linear_tid</definition>
+        <argsstring></argsstring>
+        <name>linear_tid</name>
+        <briefdescription>
+<para>Linear thread-id. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="285" column="16" bodyfile="cub/block/block_radix_rank.cuh" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockRadixRank_1acb5cadb8e493d2954897a63cb50dc2ab" prot="private" static="no" mutable="no">
+        <type>PackedCounter</type>
+        <definition>PackedCounter cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::cached_segment[RAKING_SEGMENT]</definition>
+        <argsstring>[RAKING_SEGMENT]</argsstring>
+        <name>cached_segment</name>
+        <briefdescription>
+<para>Copy of raking segment, promoted to registers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="288" column="17" bodyfile="cub/block/block_radix_rank.cuh" bodystart="288" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1aefaf12ba18812c26acbaae5363d84511" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::PrivateStorage</definition>
+        <argsstring>()</argsstring>
+        <name>PrivateStorage</name>
+        <briefdescription>
+<para>Internal storage allocator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="293" column="18" bodyfile="cub/block/block_radix_rank.cuh" bodystart="293" bodyend="297"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1a31677d75561342c55eaf0a2fa2f4cc4d" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>PackedCounter</type>
+        <definition>PackedCounter cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Upsweep</definition>
+        <argsstring>()</argsstring>
+        <name>Upsweep</name>
+        <briefdescription>
+<para>Performs upsweep raking reduction, returning the aggregate. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="302" column="19" bodyfile="cub/block/block_radix_rank.cuh" bodystart="302" bodyend="319"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1ad209ba127823445775a61ae797bce9d8" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveDownsweep</definition>
+        <argsstring>(PackedCounter raking_partial)</argsstring>
+        <name>ExclusiveDownsweep</name>
+        <param>
+          <type>PackedCounter</type>
+          <declname>raking_partial</declname>
+        </param>
+        <briefdescription>
+<para>Performs exclusive downsweep raking scan. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="322" column="10" bodyfile="cub/block/block_radix_rank.cuh" bodystart="322" bodyend="340"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1a795d4843451c6f0094456e577f5caf81" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ResetCounters</definition>
+        <argsstring>()</argsstring>
+        <name>ResetCounters</name>
+        <briefdescription>
+<para>Reset shared memory digit counters. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="345" column="10" bodyfile="cub/block/block_radix_rank.cuh" bodystart="345" bodyend="353"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockRadixRank_1a5388194dc010f9d94fbef51846cbb4e5" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockRadixRank&lt; BLOCK_DIM_X, RADIX_BITS, IS_DESCENDING, MEMOIZE_OUTER_SCAN, INNER_SCAN_ALGORITHM, SMEM_CONFIG, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ScanCounters</definition>
+        <argsstring>()</argsstring>
+        <name>ScanCounters</name>
+        <briefdescription>
+<para>Scan shared memory digit counters. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_radix_rank.cuh" line="378" column="10" bodyfile="cub/block/block_radix_rank.cuh" bodystart="378" bodyend="390"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+BlockRadixRank provides operations for ranking unsigned integer types within a CUDA thread block.
+
+Overview
++++++++++++++++++++++++++++++++++++++++++++++
+
+- Keys must be in a form suitable for radix ranking (i.e., unsigned bits).
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+
+Performance Considerations
++++++++++++++++++++++++++++++++++++++++++++++
+
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+     constexpr int block_threads = 2;
+     constexpr int radix_bits = 5;
+
+     // Specialize BlockRadixRank for a 1D block of 2 threads
+     // Specialize BlockRadixRank for a 1D block of 2 threads
+     using block_radix_rank = cub::BlockRadixRank&lt;block_threads, radix_bits, false&gt;;
+     using storage_t = typename block_radix_rank::TempStorage;
+
+     // Allocate shared memory for BlockRadixSort
+     __shared__ storage_t temp_storage;
+
+     // Obtain a segment of consecutive items that are blocked across threads
+     int keys[2];
+     int ranks[2];
+     ...
+
+     cub::BFEDigitExtractor&lt;int&gt; extractor(0, radix_bits);
+     block_radix_rank(temp_storage).RankKeys(keys, ranks, extractor);
+
+     ...
+
+Suppose the set of input ``keys`` across the block of threads is ``{ [16,10], [9,11] }``.
+The corresponding output ``ranks`` in those threads will be ``{ [3,1], [0,2] }``.
+
+Re-using dynamically allocating shared memory
++++++++++++++++++++++++++++++++++++++++++++++
+
+The ``block/example_block_reduce_dyn_smem.cu`` example illustrates usage of dynamically shared memory with
+BlockReduce and how to re-purpose the same memory region.
+This example can be easily adapted to the storage required by BlockRadixRank.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thread block length in threads along the X dimension</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RADIX_BITS</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of radix bits per digit place</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>IS_DESCENDING</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether or not the sorted-order is high-to-low</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>MEMOIZE_OUTER_SCAN</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> Whether or not to buffer outer raking scan partials to incur fewer shared memory reads at the expense of higher register pressure (default: true for architectures SM35 and newer, false otherwise). See <computeroutput>BlockScanAlgorithm::BLOCK_SCAN_RAKING_MEMOIZE</computeroutput> for more details.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>INNER_SCAN_ALGORITHM</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The <ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23ab" kindref="member">cub::BlockScanAlgorithm</ref> algorithm to use (default: <ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba7f51e58246eb53f1a97bd1bc8c0f400f" kindref="member">cub::BLOCK_SCAN_WARP_SCANS</ref>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SMEM_CONFIG</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> Shared memory bank mode (default: <computeroutput>cudaSharedMemBankSizeFourByte</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Y dimension (default: 1)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Z dimension (default: 1) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/block/block_radix_rank.cuh" line="217" column="1" bodyfile="cub/block/block_radix_rank.cuh" bodystart="218" bodyend="548"/>
+    <listofallmembers>
+      <member refid="classcub_1_1BlockRadixRank_1a7ec981530ccfff5d1f0091414cb2fb6da4144cf43b19239e308809205e2370da2" prot="public" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>BINS_TRACKED_PER_THREAD</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a6b1075ffe0ce2c24c4e2f5c281e4fb88" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>BLOCK_THREADS</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1afad7cfa51fa8274e5ec05cd132f5a867" prot="public" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>BlockRadixRank</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a1be7cca3ddbd746a7be30fd91e4972d0" prot="public" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>BlockRadixRank</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1aad102ddc68ece76b16e3bc1c775278d7" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>BlockScan</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a0bc0c960508c143d854ba1b444a02286" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>BYTES_PER_COUNTER</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1acb5cadb8e493d2954897a63cb50dc2ab" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>cached_segment</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95ac78ebe8ab18b3f86bc28bdd088961bef" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>COUNTER_LANES</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a78e656d8a104c52de96cd0c5054160f4" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>DigitCounter</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1ad209ba127823445775a61ae797bce9d8" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>ExclusiveDownsweep</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a0ef438fcac196a13abbf5813844f6532" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>linear_tid</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a447aa211cd9075dd8fef34411ea3c756" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>LOG_BYTES_PER_COUNTER</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a1d24a263cb17c1f3c38c06da4728d396" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>LOG_COUNTER_LANES</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a4d5e1ea6522706c9778c1f93568c124b" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>LOG_PACKING_RATIO</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a31c70f582b01a55203c704344b89a68a" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>LOG_WARP_THREADS</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a1e1b7aa4a08a5709027b45b8a8f50ede" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>max_tile_size</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a7f7624fb859e51ba50943e1e0b8a0205" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>PackedCounter</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95aa92fef1e09bb0e344c2574574aa04a49" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>PACKING_RATIO</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95ae58ee8524588cd58c511b19cf9e3fc3d" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>PADDED_COUNTER_LANES</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1aefaf12ba18812c26acbaae5363d84511" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>PrivateStorage</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95aa1d635a66d9f6906c72b3bc1ea154dd2" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>RADIX_DIGITS</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95adfd39acb6145bdde35107ec067d27cf8" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>RAKING_SEGMENT</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a3029c2c895eeddc2ebd656218c70fe4e" prot="public" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>RankKeys</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a040206a9411b639626805d24b8322747" prot="public" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>RankKeys</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a795d4843451c6f0094456e577f5caf81" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>ResetCounters</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a5388194dc010f9d94fbef51846cbb4e5" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>ScanCounters</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a9a5cb9f865c14f506f3e1b6b2a17daa6" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>temp_storage</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a31677d75561342c55eaf0a2fa2f4cc4d" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>Upsweep</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95aa85b10554387d34293e41173d1b7da4d" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>WARP_THREADS</name></member>
+      <member refid="classcub_1_1BlockRadixRank_1a342414ab273698750c1f63a9b4716c95a2eb50912bfe46b9963f051f62131cacc" prot="private" virt="non-virtual"><scope>cub::BlockRadixRank</scope><name>WARPS</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

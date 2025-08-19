@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>include/cuda/experimental/__stf/internal/async_resources_handle.cuh &mdash; cudax 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="include/cuda/experimental/__stf/internal/backend_allocator_setup.cuh" href="file_include_cuda_experimental___stf_internal_backend_allocator_setup.cuh.html" />
+    <link rel="prev" title="include/cuda/experimental/__stf/internal/async_resources_handle.cuh" href="file_include_cuda_experimental___stf_internal_async_resources_handle.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../container.html">Containers library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphs library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stf.html">CUDASTF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cudax_api.html">Cudax: Experimental new features API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cudax_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_include.html">include</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_include.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="dir_include_cuda.html">include/cuda</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_include_cuda.html#directories">Directories</a><ul class="current">
+<li class="toctree-l7 current"><a class="reference internal" href="dir_include_cuda_experimental.html">include/cuda/experimental</a><ul class="current">
+<li class="toctree-l8 current"><a class="reference internal" href="dir_include_cuda_experimental.html#directories">Directories</a><ul class="current">
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___container.html">include/cuda/experimental/__container</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___device.html">include/cuda/experimental/__device</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___graph.html">include/cuda/experimental/__graph</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___hierarchy.html">include/cuda/experimental/__hierarchy</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___launch.html">include/cuda/experimental/__launch</a></li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___memory_resource.html">include/cuda/experimental/__memory_resource</a></li>
+<li class="toctree-l9 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a><ul class="current">
+<li class="toctree-l10 current"><a class="reference internal" href="dir_include_cuda_experimental___stf.html#directories">Directories</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="dir_include_cuda_experimental___stream.html">include/cuda/experimental/__stream</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="dir_include_cuda_experimental.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cudax_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cudax</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cudax_api.html">Cudax: Experimental new features API</a> &raquo;</li>
+          <li><a href="dir_include.html">include</a> &raquo;</li>
+          <li><a href="dir_include_cuda.html">include/cuda</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental.html">include/cuda/experimental</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf.html">include/cuda/experimental/__stf</a> &raquo;</li>
+          <li><a href="dir_include_cuda_experimental___stf_internal.html">include/cuda/experimental/__stf/internal</a> &raquo;</li>
+          <li><a href="file_include_cuda_experimental___stf_internal_async_resources_handle.cuh.html">include/cuda/experimental/__stf/internal/async_resources_handle.cuh</a> &raquo;</li>
+      <li>include/cuda/experimental/__stf/internal/async_resources_handle.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="include-cuda-experimental-stf-internal-async-resources-handle-cuh">
+<h1>include/cuda/experimental/__stf/internal/async_resources_handle.cuh<a class="headerlink" href="#include-cuda-experimental-stf-internal-async-resources-handle-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_include_cuda_experimental___stf_internal_async_resources_handle.cuh.html#async-resources-handle-8cuh"><span class="std std-ref">include/cuda/experimental/__stf/internal/async_resources_handle.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">//===----------------------------------------------------------------------===//</span>
+<span class="c1">//</span>
+<span class="c1">// Part of CUDASTF in CUDA C++ Core Libraries,</span>
+<span class="c1">// under the Apache License v2.0 with LLVM Exceptions.</span>
+<span class="c1">// See https://llvm.org/LICENSE.txt for license information.</span>
+<span class="c1">// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception</span>
+<span class="c1">// SPDX-FileCopyrightText: Copyright (c) 2022-2024 NVIDIA CORPORATION &amp; AFFILIATES.</span>
+<span class="c1">//</span>
+<span class="c1">//===----------------------------------------------------------------------===//</span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__cccl_config&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/exec_affinity.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/internal/executable_graph_cache.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/utility/core.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/utility/cuda_safe_call.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/utility/hash.cuh&gt;</span><span class="c1"> // for ::std::hash&lt;::std::pair&lt;::std::ptrdiff_t, ::std::ptrdiff_t&gt;&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/utility/stream_to_dev.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/experimental/__stf/utility/unittest.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unordered_map&gt;</span><span class="cp"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">cuda</span><span class="o">::</span><span class="nn">experimental</span><span class="o">::</span><span class="nn">stf</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">green_context_helper</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Needed to set/get affinity</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">exec_place</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">decorated_stream</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">decorated_stream</span><span class="p">(</span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">stream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">dev_id</span><span class="p">(</span><span class="n">dev_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Unique ID (-1 if this is not part of our pool)</span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Device in which this stream resides</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">async_resources_handle</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">stream_pool</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">stream_pool</span><span class="p">()</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="o">~</span><span class="n">stream_pool</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">stream_pool</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="n">CUcontext</span><span class="w"> </span><span class="n">cuctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">payload</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">decorated_stream</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">dev_id</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">dev_id</span><span class="p">(</span><span class="n">dev_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">primary_ctx</span><span class="p">(</span><span class="n">cuctx</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">stream_pool</span><span class="p">(</span><span class="n">stream_pool</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locker</span><span class="p">(</span><span class="n">rhs</span><span class="p">.</span><span class="n">mtx</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ATTENTION: add to these whenever adding members</span>
+<span class="w">    </span><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">rhs</span><span class="p">.</span><span class="n">payload</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">rhs</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">index</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">rhs</span><span class="p">.</span><span class="n">index</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">rhs</span><span class="p">.</span><span class="n">dev_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">decorated_stream</span><span class="w"> </span><span class="n">next</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locker</span><span class="p">(</span><span class="n">mtx</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">dev_id</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* Note that we do not check if id is initialized to a unique id (!=</span>
+<span class="cm">     * -1) because we could create pools of unregistered streams. Such</span>
+<span class="cm">     * identifiers are useful to avoid some synchronizations, but are not</span>
+<span class="cm">     * mandatory. */</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* Streams are created lazily, so there may be no stream yet */</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">.</span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">primary_ctx</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cuCtxPushCurrent</span><span class="p">(</span><span class="n">primary_ctx</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="cm">/* Create a CUDA stream on that context */</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">result</span><span class="p">.</span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">CUcontext</span><span class="w"> </span><span class="n">dummy</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cuCtxPopCurrent</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dummy</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">old_dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_try</span><span class="o">&lt;</span><span class="n">cudaGetDevice</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">old_dev_id</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">dev_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaSetDevice</span><span class="p">(</span><span class="n">dev_id</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="cm">/* Create a CUDA stream on that device */</span><span class="w"></span>
+<span class="w">        </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">result</span><span class="p">.</span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">old_dev_id</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">dev_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaSetDevice</span><span class="p">(</span><span class="n">old_dev_id</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">++</span><span class="n">index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// To iterate over all entries of the pool</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">iterator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">decorated_stream</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">iterator</span><span class="w"> </span><span class="nf">begin</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="n">iterator</span><span class="w"> </span><span class="nf">end</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="nf">size</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locker</span><span class="p">(</span><span class="n">mtx</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// ATTENTION: see move ctor</span>
+<span class="w">  </span><span class="k">mutable</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">mtx</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">decorated_stream</span><span class="o">&gt;</span><span class="w"> </span><span class="n">payload</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUcontext</span><span class="w"> </span><span class="n">primary_ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">async_resources_handle</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// TODO: optimize based on measurements</span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">pool_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">data_pool_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="nc">id_pool</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="o">~</span><span class="n">id_pool</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">released</span><span class="p">.</span><span class="n">load</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="n">load</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">get_unique_id</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Use fetch_add to atomically increment current and return the previous value</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">current</span><span class="p">.</span><span class="n">fetch_add</span><span class="p">(</span><span class="n">cnt</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">release_unique_id</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="cm">/* id */</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Use fetch_add to atomically increment released</span>
+<span class="w">      </span><span class="n">released</span><span class="p">.</span><span class="n">fetch_add</span><span class="p">(</span><span class="n">cnt</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// next available ID</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">current</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Number of IDs released, for bookkeeping</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">released</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="nc">last_event_per_stream</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// We are trying to insert a dependency from the event with id event_id</span>
+<span class="w">    </span><span class="c1">// located on stream &quot;from&quot; to stream &quot;dst&quot; (stream dst waits for the</span>
+<span class="w">    </span><span class="c1">// event)</span>
+<span class="w">    </span><span class="c1">// Returned value : boolean indicating if we can skip the synchronization</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">validate_sync_and_update</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">event_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// If either of the streams is not from the pool, do not skip</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dst</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">src</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">dst</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interactions</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">interactions</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// If there is already an entry, potentially update it</span>
+<span class="w">        </span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">last_event_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">last_event_id</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">event_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// We can skip this synchronization because it was already enforced</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">last_event_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event_id</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// These two streams did not interact yet, we need to create a new entry</span>
+<span class="w">      </span><span class="n">interactions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event_id</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// For each pair of unique IDs, we keep the last event id</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="kt">int</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">cuda</span><span class="o">::</span><span class="n">experimental</span><span class="o">::</span><span class="n">stf</span><span class="o">::</span><span class="n">hash</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="o">&gt;&gt;&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="n">interactions</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">mtx</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// We use a pimpl idiom</span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="nc">impl</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">impl</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Save current device so that this goes unnoticed</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ndevices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_try</span><span class="o">&lt;</span><span class="n">cudaGetDeviceCount</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">ndevices</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">pool_size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">data_pool_size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">pool</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">ndevices</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">per_device_gc_helper</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">ndevices</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="cm">/* For every device, we keep two pools, one dedicated to computation,</span>
+<span class="cm">       * the other for auxiliary methods such as data transfers. This is intended to</span>
+<span class="cm">       * improve overlapping of transfers and computation, for example. */</span><span class="w"></span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">each</span><span class="p">(</span><span class="n">ndevices</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">stream_pool_init_internal</span><span class="p">(</span><span class="n">pool</span><span class="p">[</span><span class="n">d</span><span class="p">].</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">pool_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">stream_pool_init_internal</span><span class="p">(</span><span class="n">pool</span><span class="p">[</span><span class="n">d</span><span class="p">].</span><span class="n">second</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">data_pool_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">~</span><span class="n">impl</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Release the resources for each device (for each device, there is a</span>
+<span class="w">      </span><span class="c1">// stream_pool class to store CUDA streams for computation and another</span>
+<span class="w">      </span><span class="c1">// for data transfers)</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">pool</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">stream_pool_cleanup_internal</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">stream_pool_cleanup_internal</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">second</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">stream_pool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_device_stream_pool</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">for_computation</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">dev_id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">pool</span><span class="p">.</span><span class="n">size</span><span class="p">()));</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">for_computation</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">pool</span><span class="p">[</span><span class="n">dev_id</span><span class="p">].</span><span class="n">first</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">pool</span><span class="p">[</span><span class="n">dev_id</span><span class="p">].</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Initialize a stream pool for the dev_id CUDA device with n slots which will be populated lazily</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">stream_pool_init_internal</span><span class="p">(</span><span class="n">stream_pool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Do most of the work outside the critical section</span>
+<span class="w">      </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">decorated_stream</span><span class="o">&gt;</span><span class="w"> </span><span class="n">new_payload</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">new_payload</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">each</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">new_payload</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">ids</span><span class="p">.</span><span class="n">get_unique_id</span><span class="p">(),</span><span class="w"> </span><span class="n">dev_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locker</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">mtx</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">p</span><span class="p">.</span><span class="n">dev_id</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">dev_id</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">p</span><span class="p">.</span><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">new_payload</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">stream_pool_cleanup_internal</span><span class="p">(</span><span class="n">stream_pool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">decorated_stream</span><span class="o">&gt;</span><span class="w"> </span><span class="n">goner</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locker</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">mtx</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="n">payload</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">goner</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Clean up outside the critical section</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">goner</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">ids</span><span class="p">.</span><span class="n">release_unique_id</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">cuda_safe_call</span><span class="p">(</span><span class="n">cudaStreamDestroy</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">stream</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// These are constructed and destroyed in reversed order</span>
+<span class="w">    </span><span class="n">id_pool</span><span class="w"> </span><span class="n">ids</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// This memorize what was the last event used to synchronize a pair of streams</span>
+<span class="w">    </span><span class="n">last_event_per_stream</span><span class="w"> </span><span class="n">cached_syncs</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// For each device, a pair of stream_pool objects, each stream_pool objects</span>
+<span class="w">    </span><span class="c1">// stores a pool of streams on this device</span>
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">stream_pool</span><span class="p">,</span><span class="w"> </span><span class="n">stream_pool</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">pool</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* Store previously instantiated graphs, indexed by the number of edges and nodes */</span><span class="w"></span>
+<span class="w">    </span><span class="n">executable_graph_cache</span><span class="w"> </span><span class="n">cached_graphs</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">green_context_helper</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">per_device_gc_helper</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">mutable</span><span class="w"> </span><span class="n">exec_affinity</span><span class="w"> </span><span class="n">affinity</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">impl</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pimpl</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">async_resources_handle</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">pimpl</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">impl</span><span class="o">&gt;</span><span class="p">())</span><span class="w"></span>
+<span class="w">  </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">async_resources_handle</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">nullptr_t</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="kt">bool</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">stream_pool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_device_stream_pool</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">for_computation</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">get_device_stream_pool</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span><span class="w"> </span><span class="n">for_computation</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">get_unique_id</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">ids</span><span class="p">.</span><span class="n">get_unique_id</span><span class="p">(</span><span class="n">cnt</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">release_unique_id</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">ids</span><span class="p">.</span><span class="n">release_unique_id</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">cnt</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">validate_sync_and_update</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">event_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">cached_syncs</span><span class="p">.</span><span class="n">validate_sync_and_update</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">event_id</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">_CUDA_VSTD</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">cudaGraphExec_t</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cached_graphs_query</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nnodes</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nedges</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">cudaGraph_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">g</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">cached_graphs</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">nnodes</span><span class="p">,</span><span class="w"> </span><span class="n">nedges</span><span class="p">,</span><span class="w"> </span><span class="n">mv</span><span class="p">(</span><span class="n">g</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Get the green context helper cached for this device (or let the user initialize it)</span>
+<span class="w">  </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">gc_helper</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">dev_id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">per_device_gc_helper</span><span class="p">.</span><span class="n">size</span><span class="p">()));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">per_device_gc_helper</span><span class="p">[</span><span class="n">dev_id</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">exec_affinity</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_affinity</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">affinity</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">exec_affinity</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get_affinity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">affinity</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">has_affinity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">affinity</span><span class="p">.</span><span class="n">has_affinity</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">push_affinity</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">affinity</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">p</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">push_affinity</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">affinity</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">mv</span><span class="p">(</span><span class="n">p</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">pop_affinity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">affinity</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;::</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">exec_place</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">current_affinity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">pimpl</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pimpl</span><span class="o">-&gt;</span><span class="n">affinity</span><span class="p">.</span><span class="n">top</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="n">decorated_stream</span><span class="w"> </span><span class="nf">register_stream</span><span class="p">(</span><span class="n">async_resources_handle</span><span class="o">&amp;</span><span class="w"> </span><span class="n">async_resources</span><span class="p">,</span><span class="w"> </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">user_stream</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Get a unique ID</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">id</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">async_resources</span><span class="p">.</span><span class="n">get_unique_id</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dev_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_device_from_stream</span><span class="p">(</span><span class="n">user_stream</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">decorated_stream</span><span class="p">(</span><span class="n">user_stream</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">dev_id</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">unregister_stream</span><span class="p">(</span><span class="n">async_resources_handle</span><span class="o">&amp;</span><span class="w"> </span><span class="n">async_resources</span><span class="p">,</span><span class="w"> </span><span class="n">decorated_stream</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dstream</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">async_resources</span><span class="p">.</span><span class="n">release_unique_id</span><span class="p">(</span><span class="n">dstream</span><span class="p">.</span><span class="n">id</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// reset the decorated stream</span>
+<span class="w">  </span><span class="n">dstream</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#ifdef UNITTESTED_FILE</span>
+<span class="cm">/*</span>
+<span class="cm"> * This test ensures that the async_resources_handle type is default</span>
+<span class="cm"> * constructible, which for example makes it possible to use it in a raft</span>
+<span class="cm"> * handle.</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="n">UNITTEST</span><span class="p">(</span><span class="s">&quot;async_resources_handle is_default_constructible&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static_assert</span><span class="p">(</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_default_constructible</span><span class="o">&lt;</span><span class="n">async_resources_handle</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s">&quot;async_resources_handle must be default constructible&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+<span class="cp">#endif</span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace cuda::experimental::stf</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

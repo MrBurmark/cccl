@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub/util_device.cuh &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub/util_macro.cuh" href="file_cub_util_macro.cuh.html" />
+    <link rel="prev" title="cub/util_device.cuh" href="file_cub_util_device.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">CUB Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cub_api.html">CUB API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cub_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_cub.html">cub</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="dir_cub.html#directories">Directories</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="dir_cub.html#files">Files</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="file_cub_config.cuh.html">cub/config.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_cub.cuh.html">cub/cub.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_allocator.cuh.html">cub/util_allocator.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_arch.cuh.html">cub/util_arch.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_cpp_dialect.cuh.html">cub/util_cpp_dialect.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_debug.cuh.html">cub/util_debug.cuh</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="file_cub_util_device.cuh.html">cub/util_device.cuh</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">Source file</a></li>
+<li class="toctree-l6"><a class="reference internal" href="file_cub_util_device.cuh.html#defines">Defines</a></li>
+<li class="toctree-l6"><a class="reference internal" href="file_cub_util_device.cuh.html#functions">Functions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="file_cub_util_device.cuh.html#namespaces">Namespaces</a></li>
+<li class="toctree-l6"><a class="reference internal" href="file_cub_util_device.cuh.html#structs">Structs</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_macro.cuh.html">cub/util_macro.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_math.cuh.html">cub/util_math.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_namespace.cuh.html">cub/util_namespace.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_policy_wrapper_t.cuh.html">cub/util_policy_wrapper_t.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_ptx.cuh.html">cub/util_ptx.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_temporary_storage.cuh.html">cub/util_temporary_storage.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_type.cuh.html">cub/util_type.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_util_vsmem.cuh.html">cub/util_vsmem.cuh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file_cub_version.cuh.html">cub/version.cuh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cub_api.html">CUB API</a> &raquo;</li>
+          <li><a href="dir_cub.html">cub</a> &raquo;</li>
+          <li><a href="file_cub_util_device.cuh.html">cub/util_device.cuh</a> &raquo;</li>
+      <li>cub/util_device.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-util-device-cuh">
+<h1>cub/util_device.cuh<a class="headerlink" href="#cub-util-device-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_cub_util_device.cuh.html#util-device-8cuh"><span class="std std-ref">cub/util_device.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/******************************************************************************</span>
+<span class="cm"> * Copyright (c) 2011, Duane Merrill.  All rights reserved.</span>
+<span class="cm"> * Copyright (c) 2011-2020, NVIDIA CORPORATION.  All rights reserved.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Redistribution and use in source and binary forms, with or without</span>
+<span class="cm"> * modification, are permitted provided that the following conditions are met:</span>
+<span class="cm"> *     * Redistributions of source code must retain the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer.</span>
+<span class="cm"> *     * Redistributions in binary form must reproduce the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer in the</span>
+<span class="cm"> *       documentation and/or other materials provided with the distribution.</span>
+<span class="cm"> *     * Neither the name of the NVIDIA CORPORATION nor the</span>
+<span class="cm"> *       names of its contributors may be used to endorse or promote products</span>
+<span class="cm"> *       derived from this software without specific prior written permission.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="cm"> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="cm"> * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="cm"> * DISCLAIMED. IN NO EVENT SHALL NVIDIA CORPORATION BE LIABLE FOR ANY</span>
+<span class="cm"> * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="cm"> * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="cm"> * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="cm"> * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="cm"> * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="cm"> * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="cm"> *</span>
+<span class="cm"> ******************************************************************************/</span><span class="w"></span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/config.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_debug.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_policy_wrapper_t.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_type.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// for backward compatibility</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_temporary_storage.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/__cuda/ensure_current_device.h&gt;</span><span class="c1"> // IWYU pragma: export</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/array&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/atomic&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/cassert&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/type_traits&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/utility&gt;</span><span class="cp"></span>
+
+<span class="cp">#if !_CCCL_COMPILER(NVRTC)</span>
+<span class="cp">#  if defined(CUB_DEFINE_RUNTIME_POLICIES)</span>
+<span class="cp">#</span><span class="w">    </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;format&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w">    </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;string_view&gt;</span><span class="cp"></span>
+
+<span class="cp">#</span><span class="w">    </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;nlohmann/json.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#  endif </span><span class="c1">// defined(CUB_DEFINE_RUNTIME_POLICIES)</span>
+<span class="cp">#endif </span><span class="c1">// !_CCCL_COMPILER(NVRTC)</span>
+
+<span class="cp">#if defined(CUB_ENABLE_POLICY_PTX_JSON)</span>
+<span class="cp">#</span><span class="w">  </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cub/detail/ptx-json/json.h&gt;</span><span class="cp"></span>
+<span class="cp">#endif </span><span class="c1">// defined(CUB_ENABLE_POLICY_PTX_JSON)</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;nv/target&gt;</span><span class="cp"></span>
+
+<span class="n">CUB_NAMESPACE_BEGIN</span><span class="w"></span>
+
+<span class="cp">#ifndef _CCCL_DOXYGEN_INVOKED </span><span class="c1">// Do not document</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">CUB_DETAIL_KERNEL_ATTRIBUTES</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">EmptyKernel</span><span class="p">()</span><span class="w"></span>
+<span class="p">{}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
+
+<span class="cp">#endif </span><span class="c1">// _CCCL_DOXYGEN_INVOKED</span>
+
+<span class="cp">#if !_CCCL_COMPILER(NVRTC)</span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CurrentDevice</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaGetDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">device</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">device</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#  ifndef _CCCL_DOXYGEN_INVOKED </span><span class="c1">// Do not document</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">SwitchDevice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">__ensure_current_device</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#  endif </span><span class="c1">// _CCCL_DOXYGEN_INVOKED</span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">DeviceCountUncached</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaGetDeviceCount</span><span class="p">(</span><span class="o">&amp;</span><span class="n">count</span><span class="p">)))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// CUDA makes no guarantees about the state of the output parameter if</span>
+<span class="w">    </span><span class="c1">// `cudaGetDeviceCount` fails; in practice, they don&#39;t, but out of</span>
+<span class="w">    </span><span class="c1">// paranoia we&#39;ll reset `count` to `-1`.</span>
+<span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Host code. This is a separate function to avoid defining a local static in a host/device function.</span>
+<span class="n">_CCCL_HOST</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">DeviceCountCachedValue</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeviceCountUncached</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">DeviceCount</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeviceCountCachedValue</span><span class="p">();),</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeviceCountUncached</span><span class="p">();));</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#  ifndef _CCCL_DOXYGEN_INVOKED </span><span class="c1">// Do not document</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">PerDeviceAttributeCache</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">DevicePayload</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">attribute</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Each entry starts in the `DeviceEntryEmpty` state, then proceeds to the</span>
+<span class="w">  </span><span class="c1">// `DeviceEntryInitializing` state, and then proceeds to the</span>
+<span class="w">  </span><span class="c1">// `DeviceEntryReady` state. These are the only state transitions allowed;</span>
+<span class="w">  </span><span class="c1">// i.e. a linear sequence of transitions.</span>
+<span class="w">  </span><span class="k">enum</span><span class="w"> </span><span class="nc">DeviceEntryStatus</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">DeviceEntryEmpty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">DeviceEntryInitializing</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">DeviceEntryReady</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">DeviceEntry</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">DeviceEntryStatus</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">DevicePayload</span><span class="w"> </span><span class="n">payload</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">DeviceEntry</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">max_devices</span><span class="o">&gt;</span><span class="w"> </span><span class="n">entries_</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">PerDeviceAttributeCache</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">entries_</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">DeviceCount</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">max_devices</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Invocable</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_HOST</span><span class="w"> </span><span class="n">DevicePayload</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">Invocable</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">device</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">device</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DeviceCount</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">DevicePayload</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">cudaErrorInvalidDevice</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">entry</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">entries_</span><span class="p">[</span><span class="n">device</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">flag</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">entry</span><span class="p">.</span><span class="n">flag</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">entry</span><span class="p">.</span><span class="n">payload</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">DeviceEntryStatus</span><span class="w"> </span><span class="n">old_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeviceEntryEmpty</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// First, check for the common case of the entry being ready.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_acquire</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">DeviceEntryReady</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Assume the entry is empty and attempt to lock it so we can fill</span>
+<span class="w">      </span><span class="c1">// it by trying to set the state from `DeviceEntryReady` to</span>
+<span class="w">      </span><span class="c1">// `DeviceEntryInitializing`.</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">compare_exchange_strong</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="n">old_status</span><span class="p">,</span><span class="w"> </span><span class="n">DeviceEntryInitializing</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_acq_rel</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_acquire</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// We successfully set the state to `DeviceEntryInitializing`;</span>
+<span class="w">        </span><span class="c1">// we have the lock and it&#39;s our job to initialize this entry</span>
+<span class="w">        </span><span class="c1">// and then release it.</span>
+
+<span class="w">        </span><span class="c1">// We don&#39;t use `CubDebug` here because we let the user code</span>
+<span class="w">        </span><span class="c1">// decide whether or not errors are hard errors.</span>
+<span class="w">        </span><span class="n">payload</span><span class="p">.</span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Invocable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">payload</span><span class="p">.</span><span class="n">attribute</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Clear the global CUDA error state which may have been</span>
+<span class="w">          </span><span class="c1">// set by the last call. Otherwise, errors may &quot;leak&quot; to</span>
+<span class="w">          </span><span class="c1">// unrelated kernel launches.</span>
+<span class="w">          </span><span class="n">cudaGetLastError</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Release the lock by setting the state to `DeviceEntryReady`.</span>
+<span class="w">        </span><span class="n">flag</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="n">DeviceEntryReady</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_release</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// If the `compare_exchange_weak` failed, then `old_status` has</span>
+<span class="w">      </span><span class="c1">// been updated with the value of `flag` that it observed.</span>
+
+<span class="w">      </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">old_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">DeviceEntryInitializing</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Another execution agent is initializing this entry; we need</span>
+<span class="w">        </span><span class="c1">// to wait for them to finish; we&#39;ll know they&#39;re done when we</span>
+<span class="w">        </span><span class="c1">// observe the entry status as `DeviceEntryReady`.</span>
+<span class="w">        </span><span class="k">do</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">old_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_acquire</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">old_status</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">DeviceEntryReady</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// FIXME: Use `atomic::wait` instead when we have access to</span>
+<span class="w">        </span><span class="c1">// host-side C++20 atomics. We could use libcu++, but it only</span>
+<span class="w">        </span><span class="c1">// supports atomics for SM60 and up, even if you&#39;re only using</span>
+<span class="w">        </span><span class="c1">// them in host code.</span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// We now know that the state of our entry is `DeviceEntryReady`, so</span>
+<span class="w">    </span><span class="c1">// just return the entry&#39;s payload.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">entry</span><span class="p">.</span><span class="n">payload</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+<span class="cp">#  endif </span><span class="c1">// _CCCL_DOXYGEN_INVOKED</span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">PtxVersionUncached</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ptx_version</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Instantiate `EmptyKernel&lt;void&gt;` in both host and device code to ensure</span>
+<span class="w">  </span><span class="c1">// it can be called.</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">EmptyKernelPtr</span><span class="w">                         </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)();</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="n">EmptyKernelPtr</span><span class="w"> </span><span class="n">empty_kernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">EmptyKernel</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Define a temporary macro that expands to the current target ptx version</span>
+<span class="w">  </span><span class="c1">// in device code.</span>
+<span class="w">  </span><span class="c1">// &lt;nv/target&gt; may provide an abstraction for this eventually. For now,</span>
+<span class="w">  </span><span class="c1">// we have to keep this usage of __CUDA_ARCH__.</span>
+<span class="cp">#  if _CCCL_CUDA_COMPILER(NVHPC)</span>
+<span class="cp">#    define CUB_TEMP_GET_PTX __builtin_current_device_sm()</span>
+<span class="cp">#  else </span><span class="c1">// ^^^ _CCCL_CUDA_COMPILER(NVHPC) ^^^ / vvv !_CCCL_CUDA_COMPILER(NVHPC) vvv</span>
+<span class="cp">#    define CUB_TEMP_GET_PTX _CCCL_PTX_ARCH()</span>
+<span class="cp">#  endif </span><span class="c1">// ^^^ !_CCCL_CUDA_COMPILER(NVHPC) ^^^</span>
+
+<span class="w">  </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="n">cudaFuncAttributes</span><span class="w"> </span><span class="n">empty_kernel_attrs</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">     </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaFuncGetAttributes</span><span class="p">(</span><span class="o">&amp;</span><span class="n">empty_kernel_attrs</span><span class="p">,</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">empty_kernel</span><span class="p">)));</span><span class="w"></span>
+
+<span class="w">     </span><span class="n">ptx_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empty_kernel_attrs</span><span class="p">.</span><span class="n">ptxVersion</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">;),</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// NV_IS_DEVICE</span>
+<span class="w">    </span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// This is necessary to ensure instantiation of EmptyKernel in device</span>
+<span class="w">      </span><span class="c1">// code. The `reinterpret_cast` is necessary to suppress a</span>
+<span class="w">      </span><span class="c1">// set-but-unused warnings. This is a meme now:</span>
+<span class="w">      </span><span class="c1">// https://twitter.com/blelbach/status/1222391615576100864</span>
+<span class="w">      </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">EmptyKernelPtr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">empty_kernel</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">ptx_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CUB_TEMP_GET_PTX</span><span class="p">;));</span><span class="w"></span>
+
+<span class="cp">#  undef CUB_TEMP_GET_PTX</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">_CCCL_HOST</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">PtxVersionUncached</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ptx_version</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">device</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="n">SwitchDevice</span><span class="w"> </span><span class="n">sd</span><span class="p">(</span><span class="n">device</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">PtxVersionUncached</span><span class="p">(</span><span class="n">ptx_version</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Tag</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">_CCCL_HOST</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">PerDeviceAttributeCache</span><span class="o">&amp;</span><span class="w"> </span><span class="n">GetPerDeviceAttributeCache</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">PerDeviceAttributeCache</span><span class="w"> </span><span class="n">cache</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">cache</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">PtxVersionCacheTag</span><span class="w"></span>
+<span class="p">{};</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">SmVersionCacheTag</span><span class="w"></span>
+<span class="p">{};</span><span class="w"></span>
+
+<span class="n">_CCCL_HOST</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">PtxVersion</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ptx_version</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">device</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Note: the ChainedPolicy pruning (i.e., invoke_static) requites that there&#39;s an exact match between one of the</span>
+<span class="w">  </span><span class="c1">// architectures in __CUDA_ARCH__ and the runtime queried ptx version.</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetPerDeviceAttributeCache</span><span class="o">&lt;</span><span class="n">PtxVersionCacheTag</span><span class="o">&gt;</span><span class="p">()(</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// If this call fails, then we get the error code back in the payload, which we check with `CubDebug` below.</span>
+<span class="w">    </span><span class="p">[</span><span class="o">=</span><span class="p">](</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">pv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">PtxVersionUncached</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="n">device</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">CubDebug</span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="n">error</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">ptx_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">attribute</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">PtxVersion</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ptx_version</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Note: the ChainedPolicy pruning (i.e., invoke_static) requites that there&#39;s an exact match between one of the</span>
+<span class="w">  </span><span class="c1">// architectures in __CUDA_ARCH__ and the runtime queried ptx version.</span>
+<span class="w">  </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaErrorUnknown</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PtxVersion</span><span class="p">(</span><span class="n">ptx_version</span><span class="p">,</span><span class="w"> </span><span class="n">CurrentDevice</span><span class="p">());),</span><span class="w"></span>
+<span class="w">               </span><span class="p">(</span><span class="w"> </span><span class="c1">// NV_IS_DEVICE:</span>
+<span class="w">                 </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PtxVersionUncached</span><span class="p">(</span><span class="n">ptx_version</span><span class="p">);));</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">SmVersionUncached</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">sm_version</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentDevice</span><span class="p">())</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">do</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">major</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">minor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaDeviceGetAttribute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">major</span><span class="p">,</span><span class="w"> </span><span class="n">cudaDevAttrComputeCapabilityMajor</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cudaSuccess</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaDeviceGetAttribute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">minor</span><span class="p">,</span><span class="w"> </span><span class="n">cudaDevAttrComputeCapabilityMinor</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cudaSuccess</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">sm_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">major</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">minor</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">SmVersion</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">sm_version</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentDevice</span><span class="p">())</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaErrorUnknown</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetPerDeviceAttributeCache</span><span class="o">&lt;</span><span class="n">SmVersionCacheTag</span><span class="o">&gt;</span><span class="p">()(</span><span class="w"></span>
+<span class="w">       </span><span class="c1">// If this call fails, then we get the error code back in the payload, which we check with `CubDebug` below.</span>
+<span class="w">       </span><span class="p">[</span><span class="o">=</span><span class="p">](</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">pv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="n">SmVersionUncached</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);</span><span class="w"></span>
+<span class="w">       </span><span class="p">},</span><span class="w"></span>
+<span class="w">       </span><span class="n">device</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">CubDebug</span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="n">error</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sm_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">attribute</span><span class="p">;</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">     </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payload</span><span class="p">.</span><span class="n">error</span><span class="p">;),</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="w"> </span><span class="c1">// NV_IS_DEVICE</span>
+<span class="w">      </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SmVersionUncached</span><span class="p">(</span><span class="n">sm_version</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">);));</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">SyncStream</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaStreamSynchronize</span><span class="p">(</span><span class="n">stream</span><span class="p">));),</span><span class="w"> </span><span class="p">(</span><span class="k">return</span><span class="w"> </span><span class="n">cudaErrorNotSupported</span><span class="p">;))</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">DebugSyncStream</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="cp">#  ifdef CUB_DEBUG_SYNC</span>
+<span class="w">  </span><span class="n">NV_IF_TARGET</span><span class="p">(</span><span class="n">NV_IS_HOST</span><span class="p">,</span><span class="w"></span>
+<span class="w">               </span><span class="p">(</span><span class="n">_CubLog</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Synchronizing...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">SyncStream</span><span class="p">(</span><span class="n">stream</span><span class="p">);),</span><span class="w"></span>
+<span class="w">               </span><span class="p">(</span><span class="n">_CubLog</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;WARNING: Skipping CUB debug synchronization in device code&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">;));</span><span class="w"></span>
+<span class="cp">#  else </span><span class="c1">// ^^^ CUB_DEBUG_SYNC / !CUB_DEBUG_SYNC vvv</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">;</span><span class="w"></span>
+<span class="cp">#  endif </span><span class="c1">// ^^^ !CUB_DEBUG_SYNC ^^^</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">HasUVA</span><span class="p">(</span><span class="kt">bool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">has_uva</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">has_uva</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">device</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaGetDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">device</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cudaSuccess</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">uva</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">error</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">cudaDeviceGetAttribute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">uva</span><span class="p">,</span><span class="w"> </span><span class="n">cudaDevAttrUnifiedAddressing</span><span class="p">,</span><span class="w"> </span><span class="n">device</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cudaSuccess</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="n">has_uva</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uva</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">KernelPtr</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">_CCCL_VISIBILITY_HIDDEN</span><span class="w"> </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="n">MaxSmOccupancy</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">max_sm_occupancy</span><span class="p">,</span><span class="w"> </span><span class="n">KernelPtr</span><span class="w"> </span><span class="n">kernel_ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_threads</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dynamic_smem_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaOccupancyMaxActiveBlocksPerMultiprocessor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">max_sm_occupancy</span><span class="p">,</span><span class="w"> </span><span class="n">kernel_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">block_threads</span><span class="p">,</span><span class="w"> </span><span class="n">dynamic_smem_bytes</span><span class="p">));</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#endif </span><span class="c1">// !_CCCL_COMPILER(NVRTC)</span>
+
+<span class="cm">/******************************************************************************</span>
+<span class="cm"> * Policy management</span>
+<span class="cm"> ******************************************************************************/</span><span class="w"></span>
+<span class="c1">// PolicyWrapper</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="cp">#if defined(CUB_DEFINE_RUNTIME_POLICIES) || defined(CUB_ENABLE_POLICY_PTX_JSON)</span>
+<span class="cp">#  if !_CCCL_HAS_CONCEPTS()</span>
+<span class="cp">#    error Generation of runtime policy wrappers and/or policy PTX JSON information requires C++20 concepts.</span>
+<span class="cp">#  endif </span><span class="c1">// !_CCCL_HAS_CONCEPTS()</span>
+<span class="cp">#endif </span><span class="c1">// defined(CUB_DEFINE_RUNTIME_POLICIES) || defined(CUB_ENABLE_POLICY_PTX_JSON)</span>
+
+<span class="cp">#define CUB_DETAIL_POLICY_WRAPPER_CONCEPT_TEST(field)     , StaticPolicyT::_CCCL_PP_FIRST field</span>
+<span class="cp">#define CUB_DETAIL_POLICY_WRAPPER_REFINE_CONCEPT(concept) concept&lt;StaticPolicyT&gt;&amp;&amp;</span>
+
+<span class="cp">#define CUB_DETAIL_POLICY_WRAPPER_ACCESSOR(field)                   \</span>
+<span class="cp">  __host__ __device__ static constexpr auto _CCCL_PP_SECOND field() \</span>
+<span class="cp">  {                                                                 \</span>
+<span class="cp">    return StaticPolicyT::_CCCL_PP_FIRST field;                     \</span>
+<span class="cp">  }</span>
+
+<span class="cp">#if defined(CUB_ENABLE_POLICY_PTX_JSON)</span>
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_ENCODED_FIELD(field) \</span>
+<span class="cp">    key&lt;_CCCL_TO_STRING(_CCCL_PP_FIRST field)&gt;() = value&lt;(int) StaticPolicyT::_CCCL_PP_FIRST field&gt;(),</span>
+
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_ENCODED_POLICY(...)                                     \</span>
+<span class="cp">    _CCCL_DEVICE static constexpr auto EncodedPolicy()                                      \</span>
+<span class="cp">    {                                                                                       \</span>
+<span class="cp">      using namespace ptx_json;                                                             \</span>
+<span class="cp">      return object&lt;_CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_ENCODED_FIELD, __VA_ARGS__) \</span>
+<span class="cp">                      key&lt;&quot;__dummy&quot;&gt;() = value&lt;0&gt;()&gt;();                                     \</span>
+<span class="cp">    }</span>
+<span class="cp">#else</span>
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_ENCODED_POLICY(...)</span>
+<span class="cp">#endif </span><span class="c1">// defined(CUB_ENABLE_POLICY_PTX_JSON)</span>
+
+<span class="cp">#if defined(CUB_DEFINE_RUNTIME_POLICIES)</span>
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_FIELD(field)                       \</span>
+<span class="cp">    _CCCL_PP_THIRD field _CCCL_PP_CAT(runtime_, _CCCL_PP_FIRST field); \</span>
+<span class="cp">    _CCCL_PP_THIRD field _CCCL_PP_SECOND field() const                 \</span>
+<span class="cp">    {                                                                  \</span>
+<span class="cp">      return _CCCL_PP_CAT(runtime_, _CCCL_PP_FIRST field);             \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_GET_FIELD(field)  \</span>
+<span class="cp">    ap._CCCL_PP_CAT(runtime_, _CCCL_PP_FIRST field) = \</span>
+<span class="cp">      static_cast&lt;_CCCL_PP_THIRD field&gt;(subpolicy[_CCCL_TO_STRING(_CCCL_PP_FIRST field)].get&lt;int&gt;());</span>
+
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_FIELD_STRING(field) \</span>
+<span class="cp">    _CCCL_TO_STRING(static constexpr auto _CCCL_PP_FIRST field = static_cast&lt;_CCCL_PP_THIRD field&gt;({});) &quot;\n&quot;</span>
+
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_FIELD_VALUE(field) , (int) ap._CCCL_PP_CAT(runtime_, _CCCL_PP_FIRST field)</span>
+
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_AGENT_POLICY(concept_name, ...)                                                    \</span>
+<span class="cp">    struct Runtime##concept_name                                                                                       \</span>
+<span class="cp">    {                                                                                                                  \</span>
+<span class="cp">      _CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_FIELD, __VA_ARGS__)                                                  \</span>
+<span class="cp">      static std::pair&lt;Runtime##concept_name, std::string&gt;                                                             \</span>
+<span class="cp">      from_json(const nlohmann::json&amp; json, std::string_view subpolicy_name)                                           \</span>
+<span class="cp">      {                                                                                                                \</span>
+<span class="cp">        auto subpolicy = json[subpolicy_name];                                                                         \</span>
+<span class="cp">        assert(!subpolicy.is_null());                                                                                  \</span>
+<span class="cp">        Runtime##concept_name ap;                                                                                      \</span>
+<span class="cp">        _CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_GET_FIELD, __VA_ARGS__)                                            \</span>
+<span class="cp">        return std::make_pair(                                                                                         \</span>
+<span class="cp">          ap,                                                                                                          \</span>
+<span class="cp">          std::format(&quot;struct {} {{\n&quot; _CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_FIELD_STRING, __VA_ARGS__) &quot;}};\n&quot;, \</span>
+<span class="cp">                      subpolicy_name _CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_FIELD_VALUE, __VA_ARGS__)));          \</span>
+<span class="cp">      }                                                                                                                \</span>
+<span class="cp">    };</span>
+<span class="cp">#else</span>
+<span class="cp">#  define CUB_DETAIL_POLICY_WRAPPER_AGENT_POLICY(...)</span>
+<span class="cp">#endif </span><span class="c1">// defined(CUB_DEFINE_RUNTIME_POLICIES)</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="n">_CCCL_CONCEPT</span><span class="w"> </span><span class="n">always_true</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#define CUB_DETAIL_POLICY_WRAPPER_DEFINE(concept_name, refines, ...)                                                   \</span>
+<span class="cp">  template &lt;typename StaticPolicyT&gt;                                                                                    \</span>
+<span class="cp">  _CCCL_CONCEPT concept_name = _CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_REFINE_CONCEPT, _CCCL_PP_EXPAND refines)    \</span>
+<span class="cp">    _CCCL_REQUIRES_EXPR((StaticPolicyT))(true _CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_CONCEPT_TEST, __VA_ARGS__)); \</span>
+<span class="cp">  template &lt;typename StaticPolicyT&gt;                                                                                    \</span>
+<span class="cp">  struct concept_name##Wrapper : StaticPolicyT                                                                         \</span>
+<span class="cp">  {                                                                                                                    \</span>
+<span class="cp">    __host__ __device__ constexpr concept_name##Wrapper(StaticPolicyT base)                                            \</span>
+<span class="cp">        : StaticPolicyT(base)                                                                                          \</span>
+<span class="cp">    {}                                                                                                                 \</span>
+<span class="cp">    _CCCL_PP_FOR_EACH(CUB_DETAIL_POLICY_WRAPPER_ACCESSOR, __VA_ARGS__)                                                 \</span>
+<span class="cp">    CUB_DETAIL_POLICY_WRAPPER_ENCODED_POLICY(__VA_ARGS__)                                                              \</span>
+<span class="cp">  };                                                                                                                   \</span>
+<span class="cp">  _CCCL_TEMPLATE(typename StaticPolicyT)                                                                               \</span>
+<span class="cp">  _CCCL_REQUIRES(concept_name&lt;StaticPolicyT&gt;)                                                                          \</span>
+<span class="cp">  __host__ __device__ constexpr concept_name##Wrapper&lt;StaticPolicyT&gt; MakePolicyWrapper(StaticPolicyT policy)           \</span>
+<span class="cp">  {                                                                                                                    \</span>
+<span class="cp">    return concept_name##Wrapper{policy};                                                                              \</span>
+<span class="cp">  }                                                                                                                    \</span>
+<span class="cp">  CUB_DETAIL_POLICY_WRAPPER_AGENT_POLICY(concept_name, __VA_ARGS__)</span>
+
+<span class="c1">// Generic agent policy</span>
+<span class="n">CUB_DETAIL_POLICY_WRAPPER_DEFINE</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">GenericAgentPolicy</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">always_true</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">BLOCK_THREADS</span><span class="p">,</span><span class="w"> </span><span class="n">BlockThreads</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">ITEMS_PER_THREAD</span><span class="p">,</span><span class="w"> </span><span class="n">ItemsPerThread</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+
+<span class="n">_CCCL_TEMPLATE</span><span class="p">(</span><span class="k">typename</span><span class="w"> </span><span class="nc">PolicyT</span><span class="p">)</span><span class="w"></span>
+<span class="n">_CCCL_REQUIRES</span><span class="p">((</span><span class="o">!</span><span class="n">GenericAgentPolicy</span><span class="o">&lt;</span><span class="n">PolicyT</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="n">__host__</span><span class="w"> </span><span class="n">__device__</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="n">PolicyT</span><span class="w"> </span><span class="n">MakePolicyWrapper</span><span class="p">(</span><span class="n">PolicyT</span><span class="w"> </span><span class="n">policy</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">policy</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
+
+<span class="c1">//----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">// ChainedPolicy</span>
+
+<span class="cp">#if !_CCCL_COMPILER(NVRTC)</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="c1">// Forward declaration of the default kernel launcher factory</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">TripleChevronFactory</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// By default, CUB uses `cub::detail::TripleChevronFactory` to access the CUDA runtime.</span>
+<span class="c1">// The `CUB_DETAIL_DEFAULT_KERNEL_LAUNCHER_FACTORY` indirection is used to override the default kernel launcher factory</span>
+<span class="c1">// in CUB tests. This allows us to:</span>
+<span class="c1">//   1. retrieve kernel pointers on the usage side of the API, and</span>
+<span class="c1">//   2. validate use of specified CUDA stream by accelerated algorithms.</span>
+<span class="cp">#  ifndef CUB_DETAIL_DEFAULT_KERNEL_LAUNCHER_FACTORY</span>
+<span class="cp">#    define CUB_DETAIL_DEFAULT_KERNEL_LAUNCHER_FACTORY cub::detail::TripleChevronFactory</span>
+<span class="cp">#  endif</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">KernelConfig</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">block_threads</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">items_per_thread</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">tile_size</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">sm_occupancy</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">AgentPolicyT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">KernelPtrT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">LauncherFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CUB_DETAIL_DEFAULT_KERNEL_LAUNCHER_FACTORY</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="n">_CCCL_VISIBILITY_HIDDEN</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="w">  </span><span class="n">Init</span><span class="p">(</span><span class="n">KernelPtrT</span><span class="w"> </span><span class="n">kernel_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">AgentPolicyT</span><span class="w"> </span><span class="n">agent_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="n">LauncherFactory</span><span class="w"> </span><span class="n">launcher_factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_threads</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">MakePolicyWrapper</span><span class="p">(</span><span class="n">agent_policy</span><span class="p">).</span><span class="n">BlockThreads</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">items_per_thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">MakePolicyWrapper</span><span class="p">(</span><span class="n">agent_policy</span><span class="p">).</span><span class="n">ItemsPerThread</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">tile_size</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">block_threads</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">items_per_thread</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">launcher_factory</span><span class="p">.</span><span class="n">MaxSmOccupancy</span><span class="p">(</span><span class="n">sm_occupancy</span><span class="p">,</span><span class="w"> </span><span class="n">kernel_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">block_threads</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
+<span class="cp">#endif </span><span class="c1">// !_CCCL_COMPILER(NVRTC)</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">PolicyPtxVersion</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">PolicyT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">PrevPolicyT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">ChainedPolicy</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">ActivePolicy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">_If</span><span class="o">&lt;</span><span class="p">(</span><span class="n">CUB_PTX_ARCH</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PolicyPtxVersion</span><span class="p">),</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">PrevPolicyT</span><span class="o">::</span><span class="n">ActivePolicy</span><span class="p">,</span><span class="w"> </span><span class="n">PolicyT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#if !_CCCL_COMPILER(NVRTC)</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">FunctorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">Invoke</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">device_ptx_version</span><span class="p">,</span><span class="w"> </span><span class="n">FunctorT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// __CUDA_ARCH_LIST__ is only available from CTK 11.5 onwards</span>
+<span class="cp">#  ifdef __CUDA_ARCH_LIST__</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">runtime_to_compiletime</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">__CUDA_ARCH_LIST__</span><span class="o">&gt;</span><span class="p">(</span><span class="n">device_ptx_version</span><span class="p">,</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// NV_TARGET_SM_INTEGER_LIST is defined by NVHPC. The values need to be multiplied by 10 to match</span>
+<span class="w">    </span><span class="c1">// __CUDA_ARCH_LIST__. E.g. arch 860 from __CUDA_ARCH_LIST__ corresponds to arch 86 from NV_TARGET_SM_INTEGER_LIST.</span>
+<span class="cp">#  elif defined(NV_TARGET_SM_INTEGER_LIST)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">runtime_to_compiletime</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">NV_TARGET_SM_INTEGER_LIST</span><span class="o">&gt;</span><span class="p">(</span><span class="n">device_ptx_version</span><span class="p">,</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#  else</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">device_ptx_version</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PolicyPtxVersion</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">PrevPolicyT</span><span class="o">::</span><span class="n">Invoke</span><span class="p">(</span><span class="n">device_ptx_version</span><span class="p">,</span><span class="w"> </span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="k">template</span><span class="w"> </span><span class="n">Invoke</span><span class="o">&lt;</span><span class="n">PolicyT</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="cp">#  endif</span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// !_CCCL_COMPILER(NVRTC)</span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ChainedPolicy</span><span class="p">;</span><span class="w"> </span><span class="c1">// let us call invoke_static of other ChainedPolicy instantiations</span>
+
+<span class="cp">#if !_CCCL_COMPILER(NVRTC)</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">ArchMult</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">...</span><span class="w"> </span><span class="n">CudaArches</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">FunctorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">runtime_to_compiletime</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">device_ptx_version</span><span class="p">,</span><span class="w"> </span><span class="n">FunctorT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// We instantiate invoke_static for each CudaArches, but only call the one matching device_ptx_version.</span>
+<span class="w">    </span><span class="c1">// If there&#39;s no exact match of the architectures in __CUDA_ARCH_LIST__/NV_TARGET_SM_INTEGER_LIST and the runtime</span>
+<span class="w">    </span><span class="c1">// queried ptx version (i.e., the closest ptx version to the current device&#39;s architecture that the EmptyKernel was</span>
+<span class="w">    </span><span class="c1">// compiled for), we return cudaErrorInvalidDeviceFunction. Such a scenario may arise if CUB_DISABLE_NAMESPACE_MAGIC</span>
+<span class="w">    </span><span class="c1">// is set and different TUs are compiled for different sets of architecture.</span>
+<span class="w">    </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaErrorInvalidDeviceFunction</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">(...,</span><span class="w"> </span><span class="p">(</span><span class="n">device_ptx_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CudaArches</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ArchMult</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">invoke_static</span><span class="o">&lt;</span><span class="n">CudaArches</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ArchMult</span><span class="o">&gt;</span><span class="p">(</span><span class="n">op</span><span class="p">))</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">e</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">DevicePtxVersion</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">FunctorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">invoke_static</span><span class="p">(</span><span class="n">FunctorT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">DevicePtxVersion</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PolicyPtxVersion</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">PrevPolicyT</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">invoke_static</span><span class="o">&lt;</span><span class="n">DevicePtxVersion</span><span class="o">&gt;</span><span class="p">(</span><span class="n">op</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="k">template</span><span class="w"> </span><span class="n">Invoke</span><span class="o">&lt;</span><span class="n">PolicyT</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// !_CCCL_COMPILER(NVRTC)</span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="w"> </span><span class="n">PolicyPtxVersion</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">PolicyT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">ChainedPolicy</span><span class="o">&lt;</span><span class="n">PolicyPtxVersion</span><span class="p">,</span><span class="w"> </span><span class="n">PolicyT</span><span class="p">,</span><span class="w"> </span><span class="n">PolicyT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ChainedPolicy</span><span class="p">;</span><span class="w"> </span><span class="c1">// befriend primary template, so it can call invoke_static</span>
+
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">ActivePolicy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PolicyT</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#if !_CCCL_COMPILER(NVRTC)</span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">FunctorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">Invoke</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="cm">/*ptx_version*/</span><span class="p">,</span><span class="w"> </span><span class="n">FunctorT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="k">template</span><span class="w"> </span><span class="n">Invoke</span><span class="o">&lt;</span><span class="n">PolicyT</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">FunctorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">invoke_static</span><span class="p">(</span><span class="n">FunctorT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">op</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">op</span><span class="p">.</span><span class="k">template</span><span class="w"> </span><span class="n">Invoke</span><span class="o">&lt;</span><span class="n">PolicyT</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// !_CCCL_COMPILER(NVRTC)</span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="n">CUB_NAMESPACE_END</span><span class="w"></span>
+
+<span class="cp">#if _CCCL_HAS_CUDA_COMPILER() &amp;&amp; !_CCCL_COMPILER(NVRTC)</span>
+<span class="cp">#</span><span class="w">  </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cub/detail/launcher/cuda_runtime.cuh&gt;</span><span class="c1"> // to complete the definition of TripleChevronFactory</span><span class="cp"></span>
+<span class="cp">#endif </span><span class="c1">// _CCCL_HAS_CUDA_COMPILER() &amp;&amp; !_CCCL_COMPILER(NVRTC)</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

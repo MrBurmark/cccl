@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::BlockReduce &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::BlockRunLengthDecode" href="classcub_1_1BlockRunLengthDecode.html" />
+    <link rel="prev" title="cub::BlockRadixSort" href="classcub_1_1BlockRadixSort.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockAdjacentDifference.html">cub::BlockAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockDiscontinuity.html">cub::BlockDiscontinuity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockExchange.html">cub::BlockExchange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockHistogram.html">cub::BlockHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockLoad.html">cub::BlockLoad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockMergeSort.html">cub::BlockMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockMergeSortStrategy.html">cub::BlockMergeSortStrategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixRank.html">cub::BlockRadixRank</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixRankMatch.html">cub::BlockRadixRankMatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRadixSort.html">cub::BlockRadixSort</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::BlockReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockRunLengthDecode.html">cub::BlockRunLengthDecode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockScan.html">cub::BlockScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockShuffle.html">cub::BlockShuffle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1BlockStore.html">cub::BlockStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockLoadType.html">cub::BlockLoadType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRadixRankEmptyCallback.html">cub::BlockRadixRankEmptyCallback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRadixRankMatchEarlyCounts.html">cub::BlockRadixRankMatchEarlyCounts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1BlockRakingLayout.html">cub::BlockRakingLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../block_wide.html">Block-Wide “Collective” Primitives</a> &raquo;</li>
+      <li>cub::BlockReduce</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-blockreduce">
+<h1>cub::BlockReduce<a class="headerlink" href="#cub-blockreduce" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_block_block_reduce.cuh.html#block-reduce-8cuh"><span class="std std-ref">cub/block/block_reduce.cuh</span></a></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE">
+<span id="_CPPv3I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE"></span><span id="_CPPv2I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK_DIM_X</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#_CPPv4N3cub20BlockReduceAlgorithmE" title="cub::BlockReduceAlgorithm"><span class="n"><span class="pre">BlockReduceAlgorithm</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ALGORITHM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#_CPPv4N3cub20BlockReduceAlgorithm28BLOCK_REDUCE_WARP_REDUCTIONSE" title="cub::BLOCK_REDUCE_WARP_REDUCTIONS"><span class="n"><span class="pre">BLOCK_REDUCE_WARP_REDUCTIONS</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK_DIM_Y</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK_DIM_Z</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockreduce"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockReduce</span></span></span><a class="headerlink" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>The BlockReduce class provides <a class="reference internal" href="../index.html#collective-primitives"><span class="std std-ref">collective</span></a> methods for computing a
+parallel reduction of items partitioned across a CUDA thread block.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>A <a class="reference external" href="http://en.wikipedia.org/wiki/Reduce_(higher-order_function)">reduction</a> (or <em>fold</em>) uses a
+binary combining operator to compute a single aggregate from a list of input elements.</p></li>
+<li><p>For multi-dimensional blocks, threads are linearly ranked in row-major order.</p></li>
+<li><p>BlockReduce can be optionally specialized by algorithm to accommodate different
+latency/throughput workload profiles:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#_CPPv4N3cub20BlockReduceAlgorithm36BLOCK_REDUCE_RAKING_COMMUTATIVE_ONLYE" title="cub::BLOCK_REDUCE_RAKING_COMMUTATIVE_ONLY"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">cub::BLOCK_REDUCE_RAKING_COMMUTATIVE_ONLY</span></code></a>:
+An efficient “raking” reduction algorithm that only supports commutative reduction operators.</p></li>
+<li><p><a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#_CPPv4N3cub20BlockReduceAlgorithm19BLOCK_REDUCE_RAKINGE" title="cub::BLOCK_REDUCE_RAKING"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">cub::BLOCK_REDUCE_RAKING</span></code></a>:
+An efficient “raking” reduction algorithm that supports commutative and non-commutative
+reduction operators.</p></li>
+<li><p><a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#_CPPv4N3cub20BlockReduceAlgorithm28BLOCK_REDUCE_WARP_REDUCTIONSE" title="cub::BLOCK_REDUCE_WARP_REDUCTIONS"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">cub::BLOCK_REDUCE_WARP_REDUCTIONS</span></code></a>:
+A quick “tiled warp-reductions” reduction algorithm that supports commutative and
+non-commutative reduction operators.</p></li>
+<li><p><a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#_CPPv4N3cub20BlockReduceAlgorithm45BLOCK_REDUCE_WARP_REDUCTIONS_NONDETERMINISTICE" title="cub::BLOCK_REDUCE_WARP_REDUCTIONS_NONDETERMINISTIC"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">cub::BLOCK_REDUCE_WARP_REDUCTIONS_NONDETERMINISTIC</span></code></a>:
+A quick “tiled warp-reductions” reduction algorithm that supports commutative and
+non-commutative reduction operators. This variant uses atomic operations to reduce the
+warp-wide reduction results, making it non-deterministic, i.e. the order of reduction
+operations is not guaranteed to be the same across different invocations of the same
+kernel.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
+<li><p>Very efficient (only one synchronization barrier).</p></li>
+<li><p>Incurs zero bank conflicts for most types</p></li>
+<li><p>Computation is slightly more efficient (i.e., having lower instruction overhead) for:
+- Summation (vs. generic reduction)
+- <code class="docutils literal notranslate"><span class="pre">BLOCK_THREADS</span></code> is a multiple of the architecture’s warp size
+- Every thread has a valid input (i.e., full vs. partial-tiles)</p></li>
+<li><p>See cub::BlockReduceAlgorithm for performance details regarding algorithmic alternatives</p></li>
+</ul>
+</section>
+<section id="a-simple-example">
+<h2>A Simple Example<a class="headerlink" href="#a-simple-example" title="Permalink to this headline"></a></h2>
+<p>Every thread in the block uses the BlockReduce class by first specializing the BlockReduce type, then instantiating an instance with parameters for communication, and finally invoking one or more collective member functions.</p>
+<p>The code snippet below illustrates a sum reduction of 512 integer items that are partitioned in
+a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> across 128 threads where each thread
+owns 4 consecutive items.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_reduce.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize BlockReduce for a 1D block of 128 threads of type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockReduce</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain a segment of consecutive items that are blocked across threads</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide sum for thread0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Sum</span><span class="p">(</span><span class="n">thread_data</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="re-using-dynamically-allocating-shared-memory">
+<h2>Re-using dynamically allocating shared memory<a class="headerlink" href="#re-using-dynamically-allocating-shared-memory" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">block/example_block_reduce_dyn_smem.cu</span></code> example illustrates usage of dynamically shared
+memory with BlockReduce and how to re-purpose the same memory region.</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – Data type being reduced</p></li>
+<li><p><strong>BLOCK_DIM_X</strong> – The thread block length in threads along the X dimension</p></li>
+<li><p><strong>ALGORITHM</strong> – <strong>[optional]</strong> <a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#namespacecub_1add0251c713859b8974806079e498d10a"><span class="std std-ref">cub::BlockReduceAlgorithm</span></a> enumerator specifying the underlying algorithm to use (default: <a class="reference internal" href="enum_namespacecub_1add0251c713859b8974806079e498d10a.html#namespacecub_1add0251c713859b8974806079e498d10aa993903176f938273fa1ff5d4daa808e5"><span class="std std-ref">cub::BLOCK_REDUCE_WARP_REDUCTIONS</span></a>)</p></li>
+<li><p><strong>BLOCK_DIM_Y</strong> – <strong>[optional]</strong> The thread block length in threads along the Y dimension (default: 1)</p></li>
+<li><p><strong>BLOCK_DIM_Z</strong> – <strong>[optional]</strong> The thread block length in threads along the Z dimension (default: 1) </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-collective-constructors">Collective constructors</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub11BlockReduce11BlockReduceEv">
+<span id="_CPPv3N3cub11BlockReduce11BlockReduceEv"></span><span id="_CPPv2N3cub11BlockReduce11BlockReduceEv"></span><span id="cub::BlockReduce::BlockReduce"></span><span class="target" id="classcub_1_1blockreduce_1a4b85cc07f8781e64a0e76a51def14da0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockReduce</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub11BlockReduce11BlockReduceEv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Collective constructor using a private static allocation of shared memory as temporary storage. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub11BlockReduce11BlockReduceER11TempStorage">
+<span id="_CPPv3N3cub11BlockReduce11BlockReduceER11TempStorage"></span><span id="_CPPv2N3cub11BlockReduce11BlockReduceER11TempStorage"></span><span id="cub::BlockReduce::BlockReduce__TempStorageR"></span><span class="target" id="classcub_1_1blockreduce_1a17d1176ebe2fe0e0358437052bb24426"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockReduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3cub11BlockReduce11TempStorageE" title="cub::BlockReduce::TempStorage"><span class="n"><span class="pre">TempStorage</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub11BlockReduce11BlockReduceER11TempStorage" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Collective constructor using the specified memory allocation as temporary storage. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>temp_storage</strong> – <strong>[in]</strong> Reference to memory allocation having layout type TempStorage </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-generic-reductions">Generic reductions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub11BlockReduce6ReduceE1T1T11ReductionOp">
+<span id="_CPPv3I0EN3cub11BlockReduce6ReduceE1T11ReductionOp"></span><span id="_CPPv2I0EN3cub11BlockReduce6ReduceE1T11ReductionOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockreduce_1ae3d77d95150ad0a79434ddb8459d8f5f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Reduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub11BlockReduce6ReduceE1T1T11ReductionOp" title="cub::BlockReduce::Reduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub11BlockReduce6ReduceE1T1T11ReductionOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a block-wide reduction for thread<sub>0</sub> using the specified binary reduction functor.
+Each thread contributes one input element.</p>
+<ul class="simple">
+<li><p>The return value is undefined in threads other than thread<sub>0</sub>.</p></li>
+<li><p>For multi-dimensional blocks, threads are linearly ranked in row-major order.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="snippet">
+<h2>Snippet<a class="headerlink" href="#snippet" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a max reduction of 128 integer items that are partitioned
+across 128 threads.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_reduce.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize BlockReduce for a 1D block of 128 threads of type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockReduce</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Each thread obtains an input item</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide max for thread0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Reduce</span><span class="p">(</span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{});</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction functor type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>reduction_op</strong> – <strong>[in]</strong> Binary reduction functor </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_i0EN3cub11BlockReduce6ReduceE1TRA16ITEMS_PER_THREAD_1T11ReductionOp">
+<span id="_CPPv3I_i0EN3cub11BlockReduce6ReduceERA16ITEMS_PER_THREAD_1T11ReductionOp"></span><span id="_CPPv2I_i0EN3cub11BlockReduce6ReduceERAITEMS_PER_THREAD_1T11ReductionOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockreduce_1a7eb2669a08e722c8db38a440a646b3c9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Reduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inputs</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I_i0EN3cub11BlockReduce6ReduceE1TRA16ITEMS_PER_THREAD_1T11ReductionOp" title="cub::BlockReduce::Reduce::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span>, <a class="reference internal" href="#_CPPv4I_i0EN3cub11BlockReduce6ReduceE1TRA16ITEMS_PER_THREAD_1T11ReductionOp" title="cub::BlockReduce::Reduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_i0EN3cub11BlockReduce6ReduceE1TRA16ITEMS_PER_THREAD_1T11ReductionOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a block-wide reduction for thread<sub>0</sub> using the specified binary reduction
+functor. Each thread contributes an array of consecutive input elements.</p>
+<ul class="simple">
+<li><p>The return value is undefined in threads other than thread<sub>0</sub>.</p></li>
+<li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="id1">
+<h2>Snippet<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a max reduction of 512 integer items that are partitioned in a
+<a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> across 128 threads where each thread owns
+4 consecutive items.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_reduce.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize BlockReduce for a 1D block of 128 threads of type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockReduce</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain a segment of consecutive items that are blocked across threads</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide max for thread0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Reduce</span><span class="p">(</span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{});</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ITEMS_PER_THREAD</strong> – <strong>[inferred]</strong> The number of consecutive items partitioned onto each thread.</p></li>
+<li><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction functor type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>inputs</strong> – <strong>[in]</strong> Calling thread’s input segment</p></li>
+<li><p><strong>reduction_op</strong> – <strong>[in]</strong> Binary reduction functor </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub11BlockReduce6ReduceE1T1T11ReductionOpi">
+<span id="_CPPv3I0EN3cub11BlockReduce6ReduceE1T11ReductionOpi"></span><span id="_CPPv2I0EN3cub11BlockReduce6ReduceE1T11ReductionOpi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockreduce_1a8467c1c61be57cf055a74accee345026"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Reduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub11BlockReduce6ReduceE1T1T11ReductionOpi" title="cub::BlockReduce::Reduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_valid</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub11BlockReduce6ReduceE1T1T11ReductionOpi" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a block-wide reduction for thread<sub>0</sub> using the specified binary reduction
+functor. The first <code class="docutils literal notranslate"><span class="pre">num_valid</span></code> threads each contribute one input element.</p>
+<ul class="simple">
+<li><p>The return value is undefined in threads other than thread&lt;sub&gt;0&lt;/sub&gt;.</p></li>
+<li><p>For multi-dimensional blocks, threads are linearly ranked in row-major order.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="id2">
+<h2>Snippet<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a max reduction of a partially-full tile of integer items
+that are partitioned across 128 threads.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_reduce.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">num_valid</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize BlockReduce for a 1D block of 128 threads of type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockReduce</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Each thread obtains an input item</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_valid</span><span class="p">)</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide max for thread0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Reduce</span><span class="p">(</span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{},</span><span class="w"> </span><span class="n">num_valid</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction functor type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>reduction_op</strong> – <strong>[in]</strong> Binary reduction functor</p></li>
+<li><p><strong>num_valid</strong> – <strong>[in]</strong> Number of threads containing valid elements (may be less than BLOCK_THREADS) </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-summation-reductions">Summation reductions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub11BlockReduce3SumE1T">
+<span id="_CPPv3N3cub11BlockReduce3SumE1T"></span><span id="_CPPv2N3cub11BlockReduce3SumE1T"></span><span id="cub::BlockReduce::Sum__T"></span><span class="target" id="classcub_1_1blockreduce_1af4316a3695746272e2c37f10682c88f3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sum</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub11BlockReduce3SumE1T" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a block-wide reduction for thread<sub>0</sub> using addition (+) as the reduction operator.
+Each thread contributes one input element.</p>
+<ul class="simple">
+<li><p>The return value is undefined in threads other than thread<sub>0</sub>.</p></li>
+<li><p>For multi-dimensional blocks, threads are linearly ranked in row-major order.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="id3">
+<h2>Snippet<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a sum reduction of 128 integer items that are partitioned
+across 128 threads.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_reduce.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize BlockReduce for a 1D block of 128 threads of type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockReduce</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Each thread obtains an input item</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide sum for thread0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Sum</span><span class="p">(</span><span class="n">thread_data</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN3cub11BlockReduce3SumE1TRA16ITEMS_PER_THREAD_1T">
+<span id="_CPPv3I_iEN3cub11BlockReduce3SumERA16ITEMS_PER_THREAD_1T"></span><span id="_CPPv2I_iEN3cub11BlockReduce3SumERAITEMS_PER_THREAD_1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1blockreduce_1a6eab36516986a2e4d504b132b3e04cb3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sum</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inputs</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I_iEN3cub11BlockReduce3SumE1TRA16ITEMS_PER_THREAD_1T" title="cub::BlockReduce::Sum::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN3cub11BlockReduce3SumE1TRA16ITEMS_PER_THREAD_1T" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a block-wide reduction for thread&lt;sub&gt;0&lt;/sub&gt; using addition (+) as the reduction
+operator. Each thread contributes an array of consecutive input elements.</p>
+<ul class="simple">
+<li><p>The return value is undefined in threads other than thread<sub>0</sub>.</p></li>
+<li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="id4">
+<h2>Snippet<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a sum reduction of 512 integer items that are partitioned in a
+<a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> across 128 threads where each thread owns
+4 consecutive items.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_reduce.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize BlockReduce for a 1D block of 128 threads of type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockReduce</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain a segment of consecutive items that are blocked across threads</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide sum for thread0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Sum</span><span class="p">(</span><span class="n">thread_data</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ITEMS_PER_THREAD</strong> – <strong>[inferred]</strong> The number of consecutive items partitioned onto each thread.</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>inputs</strong> – <strong>[in]</strong> Calling thread’s input segment </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub11BlockReduce3SumE1Ti">
+<span id="_CPPv3N3cub11BlockReduce3SumE1Ti"></span><span id="_CPPv2N3cub11BlockReduce3SumE1Ti"></span><span id="cub::BlockReduce::Sum__T.i"></span><span class="target" id="classcub_1_1blockreduce_1a350869c5b6c26fdded6f500ffcc5494c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sum</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_i_20BlockReduceAlgorithm_i_iEN3cub11BlockReduceE" title="cub::BlockReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_valid</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub11BlockReduce3SumE1Ti" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a block-wide reduction for thread<sub>0</sub> using addition (+) as the reduction
+operator. The first <code class="docutils literal notranslate"><span class="pre">num_valid</span></code> threads each contribute one input element.</p>
+<ul class="simple">
+<li><p>The return value is undefined in threads other than thread<sub>0</sub>.</p></li>
+<li><p>For multi-dimensional blocks, threads are linearly ranked in row-major order.</p></li>
+<li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
+</ul>
+<section id="id5">
+<h2>Snippet<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a sum reduction of a partially-full tile of integer items
+that are partitioned across 128 threads.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">   // or equivalently &lt;cub/block/block_reduce.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">num_valid</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize BlockReduce for a 1D block of 128 threads of type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">BlockReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">BlockReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for BlockReduce</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Each thread obtains an input item (up to num_items)</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_valid</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Compute the block-wide sum for thread0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BlockReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Sum</span><span class="p">(</span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">num_valid</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>num_valid</strong> – <strong>[in]</strong> Number of threads containing valid elements (may be less than BLOCK_THREADS) </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub11BlockReduce11TempStorageE">
+<span id="_CPPv3N3cub11BlockReduce11TempStorageE"></span><span id="_CPPv2N3cub11BlockReduce11TempStorageE"></span><span id="cub::BlockReduce::TempStorage"></span><span class="target" id="structcub_1_1blockreduce_1_1tempstorage"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TempStorage</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">Uninitialized</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">_TempStorage</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3cub11BlockReduce11TempStorageE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The operations exposed by BlockReduce require a temporary memory allocation of this nested type for thread communication. This opaque storage can be allocated directly using the <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> keyword. Alternatively, it can be aliased to externally allocated memory (shared or global) or <code class="docutils literal notranslate"><span class="pre">union</span></code>’d with other storage allocation types to facilitate memory reuse. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

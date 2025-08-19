@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub/device/device_reduce.cuh &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub/device/device_run_length_encode.cuh" href="file_cub_device_device_run_length_encode.cuh.html" />
+    <link rel="prev" title="cub/device/device_reduce.cuh" href="file_cub_device_device_reduce.cuh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">CUB Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cub_api.html">CUB API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cub_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_cub.html">cub</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_cub.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_block.html">cub/block</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="dir_cub_device.html">cub/device</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_cub_device.html#files">Files</a><ul class="current">
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_adjacent_difference.cuh.html">cub/device/device_adjacent_difference.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_copy.cuh.html">cub/device/device_copy.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_for.cuh.html">cub/device/device_for.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_histogram.cuh.html">cub/device/device_histogram.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_memcpy.cuh.html">cub/device/device_memcpy.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_merge.cuh.html">cub/device/device_merge.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_merge_sort.cuh.html">cub/device/device_merge_sort.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_partition.cuh.html">cub/device/device_partition.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_radix_sort.cuh.html">cub/device/device_radix_sort.cuh</a></li>
+<li class="toctree-l7 current"><a class="reference internal" href="file_cub_device_device_reduce.cuh.html">cub/device/device_reduce.cuh</a><ul class="current">
+<li class="toctree-l8 current"><a class="current reference internal" href="#">Source file</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_cub_device_device_reduce.cuh.html#namespaces">Namespaces</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_cub_device_device_reduce.cuh.html#structs">Structs</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_run_length_encode.cuh.html">cub/device/device_run_length_encode.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_scan.cuh.html">cub/device/device_scan.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_segmented_radix_sort.cuh.html">cub/device/device_segmented_radix_sort.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_segmented_reduce.cuh.html">cub/device/device_segmented_reduce.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_segmented_sort.cuh.html">cub/device/device_segmented_sort.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_select.cuh.html">cub/device/device_select.cuh</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_cub_device_device_transform.cuh.html">cub/device/device_transform.cuh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_grid.html">cub/grid</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_iterator.html">cub/iterator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_thread.html">cub/thread</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_cub_warp.html">cub/warp</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="dir_cub.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cub_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cub_api.html">CUB API</a> &raquo;</li>
+          <li><a href="dir_cub.html">cub</a> &raquo;</li>
+          <li><a href="dir_cub_device.html">cub/device</a> &raquo;</li>
+          <li><a href="file_cub_device_device_reduce.cuh.html">cub/device/device_reduce.cuh</a> &raquo;</li>
+      <li>cub/device/device_reduce.cuh</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-device-device-reduce-cuh">
+<h1>cub/device/device_reduce.cuh<a class="headerlink" href="#cub-device-device-reduce-cuh" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_cub_device_device_reduce.cuh.html#device-reduce-8cuh"><span class="std std-ref">cub/device/device_reduce.cuh</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/******************************************************************************</span>
+<span class="cm"> * Copyright (c) 2011, Duane Merrill.  All rights reserved.</span>
+<span class="cm"> * Copyright (c) 2011-2024, NVIDIA CORPORATION.  All rights reserved.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Redistribution and use in source and binary forms, with or without</span>
+<span class="cm"> * modification, are permitted provided that the following conditions are met:</span>
+<span class="cm"> *     * Redistributions of source code must retain the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer.</span>
+<span class="cm"> *     * Redistributions in binary form must reproduce the above copyright</span>
+<span class="cm"> *       notice, this list of conditions and the following disclaimer in the</span>
+<span class="cm"> *       documentation and/or other materials provided with the distribution.</span>
+<span class="cm"> *     * Neither the name of the NVIDIA CORPORATION nor the</span>
+<span class="cm"> *       names of its contributors may be used to endorse or promote products</span>
+<span class="cm"> *       derived from this software without specific prior written permission.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="cm"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="cm"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="cm"> * ARE DISCLAIMED. IN NO EVENT SHALL NVIDIA CORPORATION BE LIABLE FOR ANY</span>
+<span class="cm"> * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="cm"> * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="cm"> * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="cm"> * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="cm"> * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="cm"> * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="cm"> *</span>
+<span class="cm"> ******************************************************************************/</span><span class="w"></span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/config.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/detail/choose_offset.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/detail/temporary_storage.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/device/dispatch/dispatch_reduce_by_key.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/device/dispatch/dispatch_reduce_deterministic.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/device/dispatch/dispatch_reduce_nondeterministic.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/device/dispatch/dispatch_streaming_reduce.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/thread/thread_operators.cuh&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/util_type.cuh&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thrust/iterator/tabulate_output_iterator.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__execution/determinism.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__execution/require.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__execution/tune.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__memory_resource/get_memory_resource.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/__stream/get_stream.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/__execution/env.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/limits&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/type_traits&gt;</span><span class="cp"></span>
+
+<span class="n">CUB_NAMESPACE_BEGIN</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">detail</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">DeterminismT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_non_deterministic_v</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">  </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">DeterminismT</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">not_guaranteed_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">reduce</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">get_tuning_query_t</span><span class="w"></span>
+<span class="p">{};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Derived</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">tuning</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">_CCCL_TRIVIAL_API</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">query</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">get_tuning_query_t</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Derived</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">Derived</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">default_tuning</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">tuning</span><span class="o">&lt;</span><span class="n">default_tuning</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">AccumT</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Offset</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">OpT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">fn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">policy_hub</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="p">,</span><span class="w"> </span><span class="n">Offset</span><span class="p">,</span><span class="w"> </span><span class="n">OpT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">default_rfa_tuning</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">tuning</span><span class="o">&lt;</span><span class="n">default_tuning</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">AccumT</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Offset</span><span class="p">,</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">OpT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">fn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">rfa</span><span class="o">::</span><span class="n">policy_hub</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="p">,</span><span class="w"> </span><span class="n">Offset</span><span class="p">,</span><span class="w"> </span><span class="n">OpT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">ExtremumOutIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">IndexOutIteratorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">unzip_and_write_arg_extremum_op</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">ExtremumOutIteratorT</span><span class="w"> </span><span class="n">result_out_it</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">IndexOutIteratorT</span><span class="w"> </span><span class="n">index_out_it</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">IndexT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">KeyValuePairT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">_CCCL_DEVICE</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="n">IndexT</span><span class="p">,</span><span class="w"> </span><span class="n">KeyValuePairT</span><span class="w"> </span><span class="n">reduced_result</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">*</span><span class="n">result_out_it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduced_result</span><span class="p">.</span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="o">*</span><span class="n">index_out_it</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">reduced_result</span><span class="p">.</span><span class="n">key</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace reduce</span>
+
+<span class="c1">// TODO(gevtushenko): move cudax `device_memory_resource` to `cuda::__device_memory_resource` and use it here</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">device_memory_resource</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="cm">/* alignment */</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">{</span><span class="k">nullptr</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_TRY_CUDA_API</span><span class="p">(</span><span class="o">::</span><span class="n">cudaMalloc</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;allocate failed to allocate with cudaMalloc&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="n">bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">deallocate</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="cm">/* bytes */</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT_CUDA_API</span><span class="p">(</span><span class="o">::</span><span class="n">cudaFree</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;deallocate failed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">stream_ref</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="cm">/* alignment */</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">allocate</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">stream_ref</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">{</span><span class="k">nullptr</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_TRY_CUDA_API</span><span class="p">(</span><span class="o">::</span><span class="n">cudaMallocAsync</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;allocate failed to allocate with cudaMallocAsync&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="n">get</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">deallocate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">stream_ref</span><span class="w"> </span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="cm">/* bytes */</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_ASSERT_CUDA_API</span><span class="p">(</span><span class="o">::</span><span class="n">cudaFreeAsync</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;deallocate failed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="n">get</span><span class="p">());</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace detail</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">DeviceReduce</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TuningEnvT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">__determinism_t</span><span class="w"> </span><span class="n">Determinism</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">reduce_impl</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ReductionOpT</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">__determinism_holder_t</span><span class="o">&lt;</span><span class="n">Determinism</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">offset_t</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">accum_t</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">__accumulator_t</span><span class="o">&lt;</span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">transform_t</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">identity</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">reduce_tuning_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="w"></span>
+<span class="w">      </span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">TuningEnvT</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">get_tuning_query_t</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">default_tuning</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">policy_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">reduce_tuning_t</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">fn</span><span class="o">&lt;</span><span class="n">accum_t</span><span class="p">,</span><span class="w"> </span><span class="n">offset_t</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">dispatch_t</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">DispatchReduce</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">offset_t</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">accum_t</span><span class="p">,</span><span class="w"> </span><span class="n">transform_t</span><span class="p">,</span><span class="w"> </span><span class="n">policy_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dispatch_t</span><span class="o">::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">offset_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TuningEnvT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">reduce_impl</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">gpu_to_gpu_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">offset_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">accum_t</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">__accumulator_t</span><span class="o">&lt;</span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">transform_t</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">identity</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">reduce_tuning_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="w"></span>
+<span class="w">      </span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">TuningEnvT</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">get_tuning_query_t</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">default_rfa_tuning</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">policy_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">reduce_tuning_t</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">fn</span><span class="o">&lt;</span><span class="n">accum_t</span><span class="p">,</span><span class="w"> </span><span class="n">offset_t</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">dispatch_t</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">detail</span><span class="o">::</span><span class="n">DispatchReduceDeterministic</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">offset_t</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">transform_t</span><span class="p">,</span><span class="w"> </span><span class="n">accum_t</span><span class="p">,</span><span class="w"> </span><span class="n">policy_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dispatch_t</span><span class="o">::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">offset_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TuningEnvT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">reduce_impl</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ReductionOpT</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">not_guaranteed_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">offset_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">accum_t</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">__accumulator_t</span><span class="o">&lt;</span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">output_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">THRUST_NS_QUALIFIER</span><span class="o">::</span><span class="n">unwrap_contiguous_iterator_t</span><span class="o">&lt;</span><span class="n">OutputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">transform_t</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">identity</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">reduce_tuning_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="w"></span>
+<span class="w">      </span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">TuningEnvT</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">get_tuning_query_t</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">default_tuning</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">policy_t</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">reduce_tuning_t</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">fn</span><span class="o">&lt;</span><span class="n">accum_t</span><span class="p">,</span><span class="w"> </span><span class="n">offset_t</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">dispatch_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="w"></span>
+<span class="w">      </span><span class="n">DispatchReduceNondeterministic</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">output_t</span><span class="p">,</span><span class="w"> </span><span class="n">offset_t</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">accum_t</span><span class="p">,</span><span class="w"> </span><span class="n">transform_t</span><span class="p">,</span><span class="w"> </span><span class="n">policy_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dispatch_t</span><span class="o">::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">THRUST_NS_QUALIFIER</span><span class="o">::</span><span class="n">unwrap_contiguous_iterator</span><span class="p">(</span><span class="n">d_out</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">offset_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">init</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">Reduce</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ReductionOpT</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::Reduce&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Signed integer type for global offsets</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchReduce</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">EnvT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">env</span><span class="o">&lt;&gt;&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">Reduce</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">EnvT</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE</span><span class="p">(</span><span class="s">&quot;cub::DeviceReduce::Reduce&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="o">!</span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__queryable_with</span><span class="o">&lt;</span><span class="n">EnvT</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">__get_determinism_t</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;Determinism should be used inside requires to have an effect.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">requirements_t</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">EnvT</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">__get_requirements_t</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">env</span><span class="o">&lt;&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">default_determinism_t</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">requirements_t</span><span class="p">,</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">                                          </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">__get_determinism_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                          </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">run_to_run_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">accum_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">__accumulator_t</span><span class="o">&lt;</span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">gpu_gpu_determinism</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">default_determinism_t</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">gpu_to_gpu_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// integral types are always gpu-to-gpu deterministic if reduction operator is a simple cuda binary</span>
+<span class="w">    </span><span class="c1">// operator, so fallback to run-to-run determinism</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">integral_fallback</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">gpu_gpu_determinism</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">accum_t</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">is_cuda_binary_operator</span><span class="o">&lt;</span><span class="n">ReductionOpT</span><span class="o">&gt;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// use gpu-to-gpu determinism only for float and double types with ::cuda::std::plus operator</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">float_double_plus</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">gpu_gpu_determinism</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">is_one_of_v</span><span class="o">&lt;</span><span class="n">accum_t</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">is_cuda_std_plus_v</span><span class="o">&lt;</span><span class="n">ReductionOpT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">supported</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">integral_fallback</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">float_double_plus</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">gpu_gpu_determinism</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// gpu_to_gpu determinism is only supported for integral types with cuda operators, or</span>
+<span class="w">    </span><span class="c1">// float and double types with ::cuda::std::plus operator</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="n">supported</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gpu_to_gpu determinism is unsupported&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">supported</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">cudaErrorNotSupported</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">no_determinism</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">is_non_deterministic_v</span><span class="o">&lt;</span><span class="n">default_determinism_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Certain conditions must be met to be able to use the non-deterministic</span>
+<span class="w">      </span><span class="c1">// kernel. The output iterator must be a contiguous iterator and the</span>
+<span class="w">      </span><span class="c1">// reduction operator must be plus (for now). Additionally, since atomics for types of</span>
+<span class="w">      </span><span class="c1">// size &lt; 4B are emulated, they perform poorly, so we fall back to the run-to-run</span>
+<span class="w">      </span><span class="c1">// determinism.</span>
+<span class="w">      </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">is_contiguous_fallback</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">        </span><span class="o">!</span><span class="n">no_determinism</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">THRUST_NS_QUALIFIER</span><span class="o">::</span><span class="n">is_contiguous_iterator_v</span><span class="o">&lt;</span><span class="n">OutputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">is_plus_fallback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">no_determinism</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">is_cuda_std_plus_v</span><span class="o">&lt;</span><span class="n">ReductionOpT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">is_4b_or_greater</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">no_determinism</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">accum_t</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// If the conditions for gpu-to-gpu determinism or non-deterministic</span>
+<span class="w">      </span><span class="c1">// reduction are not met, we fall back to run-to-run determinism.</span>
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">determinism_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">conditional_t</span><span class="o">&lt;</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="n">gpu_gpu_determinism</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">integral_fallback</span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">no_determinism</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="n">is_contiguous_fallback</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_plus_fallback</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_4b_or_greater</span><span class="p">)),</span><span class="w"></span>
+<span class="w">        </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">run_to_run_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">default_determinism_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Query relevant properties from the environment</span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_or</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">get_stream</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">stream_ref</span><span class="p">{</span><span class="n">cudaStream_t</span><span class="p">{}});</span><span class="w"></span>
+<span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">mr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_or</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">mr</span><span class="o">::</span><span class="n">__get_memory_resource</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">device_memory_resource</span><span class="p">{});</span><span class="w"></span>
+
+<span class="w">      </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">tuning_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">EnvT</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">__get_tuning_t</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">env</span><span class="o">&lt;&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Query the required temporary storage size</span>
+<span class="w">      </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduce_impl</span><span class="o">&lt;</span><span class="n">tuning_t</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">determinism_t</span><span class="p">{},</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="n">get</span><span class="p">());</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// TODO(gevtushenko): use uninitialized buffer whenit&#39;s available</span>
+<span class="w">      </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">temporary_storage</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">mr</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Run the algorithm</span>
+<span class="w">      </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduce_impl</span><span class="o">&lt;</span><span class="n">tuning_t</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"> </span><span class="n">determinism_t</span><span class="p">{},</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="n">get</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// Try to deallocate regardless of the error to avoid memory leaks</span>
+<span class="w">      </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">deallocate_error</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">        </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">temporary_storage</span><span class="o">::</span><span class="n">deallocate</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">mr</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Reduction error takes precedence over deallocation error since it happens first</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">deallocate_error</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">EnvT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">env</span><span class="o">&lt;&gt;&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="w">  </span><span class="n">Sum</span><span class="p">(</span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">EnvT</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE</span><span class="p">(</span><span class="s">&quot;cub::DeviceReduce::Sum&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="o">!</span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__queryable_with</span><span class="o">&lt;</span><span class="n">EnvT</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">__get_determinism_t</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;Determinism should be used inside requires to have an effect.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">requirements_t</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">EnvT</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">__get_requirements_t</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">env</span><span class="o">&lt;&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">default_determinism_t</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">requirements_t</span><span class="p">,</span><span class="w"> </span><span class="c1">//</span>
+<span class="w">                                          </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">__get_determinism_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                          </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">run_to_run_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">no_determinism</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">is_non_deterministic_v</span><span class="o">&lt;</span><span class="n">default_determinism_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The output iterator must be a contiguous iterator or we fall back to</span>
+<span class="w">    </span><span class="c1">// run-to-run determinism.</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">is_contiguous_fallback</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="o">!</span><span class="n">no_determinism</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">THRUST_NS_QUALIFIER</span><span class="o">::</span><span class="n">is_contiguous_iterator_v</span><span class="o">&lt;</span><span class="n">OutputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">non_void_value_t</span><span class="o">&lt;</span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Since atomics for types of size &lt; 4B are emulated, they perform poorly, so we fall back to the run-to-run</span>
+<span class="w">    </span><span class="c1">// determinism.</span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">is_4b_or_greater</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">no_determinism</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">OutputT</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">determinism_t</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">conditional_t</span><span class="o">&lt;</span><span class="n">no_determinism</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="n">is_contiguous_fallback</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_4b_or_greater</span><span class="p">),</span><span class="w"></span>
+<span class="w">                                 </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">determinism</span><span class="o">::</span><span class="n">run_to_run_t</span><span class="p">,</span><span class="w"></span>
+<span class="w">                                 </span><span class="n">default_determinism_t</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Query relevant properties from the environment</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_or</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">get_stream</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">stream_ref</span><span class="p">{</span><span class="n">cudaStream_t</span><span class="p">{}});</span><span class="w"></span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">mr</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_or</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">mr</span><span class="o">::</span><span class="n">__get_memory_resource</span><span class="p">,</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">device_memory_resource</span><span class="p">{});</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">tuning_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">__query_result_or_t</span><span class="o">&lt;</span><span class="n">EnvT</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_EXEC</span><span class="o">::</span><span class="n">__get_tuning_t</span><span class="p">,</span><span class="w"> </span><span class="n">_CUDA_STD_EXEC</span><span class="o">::</span><span class="n">env</span><span class="o">&lt;&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutputT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Query the required temporary storage size</span>
+<span class="w">    </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduce_impl</span><span class="o">&lt;</span><span class="n">tuning_t</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;&gt;</span><span class="p">{},</span><span class="w"></span>
+<span class="w">      </span><span class="n">InitT</span><span class="p">{},</span><span class="w"> </span><span class="c1">// zero-initialize</span>
+<span class="w">      </span><span class="n">determinism_t</span><span class="p">{},</span><span class="w"></span>
+<span class="w">      </span><span class="n">stream</span><span class="p">.</span><span class="n">get</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// TODO(gevtushenko): use uninitialized buffer when it&#39;s available</span>
+<span class="w">    </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">temporary_storage</span><span class="o">::</span><span class="n">allocate</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">mr</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Run the algorithm</span>
+<span class="w">    </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduce_impl</span><span class="o">&lt;</span><span class="n">tuning_t</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;&gt;</span><span class="p">{},</span><span class="w"></span>
+<span class="w">      </span><span class="n">InitT</span><span class="p">{},</span><span class="w"> </span><span class="c1">// zero-initialize</span>
+<span class="w">      </span><span class="n">determinism_t</span><span class="p">{},</span><span class="w"></span>
+<span class="w">      </span><span class="n">stream</span><span class="p">.</span><span class="n">get</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Try to deallocate regardless of the error to avoid memory leaks</span>
+<span class="w">    </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">deallocate_error</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">CubDebug</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">temporary_storage</span><span class="o">::</span><span class="n">deallocate</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">mr</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Reduction error takes precedence over deallocation error since it happens first</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">deallocate_error</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="w">  </span><span class="n">Sum</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::Sum&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Signed integer type for global offsets</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The output value type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">non_void_value_t</span><span class="o">&lt;</span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutputT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchReduce</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">InitT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;&gt;</span><span class="p">{},</span><span class="w"></span>
+<span class="w">      </span><span class="n">InitT</span><span class="p">{},</span><span class="w"> </span><span class="c1">// zero-initialize</span>
+<span class="w">      </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="w">  </span><span class="n">Min</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::Min&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"> </span><span class="c1">// Signed integer type for global offsets</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InputT</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">InputT</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">limits_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">InitT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="cp">#ifndef CCCL_SUPPRESS_NUMERIC_LIMITS_CHECK_IN_CUB_DEVICE_REDUCE_MIN_MAX</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="n">limits_t</span><span class="o">::</span><span class="n">is_specialized</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;cub::DeviceReduce::Min uses cuda::std::numeric_limits&lt;InputIteratorT::value_type&gt;::max() as initial &quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;value, but cuda::std::numeric_limits is not specialized for the iterator&#39;s value type. This is &quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;probably a bug and you should specialize cuda::std::numeric_limits. Define &quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;CCCL_SUPPRESS_NUMERIC_LIMITS_CHECK_IN_CUB_DEVICE_REDUCE_MIN_MAX to suppress this check.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// CCCL_SUPPRESS_NUMERIC_LIMITS_CHECK_IN_CUB_DEVICE_REDUCE_MIN_MAX</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchReduce</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">InitT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">minimum</span><span class="o">&lt;&gt;</span><span class="p">{},</span><span class="w"></span>
+<span class="w">      </span><span class="n">limits_t</span><span class="o">::</span><span class="n">max</span><span class="p">(),</span><span class="w"></span>
+<span class="w">      </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ExtremumOutIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">IndexOutIteratorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">ArgMin</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ExtremumOutIteratorT</span><span class="w"> </span><span class="n">d_min_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">IndexOutIteratorT</span><span class="w"> </span><span class="n">d_index_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::ArgMin&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The input type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InputValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Offset type used within the kernel and to index within one partition</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">PerPartitionOffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Offset type used to index within the total input in the range [d_in, d_in + num_items)</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">GlobalOffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">int64_t</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The value type used for the extremum</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputExtremumT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">non_void_value_t</span><span class="o">&lt;</span><span class="n">ExtremumOutIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">InputValueT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">OutputExtremumT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Reduction operation</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">ReduceOpT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ArgMin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Initial value</span>
+<span class="w">    </span><span class="n">OutputExtremumT</span><span class="w"> </span><span class="n">initial_value</span><span class="p">{</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">InputValueT</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">()};</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Tabulate output iterator that unzips the result and writes it to the user-provided output iterators</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">out_it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">THRUST_NS_QUALIFIER</span><span class="o">::</span><span class="n">make_tabulate_output_iterator</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">unzip_and_write_arg_extremum_op</span><span class="o">&lt;</span><span class="n">ExtremumOutIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">IndexOutIteratorT</span><span class="o">&gt;</span><span class="p">{</span><span class="n">d_min_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_index_out</span><span class="p">});</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">dispatch_streaming_arg_reduce_t</span><span class="o">&lt;</span><span class="w"></span>
+<span class="w">      </span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="k">decltype</span><span class="p">(</span><span class="n">out_it</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="n">PerPartitionOffsetT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">GlobalOffsetT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">ReduceOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">InitT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">out_it</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">GlobalOffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">                       </span><span class="n">ReduceOpT</span><span class="p">{},</span><span class="w"></span>
+<span class="w">                       </span><span class="n">initial_value</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CCCL_DEPRECATED_BECAUSE</span><span class="p">(</span><span class="s">&quot;CUB has superseded this interface in favor of the ArgMin interface that takes two separate &quot;</span><span class="w"></span>
+<span class="w">                          </span><span class="s">&quot;iterators: one iterator to which the extremum is written and another iterator to which the &quot;</span><span class="w"></span>
+<span class="w">                          </span><span class="s">&quot;index of the found extremum is written. &quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="w">    </span><span class="n">ArgMin</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="kt">int</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::ArgMin&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Signed integer type for global offsets</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The input type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InputValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The output tuple type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputTupleT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">non_void_value_t</span><span class="o">&lt;</span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">KeyValuePair</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">InputValueT</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">AccumT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutputTupleT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">empty_problem_init_t</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The output value type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputTupleT</span><span class="o">::</span><span class="n">Value</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Wrapped input iterator to produce index-value &lt;OffsetT, InputT&gt; tuples</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">ArgIndexInputIteratorT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgIndexInputIterator</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputValueT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ArgIndexInputIteratorT</span><span class="w"> </span><span class="nf">d_indexed_in</span><span class="p">(</span><span class="n">d_in</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Initial value</span>
+<span class="w">    </span><span class="n">InitT</span><span class="w"> </span><span class="n">initial_value</span><span class="p">{</span><span class="n">AccumT</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">InputValueT</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">())};</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchReduce</span><span class="o">&lt;</span><span class="n">ArgIndexInputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ArgMin</span><span class="p">,</span><span class="w"> </span><span class="n">InitT</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_indexed_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ArgMin</span><span class="p">(),</span><span class="w"> </span><span class="n">initial_value</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="w">  </span><span class="n">Max</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::Max&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Signed integer type for global offsets</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InputT</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">InputT</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">limits_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">InitT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="cp">#ifndef CCCL_SUPPRESS_NUMERIC_LIMITS_CHECK_IN_CUB_DEVICE_REDUCE_MIN_MAX</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="n">limits_t</span><span class="o">::</span><span class="n">is_specialized</span><span class="p">,</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;cub::DeviceReduce::Max uses cuda::std::numeric_limits&lt;InputIteratorT::value_type&gt;::lowest() as &quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;initial value, but cuda::std::numeric_limits is not specialized for the iterator&#39;s value type. This &quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;is probably a bug and you should specialize cuda::std::numeric_limits. Define &quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="s">&quot;CCCL_SUPPRESS_NUMERIC_LIMITS_CHECK_IN_CUB_DEVICE_REDUCE_MIN_MAX to suppress this check.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="cp">#endif </span><span class="c1">// CCCL_SUPPRESS_NUMERIC_LIMITS_CHECK_IN_CUB_DEVICE_REDUCE_MIN_MAX</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchReduce</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">InitT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{},</span><span class="w"></span>
+<span class="w">      </span><span class="n">limits_t</span><span class="o">::</span><span class="n">lowest</span><span class="p">(),</span><span class="w"></span>
+<span class="w">      </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">ExtremumOutIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">IndexOutIteratorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">ArgMax</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ExtremumOutIteratorT</span><span class="w"> </span><span class="n">d_max_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">IndexOutIteratorT</span><span class="w"> </span><span class="n">d_index_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::ArgMax&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The input type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InputValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Offset type used within the kernel and to index within one partition</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">PerPartitionOffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Offset type used to index within the total input in the range [d_in, d_in + num_items)</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">GlobalOffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">int64_t</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The value type used for the extremum</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputExtremumT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">non_void_value_t</span><span class="o">&lt;</span><span class="n">ExtremumOutIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">InputValueT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">OutputExtremumT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Reduction operation</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">ReduceOpT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ArgMax</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Initial value</span>
+<span class="w">    </span><span class="n">OutputExtremumT</span><span class="w"> </span><span class="n">initial_value</span><span class="p">{</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">InputValueT</span><span class="o">&gt;::</span><span class="n">lowest</span><span class="p">()};</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Tabulate output iterator that unzips the result and writes it to the user-provided output iterators</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">out_it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">THRUST_NS_QUALIFIER</span><span class="o">::</span><span class="n">make_tabulate_output_iterator</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">unzip_and_write_arg_extremum_op</span><span class="o">&lt;</span><span class="n">ExtremumOutIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">IndexOutIteratorT</span><span class="o">&gt;</span><span class="p">{</span><span class="n">d_max_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_index_out</span><span class="p">});</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">dispatch_streaming_arg_reduce_t</span><span class="o">&lt;</span><span class="w"></span>
+<span class="w">      </span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="k">decltype</span><span class="p">(</span><span class="n">out_it</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="n">PerPartitionOffsetT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">GlobalOffsetT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">ReduceOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">InitT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">out_it</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">GlobalOffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">                       </span><span class="n">ReduceOpT</span><span class="p">{},</span><span class="w"></span>
+<span class="w">                       </span><span class="n">initial_value</span><span class="p">,</span><span class="w"></span>
+<span class="w">                       </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CCCL_DEPRECATED_BECAUSE</span><span class="p">(</span><span class="s">&quot;CUB has superseded this interface in favor of the ArgMax interface that takes two separate &quot;</span><span class="w"></span>
+<span class="w">                          </span><span class="s">&quot;iterators: one iterator to which the extremum is written and another iterator to which the &quot;</span><span class="w"></span>
+<span class="w">                          </span><span class="s">&quot;index of the found extremum is written. &quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"></span>
+<span class="w">    </span><span class="n">ArgMax</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="kt">int</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">           </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::ArgMax&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Signed integer type for global offsets</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The input type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InputValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">it_value_t</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The output tuple type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputTupleT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">non_void_value_t</span><span class="o">&lt;</span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">KeyValuePair</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">InputValueT</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">AccumT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutputTupleT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// The output value type</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OutputValueT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputTupleT</span><span class="o">::</span><span class="n">Value</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">InitT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">reduce</span><span class="o">::</span><span class="n">empty_problem_init_t</span><span class="o">&lt;</span><span class="n">AccumT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Wrapped input iterator to produce index-value &lt;OffsetT, InputT&gt; tuples</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">ArgIndexInputIteratorT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgIndexInputIterator</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputValueT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ArgIndexInputIteratorT</span><span class="w"> </span><span class="nf">d_indexed_in</span><span class="p">(</span><span class="n">d_in</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Initial value</span>
+<span class="w">    </span><span class="n">InitT</span><span class="w"> </span><span class="n">initial_value</span><span class="p">{</span><span class="n">AccumT</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">InputValueT</span><span class="o">&gt;::</span><span class="n">lowest</span><span class="p">())};</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchReduce</span><span class="o">&lt;</span><span class="n">ArgIndexInputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ArgMax</span><span class="p">,</span><span class="w"> </span><span class="n">InitT</span><span class="p">,</span><span class="w"> </span><span class="n">AccumT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">d_indexed_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">ArgMax</span><span class="p">(),</span><span class="w"> </span><span class="n">initial_value</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">InputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">OutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">TransformOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">TransformReduce</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">InputIteratorT</span><span class="w"> </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">OutputIteratorT</span><span class="w"> </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ReductionOpT</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">TransformOpT</span><span class="w"> </span><span class="n">transform_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="n">init</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::TransformReduce&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchTransformReduce</span><span class="o">&lt;</span><span class="n">InputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OutputIteratorT</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetT</span><span class="p">,</span><span class="w"> </span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"> </span><span class="n">TransformOpT</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">d_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">      </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">init</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">stream</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">transform_op</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">KeysInputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">UniqueOutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">ValuesInputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">AggregatesOutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumRunsOutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">typename</span><span class="w"> </span><span class="nc">NumItemsT</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">CUB_RUNTIME_FUNCTION</span><span class="w"> </span><span class="n">_CCCL_FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">cudaError_t</span><span class="w"> </span><span class="n">ReduceByKey</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">KeysInputIteratorT</span><span class="w"> </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">UniqueOutputIteratorT</span><span class="w"> </span><span class="n">d_unique_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ValuesInputIteratorT</span><span class="w"> </span><span class="n">d_values_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">AggregatesOutputIteratorT</span><span class="w"> </span><span class="n">d_aggregates_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NumRunsOutputIteratorT</span><span class="w"> </span><span class="n">d_num_runs_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ReductionOpT</span><span class="w"> </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NumItemsT</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">_CCCL_NVTX_RANGE_SCOPE_IF</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;cub::DeviceReduce::ReduceByKey&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Signed integer type for global offsets</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">OffsetT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detail</span><span class="o">::</span><span class="n">choose_offset_t</span><span class="o">&lt;</span><span class="n">NumItemsT</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// FlagT iterator type (not used)</span>
+
+<span class="w">    </span><span class="c1">// Selection op (not used)</span>
+
+<span class="w">    </span><span class="c1">// Default == operator</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">EqualityOp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">equal_to</span><span class="o">&lt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DispatchReduceByKey</span><span class="o">&lt;</span><span class="w"></span>
+<span class="w">      </span><span class="n">KeysInputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">UniqueOutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">ValuesInputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">AggregatesOutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">NumRunsOutputIteratorT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">EqualityOp</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">ReductionOpT</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">OffsetT</span><span class="o">&gt;::</span><span class="n">Dispatch</span><span class="p">(</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">d_keys_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">d_unique_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">d_values_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">d_aggregates_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">d_num_runs_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="n">EqualityOp</span><span class="p">(),</span><span class="w"></span>
+<span class="w">                         </span><span class="n">reduction_op</span><span class="p">,</span><span class="w"></span>
+<span class="w">                         </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">OffsetT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">num_items</span><span class="p">),</span><span class="w"></span>
+<span class="w">                         </span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="n">CUB_NAMESPACE_END</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

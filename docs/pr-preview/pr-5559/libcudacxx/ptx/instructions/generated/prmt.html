@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prmt.b32 &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/mermaid-init.js"></script>
+        <script src="../../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../../_static/version.js"></script>
+        <script src="../../../_static/social-media.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extended_api.html">Extended API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>prmt.b32</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="prmt-b32">
+<h1>prmt.b32<a class="headerlink" href="#prmt-b32" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// prmt.b32 dest, a_reg, b_reg, c_reg; // PTX ISA 20, SM_50</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">prmt</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">a_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">b_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">c_reg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="prmt-b32-f4e">
+<h1>prmt.b32.f4e<a class="headerlink" href="#prmt-b32-f4e" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// prmt.b32.f4e dest, a_reg, b_reg, c_reg; // PTX ISA 20, SM_50</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">prmt_f4e</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">a_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">b_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">c_reg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="prmt-b32-b4e">
+<h1>prmt.b32.b4e<a class="headerlink" href="#prmt-b32-b4e" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// prmt.b32.b4e dest, a_reg, b_reg, c_reg; // PTX ISA 20, SM_50</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">prmt_b4e</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">a_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">b_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">c_reg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="prmt-b32-rc8">
+<h1>prmt.b32.rc8<a class="headerlink" href="#prmt-b32-rc8" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// prmt.b32.rc8 dest, a_reg, b_reg, c_reg; // PTX ISA 20, SM_50</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">prmt_rc8</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">a_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">b_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">c_reg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="prmt-b32-ecl">
+<h1>prmt.b32.ecl<a class="headerlink" href="#prmt-b32-ecl" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// prmt.b32.ecl dest, a_reg, b_reg, c_reg; // PTX ISA 20, SM_50</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">prmt_ecl</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">a_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">b_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">c_reg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="prmt-b32-ecr">
+<h1>prmt.b32.ecr<a class="headerlink" href="#prmt-b32-ecr" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// prmt.b32.ecr dest, a_reg, b_reg, c_reg; // PTX ISA 20, SM_50</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">prmt_ecr</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">a_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">b_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">c_reg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="prmt-b32-rc16">
+<h1>prmt.b32.rc16<a class="headerlink" href="#prmt-b32-rc16" title="Permalink to this headline"></a></h1>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// prmt.b32.rc16 dest, a_reg, b_reg, c_reg; // PTX ISA 20, SM_50</span>
+<span class="n">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">typename</span><span class="w"> </span><span class="n">B32</span><span class="p">,</span><span class="w"> </span><span class="n">enable_if_t</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">B32</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">__device__</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">prmt_rc16</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">a_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">B32</span><span class="w"> </span><span class="n">b_reg</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">c_reg</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

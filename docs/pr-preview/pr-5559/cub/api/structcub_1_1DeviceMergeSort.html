@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::DeviceMergeSort &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::DevicePartition" href="structcub_1_1DevicePartition.html" />
+    <link rel="prev" title="cub::DeviceMerge" href="structcub_1_1DeviceMerge.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1CachingDeviceAllocator.html">cub::CachingDeviceAllocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceAdjacentDifference.html">cub::DeviceAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceCopy.html">cub::DeviceCopy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceFor.html">cub::DeviceFor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceHistogram.html">cub::DeviceHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMemcpy.html">cub::DeviceMemcpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMerge.html">cub::DeviceMerge</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::DeviceMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DevicePartition.html">cub::DevicePartition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRadixSort.html">cub::DeviceRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceReduce.html">cub::DeviceReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRunLengthEncode.html">cub::DeviceRunLengthEncode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceScan.html">cub::DeviceScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedRadixSort.html">cub::DeviceSegmentedRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedReduce.html">cub::DeviceSegmentedReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedSort.html">cub::DeviceSegmentedSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSelect.html">cub::DeviceSelect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceTransform.html">cub::DeviceTransform</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../device_wide.html">Device-Wide Primitives</a> &raquo;</li>
+      <li>cub::DeviceMergeSort</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-devicemergesort">
+<h1>cub::DeviceMergeSort<a class="headerlink" href="#cub-devicemergesort" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_device_device_merge_sort.cuh.html#device-merge-sort-8cuh"><span class="std std-ref">cub/device/device_merge_sort.cuh</span></a></p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub15DeviceMergeSortE">
+<span id="_CPPv3N3cub15DeviceMergeSortE"></span><span id="_CPPv2N3cub15DeviceMergeSortE"></span><span id="cub::DeviceMergeSort"></span><span class="target" id="structcub_1_1devicemergesort"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeviceMergeSort</span></span></span><a class="headerlink" href="#_CPPv4N3cub15DeviceMergeSortE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>DeviceMergeSort provides device-wide, parallel operations for computing a merge sort across a sequence of data items residing within device-accessible memory. </p>
+<p><dl class="simple">
+<dt><strong>Overview</strong></dt><dd><p><ul class="simple">
+<li><p>DeviceMergeSort arranges items into ascending order using a comparison functor with less-than semantics. Merge sort can handle arbitrary types (as long as a value of these types is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>) and comparison functors, but is slower than DeviceRadixSort when sorting arithmetic types into ascending/descending order.</p></li>
+<li><p>Another difference from RadixSort is the fact that DeviceMergeSort can handle arbitrary random-access iterators, as shown below.</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>A Simple Example</strong></dt><dd><p></p>
+</dd>
+<dt><strong></strong></dt><dd><p>The code snippet below illustrates a thrust reverse iterator usage. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">  // or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span><span class="cp"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">CustomLess</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">DataType</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="k">const</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rhs</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="n">thrust</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">KeyType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_keys</span><span class="p">(</span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+<span class="n">thrust</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">DataType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d_values</span><span class="p">(</span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+<span class="c1">// ...</span>
+
+<span class="c1">// Initialize iterator</span>
+<span class="k">using</span><span class="w"> </span><span class="n">KeyIterator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">thrust</span><span class="o">::</span><span class="n">device_vector</span><span class="o">&lt;</span><span class="n">KeyType</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="p">;</span><span class="w"></span>
+<span class="n">thrust</span><span class="o">::</span><span class="n">reverse_iterator</span><span class="o">&lt;</span><span class="n">KeyIterator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">reverse_iter</span><span class="p">(</span><span class="n">d_keys</span><span class="p">.</span><span class="n">end</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="k">nullptr</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">reverse_iter</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">d_values</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span><span class="w"></span>
+<span class="w">  </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">CustomLess</span><span class="p">());</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">reverse_iter</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_pointer_cast</span><span class="p">(</span><span class="n">d_values</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span><span class="w"></span>
+<span class="w">  </span><span class="n">num_items</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">CustomLess</span><span class="p">());</span><span class="w"></span>
+</pre></div>
+</div>
+ </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub15DeviceMergeSort9SortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t">
+<span id="_CPPv3I0000EN3cub15DeviceMergeSort9SortPairsEPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span id="_CPPv2I0000EN3cub15DeviceMergeSort9SortPairsEPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicemergesort_1afd4b53d2281461c5886df6a3635e658d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortPairs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort9SortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairs::KeyIteratorT"><span class="n"><span class="pre">KeyIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_keys</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort9SortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairs::ValueIteratorT"><span class="n"><span class="pre">ValueIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort9SortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairs::OffsetT"><span class="n"><span class="pre">OffsetT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort9SortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairs::CompareOpT"><span class="n"><span class="pre">CompareOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceMergeSort9SortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>SortPairs is not guaranteed to be stable. That is, suppose that i and j are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p>
+</dd>
+<dt><strong>Snippet</strong></dt><dd><p>The code snippet below illustrates the sorting of a device vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys with associated vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> values. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for</span>
+<span class="c1">// sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 6, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [0, 1, 2, 3, 4, 5, 6]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Initialize comparator</span>
+<span class="n">CustomOpT</span><span class="w"> </span><span class="n">custom_op</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys      &lt;-- [0, 3, 5, 6, 6, 8, 9]</span>
+<span class="c1">// d_values    &lt;-- [5, 4, 3, 2, 1, 0, 6]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. <code class="docutils literal notranslate"><span class="pre">KeyIteratorT</span></code> is mutable, and its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>ValueIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>, and <code class="docutils literal notranslate"><span class="pre">ValueIteratorT</span></code> is mutable.</p></li>
+<li><p><strong>OffsetT</strong> – is an integer type for global offsets.</p></li>
+<li><p><strong>CompareOpT</strong> – is a type of callable object with the signature <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> that models the <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a> concept.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Pointer to the input sequence of unsorted input keys</p></li>
+<li><p><strong>d_items</strong> – <strong>[inout]</strong> Pointer to the input sequence of unsorted input values</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t">
+<span id="_CPPv3I000000EN3cub15DeviceMergeSort13SortPairsCopyEPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span id="_CPPv2I000000EN3cub15DeviceMergeSort13SortPairsCopyEPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyInputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueInputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicemergesort_1a383f08ecb0ce3c1ffd8f5145cafb800f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortPairsCopy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairsCopy::KeyInputIteratorT"><span class="n"><span class="pre">KeyInputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input_keys</span></span>, <a class="reference internal" href="#_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairsCopy::ValueInputIteratorT"><span class="n"><span class="pre">ValueInputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input_items</span></span>, <a class="reference internal" href="#_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairsCopy::KeyIteratorT"><span class="n"><span class="pre">KeyIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_output_keys</span></span>, <a class="reference internal" href="#_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairsCopy::ValueIteratorT"><span class="n"><span class="pre">ValueIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_output_items</span></span>, <a class="reference internal" href="#_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairsCopy::OffsetT"><span class="n"><span class="pre">OffsetT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortPairsCopy::CompareOpT"><span class="n"><span class="pre">CompareOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000000EN3cub15DeviceMergeSort13SortPairsCopyE11cudaError_tPvR6size_t17KeyInputIteratorT19ValueInputIteratorT12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p><ul class="simple">
+<li><p>SortPairsCopy is not guaranteed to be stable. That is, suppose that <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p></li>
+<li><p>Input arrays <code class="docutils literal notranslate"><span class="pre">d_input_keys</span></code> and <code class="docutils literal notranslate"><span class="pre">d_input_items</span></code> are not modified.</p></li>
+<li><p>Note that the behavior is undefined if the input and output ranges overlap in any way.</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>Snippet</strong></dt><dd><p>The code snippet below illustrates the sorting of a device vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys with associated vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> values. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 6, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [0, 1, 2, 3, 4, 5, 6]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Initialize comparator</span>
+<span class="n">CustomOpT</span><span class="w"> </span><span class="n">custom_op</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortPairsCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortPairsCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys      &lt;-- [0, 3, 5, 6, 6, 8, 9]</span>
+<span class="c1">// d_values    &lt;-- [5, 4, 3, 2, 1, 0, 6]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyInputIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. Its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>ValueInputIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>.</p></li>
+<li><p><strong>KeyIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. <code class="docutils literal notranslate"><span class="pre">KeyIteratorT</span></code> is mutable, and its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>ValueIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>, and <code class="docutils literal notranslate"><span class="pre">ValueIteratorT</span></code> is mutable.</p></li>
+<li><p><strong>OffsetT</strong> – is an integer type for global offsets.</p></li>
+<li><p><strong>CompareOpT</strong> – is a type of callable object with the signature <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> that models the <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a> concept.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_input_keys</strong> – <strong>[in]</strong> Pointer to the input sequence of unsorted input keys</p></li>
+<li><p><strong>d_input_items</strong> – <strong>[in]</strong> Pointer to the input sequence of unsorted input values</p></li>
+<li><p><strong>d_output_keys</strong> – <strong>[out]</strong> Pointer to the output sequence of sorted input keys</p></li>
+<li><p><strong>d_output_items</strong> – <strong>[out]</strong> Pointer to the output sequence of sorted input values</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if the first argument is ordered before the second</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub15DeviceMergeSort8SortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub15DeviceMergeSort8SortKeysEPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub15DeviceMergeSort8SortKeysEPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicemergesort_1aa9846514219a085cf7f6c584b7cc15db"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortKeys</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub15DeviceMergeSort8SortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortKeys::KeyIteratorT"><span class="n"><span class="pre">KeyIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_keys</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub15DeviceMergeSort8SortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortKeys::OffsetT"><span class="n"><span class="pre">OffsetT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub15DeviceMergeSort8SortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortKeys::CompareOpT"><span class="n"><span class="pre">CompareOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub15DeviceMergeSort8SortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>SortKeys is not guaranteed to be stable. That is, suppose that <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p>
+</dd>
+<dt><strong>Snippet</strong></dt><dd><p>The code snippet below illustrates the sorting of a device vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Initialize comparator</span>
+<span class="n">CustomOpT</span><span class="w"> </span><span class="n">custom_op</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys      &lt;-- [0, 3, 5, 6, 7, 8, 9]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. <code class="docutils literal notranslate"><span class="pre">KeyIteratorT</span></code> is mutable, and its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>OffsetT</strong> – is an integer type for global offsets.</p></li>
+<li><p><strong>CompareOpT</strong> – is a type of callable object with the signature <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> that models the <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a> concept.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Pointer to the input sequence of unsorted input keys</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub15DeviceMergeSort12SortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t">
+<span id="_CPPv3I0000EN3cub15DeviceMergeSort12SortKeysCopyEPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span id="_CPPv2I0000EN3cub15DeviceMergeSort12SortKeysCopyEPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyInputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicemergesort_1a3226cf6506c4d808e3307c485399c527"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SortKeysCopy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort12SortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortKeysCopy::KeyInputIteratorT"><span class="n"><span class="pre">KeyInputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input_keys</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort12SortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortKeysCopy::KeyIteratorT"><span class="n"><span class="pre">KeyIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_output_keys</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort12SortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortKeysCopy::OffsetT"><span class="n"><span class="pre">OffsetT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort12SortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::SortKeysCopy::CompareOpT"><span class="n"><span class="pre">CompareOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceMergeSort12SortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p><ul class="simple">
+<li><p>SortKeysCopy is not guaranteed to be stable. That is, suppose that <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> are equivalent: neither one is less than the other. It is not guaranteed that the relative order of these two elements will be preserved by sort.</p></li>
+<li><p>Input array d_input_keys is not modified.</p></li>
+<li><p>Note that the behavior is undefined if the input and output ranges overlap in any way.</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>Snippet</strong></dt><dd><p>The code snippet below illustrates the sorting of a device vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for</span>
+<span class="c1">// sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Initialize comparator</span>
+<span class="n">CustomOpT</span><span class="w"> </span><span class="n">custom_op</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortKeysCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">SortKeysCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys      &lt;-- [0, 3, 5, 6, 7, 8, 9]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyInputIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. Its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>KeyIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. <code class="docutils literal notranslate"><span class="pre">KeyIteratorT</span></code> is mutable, and its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>OffsetT</strong> – is an integer type for global offsets.</p></li>
+<li><p><strong>CompareOpT</strong> – is a type of callable object with the signature <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> that models the <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a> concept.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_input_keys</strong> – <strong>[in]</strong> Pointer to the input sequence of unsorted input keys</p></li>
+<li><p><strong>d_output_keys</strong> – <strong>[out]</strong> Pointer to the output sequence of sorted input keys</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub15DeviceMergeSort15StableSortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t">
+<span id="_CPPv3I0000EN3cub15DeviceMergeSort15StableSortPairsEPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span id="_CPPv2I0000EN3cub15DeviceMergeSort15StableSortPairsEPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicemergesort_1af0afc6ceb3becba8cd2571b67b59b722"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StableSortPairs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort15StableSortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortPairs::KeyIteratorT"><span class="n"><span class="pre">KeyIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_keys</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort15StableSortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortPairs::ValueIteratorT"><span class="n"><span class="pre">ValueIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort15StableSortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortPairs::OffsetT"><span class="n"><span class="pre">OffsetT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort15StableSortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortPairs::CompareOpT"><span class="n"><span class="pre">CompareOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceMergeSort15StableSortPairsE11cudaError_tPvR6size_t12KeyIteratorT14ValueIteratorT7OffsetT10CompareOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>StableSortPairs is stable: it preserves the relative ordering of equivalent elements. That is, if x and y are elements such that x precedes y, and if the two elements are equivalent (neither x &lt; y nor y &lt; x) then a postcondition of stable_sort is that x still precedes y.</p>
+</dd>
+<dt><strong>Snippet</strong></dt><dd><p>The code snippet below illustrates the sorting of a device vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys with associated vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> values. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for</span>
+<span class="c1">// sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 6, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_values</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., [0, 1, 2, 3, 4, 5, 6]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Initialize comparator</span>
+<span class="n">CustomOpT</span><span class="w"> </span><span class="n">custom_op</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">StableSortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">StableSortPairs</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_values</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys      &lt;-- [0, 3, 5, 6, 6, 8, 9]</span>
+<span class="c1">// d_values    &lt;-- [5, 4, 3, 1, 2, 0, 6]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. <code class="docutils literal notranslate"><span class="pre">KeyIteratorT</span></code> is mutable, and its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>ValueIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>, and <code class="docutils literal notranslate"><span class="pre">ValueIteratorT</span></code> is mutable.</p></li>
+<li><p><strong>OffsetT</strong> – is an integer type for global offsets.</p></li>
+<li><p><strong>CompareOpT</strong> – is a type of callable object with the signature <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> that models the <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a> concept.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Pointer to the input sequence of unsorted input keys</p></li>
+<li><p><strong>d_items</strong> – <strong>[inout]</strong> Pointer to the input sequence of unsorted input values</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN3cub15DeviceMergeSort14StableSortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t">
+<span id="_CPPv3I000EN3cub15DeviceMergeSort14StableSortKeysEPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span id="_CPPv2I000EN3cub15DeviceMergeSort14StableSortKeysEPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicemergesort_1a53329729377c665cb66257aebb2c28dc"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StableSortKeys</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub15DeviceMergeSort14StableSortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortKeys::KeyIteratorT"><span class="n"><span class="pre">KeyIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_keys</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub15DeviceMergeSort14StableSortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortKeys::OffsetT"><span class="n"><span class="pre">OffsetT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I000EN3cub15DeviceMergeSort14StableSortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortKeys::CompareOpT"><span class="n"><span class="pre">CompareOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub15DeviceMergeSort14StableSortKeysE11cudaError_tPvR6size_t12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p>StableSortKeys is stable: it preserves the relative ordering of equivalent elements. That is, if <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are elements such that <code class="docutils literal notranslate"><span class="pre">x</span></code> precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>, and if the two elements are equivalent (neither <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">y</span></code> nor <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">x</span></code>) then a postcondition of stable_sort is that <code class="docutils literal notranslate"><span class="pre">x</span></code> still precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+</dd>
+<dt><strong>Snippet</strong></dt><dd><p>The code snippet below illustrates the sorting of a device vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for</span>
+<span class="c1">// sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_keys</span><span class="p">;</span><span class="w">         </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Initialize comparator</span>
+<span class="n">CustomOpT</span><span class="w"> </span><span class="n">custom_op</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">StableSortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">StableSortKeys</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_keys      &lt;-- [0, 3, 5, 6, 7, 8, 9]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. <code class="docutils literal notranslate"><span class="pre">KeyIteratorT</span></code> is mutable, and its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>OffsetT</strong> – is an integer type for global offsets.</p></li>
+<li><p><strong>CompareOpT</strong> – is a type of callable object with the signature <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> that models the <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a> concept.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_keys</strong> – <strong>[inout]</strong> Pointer to the input sequence of unsorted input keys</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of items to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN3cub15DeviceMergeSort18StableSortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t">
+<span id="_CPPv3I0000EN3cub15DeviceMergeSort18StableSortKeysCopyEPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span id="_CPPv2I0000EN3cub15DeviceMergeSort18StableSortKeysCopyEPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyInputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompareOpT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicemergesort_1ac0de224032c2a7a93b5aacecaf0554b5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StableSortKeysCopy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort18StableSortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortKeysCopy::KeyInputIteratorT"><span class="n"><span class="pre">KeyInputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_input_keys</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort18StableSortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortKeysCopy::KeyIteratorT"><span class="n"><span class="pre">KeyIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_output_keys</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort18StableSortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortKeysCopy::OffsetT"><span class="n"><span class="pre">OffsetT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <a class="reference internal" href="#_CPPv4I0000EN3cub15DeviceMergeSort18StableSortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="cub::DeviceMergeSort::StableSortKeysCopy::CompareOpT"><span class="n"><span class="pre">CompareOpT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">compare_op</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceMergeSort18StableSortKeysCopyE11cudaError_tPvR6size_t17KeyInputIteratorT12KeyIteratorT7OffsetT10CompareOpT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Sorts items using a merge sorting method. </p>
+<p><dl class="simple">
+<dt><strong></strong></dt><dd><p><ul class="simple">
+<li><p>StableSortKeysCopy is stable: it preserves the relative ordering of equivalent elements. That is, if <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are elements such that <code class="docutils literal notranslate"><span class="pre">x</span></code> precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>, and if the two elements are equivalent (neither <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">y</span></code> nor <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">x</span></code>) then a postcondition of stable_sort is that <code class="docutils literal notranslate"><span class="pre">x</span></code> still precedes <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p>Input array d_input_keys is not modified</p></li>
+<li><p>Note that the behavior is undefined if the input and output ranges overlap in any way.</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>Snippet</strong></dt><dd><p>The code snippet below illustrates the sorting of a device vector of <code class="docutils literal notranslate"><span class="pre">int</span></code> keys. </p>
+</dd>
+<dt><strong></strong></dt><dd><p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+<span class="c1">// or equivalently &lt;cub/device/device_merge_sort.cuh&gt;</span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for</span>
+<span class="c1">// sorting data</span>
+<span class="kt">int</span><span class="w">  </span><span class="n">num_items</span><span class="p">;</span><span class="w">       </span><span class="c1">// e.g., 7</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_input_keys</span><span class="p">;</span><span class="w">   </span><span class="c1">// e.g., [8, 6, 7, 5, 3, 0, 9]</span>
+<span class="kt">int</span><span class="w">  </span><span class="o">*</span><span class="n">d_output_keys</span><span class="p">;</span><span class="w">  </span><span class="c1">// must hold at least num_items elements</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Initialize comparator</span>
+<span class="n">CustomOpT</span><span class="w"> </span><span class="n">custom_op</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">StableSortKeysCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_input_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_output_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run sorting operation</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceMergeSort</span><span class="o">::</span><span class="n">StableSortKeysCopy</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_input_keys</span><span class="p">,</span><span class="w"> </span><span class="n">d_output_keys</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">,</span><span class="w"> </span><span class="n">custom_op</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_output_keys   &lt;-- [0, 3, 5, 6, 7, 8, 9]</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyInputIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. Its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>KeyIteratorT</strong> – is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</a>. <code class="docutils literal notranslate"><span class="pre">KeyIteratorT</span></code> is mutable, and its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> is a model of <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a>. This <code class="docutils literal notranslate"><span class="pre">value_type</span></code>’s ordering relation is a <em>strict weak ordering</em> as defined in the <a class="reference external" href="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">LessThan Comparable</a> requirements.</p></li>
+<li><p><strong>OffsetT</strong> – is an integer type for global offsets.</p></li>
+<li><p><strong>CompareOpT</strong> – is a type of callable object with the signature <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator()(KeyT</span> <span class="pre">lhs,</span> <span class="pre">KeyT</span> <span class="pre">rhs)</span></code> that models the <a class="reference external" href="https://en.cppreference.com/w/cpp/concepts/strict_weak_order">Strict Weak Ordering</a> concept.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_input_keys</strong> – <strong>[in]</strong> Pointer to the input sequence of unsorted input keys</p></li>
+<li><p><strong>d_output_keys</strong> – <strong>[out]</strong> Pointer to the output sequence of sorted input keys</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Number of elements in d_input_keys to sort</p></li>
+<li><p><strong>compare_op</strong> – <strong>[in]</strong> Comparison function object which returns true if the first argument is ordered before the second</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

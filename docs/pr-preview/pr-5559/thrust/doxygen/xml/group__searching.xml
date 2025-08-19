@@ -1,0 +1,1514 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__searching" kind="group">
+    <compoundname>searching</compoundname>
+    <title>Searching</title>
+    <innergroup refid="group__binary__search">Binary Search</innergroup>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__searching_1ga902ccc1fe9aeb8585ac8ddcf10fb4337" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::partition_point</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, ForwardIterator first, ForwardIterator last, Predicate pred)</argsstring>
+        <name>partition_point</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition_point</computeroutput> returns an iterator pointing to the end of the true partition of a partitioned range. <computeroutput>partition_point</computeroutput> requires the input range <computeroutput>[first,last)</computeroutput> to be a partition; that is, all elements which satisfy <computeroutput>pred</computeroutput> shall appear before those that do not.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the range <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator <computeroutput>mid</computeroutput> such that <computeroutput>all_of(first, mid, pred)</computeroutput> and <computeroutput>none_of(mid, last, pred)</computeroutput> are both true.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[first, last)</computeroutput> shall be partitioned by <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<simplesect kind="note"><para>Though similar, <computeroutput>partition_point</computeroutput> is not redundant with <computeroutput>find_if_not</computeroutput>. <computeroutput>partition_point&apos;s</computeroutput> precondition provides an opportunity for a faster implementation.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*<sp/>B<sp/>=<sp/>thrust::partition_point(thrust::host,<sp/>A,<sp/>A<sp/>+<sp/>10,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>B<sp/>-<sp/>A<sp/>is<sp/>5</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>[A,<sp/>B)<sp/>contains<sp/>only<sp/>even<sp/>values</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>find_if_not</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="1218" column="18" declfile="thrust/partition.h" declline="1218" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1gacc1aa2e2a54dee829eab21c5bdabbc94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ForwardIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>ForwardIterator</type>
+        <definition>ForwardIterator thrust::partition_point</definition>
+        <argsstring>(ForwardIterator first, ForwardIterator last, Predicate pred)</argsstring>
+        <name>partition_point</name>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>ForwardIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>partition_point</computeroutput> returns an iterator pointing to the end of the true partition of a partitioned range. <computeroutput>partition_point</computeroutput> requires the input range <computeroutput>[first,last)</computeroutput> to be a partition; that is, all elements which satisfy <computeroutput>pred</computeroutput> shall appear before those that do not. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the range to consider. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A function object which decides to which partition each element of the range <computeroutput>[first, last)</computeroutput> belongs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An iterator <computeroutput>mid</computeroutput> such that <computeroutput>all_of(first, mid, pred)</computeroutput> and <computeroutput>none_of(mid, last, pred)</computeroutput> are both true.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ForwardIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/forward_iterator">Forward Iterator</ulink>, and <computeroutput>ForwardIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[first, last)</computeroutput> shall be partitioned by <computeroutput>pred</computeroutput>.</para>
+</simplesect>
+<simplesect kind="note"><para>Though similar, <computeroutput>partition_point</computeroutput> is not redundant with <computeroutput>find_if_not</computeroutput>. <computeroutput>partition_point&apos;s</computeroutput> precondition provides an opportunity for a faster implementation.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/partition.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>&amp;x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>A[]<sp/>=<sp/>{2,<sp/>4,<sp/>6,<sp/>8,<sp/>10,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>*<sp/>B<sp/>=<sp/>thrust::partition_point(A,<sp/>A<sp/>+<sp/>10,<sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>B<sp/>-<sp/>A<sp/>is<sp/>5</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>[A,<sp/>B)<sp/>contains<sp/>only<sp/>even<sp/>values</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><computeroutput>partition</computeroutput> </para>
+</simplesect>
+<simplesect kind="see"><para><computeroutput>find_if_not</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/partition.h" line="1269" column="17" declfile="thrust/partition.h" declline="1269" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga376997712141e177c600c1c72ace4303" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; InputIterator1, InputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;InputIterator1, InputIterator2&gt; thrust::mismatch</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)</argsstring>
+        <name>mismatch</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>mismatch</computeroutput> finds the first position where the two ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput> differ. The two versions of <computeroutput>mismatch</computeroutput> use different tests for whether elements differ.</para>
+<para>This version of <computeroutput>mismatch</computeroutput> finds the first iterator <computeroutput>i</computeroutput> in <computeroutput>[first1, last1)</computeroutput> such that <computeroutput>*i == *(first2 + (i - first1))</computeroutput> is <computeroutput>false</computeroutput>. The return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>i</computeroutput> and whose second element is <computeroutput>*(first2 + (i - first1))</computeroutput>. If no such iterator <computeroutput>i</computeroutput> exists, the return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>last1</computeroutput> and whose second element is <computeroutput>*(first2 + (last1 - first1))</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first position where the sequences differ.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is equality comparable to <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/mismatch.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(4);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec2(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">vec1[0]<sp/>=<sp/>0;<sp/><sp/>vec2[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">vec1[1]<sp/>=<sp/>5;<sp/><sp/>vec2[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">vec1[2]<sp/>=<sp/>3;<sp/><sp/>vec2[2]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">vec1[3]<sp/>=<sp/>7;<sp/><sp/>vec2[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>Iterator<sp/>=<sp/>thrust::device_vector&lt;int&gt;::iterator;</highlight></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;Iterator,Iterator&gt;<sp/>result;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::mismatch(thrust::device,<sp/>vec1.begin(),<sp/>vec1.end(),<sp/>vec2.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result.first<sp/><sp/>is<sp/>vec1.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result.second<sp/>is<sp/>vec2.begin()<sp/>+<sp/>2</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/mismatch.h" line="96" column="1" declfile="thrust/mismatch.h" declline="96" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga5f1d38ca2a67197796cf917f9b2ed0b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; InputIterator1, InputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;InputIterator1, InputIterator2&gt; thrust::mismatch</definition>
+        <argsstring>(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)</argsstring>
+        <name>mismatch</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>mismatch</computeroutput> finds the first position where the two ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput> differ. The two versions of <computeroutput>mismatch</computeroutput> use different tests for whether elements differ.</para>
+<para>This version of <computeroutput>mismatch</computeroutput> finds the first iterator <computeroutput>i</computeroutput> in <computeroutput>[first1, last1)</computeroutput> such that <computeroutput>*i == *(first2 + (i - first1))</computeroutput> is <computeroutput>false</computeroutput>. The return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>i</computeroutput> and whose second element is <computeroutput>*(first2 + (i - first1))</computeroutput>. If no such iterator <computeroutput>i</computeroutput> exists, the return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>last1</computeroutput> and whose second element is <computeroutput>*(first2 + (last1 - first1))</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first position where the sequences differ.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is equality comparable to <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/mismatch.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(4);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec2(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">vec1[0]<sp/>=<sp/>0;<sp/><sp/>vec2[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">vec1[1]<sp/>=<sp/>5;<sp/><sp/>vec2[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">vec1[2]<sp/>=<sp/>3;<sp/><sp/>vec2[2]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">vec1[3]<sp/>=<sp/>7;<sp/><sp/>vec2[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>Iterator<sp/>=<sp/>thrust::device_vector&lt;int&gt;::iterator;</highlight></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;Iterator,Iterator&gt;<sp/>result;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::mismatch(vec1.begin(),<sp/>vec1.end(),<sp/>vec2.begin());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result.first<sp/><sp/>is<sp/>vec1.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result.second<sp/>is<sp/>vec2.begin()<sp/>+<sp/>2</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/mismatch.h" line="147" column="1" declfile="thrust/mismatch.h" declline="147" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga3ef5e852820b4e368d0eb8b9992be8d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename BinaryPredicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; InputIterator1, InputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;InputIterator1, InputIterator2&gt; thrust::mismatch</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)</argsstring>
+        <name>mismatch</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <param>
+          <type>BinaryPredicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>mismatch</computeroutput> finds the first position where the two ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput> differ. The two versions of <computeroutput>mismatch</computeroutput> use different tests for whether elements differ.</para>
+<para>This version of <computeroutput>mismatch</computeroutput> finds the first iterator <computeroutput>i</computeroutput> in <computeroutput>[first1, last1)</computeroutput> such that <computeroutput>pred(*i, *(first2 + (i - first1))</computeroutput> is <computeroutput>false</computeroutput>. The return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>i</computeroutput> and whose second element is <computeroutput>*(first2 + (i - first1))</computeroutput>. If no such iterator <computeroutput>i</computeroutput> exists, the return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>last1</computeroutput> and whose second element is <computeroutput>*(first2 + (last1 - first1))</computeroutput>.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary predicate to compare elements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first position where the sequences differ.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate">Input Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/mismatch.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(4);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec2(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">vec1[0]<sp/>=<sp/>0;<sp/><sp/>vec2[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">vec1[1]<sp/>=<sp/>5;<sp/><sp/>vec2[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">vec1[2]<sp/>=<sp/>3;<sp/><sp/>vec2[2]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">vec1[3]<sp/>=<sp/>7;<sp/><sp/>vec2[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>Iterator<sp/>=<sp/>thrust::device_vector&lt;int&gt;::iterator;</highlight></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;Iterator,Iterator&gt;<sp/>result;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::mismatch(thrust::device,<sp/>vec1.begin(),<sp/>vec1.end(),<sp/>vec2.begin(),<sp/>::cuda::std::equal_to&lt;int&gt;());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result.first<sp/><sp/>is<sp/>vec1.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result.second<sp/>is<sp/>vec2.begin()<sp/>+<sp/>2</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/mismatch.h" line="200" column="15" declfile="thrust/mismatch.h" declline="200" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga65c9a373cb58e5fab76e84a0d109c467" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename BinaryPredicate</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="group__pair_1ga10f62e9b4cb1fd0953a57de605ebe922" kindref="member">thrust::pair</ref>&lt; InputIterator1, InputIterator2 &gt;</type>
+        <definition>thrust::pair&lt;InputIterator1, InputIterator2&gt; thrust::mismatch</definition>
+        <argsstring>(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)</argsstring>
+        <name>mismatch</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <param>
+          <type>BinaryPredicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>mismatch</computeroutput> finds the first position where the two ranges <computeroutput>[first1, last1)</computeroutput> and <computeroutput>[first2, first2 + (last1 - first1))</computeroutput> differ. The two versions of <computeroutput>mismatch</computeroutput> use different tests for whether elements differ.</para>
+<para>This version of <computeroutput>mismatch</computeroutput> finds the first iterator <computeroutput>i</computeroutput> in <computeroutput>[first1, last1)</computeroutput> such that <computeroutput>pred(*i, *(first2 + (i - first1))</computeroutput> is <computeroutput>false</computeroutput>. The return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>i</computeroutput> and whose second element is <computeroutput>*(first2 + (i - first1))</computeroutput>. If no such iterator <computeroutput>i</computeroutput> exists, the return value is a <computeroutput>pair</computeroutput> whose first element is <computeroutput>last1</computeroutput> and whose second element is <computeroutput>*(first2 + (last1 - first1))</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The end of the first sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The beginning of the second sequence. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The binary predicate to compare elements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first position where the sequences differ.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/BinaryPredicate">Input Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/mismatch.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec1(4);</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>vec2(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">vec1[0]<sp/>=<sp/>0;<sp/><sp/>vec2[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">vec1[1]<sp/>=<sp/>5;<sp/><sp/>vec2[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">vec1[2]<sp/>=<sp/>3;<sp/><sp/>vec2[2]<sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">vec1[3]<sp/>=<sp/>7;<sp/><sp/>vec2[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">using<sp/>Iterator<sp/>=<sp/>thrust::device_vector&lt;int&gt;::iterator;</highlight></codeline>
+<codeline><highlight class="normal">thrust::pair&lt;Iterator,Iterator&gt;<sp/>result;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">result<sp/>=<sp/>thrust::mismatch(vec1.begin(),<sp/>vec1.end(),<sp/>vec2.begin(),<sp/>::cuda::std::equal_to&lt;int&gt;());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>result.first<sp/><sp/>is<sp/>vec1.begin()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>result.second<sp/>is<sp/>vec2.begin()<sp/>+<sp/>2</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/mismatch.h" line="254" column="1" declfile="thrust/mismatch.h" declline="254" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga0a1bffa0a0c085b0f8feb146593ae661" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::find</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, const T &amp;value)</argsstring>
+        <name>find</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>find</computeroutput> returns the first iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last)</computeroutput> such that <computeroutput>*i == value</computeroutput> or <computeroutput>last</computeroutput> if no such iterator exists.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to find. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first iterator <computeroutput>i</computeroutput> such that <computeroutput>*i == value</computeroutput> or <computeroutput>last</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is equality comparable to type <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">EqualityComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/find.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;::iterator<sp/>iter;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>input.first()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>5);<sp/>//<sp/>returns<sp/>input.first()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find_if </para>
+</simplesect>
+<simplesect kind="see"><para>mismatch </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/find.h" line="85" column="1" declfile="thrust/find.h" declline="85" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga99c7a59cef5b9f4cdbc70f37b2e221be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::find</definition>
+        <argsstring>(InputIterator first, InputIterator last, const T &amp;value)</argsstring>
+        <name>find</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>find</computeroutput> returns the first iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last)</computeroutput> such that <computeroutput>*i == value</computeroutput> or <computeroutput>last</computeroutput> if no such iterator exists.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to find. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first iterator <computeroutput>i</computeroutput> such that <computeroutput>*i == value</computeroutput> or <computeroutput>last</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> is equality comparable to type <computeroutput>T</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/named_req/LessThanComparable">EqualityComparable</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/find.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;::iterator<sp/>iter;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find(input.begin(),<sp/>input.end(),<sp/>3);<sp/>//<sp/>returns<sp/>input.first()<sp/>+<sp/>2</highlight></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find(input.begin(),<sp/>input.end(),<sp/>5);<sp/>//<sp/>returns<sp/>input.first()<sp/>+<sp/>1</highlight></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find(input.begin(),<sp/>input.end(),<sp/>9);<sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find_if </para>
+</simplesect>
+<simplesect kind="see"><para>mismatch </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/find.h" line="125" column="15" declfile="thrust/find.h" declline="125" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1gaaceff078778af22a2663727f8cf4fba4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::find_if</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, Predicate pred)</argsstring>
+        <name>find_if</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>find_if</computeroutput> returns the first iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last)</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput> or <computeroutput>last</computeroutput> if no such iterator exists.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A predicate used to test range elements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first iterator <computeroutput>i</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput>, or <computeroutput>last</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/find.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>struct<sp/>greater_than_four</highlight></codeline>
+<codeline><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>struct<sp/>greater_than_ten</highlight></codeline>
+<codeline><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>10;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>...</highlight></codeline>
+<codeline><highlight class="normal"><sp/>thrust::device_vector&lt;int&gt;<sp/>input(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[2]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>thrust::device_vector&lt;int&gt;::iterator<sp/>iter;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>iter<sp/>=<sp/>thrust::find_if(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>greater_than_four());<sp/>//<sp/>returns<sp/>input.first()<sp/>+</highlight></codeline>
+<codeline><highlight class="normal">1</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>iter<sp/>=<sp/>thrust::find_if(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>greater_than_ten());<sp/><sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if_not </para>
+</simplesect>
+<simplesect kind="see"><para>mismatch </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/find.h" line="189" column="16" declfile="thrust/find.h" declline="189" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1gaf14c2f2682afa14c68b09170707a2e48" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::find_if</definition>
+        <argsstring>(InputIterator first, InputIterator last, Predicate pred)</argsstring>
+        <name>find_if</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>find_if</computeroutput> returns the first iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last)</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput> or <computeroutput>last</computeroutput> if no such iterator exists.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A predicate used to test range elements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first iterator <computeroutput>i</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>true</computeroutput>, or <computeroutput>last</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/find.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>greater_than_four</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>greater_than_ten</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>10;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;::iterator<sp/>iter;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find_if(input.begin(),<sp/>input.end(),<sp/>greater_than_four());<sp/>//<sp/>returns<sp/>input.first()<sp/>+<sp/>1</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find_if(input.begin(),<sp/>input.end(),<sp/>greater_than_ten());<sp/><sp/>//<sp/>returns<sp/>input.end()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if_not </para>
+</simplesect>
+<simplesect kind="see"><para>mismatch </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/find.h" line="250" column="15" declfile="thrust/find.h" declline="250" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga6b3b610010990168c0f397bfb3a46897" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::find_if_not</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator first, InputIterator last, Predicate pred)</argsstring>
+        <name>find_if_not</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>find_if_not</computeroutput> returns the first iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last)</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>false</computeroutput> or <computeroutput>last</computeroutput> if no such iterator exists.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A predicate used to test range elements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first iterator <computeroutput>i</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>false</computeroutput>, or <computeroutput>last</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/find.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>struct<sp/>greater_than_four</highlight></codeline>
+<codeline><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>struct<sp/>greater_than_ten</highlight></codeline>
+<codeline><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>10;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>...</highlight></codeline>
+<codeline><highlight class="normal"><sp/>thrust::device_vector&lt;int&gt;<sp/>input(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[2]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal"><sp/>input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>thrust::device_vector&lt;int&gt;::iterator<sp/>iter;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>iter<sp/>=<sp/>thrust::find_if_not(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>greater_than_four());<sp/>//<sp/>returns</highlight></codeline>
+<codeline><highlight class="normal">input.first()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/>iter<sp/>=<sp/>thrust::find_if_not(thrust::device,<sp/>input.begin(),<sp/>input.end(),<sp/>greater_than_ten());<sp/><sp/>//<sp/>returns</highlight></codeline>
+<codeline><highlight class="normal">input.first()<sp/></highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if </para>
+</simplesect>
+<simplesect kind="see"><para>mismatch </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/find.h" line="314" column="16" declfile="thrust/find.h" declline="314" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__searching_1ga258cd709976cfdbb7f990859a64ad4c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>InputIterator</type>
+        <definition>InputIterator thrust::find_if_not</definition>
+        <argsstring>(InputIterator first, InputIterator last, Predicate pred)</argsstring>
+        <name>find_if_not</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>find_if_not</computeroutput> returns the first iterator <computeroutput>i</computeroutput> in the range <computeroutput>[first, last)</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>false</computeroutput> or <computeroutput>last</computeroutput> if no such iterator exists.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the sequence to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A predicate used to test range elements. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first iterator <computeroutput>i</computeroutput> such that <computeroutput>pred(*i)</computeroutput> is <computeroutput>false</computeroutput>, or <computeroutput>last</computeroutput>.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>is a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/find.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>greater_than_four</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>greater_than_ten</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>x<sp/>&gt;<sp/>10;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>input(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">input[0]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">input[1]<sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">input[2]<sp/>=<sp/>3;</highlight></codeline>
+<codeline><highlight class="normal">input[3]<sp/>=<sp/>7;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;::iterator<sp/>iter;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find_if_not(input.begin(),<sp/>input.end(),<sp/>greater_than_four());<sp/>//<sp/>returns<sp/>input.first()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">iter<sp/>=<sp/>thrust::find_if_not(input.begin(),<sp/>input.end(),<sp/>greater_than_ten());<sp/><sp/>//<sp/>returns<sp/>input.first()</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>find </para>
+</simplesect>
+<simplesect kind="see"><para>find_if </para>
+</simplesect>
+<simplesect kind="see"><para>mismatch </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/find.h" line="375" column="15" declfile="thrust/find.h" declline="375" declcolumn="15"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

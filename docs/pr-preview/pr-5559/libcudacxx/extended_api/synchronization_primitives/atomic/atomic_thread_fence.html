@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda::atomic::atomic_thread_fence &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/mermaid-init.js"></script>
+        <script src="../../../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../../../_static/version.js"></script>
+        <script src="../../../_static/social-media.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="cuda::atomic::fetch_max" href="fetch_max.html" />
+    <link rel="prev" title="cuda::atomic" href="../atomic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../bit.html">Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../execution_model.html">Execution model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../synchronization_primitives.html">Synchronization Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../atomic.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code></a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../atomic_ref.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic_ref</span></code></a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cuda::atomic::atomic_thread_fence</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="fetch_max.html">cuda::atomic::fetch_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fetch_min.html">cuda::atomic::fetch_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../atomic_ref.html#limitations">Limitations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../atomic_ref.html#concurrency-restrictions">Concurrency Restrictions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../atomic_ref.html#implementation-defined-behavior">Implementation-Defined Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../atomic_ref.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../latch.html"><code class="docutils literal notranslate"><span class="pre">cuda::latch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../barrier.html"><code class="docutils literal notranslate"><span class="pre">cuda::barrier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../counting_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::counting_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../binary_semaphore.html"><code class="docutils literal notranslate"><span class="pre">cuda::binary_semaphore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pipeline.html"><code class="docutils literal notranslate"><span class="pre">cuda::pipeline</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../asynchronous_operations.html">Asynchronous Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utility.html">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../work_stealing.html">Work stealing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../extended_api.html">Extended API</a> &raquo;</li>
+          <li><a href="../../synchronization_primitives.html">Synchronization Primitives</a> &raquo;</li>
+          <li><a href="../atomic.html"><code class="docutils literal notranslate"><span class="pre">cuda::atomic</span></code></a> &raquo;</li>
+      <li>cuda::atomic::atomic_thread_fence</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-atomic-atomic-thread-fence">
+<span id="libcudacxx-extended-api-synchronization-atomic-atomic-thread-fence"></span><h1>cuda::atomic::atomic_thread_fence<a class="headerlink" href="#cuda-atomic-atomic-thread-fence" title="Permalink to this headline"></a></h1>
+<p>Defined in header <code class="docutils literal notranslate"><span class="pre">&lt;cuda/atomic&gt;</span></code>:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="kr">__host__</span><span class="w"> </span><span class="kt">__device__</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic_thread_fence</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order</span><span class="w"> </span><span class="n">order</span><span class="p">,</span><span class="w"></span>
+<span class="w">                               </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope</span><span class="w"> </span><span class="n">scope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Establishes memory synchronization ordering of non-atomic and relaxed atomic accesses, as instructed by <code class="docutils literal notranslate"><span class="pre">order</span></code>,
+for all threads within <code class="docutils literal notranslate"><span class="pre">scope</span></code> without an associated atomic operation. It has the same semantics as
+<a class="reference external" href="https://en.cppreference.com/w/cpp/atomic/atomic_thread_fence">cuda::std::atomic_thread_fence</a>.</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<p>The following code is an example of the <a class="reference internal" href="../../memory_model.html#libcudacxx-extended-api-memory-model-message-passing"><span class="std std-ref">MessagePassing</span></a> pattern:</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/atomic&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cooperative_groups.h&gt;</span><span class="cp"></span>
+
+<span class="n">namespace</span><span class="w"> </span><span class="n">cg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cooperative_groups</span><span class="p">;</span><span class="w"></span>
+
+<span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">example_kernel</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">atomic_flag</span><span class="o">*</span><span class="w"> </span><span class="n">flag</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">cg</span><span class="o">::</span><span class="n">grid_group</span><span class="o">::</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="n">cg</span><span class="o">::</span><span class="n">thread_block</span><span class="o">::</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic_thread_fence</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_release</span><span class="p">,</span><span class="w"></span>
+<span class="w">                              </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_device</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">flag</span><span class="o">-&gt;</span><span class="n">test_and_set</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">flag</span><span class="o">-&gt;</span><span class="n">notify_one</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// an atomic operation is required to set up the synchronization</span>
+<span class="w">    </span><span class="n">flag</span><span class="o">-&gt;</span><span class="n">wait</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic_thread_fence</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_acquire</span><span class="p">,</span><span class="w"></span>
+<span class="w">                              </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_device</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">);</span><span class="w"> </span><span class="c1">// Prints 42</span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://godbolt.org/z/aG37o5qxx">See it on Godbolt</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Execution model &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Memory model" href="memory_model.html" />
+    <link rel="prev" title="cuda::bitfield_extract" href="bit/bitfield_extract.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standard_api.html">Standard API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../extended_api.html">Extended API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bit.html">Bit</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Execution model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#host-threads">Host threads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-threads">Device threads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-apis">CUDA APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="memory_model.html">Memory model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_groups.html">Thread Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="synchronization_primitives.html">Synchronization Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asynchronous_operations.html">Asynchronous Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_access_properties.html">Memory access properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional.html">Functional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_traits.html">Type traits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">Numeric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_resource.html">Memory Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mdspan.html">Mdspan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warp.html">Warp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="work_stealing.html">Work stealing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../extended_api.html">Extended API</a> &raquo;</li>
+      <li>Execution model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="execution-model">
+<span id="libcudacxx-extended-api-execution-model"></span><h1>Execution model<a class="headerlink" href="#execution-model" title="Permalink to this headline"></a></h1>
+<p>CUDA C++ aims to provide <a class="reference external" href="https://eel.is/c++draft/intro.progress#9">parallel forward progress [intro.progress.9]</a>
+for all device threads of execution, facilitating the parallelization of pre-existing C++ applications with CUDA C++.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<a class="reference external" href="https://eel.is/c++draft/intro.progress">[intro.progress]</a><div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<ul>
+<li><p class="sd-card-text"><a class="reference external" href="https://eel.is/c++draft/intro.progress#7">[intro.progress.7]</a>: For a thread of execution
+providing <a class="reference external" href="https://eel.is/c++draft/intro.progress#def:concurrent_forward_progress_guarantees">concurrent forward progress guarantees</a>,
+the implementation ensures that the thread will eventually make progress for as long as it has not terminated.</p>
+<p class="sd-card-text">[Note 5: This applies regardless of whether or not other threads of execution (if any) have been or are making progress.
+To eventually fulfill this requirement means that this will happen in an unspecified but finite amount of time. — end note]</p>
+</li>
+<li><p class="sd-card-text"><a class="reference external" href="https://eel.is/c++draft/intro.progress">[intro.progress.9]</a>: For a thread of execution providing
+<a class="reference external" href="https://eel.is/c++draft/intro.progress#9">parallel forward progress guarantees</a>, the implementation is not required to ensure that
+the thread will eventually make progress if it has not yet executed any execution step; once this thread has executed a step,
+it provides concurrent forward progress guarantees.</p>
+<blockquote>
+<div><p class="sd-card-text">[Note 6: This does not specify a requirement for when to start this thread of execution, which will typically be specified by the entity
+that creates this thread of execution. For example, a thread of execution that provides concurrent forward progress guarantees and executes
+tasks from a set of tasks in an arbitrary order, one after the other, satisfies the requirements of parallel forward progress for these
+tasks. — end note]</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</details><p>The CUDA C++ Programming Language is an extension of the C++ Programming Language.
+This section documents the modifications and extensions to the <a class="reference external" href="https://eel.is/c++draft/intro.progress">[intro.progress]</a> section of the current <a class="reference external" href="https://eel.is/c++draft/">ISO International Standard ISO/IEC 14882 – Programming Language C++</a> draft.
+Modified sections are called out explicitly and their diff is shown in <strong>bold</strong>.
+All other sections are additions.</p>
+<section id="host-threads">
+<span id="libcudacxx-extended-api-execution-model-host-threads"></span><h2>Host threads<a class="headerlink" href="#host-threads" title="Permalink to this headline"></a></h2>
+<p>The forward progress provided by threads of execution created by the host implementation to
+execute <a class="reference external" href="https://en.cppreference.com/w/cpp/language/main_function">main</a>, <a class="reference external" href="https://en.cppreference.com/w/cpp/thread/thread">std::thread</a>,
+and <a class="reference external" href="https://en.cppreference.com/w/cpp/thread/jthread">std::jthread</a> is implementation-defined behavior of the host
+implementation <a class="reference external" href="https://eel.is/c++draft/intro.progress">[intro.progress]</a>.
+General-purpose host implementations should provide concurrent forward progress.</p>
+<p>If the host implementation provides <a class="reference external" href="https://eel.is/c++draft/intro.progress#7">concurrent forward progress [intro.progress.7]</a>,
+then CUDA C++ provides <a class="reference external" href="https://eel.is/c++draft/intro.progress#9">parallel forward progress [intro.progress.9]</a> for device threads.</p>
+</section>
+<section id="device-threads">
+<span id="libcudacxx-extended-api-execution-model-device-threads"></span><h2>Device threads<a class="headerlink" href="#device-threads" title="Permalink to this headline"></a></h2>
+<p>Once a device thread makes progress:</p>
+<ul>
+<li><p>If it is part of a <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__EXECUTION.html#group__CUDART__EXECUTION_1g504b94170f83285c71031be6d5d15f73">Cooperative Grid</a>,
+all device threads in its grid shall eventually make progress.</p></li>
+<li><p>Otherwise, all device threads in its <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#thread-block-clusters">thread-block cluster</a>
+shall eventually make progress.</p>
+<blockquote>
+<div><p>[Note: Threads in other thread-block clusters are not guaranteed to eventually make progress. - end note.]</p>
+<p>[Note: This implies that all device threads within its thread block shall eventually make progress. - end note.]</p>
+</div></blockquote>
+</li>
+</ul>
+<p>Modify <a class="reference external" href="https://eel.is/c++draft/intro.progress">[intro.progress.1]</a> as follows (modifications in <strong>bold</strong>):</p>
+<p>The implementation may assume that any <strong>host</strong> thread will eventually do one of the following:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>terminate,</p></li>
+<li><p>invoke the function <a class="reference external" href="https://en.cppreference.com/w/cpp/thread/yield">std::this_thread::yield</a> (<a class="reference external" href="http://eel.is/c++draft/thread.thread.this">[thread.thread.this]</a>),</p></li>
+<li><p>make a call to a library I/O function,</p></li>
+<li><p>perform an access through a volatile glvalue,</p></li>
+<li><p>perform a synchronization operation or an atomic operation, or</p></li>
+<li><p>continue execution of a trivial infinite loop (<a class="reference external" href="http://eel.is/c++draft/stmt.iter.general">[stmt.iter.general]</a>).</p></li>
+</ol>
+</div></blockquote>
+<p><strong>The implementation may assume that any device thread will eventually do one of the following:</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>terminate</strong>,</p></li>
+<li><p><strong>make a call to a library I/O function</strong>,</p></li>
+<li><p><strong>perform an access through a volatile glvalue except if the designated object has automatic storage duration, or</strong></p></li>
+<li><p><strong>perform a synchronization operation or an atomic read operation except if the designated object has automatic storage duration.</strong></p></li>
+</ol>
+<p>[Note: Some current limitations of device threads relative to host threads
+are implementation defects known to us, that we may fix over time.
+Examples include the undefined behavior that arises from device threads
+that eventually only perform volatile or atomic operations
+on automatic storage duration objects.
+However, other limitations of device threads relative to host threads
+are intentional choices.  They enable performance optimizations
+that would not be possible if device threads followed the C++ Standard strictly.
+For example, providing forward progress to programs
+that eventually only perform atomic writes or fences
+would degrade overall performance for little practical benefit. - end note.]</p>
+</div></blockquote>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Examples of forward progress guarantee differences between host and device threads due to modifications to <a class="reference external" href="https://eel.is/c++draft/intro.progress#1">[intro.progress.1]</a>.<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The following examples refer to the itemized sub-clauses of the implementation assumptions for host and device threads above
+using “host.threads.&lt;id&gt;” and “device.threads.&lt;id&gt;”, respectively.</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// Example: Execution.Model.Device.0</span>
+<span class="linenos">2</span><span class="c1">// Outcome: grid eventually terminates per device.threads.4 because the atomic object does not have automatic storage duration.</span>
+<span class="linenos">3</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ex0</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic_ref</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">atom</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="n">atom</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">6</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">7</span><span class="w">        </span><span class="n">atom</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">8</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">9</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// Example: Execution.Model.Device.1</span>
+<span class="linenos">2</span><span class="c1">// Allowed outcome: No thread makes progress because device threads don&#39;t support host.threads.2.</span>
+<span class="linenos">3</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ex1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">yield</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">5</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// Example: Execution.Model.Device.2</span>
+<span class="linenos">2</span><span class="c1">// Allowed outcome: No thread makes progress because device threads don&#39;t support host.threads.4</span>
+<span class="linenos">3</span><span class="c1">// for objects with automatic storage duration (see exception in device.threads.3).</span>
+<span class="linenos">4</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ex2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">True</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">6</span><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">True</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">7</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// Example: Execution.Model.Device.3</span>
+<span class="linenos">2</span><span class="c1">// Allowed outcome: No thread makes progress because device threads don&#39;t support host.threads.5</span>
+<span class="linenos">3</span><span class="c1">// for objects with automatic storage duration (see exception in device.threads.4).</span>
+<span class="linenos">4</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ex3</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">    </span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_thread</span><span class="o">&gt;</span><span class="w"> </span><span class="n">True</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">6</span><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">True</span><span class="p">.</span><span class="n">load</span><span class="p">());</span><span class="w"></span>
+<span class="linenos">7</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// Example: Execution.Model.Device.4</span>
+<span class="linenos">2</span><span class="c1">// Allowed outcome: No thread makes progress because device threads don&#39;t support host.thread.6.</span>
+<span class="linenos">3</span><span class="n">__global</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ex4</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* empty */</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">5</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="cuda-apis">
+<span id="libcudacxx-extended-api-execution-model-cuda-apis"></span><h2>CUDA APIs<a class="headerlink" href="#cuda-apis" title="Permalink to this headline"></a></h2>
+<p>A CUDA API call shall eventually either return or ensure at least one device thread makes progress.</p>
+<p>CUDA query functions (e.g. <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__STREAM.html#group__CUDART__STREAM_1g2021adeb17905c7ec2a3c1bf125c5435">cudaStreamQuery</a>,
+<a class="reference external" href="https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__EVENT.html#group__CUDART__EVENT_1g2bf738909b4a059023537eaa29d8a5b7">cudaEventQuery</a>, etc.) shall not consistently
+return <code class="docutils literal notranslate"><span class="pre">cudaErrorNotReady</span></code> without a device thread making progress.</p>
+<blockquote>
+<div><p>[Note: The device thread need not be “related” to the API call, e.g., an API operating on one stream or process may ensure progress of a device thread on another stream or process. - end note.]</p>
+<p>[Note: A simple but not sufficient method to test a program for CUDA API Forward Progress conformance is to run them with following environment variables set: <code class="docutils literal notranslate"><span class="pre">CUDA_DEVICE_MAX_CONNECTIONS=1</span> <span class="pre">CUDA_LAUNCH_BLOCKING=1</span></code>, and then check that the program still terminates.
+If it does not, the program has a bug.
+This method is not sufficient because it does not catch all Forward Progress bugs, but it does catch many such bugs. - end note.]</p>
+</div></blockquote>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Examples of CUDA API forward progress guarantees.<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Example: Execution.Model.API.1</span>
+<span class="linenos"> 2</span><span class="c1">// Outcome: if no other device threads (e.g., from other processes) are making progress,</span>
+<span class="linenos"> 3</span><span class="c1">// this program terminates and returns cudaSuccess.</span>
+<span class="linenos"> 4</span><span class="c1">// Rationale: CUDA guarantees that if the device is empty:</span>
+<span class="linenos"> 5</span><span class="c1">// - `cudaDeviceSynchronize` eventually ensures that at least one device-thread makes progress, which implies that eventually `hello_world` grid and one of its device-threads start.</span>
+<span class="linenos"> 6</span><span class="c1">// - All thread-block threads eventually start (due to &quot;if a device thread makes progress, all other threads in its thread-block cluster eventually make progress&quot;).</span>
+<span class="linenos"> 7</span><span class="c1">// - Once all threads in thread-block arrive at `__syncthreads` barrier, all waiting threads are unblocked.</span>
+<span class="linenos"> 8</span><span class="c1">// - Therefore all device threads eventually exit the `hello_world`` grid.</span>
+<span class="linenos"> 9</span><span class="c1">// - And `cudaDeviceSynchronize`` eventually unblocks.</span>
+<span class="linenos">10</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">hello_world</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nf">__syncthreads</span><span class="p">();</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">hello_world</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">14</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Example: Execution.Model.API.2</span>
+<span class="linenos"> 2</span><span class="c1">// Allowed outcome: eventually, no thread makes progress.</span>
+<span class="linenos"> 3</span><span class="c1">// Rationale: the `cudaDeviceSynchronize` API below is only called if a device thread eventually makes progress and sets the flag.</span>
+<span class="linenos"> 4</span><span class="c1">// However, CUDA only guarantees that `producer` device thread eventually starts if the synchronization API is called.</span>
+<span class="linenos"> 5</span><span class="c1">// Therefore, the host thread may never be unblocked from the flag spin-loop.</span>
+<span class="linenos"> 6</span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">producer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">cudaHostRegister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">flag</span><span class="p">));</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">producer</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">load</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">13</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Example: Execution.Model.API.3</span>
+<span class="linenos"> 2</span><span class="c1">// Allowed outcome: eventually, no thread makes progress.</span>
+<span class="linenos"> 3</span><span class="c1">// Rationale: same as Example.Model.API.2, with the addition that a single CUDA query API call does not guarantee</span>
+<span class="linenos"> 4</span><span class="c1">// the device thread eventually starts, only repeated CUDA query API calls do (see Execution.Model.API.4).</span>
+<span class="linenos"> 5</span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">producer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="n">cudaHostRegister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">flag</span><span class="p">));</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">producer</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">cudaStreamQuery</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">load</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">13</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Example: Execution.Model.API.4</span>
+<span class="linenos"> 2</span><span class="c1">// Outcome: terminates.</span>
+<span class="linenos"> 3</span><span class="c1">// Rationale: same as Execution.Model.API.3, but this example repeatedly calls</span>
+<span class="linenos"> 4</span><span class="c1">// a CUDA query API in within the flag spin-loop, which guarantees that the device thread</span>
+<span class="linenos"> 5</span><span class="c1">// eventually makes progress.</span>
+<span class="linenos"> 6</span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">producer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">cudaHostRegister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">flag</span><span class="p">));</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">producer</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">load</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">cudaStreamQuery</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">15</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</details><section id="dependencies">
+<span id="libcudacxx-extended-api-execution-model-cuda-dependencies"></span><h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h3>
+<p>A device thread shall not start until all its dependencies have completed.</p>
+<blockquote>
+<div><p>[Note: Dependencies that prevent device threads from starting to make progress can be created, for example, via <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#streams">CUDA Stream Commands</a> .
+These may include dependencies on the completion of, among others, <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#events">CUDA Events</a> and <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#kernels">CUDA Kernels</a> . - end note.]</p>
+</div></blockquote>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Examples of CUDA API forward progress guarantees due to dependencies<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Example: Execution.Model.Stream.0</span>
+<span class="linenos"> 2</span><span class="c1">// Allowed outcome: eventually, no thread makes progress.</span>
+<span class="linenos"> 3</span><span class="c1">// Rationale: while CUDA guarantees that one device thread makes progress, since there</span>
+<span class="linenos"> 4</span><span class="c1">// is no dependency between `first` and `second`, it does not guarantee which thread,</span>
+<span class="linenos"> 5</span><span class="c1">// and therefore it could always pick the device thread from `second`, which then never</span>
+<span class="linenos"> 6</span><span class="c1">// unblocks from the spin-loop.</span>
+<span class="linenos"> 7</span><span class="c1">// That is, `second` may starve `first`.</span>
+<span class="linenos"> 8</span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">first</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">10</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">second</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">while</span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">cudaHostRegister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">flag</span><span class="p">));</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">s0</span><span class="p">,</span><span class="w"> </span><span class="n">s1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">    </span><span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">    </span><span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">    </span><span class="n">first</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">s0</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">    </span><span class="n">second</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">s1</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">19</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Example: Execution.Model.Stream.1</span>
+<span class="linenos"> 2</span><span class="c1">// Outcome: terminates.</span>
+<span class="linenos"> 3</span><span class="c1">// Rationale: same as Execution.Model.Stream.0, but this example has a stream dependency</span>
+<span class="linenos"> 4</span><span class="c1">// between first and second, which requires CUDA to run the grids in order.</span>
+<span class="linenos"> 5</span><span class="n">cuda</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">thread_scope_system</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">first</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">flag</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">second</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">while</span><span class="p">(</span><span class="n">flag</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">cuda</span><span class="o">::</span><span class="n">memory_order_relaxed</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">cudaHostRegister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">flag</span><span class="p">));</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">s0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">first</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">s0</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="n">second</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">s0</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">15</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building &amp; Testing libcu++ &mdash; libcudacxx 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Standard API" href="../standard_api.html" />
+    <link rel="prev" title="Getting libcu++" href="getting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../setup.html">Setup</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting.html">Getting libcu++</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Building &amp; Testing libcu++</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../standard_api.html">Standard API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extended_api.html">Extended API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptx.html">PTX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">libcudacxx</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../setup.html">Setup</a> &raquo;</li>
+      <li>Building &amp; Testing libcu++</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="building-testing-libcu">
+<span id="libcudacxx-setup-building"></span><h1>Building &amp; Testing libcu++<a class="headerlink" href="#building-testing-libcu" title="Permalink to this headline"></a></h1>
+<p>libcu++ can be build and tested as shown in our <a class="reference external" href="https://github.com/NVIDIA/cccl/blob/main/CONTRIBUTING.md#building-and-testing">contributor guidelines</a>.</p>
+<p>However, often only a small subset of the full test suite needs to be run during development. For that we rely on <code class="docutils literal notranslate"><span class="pre">lit</span></code>.
+After libcu++ has been configured either through the build scripts or directly via a cmake preset one can then run.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> build
+lit libcudacxx-cpp17/RELATIVE_PATH_TO_TEST_OR_SUBFOLDER -sv
+</pre></div>
+</div>
+<p>This will build and run all tests within <code class="docutils literal notranslate"><span class="pre">RELATIVE_PATH_TO_TEST_OR_SUBFOLDER</span></code> which must be a valid path within the CCCL.
+Note that the name of the top level folder is the same as the name of the preset. For the build script the default is
+<code class="docutils literal notranslate"><span class="pre">libcudacxx-cpp17</span></code>. As an example this is how to run all tests for <code class="docutils literal notranslate"><span class="pre">cuda::std::span</span></code>, which are located in
+<code class="docutils literal notranslate"><span class="pre">libcudacxx/test/libcudacxx/std/containers/views/views.span</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> build
+
+<span class="c1"># Builds all tests within libcudacxx/test/libcudacxx/std/containers/views/views.span</span>
+lit libcudacxx-cpp17/libcudacxx/test/libcudacxx/std/containers/views/views.span -sv
+
+<span class="c1"># Builds the individual test array.pass.cpp</span>
+lit libcudacxx-cpp17/libcudacxx/test/libcudacxx/std/containers/views/views.span/span.cons/array.pass.cpp -sv
+</pre></div>
+</div>
+<p>If only building the tests and not running them is desired one can pass <code class="docutils literal notranslate"><span class="pre">-Dexecutor=&quot;NoopExecutor()&quot;</span></code> to the lit invocation.
+This is especially useful if the machine has no GPU or testing a different architecture</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> build
+lit libcudacxx-cpp17/RELATIVE_PATH_TO_TEST_OR_SUBFOLDER -sv -Dexecutor<span class="o">=</span><span class="s2">&quot;NoopExecutor()&quot;</span>
+</pre></div>
+</div>
+<p>Finally different standard modes can be tested by passing e.g <code class="docutils literal notranslate"><span class="pre">--param=std=c++20</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> build
+lit libcudacxx-cpp17/RELATIVE_PATH_TO_TEST_OR_SUBFOLDER -sv --param<span class="o">=</span><span class="nv">std</span><span class="o">=</span>c++20
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

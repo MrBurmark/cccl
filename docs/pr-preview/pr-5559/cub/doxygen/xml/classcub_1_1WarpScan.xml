@@ -1,0 +1,1868 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1WarpScan" kind="class" language="C++" prot="public">
+    <compoundname>cub::WarpScan</compoundname>
+    <innerclass refid="structcub_1_1WarpScan_1_1TempStorage" prot="public">cub::WarpScan::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>LOGICAL_WARP_THREADS</declname>
+        <defname>LOGICAL_WARP_THREADS</defname>
+        <defval>detail::warp_threads</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a50eb12a9e7189ee5132be2e9c805d510" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::WarpScan</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>WarpScan</name>
+        <param>
+          <type><ref refid="structcub_1_1WarpScan_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. Logical warp and lane identifiers are constructed from <computeroutput>threadIdx.x</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to memory allocation having layout type <ref refid="structcub_1_1WarpScan_1_1TempStorage" kindref="compound">TempStorage</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="212" column="5" bodyfile="cub/warp/warp_scan.cuh" bodystart="212" bodyend="215"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Inclusive prefix sums</header>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a67362111dd1a15c8e5a0269c09dd1325" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::InclusiveSum</definition>
+        <argsstring>(T input, T &amp;inclusive_output)</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive prefix sum across the calling warp.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide inclusive prefix sums within a
+block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute inclusive warp-wide prefix sums
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).InclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{1, 1, 1, 1, ...}``. The corresponding output ``thread_data`` in each of the four warps
+of threads will be ``1, 2, 3, ..., 32}``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="261" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="261" bodyend="264"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a8feb19c2abb828d2158454457af891ca" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::InclusiveSum</definition>
+        <argsstring>(T input, T &amp;inclusive_output, T &amp;warp_aggregate)</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>warp_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive prefix sum across the calling warp.
+Also provides every thread with the warp-wide ``warp_aggregate`` of all inputs.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide inclusive prefix sums within a
+block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute inclusive warp-wide prefix sums
+       int warp_aggregate;
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).InclusiveSum(thread_data,
+                                                    thread_data,
+                                                    warp_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{1, 1, 1, 1, ...}``. The corresponding output ``thread_data`` in each of the four warps
+of threads will be ``1, 2, 3, ..., 32}``. Furthermore, ``warp_aggregate`` for all threads
+in all warps will be ``32``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">warp_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Warp-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="314" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="314" bodyend="317"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Exclusive prefix sums</header>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a55191178465b75ab9a052fcd14869843" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::ExclusiveSum</definition>
+        <argsstring>(T input, T &amp;exclusive_output)</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive prefix sum across the calling warp. The value of 0 is applied as the
+initial value, and is assigned to ``exclusive_output`` in *lane*\ :sub:`0`.
+
+* This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide exclusive prefix sums within a
+block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute exclusive warp-wide prefix sums
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).ExclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{1, 1, 1, 1, ...}``. The corresponding output ``thread_data`` in each of the four warps
+of threads will be ``0, 1, 2, ..., 31}``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="365" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="365" bodyend="369"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a5b730206949d6cf02584df5d6b10ee13" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::ExclusiveSum</definition>
+        <argsstring>(T input, T &amp;exclusive_output, T &amp;warp_aggregate)</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>warp_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive prefix sum across the calling warp. The value of 0 is applied as the
+initial value, and is assigned to ``exclusive_output`` in *lane*\ :sub:`0`.
+Also provides every thread with the warp-wide ``warp_aggregate`` of all inputs.
+
+* This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide exclusive prefix sums within a
+block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute exclusive warp-wide prefix sums
+       int warp_aggregate;
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).ExclusiveSum(thread_data,
+                                                    thread_data,
+                                                    warp_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{1, 1, 1, 1, ...}``. The corresponding output ``thread_data`` in each of the four warps
+of threads will be ``0, 1, 2, ..., 31}``. Furthermore, ``warp_aggregate`` for all threads
+in all warps will be ``32``.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">warp_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Warp-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="422" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="422" bodyend="426"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Inclusive prefix scans</header>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a84644b819b1535ee42a649bf87f91fc1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::InclusiveScan</definition>
+        <argsstring>(T input, T &amp;inclusive_output, ScanOp scan_op)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive prefix scan using the specified binary scan functor across the
+calling warp.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide inclusive prefix max scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute inclusive warp-wide prefix max scans
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).InclusiveScan(thread_data, thread_data, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``thread_data`` in the first
+warp would be ``0, 0, 2, 2, ..., 30, 30``, the output for the second warp would be
+``32, 32, 34, 34, ..., 62, 62``, etc.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="482" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="482" bodyend="485"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a86a134b9a4012f3ae1d543c8b7187fbe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::InclusiveScan</definition>
+        <argsstring>(T input, T &amp;inclusive_output, T initial_value, ScanOp scan_op)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive prefix scan using the specified binary scan functor across the
+calling warp.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide inclusive prefix sum scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. literalinclude:: ../../../cub/test/catch2_test_warp_scan_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin inclusive-warp-scan-init-value
+    :end-before: example-end inclusive-warp-scan-init-value
+
+Suppose the set of input ``thread_data`` in the first warp is
+``{0, 1, 2, 3, ..., 31}``, in the second warp is ``{1, 2, 3, 4, ..., 32}`` etc.
+The corresponding output ``thread_data`` for a max operation in the first
+warp would be ``{3, 3, 3, 3, ..., 31}``, the output for the second warp would be
+``{3, 3, 3, 4, ..., 32}``, etc.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value to seed the inclusive scan (uniform across warp)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="528" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="528" bodyend="537"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a09e3a3f429907131e00bef765a878a1f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::InclusiveScan</definition>
+        <argsstring>(T input, T &amp;inclusive_output, ScanOp scan_op, T &amp;warp_aggregate)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>warp_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive prefix scan using the specified binary scan functor across the
+calling warp. Also provides every thread with the warp-wide ``warp_aggregate`` of
+all inputs.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide inclusive prefix max scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute inclusive warp-wide prefix max scans
+       int warp_aggregate;
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).InclusiveScan(
+           thread_data, thread_data, cuda::maximum&lt;&gt;{}, warp_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``thread_data`` in the first
+warp would be ``0, 0, 2, 2, ..., 30, 30``, the output for the second warp would be
+``32, 32, 34, 34, ..., 62, 62``, etc.  Furthermore, ``warp_aggregate`` would be assigned
+``30`` for threads in the first warp, ``62`` for threads in the second warp, etc.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">warp_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Warp-wide aggregate reduction of input items. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="596" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="596" bodyend="599"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a2e6f47ca9e2be46daddf72e8f45ad898" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::InclusiveScan</definition>
+        <argsstring>(T input, T &amp;inclusive_output, T initial_value, ScanOp scan_op, T &amp;warp_aggregate)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>warp_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive prefix scan using the specified binary scan functor across the
+calling warp. Also provides every thread with the warp-wide ``warp_aggregate`` of
+all inputs.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide inclusive prefix max scans
+within a block of 128 threads (one scan per warp).
+
+.. literalinclude:: ../../../cub/test/catch2_test_warp_scan_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin inclusive-warp-scan-init-value-aggregate
+    :end-before: example-end inclusive-warp-scan-init-value-aggregate
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{1, 1, 1, 1, ..., 1}``. For initial value equal to 3, the corresponding output
+``thread_data`` for a sum operation in the first warp would be
+``{4, 5, 6, 7, ..., 35}``, the output for the second warp would be
+``{4, 5, 6, 7, ..., 35}``, etc.  Furthermore,  ``warp_aggregate`` would be assigned
+``32`` for threads in each warp.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value to seed the inclusive scan (uniform across warp). It is not taken into account for warp_aggregate.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">warp_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Warp-wide aggregate reduction of input items. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="649" column="3" bodyfile="cub/warp/warp_scan.cuh" bodystart="649" bodyend="666"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Exclusive prefix scans</header>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a734f97ab447466ed5285e5d4d6a46d66" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::ExclusiveScan</definition>
+        <argsstring>(T input, T &amp;exclusive_output, ScanOp scan_op)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive prefix scan using the specified binary scan functor across the
+calling warp. Because no initial value is supplied, the ``output`` computed for
+*lane*\ :sub:`0` is undefined.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide exclusive prefix max scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute exclusive warp-wide prefix max scans
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).ExclusiveScan(thread_data, thread_data, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``thread_data`` in the first
+warp would be ``?, 0, 0, 2, ..., 28, 30``, the output for the second warp would be
+``?, 32, 32, 34, ..., 60, 62``, etc.
+(The output ``thread_data`` in warp *lane*\ :sub:`0` is undefined.)
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="988" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="988" bodyend="996"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1aa3a7785ada50f8b59b492f4e0990006a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::ExclusiveScan</definition>
+        <argsstring>(T input, T &amp;exclusive_output, T initial_value, ScanOp scan_op)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive prefix scan using the specified binary scan functor across the
+calling warp.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide exclusive prefix max scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute exclusive warp-wide prefix max scans
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).ExclusiveScan(thread_data,
+                                                     thread_data,
+                                                     INT_MIN,
+                                                     cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``thread_data`` in the first
+warp would be ``INT_MIN, 0, 0, 2, ..., 28, 30``, the output for the second warp would be
+``30, 32, 32, 34, ..., 60, 62``, etc.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value to seed the exclusive scan</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="1054" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="1054" bodyend="1063"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1acb78a5fafabb8d5b710c3b381c08ced8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::ExclusiveScan</definition>
+        <argsstring>(T input, T &amp;exclusive_output, ScanOp scan_op, T &amp;warp_aggregate)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>warp_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive prefix scan using the specified binary scan functor across the
+calling warp. Because no initial value is supplied, the ``output`` computed for
+*lane*\ :sub:`0` is undefined. Also provides every thread with the warp-wide
+``warp_aggregate`` of all inputs.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide exclusive prefix max scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute exclusive warp-wide prefix max scans
+       int warp_aggregate;
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).ExclusiveScan(thread_data,
+                                                     thread_data,
+                                                     cuda::maximum&lt;&gt;{},
+                                                     warp_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``thread_data`` in the first
+warp would be ``?, 0, 0, 2, ..., 28, 30``, the output for the second warp would be
+``?, 32, 32, 34, ..., 60, 62``, etc. (The output ``thread_data`` in warp *lane*\ :sub:`0`
+is undefined). Furthermore, ``warp_aggregate`` would be assigned ``30`` for threads in the
+first warp, \p 62 for threads in the second warp, etc.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">warp_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Warp-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="1126" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="1126" bodyend="1135"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1abaa662574a06c2417a8e59eadd89c6d0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::ExclusiveScan</definition>
+        <argsstring>(T input, T &amp;exclusive_output, T initial_value, ScanOp scan_op, T &amp;warp_aggregate)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>warp_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive prefix scan using the specified binary scan functor across the
+calling warp. Also provides every thread with the warp-wide ``warp_aggregate`` of
+all inputs.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide exclusive prefix max scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute exclusive warp-wide prefix max scans
+       int warp_aggregate;
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).ExclusiveScan(thread_data,
+                                                     thread_data,
+                                                     INT_MIN,
+                                                     cuda::maximum&lt;&gt;{},
+                                                     warp_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``thread_data`` in the first
+warp would be ``INT_MIN, 0, 0, 2, ..., 28, 30``, the output for the second warp would be
+``INT_MIN, 32, 32, 34, ..., 60, 62``, etc. Furthermore, ``warp_aggregate`` would be assigned
+``30`` for threads in the first warp, ``62`` for threads in the second warp, etc.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item. May be aliased with <computeroutput>input</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value to seed the exclusive scan</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">warp_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Warp-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="1202" column="3" bodyfile="cub/warp/warp_scan.cuh" bodystart="1202" bodyend="1217"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Combination (inclusive &amp; exclusive) prefix scans</header>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a303921cfb7a850c0b72b53dab38c4a78" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::Scan</definition>
+        <argsstring>(T input, T &amp;inclusive_output, T &amp;exclusive_output, ScanOp scan_op)</argsstring>
+        <name>Scan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes both inclusive and exclusive prefix scans using the specified binary scan functor
+across the calling warp. Because no initial value is supplied, the ``exclusive_output``
+computed for *lane*\ :sub:`0` is undefined.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide exclusive prefix max scans
+within a block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute exclusive warp-wide prefix max scans
+       int inclusive_partial, exclusive_partial;
+       WarpScan(temp_storage[warp_id]).Scan(thread_data,
+                                            inclusive_partial,
+                                            exclusive_partial,
+                                            cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``inclusive_partial`` in the
+first warp would be ``0, 0, 2, 2, ..., 30, 30``, the output for the second warp would be
+``32, 32, 34, 34, ..., 62, 62``, etc. The corresponding output ``exclusive_partial`` in the
+first warp would be ``?, 0, 0, 2, ..., 28, 30``, the output for the second warp would be
+``?, 32, 32, 34, ..., 60, 62``, etc.
+(The output ``thread_data`` in warp *lane*\ :sub:`0` is undefined.)
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s inclusive-scan output item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s exclusive-scan output item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="1589" column="10" bodyfile="cub/warp/warp_scan.cuh" bodystart="1589" bodyend="1596"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a31255353fff2ba4ad45dcaa666819d65" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::Scan</definition>
+        <argsstring>(T input, T &amp;inclusive_output, T &amp;exclusive_output, T initial_value, ScanOp scan_op)</argsstring>
+        <name>Scan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>inclusive_output</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>exclusive_output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes both inclusive and exclusive prefix scans using the specified binary scan functor
+across the calling warp.
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates four concurrent warp-wide prefix max scans within a
+block of 128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute inclusive warp-wide prefix max scans
+       int warp_id = threadIdx.x / 32;
+       int inclusive_partial, exclusive_partial;
+       WarpScan(temp_storage[warp_id]).Scan(thread_data,
+                                            inclusive_partial,
+                                            exclusive_partial,
+                                            INT_MIN,
+                                            cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, -1, 2, -3, ..., 126, -127}``. The corresponding output ``inclusive_partial`` in the
+first warp would be ``0, 0, 2, 2, ..., 30, 30``, the output for the second warp would be
+``32, 32, 34, 34, ..., 62, 62``, etc. The corresponding output ``exclusive_partial`` in the
+first warp would be ``INT_MIN, 0, 0, 2, ..., 28, 30``, the output for the second warp would
+be ``INT_MIN, 32, 32, 34, ..., 60, 62``, etc.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan operator type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">inclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s inclusive-scan output item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">exclusive_output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s exclusive-scan output item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value to seed the exclusive scan</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="1662" column="3" bodyfile="cub/warp/warp_scan.cuh" bodystart="1662" bodyend="1670"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Data exchange</header>
+      <memberdef kind="function" id="classcub_1_1WarpScan_1a93f8cca001a707d3c83fb48474f5b3d6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::Broadcast</definition>
+        <argsstring>(T input, unsigned int src_lane)</argsstring>
+        <name>Broadcast</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>src_lane</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Broadcast the value ``input`` from *lane*\ :sub:`src_lane` to all lanes in the warp
+
+* A subsequent ``__syncwarp()`` warp-wide barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates the warp-wide broadcasts of values from *lane*\ :sub:`0`
+in each of four warps to all other threads in those warps.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Broadcast from lane0 in each warp to all other threads in the warp
+       int warp_id = threadIdx.x / 32;
+       thread_data = WarpScan(temp_storage[warp_id]).Broadcast(thread_data, 0);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{0, 1, 2, 3, ..., 127}``. The corresponding output ``thread_data`` will be
+``{0, 0, ..., 0}`` in warp\ :sub:`0`,
+``{32, 32, ..., 32}`` in warp\ :sub:`1`,
+``{64, 64, ..., 64}`` in warp\ :sub:`2`, etc.
+</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The value to broadcast</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">src_lane</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which warp lane is to do the broadcasting </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="1877" column="7" bodyfile="cub/warp/warp_scan.cuh" bodystart="1877" bodyend="1880"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classcub_1_1WarpScan_1ada2e77f4c3967d68ab1cb253d2316caf" prot="private" static="no" strong="no">
+        <type></type>
+        <name>@0</name>
+        <enumvalue id="classcub_1_1WarpScan_1ada2e77f4c3967d68ab1cb253d2316cafac4a5eb754cae5e7ef6c5d5f395e1a5e2" prot="private">
+          <name>IS_ARCH_WARP</name>
+          <initializer>= (LOGICAL_WARP_THREADS == detail::warp_threads)</initializer>
+          <briefdescription>
+<para>Whether the logical warp size and the PTX warp size coincide. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1WarpScan_1ada2e77f4c3967d68ab1cb253d2316cafa18d8090a5874afe26416b06a4b8efe3a" prot="private">
+          <name>IS_POW_OF_TWO</name>
+          <initializer>= ((LOGICAL_WARP_THREADS &amp; (LOGICAL_WARP_THREADS - 1)) == 0)</initializer>
+          <briefdescription>
+<para>Whether the logical warp size is a power-of-two. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classcub_1_1WarpScan_1ada2e77f4c3967d68ab1cb253d2316cafa0feee959e7257e87d5c55b3d58c1b6d7" prot="private">
+          <name>IS_INTEGER</name>
+          <initializer>= cuda::std::is_integral_v&lt;T&gt;</initializer>
+          <briefdescription>
+<para>Whether the data type is an integer (which has fully-associative addition) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="167" column="3" bodyfile="cub/warp/warp_scan.cuh" bodystart="168" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1WarpScan_1a9932a70329cef6896c1d6553a16c6b4e" prot="private" static="no">
+        <type>::cuda::std::_If&lt; IS_POW_OF_TWO, detail::WarpScanShfl&lt; T, LOGICAL_WARP_THREADS &gt;, detail::WarpScanSmem&lt; T, LOGICAL_WARP_THREADS &gt; &gt;</type>
+        <definition>using cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::InternalWarpScan =  ::cuda::std:: _If&lt;IS_POW_OF_TWO, detail::WarpScanShfl&lt;T, LOGICAL_WARP_THREADS&gt;, detail::WarpScanSmem&lt;T, LOGICAL_WARP_THREADS&gt; &gt;</definition>
+        <argsstring></argsstring>
+        <name>InternalWarpScan</name>
+        <briefdescription>
+<para>Internal specialization. Use SHFL-based scan if LOGICAL_WARP_THREADS is a power-of-two. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="181" column="3" bodyfile="cub/warp/warp_scan.cuh" bodystart="182" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1WarpScan_1acae14d7013b15d670204a8167019a7d0" prot="private" static="no">
+        <type>typename InternalWarpScan::TempStorage</type>
+        <definition>using cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::_TempStorage =  typename InternalWarpScan::TempStorage</definition>
+        <argsstring></argsstring>
+        <name>_TempStorage</name>
+        <briefdescription>
+<para>Shared memory storage layout type for <ref refid="classcub_1_1WarpScan" kindref="compound">WarpScan</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="185" column="3" bodyfile="cub/warp/warp_scan.cuh" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1WarpScan_1af4ea85b4224236b8cb433adfa7501759" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+<para>Shared storage reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="192" column="16" bodyfile="cub/warp/warp_scan.cuh" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1WarpScan_1ad4c28f46d814740ff3b4773fcc81d204" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::WarpScan&lt; T, LOGICAL_WARP_THREADS &gt;::lane_id</definition>
+        <argsstring></argsstring>
+        <name>lane_id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/warp/warp_scan.cuh" line="193" column="16" bodyfile="cub/warp/warp_scan.cuh" bodystart="193" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+The WarpScan class provides :ref:`collective &lt;collective-primitives&gt;` methods for computing a
+parallel prefix scan of items partitioned across a CUDA thread warp.
+
+.. image:: ../../img/warp_scan_logo.png
+    :align: center
+
+Overview
+++++++++++++++++++++++++++
+
+* Given a list of input elements and a binary reduction operator, a
+  `prefix scan &lt;http://en.wikipedia.org/wiki/Prefix_sum&gt;`__ produces an output list where each
+  element is computed to be the reduction of the elements occurring earlier in the input list.
+  *Prefix sum* connotes a prefix scan with the addition operator. The term *inclusive*
+  indicates that the *i*\ :sup:`th` output reduction incorporates the *i*\ :sup:`th` input.
+  The term *exclusive* indicates the *i*\ :sup:`th` input is not incorporated into
+  the *i*\ :sup:`th` output reduction.
+* Supports non-commutative scan operators
+* Supports &quot;logical&quot; warps smaller than the physical warp size
+  (e.g., a logical warp of 8 threads)
+* The number of entrant threads must be an multiple of ``LOGICAL_WARP_THREADS``
+
+Performance Considerations
+++++++++++++++++++++++++++
+
+* Uses special instructions when applicable (e.g., warp ``SHFL``)
+* Uses synchronization-free communication between warp lanes when applicable
+* Incurs zero bank conflicts for most types
+* Computation is slightly more efficient (i.e., having lower instruction overhead) for:
+
+  * Summation (**vs.** generic scan)
+  * The architecture&apos;s warp size is a whole multiple of ``LOGICAL_WARP_THREADS``
+
+Simple Examples
+++++++++++++++++++++++++++
+
+Every thread in the warp uses the WarpScan class by first specializing the WarpScan type, then instantiating an instance with parameters for communication, and finally invoking or more collective member functions.
+
+The code snippet below illustrates four concurrent warp prefix sums within a block of
+128 threads (one per each of the 32-thread warps).
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for 4 warps
+       __shared__ typename WarpScan::TempStorage temp_storage[4];
+
+       // Obtain one input item per thread
+       int thread_data = ...
+
+       // Compute warp-wide prefix sums
+       int warp_id = threadIdx.x / 32;
+       WarpScan(temp_storage[warp_id]).ExclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{1, 1, 1, 1, ...}``. The corresponding output ``thread_data`` in each of the four warps of
+threads will be ``0, 1, 2, 3, ..., 31}``.
+
+The code snippet below illustrates a single warp prefix sum within a block of
+128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize WarpScan for type int
+       using WarpScan = cub::WarpScan&lt;int&gt;;
+
+       // Allocate WarpScan shared memory for one warp
+       __shared__ typename WarpScan::TempStorage temp_storage;
+       ...
+
+       // Only the first warp performs a prefix sum
+       if (threadIdx.x &lt; 32)
+       {
+           // Obtain one input item per thread
+           int thread_data = ...
+
+           // Compute warp-wide prefix sums
+           WarpScan(temp_storage).ExclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the warp of threads is
+``{1, 1, 1, 1, ...}``. The corresponding output ``thread_data`` will be
+``{0, 1, 2, 3, ..., 31}``.
+</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The scan input/output element type</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LOGICAL_WARP_THREADS</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The number of threads per &quot;logical&quot; warp (may be less than the number of hardware warp threads). Default is the warp size associated with the CUDA Compute Capability targeted by the compiler (e.g., 32 threads for SM20). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/warp/warp_scan.cuh" line="160" column="1" bodyfile="cub/warp/warp_scan.cuh" bodystart="161" bodyend="1883"/>
+    <listofallmembers>
+      <member refid="classcub_1_1WarpScan_1acae14d7013b15d670204a8167019a7d0" prot="private" virt="non-virtual"><scope>cub::WarpScan</scope><name>_TempStorage</name></member>
+      <member refid="classcub_1_1WarpScan_1a93f8cca001a707d3c83fb48474f5b3d6" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>Broadcast</name></member>
+      <member refid="classcub_1_1WarpScan_1a734f97ab447466ed5285e5d4d6a46d66" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1aa3a7785ada50f8b59b492f4e0990006a" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1acb78a5fafabb8d5b710c3b381c08ced8" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1abaa662574a06c2417a8e59eadd89c6d0" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1a55191178465b75ab9a052fcd14869843" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1WarpScan_1a5b730206949d6cf02584df5d6b10ee13" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1WarpScan_1a84644b819b1535ee42a649bf87f91fc1" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1a86a134b9a4012f3ae1d543c8b7187fbe" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1a09e3a3f429907131e00bef765a878a1f" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1a2e6f47ca9e2be46daddf72e8f45ad898" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1WarpScan_1a67362111dd1a15c8e5a0269c09dd1325" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1WarpScan_1a8feb19c2abb828d2158454457af891ca" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1WarpScan_1a9932a70329cef6896c1d6553a16c6b4e" prot="private" virt="non-virtual"><scope>cub::WarpScan</scope><name>InternalWarpScan</name></member>
+      <member refid="classcub_1_1WarpScan_1ada2e77f4c3967d68ab1cb253d2316cafac4a5eb754cae5e7ef6c5d5f395e1a5e2" prot="private" virt="non-virtual"><scope>cub::WarpScan</scope><name>IS_ARCH_WARP</name></member>
+      <member refid="classcub_1_1WarpScan_1ada2e77f4c3967d68ab1cb253d2316cafa0feee959e7257e87d5c55b3d58c1b6d7" prot="private" virt="non-virtual"><scope>cub::WarpScan</scope><name>IS_INTEGER</name></member>
+      <member refid="classcub_1_1WarpScan_1ada2e77f4c3967d68ab1cb253d2316cafa18d8090a5874afe26416b06a4b8efe3a" prot="private" virt="non-virtual"><scope>cub::WarpScan</scope><name>IS_POW_OF_TWO</name></member>
+      <member refid="classcub_1_1WarpScan_1ad4c28f46d814740ff3b4773fcc81d204" prot="private" virt="non-virtual"><scope>cub::WarpScan</scope><name>lane_id</name></member>
+      <member refid="classcub_1_1WarpScan_1a303921cfb7a850c0b72b53dab38c4a78" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>Scan</name></member>
+      <member refid="classcub_1_1WarpScan_1a31255353fff2ba4ad45dcaa666819d65" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>Scan</name></member>
+      <member refid="classcub_1_1WarpScan_1af4ea85b4224236b8cb433adfa7501759" prot="private" virt="non-virtual"><scope>cub::WarpScan</scope><name>temp_storage</name></member>
+      <member refid="classcub_1_1WarpScan_1a50eb12a9e7189ee5132be2e9c805d510" prot="public" virt="non-virtual"><scope>cub::WarpScan</scope><name>WarpScan</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

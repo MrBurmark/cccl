@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::WarpReduce &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::WarpScan" href="classcub_1_1WarpScan.html" />
+    <link rel="prev" title="cub::WarpMergeSort" href="classcub_1_1WarpMergeSort.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpExchange.html">cub::WarpExchange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpLoad.html">cub::WarpLoad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpMergeSort.html">cub::WarpMergeSort</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::WarpReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpScan.html">cub::WarpScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpStore.html">cub::WarpStore</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../warp_wide.html">Warp-Wide “Collective” Primitives</a> &raquo;</li>
+      <li>cub::WarpReduce</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-warpreduce">
+<h1>cub::WarpReduce<a class="headerlink" href="#cub-warpreduce" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_warp_warp_reduce.cuh.html#warp-reduce-8cuh"><span class="std std-ref">cub/warp/warp_reduce.cuh</span></a></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0_iEN3cub10WarpReduceE">
+<span id="_CPPv3I0_iEN3cub10WarpReduceE"></span><span id="_CPPv2I0_iEN3cub10WarpReduceE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogicalWarpThreads</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">warp_threads</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WarpReduce</span></span></span><a class="headerlink" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>The <code class="docutils literal notranslate"><span class="pre">WarpReduce</span></code> class provides <a class="reference internal" href="../index.html#collective-primitives"><span class="std std-ref">collective</span></a> methods for computing a parallel
+reduction of items partitioned across a CUDA thread warp.</p>
+<img alt="../_images/warp_reduce_logo.png" class="align-center" src="../_images/warp_reduce_logo.png" /><section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>A <a class="reference external" href="http://en.wikipedia.org/wiki/Reduce_(higher-order_function)">reduction</a> (or <em>fold</em>) uses a binary combining
+operator to compute a single aggregate from a list of input elements.</p></li>
+<li><p>Supports “logical” warps smaller than the physical warp size (e.g., logical warps of 8 threads)</p></li>
+<li><p>The number of entrant threads must be an multiple of <code class="docutils literal notranslate"><span class="pre">LogicalWarpThreads</span></code></p></li>
+</ul>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Uses special instructions when applicable (e.g., warp <code class="docutils literal notranslate"><span class="pre">SHFL</span></code> instructions)</p></li>
+<li><p>Uses synchronization-free communication between warp lanes when applicable</p></li>
+<li><p>Incurs zero bank conflicts for most types</p></li>
+<li><p>Computation is slightly more efficient (i.e., having lower instruction overhead) for:</p>
+<ul>
+<li><p>Summation (<strong>vs.</strong> generic reduction)</p></li>
+<li><p>The architecture’s warp size is a whole multiple of <code class="docutils literal notranslate"><span class="pre">LogicalWarpThreads</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="simple-examples">
+<h2>Simple Examples<a class="headerlink" href="#simple-examples" title="Permalink to this headline"></a></h2>
+<p>Every thread in the warp uses the WarpReduce class by first specializing the WarpReduce type, then instantiating an instance with parameters for communication, and finally invoking or more collective member functions.</p>
+<p>The code snippet below illustrates four concurrent warp sum reductions within a block of 128 threads (one per each
+of the 32-thread warps).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for 4 warps</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Obtain one input item per thread</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Return the warp-wide sums to each lane0 (threads 0, 32, 64, and 96)</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">warp_id</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">[</span><span class="n">warp_id</span><span class="p">]).</span><span class="n">Sum</span><span class="p">(</span><span class="n">thread_data</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> across the block of threads is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">127}</span></code>.
+The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in threads 0, 32, 64, and 96 will be
+<code class="docutils literal notranslate"><span class="pre">496</span></code>, <code class="docutils literal notranslate"><span class="pre">1520</span></code>, <code class="docutils literal notranslate"><span class="pre">2544</span></code>, and <code class="docutils literal notranslate"><span class="pre">3568</span></code>, respectively (and is undefined in other threads).</p>
+<p>The code snippet below illustrates a single warp sum reduction within a block of 128 threads.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for one warp</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Only the first warp performs a reduction</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Obtain one input item per thread</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Return the warp-wide sum to lane0</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Sum</span><span class="p">(</span><span class="n">thread_data</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> across the warp of threads is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">31}</span></code>.
+The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in thread0 will be <code class="docutils literal notranslate"><span class="pre">496</span></code> (and is undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The reduction input/output element type</p></li>
+<li><p><strong>LogicalWarpThreads</strong> – <strong>[optional]</strong> The number of threads per “logical” warp (may be less than the number of hardware warp threads). Default is the warp size of the targeted CUDA compute-capability (e.g., 32 threads for SM20). </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-collective-constructors">Collective constructors</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce10WarpReduceER11TempStorage">
+<span id="_CPPv3N3cub10WarpReduce10WarpReduceER11TempStorage"></span><span id="_CPPv2N3cub10WarpReduce10WarpReduceER11TempStorage"></span><span id="cub::WarpReduce::WarpReduce__TempStorageR"></span><span class="target" id="classcub_1_1warpreduce_1afadb1e883c360d7476c4d388ccdd04c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WarpReduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3cub10WarpReduce11TempStorageE" title="cub::WarpReduce::TempStorage"><span class="n"><span class="pre">TempStorage</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce10WarpReduceER11TempStorage" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Collective constructor using the specified memory allocation as temporary storage.
+Logical warp and lane identifiers are constructed from <code class="docutils literal notranslate"><span class="pre">threadIdx.x</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>temp_storage</strong> – <strong>[in]</strong> Reference to memory allocation having layout type TempStorage </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-summation-reductions">Summation reductions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce3SumE1T">
+<span id="_CPPv3N3cub10WarpReduce3SumE1T"></span><span id="_CPPv2N3cub10WarpReduce3SumE1T"></span><span id="cub::WarpReduce::Sum__T"></span><span class="target" id="classcub_1_1warpreduce_1a590cc4f4b6cc53c5b9b713bb0f2876b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sum</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce3SumE1T" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p><p>Computes a warp-wide sum in the calling warp.
+The output is valid in warp <em>lane</em><sub>0</sub>.</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="snippet">
+<h2>Snippet<a class="headerlink" href="#snippet" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates four concurrent warp sum reductions within a block of 128 threads
+(one per each of the 32-thread warps).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for 4 warps</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Obtain one input item per thread</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Return the warp-wide sums to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">warp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">[</span><span class="n">warp_id</span><span class="p">]).</span><span class="n">Sum</span><span class="p">(</span><span class="n">thread_data</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> across the block of threads is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">127}</span></code>.
+The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in threads 0, 32, 64, and 96 will <code class="docutils literal notranslate"><span class="pre">496</span></code>, <code class="docutils literal notranslate"><span class="pre">1520</span></code>, <code class="docutils literal notranslate"><span class="pre">2544</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">3568</span></code>, respectively (and is undefined in other threads).</p>
+</section>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3SumE1TRK9InputType">
+<span id="_CPPv3I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3SumERK9InputType"></span><span id="_CPPv2I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3SumERK9InputType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_fixed_size_random_access_range_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3SumE1TRK9InputType" title="cub::WarpReduce::Sum::InputType"><span class="n"><span class="pre">InputType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a9261a9c4a3d1db5befc17f7f552539a2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sum</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3SumE1TRK9InputType" title="cub::WarpReduce::Sum::InputType"><span class="n"><span class="pre">InputType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3SumE1TRK9InputType" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce3MaxE1T">
+<span id="_CPPv3N3cub10WarpReduce3MaxE1T"></span><span id="_CPPv2N3cub10WarpReduce3MaxE1T"></span><span id="cub::WarpReduce::Max__T"></span><span class="target" id="classcub_1_1warpreduce_1ace32825b4dafe087edc136348f4c7caf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Max</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce3MaxE1T" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MaxE1TRK9InputType">
+<span id="_CPPv3I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MaxERK9InputType"></span><span id="_CPPv2I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MaxERK9InputType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_fixed_size_random_access_range_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MaxE1TRK9InputType" title="cub::WarpReduce::Max::InputType"><span class="n"><span class="pre">InputType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a5eb889598585bc3088cfdcdb2bdc3e52"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MaxE1TRK9InputType" title="cub::WarpReduce::Max::InputType"><span class="n"><span class="pre">InputType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MaxE1TRK9InputType" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce3MinE1T">
+<span id="_CPPv3N3cub10WarpReduce3MinE1T"></span><span id="_CPPv2N3cub10WarpReduce3MinE1T"></span><span id="cub::WarpReduce::Min__T"></span><span class="target" id="classcub_1_1warpreduce_1ad5458cdea939b39799a9855c55ec0490"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Min</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce3MinE1T" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MinE1TRK9InputType">
+<span id="_CPPv3I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MinERK9InputType"></span><span id="_CPPv2I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MinERK9InputType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_fixed_size_random_access_range_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MinE1TRK9InputType" title="cub::WarpReduce::Min::InputType"><span class="n"><span class="pre">InputType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a20cee5c27c302ce00c2974b98844a936"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Min</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MinE1TRK9InputType" title="cub::WarpReduce::Min::InputType"><span class="n"><span class="pre">InputType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_N4cudaSt11enable_if_tIN6detail35is_fixed_size_random_access_range_vI9InputTypeEEiEEEN3cub10WarpReduce3MinE1TRK9InputType" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce3SumE1Ti">
+<span id="_CPPv3N3cub10WarpReduce3SumE1Ti"></span><span id="_CPPv2N3cub10WarpReduce3SumE1Ti"></span><span id="cub::WarpReduce::Sum__T.i"></span><span class="target" id="classcub_1_1warpreduce_1a148a22664583f8a558ab557d585b0271"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sum</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce3SumE1Ti" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a partially-full warp-wide sum in the calling warp.
+The output is valid in warp <em>lane</em><sub>0</sub>.</p>
+<p>All threads across the calling warp must agree on the same value for <code class="docutils literal notranslate"><span class="pre">valid_items</span></code>.
+Otherwise the result is undefined.</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="id1">
+<h2>Snippet<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a sum reduction within a single, partially-full
+block of 32 threads (one warp).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">valid_items</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for one warp</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain one input item per thread if in range</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">valid_items</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_data</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Return the warp-wide sums to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Sum</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">valid_items</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the input <code class="docutils literal notranslate"><span class="pre">d_data</span></code> is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">...</span></code> and <code class="docutils literal notranslate"><span class="pre">valid_items</span></code> is <code class="docutils literal notranslate"><span class="pre">4</span></code>.
+The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in <em>lane</em><sub>0</sub> is <code class="docutils literal notranslate"><span class="pre">6</span></code>
+(and is undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>valid_items</strong> – <strong>[in]</strong> Total number of valid items in the calling thread’s logical warp (may be less than <code class="docutils literal notranslate"><span class="pre">LogicalWarpThreads</span></code>) </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce3MaxE1Ti">
+<span id="_CPPv3N3cub10WarpReduce3MaxE1Ti"></span><span id="_CPPv2N3cub10WarpReduce3MaxE1Ti"></span><span id="cub::WarpReduce::Max__T.i"></span><span class="target" id="classcub_1_1warpreduce_1a9132a853afd50aa0ff656129e1d7102f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Max</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce3MaxE1Ti" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce3MinE1Ti">
+<span id="_CPPv3N3cub10WarpReduce3MinE1Ti"></span><span id="_CPPv2N3cub10WarpReduce3MinE1Ti"></span><span id="cub::WarpReduce::Min__T.i"></span><span class="target" id="classcub_1_1warpreduce_1a39ae32c73851966c0bd68c7d2b8dc244"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Min</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce3MinE1Ti" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub10WarpReduce16HeadSegmentedSumE1T1T5FlagT">
+<span id="_CPPv3I0EN3cub10WarpReduce16HeadSegmentedSumE1T5FlagT"></span><span id="_CPPv2I0EN3cub10WarpReduce16HeadSegmentedSumE1T5FlagT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FlagT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a45a77f8b4bd36309dc2e1b433bf6cf30"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HeadSegmentedSum</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub10WarpReduce16HeadSegmentedSumE1T1T5FlagT" title="cub::WarpReduce::HeadSegmentedSum::FlagT"><span class="n"><span class="pre">FlagT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">head_flag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub10WarpReduce16HeadSegmentedSumE1T1T5FlagT" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a segmented sum in the calling warp where segments are defined by head-flags.
+The sum of each segment is returned to the first lane in that segment
+(which always includes <em>lane</em><sub>0</sub>).</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="id2">
+<h2>Snippet<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a head-segmented warp sum
+reduction within a block of 32 threads (one warp).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for one warp</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain one input item and flag per thread</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">head_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Return the warp-wide sums to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">HeadSegmentedSum</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">head_flag</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> and <code class="docutils literal notranslate"><span class="pre">head_flag</span></code> across the block of threads
+is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">31</span></code> and is <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">...,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0</span></code>,
+respectively. The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in threads 0, 4, 8, etc. will be
+<code class="docutils literal notranslate"><span class="pre">6</span></code>, <code class="docutils literal notranslate"><span class="pre">22</span></code>, <code class="docutils literal notranslate"><span class="pre">38</span></code>, etc. (and is undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction operator type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>head_flag</strong> – <strong>[in]</strong> Head flag denoting whether or not <code class="docutils literal notranslate"><span class="pre">input</span></code> is the start of a new segment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub10WarpReduce16TailSegmentedSumE1T1T5FlagT">
+<span id="_CPPv3I0EN3cub10WarpReduce16TailSegmentedSumE1T5FlagT"></span><span id="_CPPv2I0EN3cub10WarpReduce16TailSegmentedSumE1T5FlagT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FlagT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1aeb69a2304ecdb19e363fec3fa5d0188c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TailSegmentedSum</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub10WarpReduce16TailSegmentedSumE1T1T5FlagT" title="cub::WarpReduce::TailSegmentedSum::FlagT"><span class="n"><span class="pre">FlagT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tail_flag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub10WarpReduce16TailSegmentedSumE1T1T5FlagT" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a segmented sum in the calling warp where segments are defined by tail-flags.
+The sum of each segment is returned to the first lane in that segment
+(which always includes <em>lane</em><sub>0</sub>).</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="id3">
+<h2>Snippet<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a tail-segmented warp sum reduction within a block of 32
+threads (one warp).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for one warp</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain one input item and flag per thread</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tail_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Return the warp-wide sums to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">TailSegmentedSum</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">tail_flag</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> and <code class="docutils literal notranslate"><span class="pre">tail_flag</span></code> across the block of threads
+is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">31}</span></code> and is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">...,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1}</span></code>,
+respectively. The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in threads 0, 4, 8, etc. will be
+<code class="docutils literal notranslate"><span class="pre">6</span></code>, <code class="docutils literal notranslate"><span class="pre">22</span></code>, <code class="docutils literal notranslate"><span class="pre">38</span></code>, etc. (and is undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction operator type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>tail_flag</strong> – <strong>[in]</strong> Head flag denoting whether or not <code class="docutils literal notranslate"><span class="pre">input</span></code> is the start of a new segment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-generic-reductions">Generic reductions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub10WarpReduce6ReduceE1T1T11ReductionOp">
+<span id="_CPPv3I0EN3cub10WarpReduce6ReduceE1T11ReductionOp"></span><span id="_CPPv2I0EN3cub10WarpReduce6ReduceE1T11ReductionOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a6c4c9d5dfe1bea85022f455681105c19"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Reduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub10WarpReduce6ReduceE1T1T11ReductionOp" title="cub::WarpReduce::Reduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub10WarpReduce6ReduceE1T1T11ReductionOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a warp-wide reduction in the calling warp using the specified binary reduction
+functor. The output is valid in warp <em>lane</em><sub>0</sub>.</p>
+<p>Supports non-commutative reduction operators</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="id4">
+<h2>Snippet<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates four concurrent warp max reductions within a block of
+128 threads (one per each of the 32-thread warps).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for 4 warps</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain one input item per thread</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Return the warp-wide reductions to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">warp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">[</span><span class="n">warp_id</span><span class="p">]).</span><span class="n">Reduce</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{});</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> across the block of threads is
+<code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">127}</span></code>. The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in threads 0, 32, 64, and
+96 will be <code class="docutils literal notranslate"><span class="pre">31</span></code>, <code class="docutils literal notranslate"><span class="pre">63</span></code>, <code class="docutils literal notranslate"><span class="pre">95</span></code>, and <code class="docutils literal notranslate"><span class="pre">127</span></code>, respectively
+(and is undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction operator type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>reduction_op</strong> – <strong>[in]</strong> Binary reduction operator </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub10WarpReduce6ReduceE1TRK9InputType11ReductionOp">
+<span id="_CPPv3I00EN3cub10WarpReduce6ReduceERK9InputType11ReductionOp"></span><span id="_CPPv2I00EN3cub10WarpReduce6ReduceERK9InputType11ReductionOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a5289933ff5baef602268728cbbaf96a7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Reduce</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3cub10WarpReduce6ReduceE1TRK9InputType11ReductionOp" title="cub::WarpReduce::Reduce::InputType"><span class="n"><span class="pre">InputType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub10WarpReduce6ReduceE1TRK9InputType11ReductionOp" title="cub::WarpReduce::Reduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub10WarpReduce6ReduceE1TRK9InputType11ReductionOp" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3cub10WarpReduce6ReduceE1T1T11ReductionOpi">
+<span id="_CPPv3I0EN3cub10WarpReduce6ReduceE1T11ReductionOpi"></span><span id="_CPPv2I0EN3cub10WarpReduce6ReduceE1T11ReductionOpi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a8c215131bfa5584a2313d3072aca2f30"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Reduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I0EN3cub10WarpReduce6ReduceE1T1T11ReductionOpi" title="cub::WarpReduce::Reduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">valid_items</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub10WarpReduce6ReduceE1T1T11ReductionOpi" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a partially-full warp-wide reduction in the calling warp using the specified binary
+reduction functor. The output is valid in warp <em>lane</em><sub>0</sub>.</p>
+<p>All threads across the calling warp must agree on the same value for <code class="docutils literal notranslate"><span class="pre">valid_items</span></code>.
+Otherwise the result is undefined.</p>
+<p>Supports non-commutative reduction operators</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="id5">
+<h2>Snippet<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a max reduction within a single, partially-full
+block of 32 threads (one warp).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">valid_items</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for one warp</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain one input item per thread if in range</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">valid_items</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d_data</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Return the warp-wide reductions to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">Reduce</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{},</span><span class="w"> </span><span class="n">valid_items</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the input <code class="docutils literal notranslate"><span class="pre">d_data</span></code> is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">...</span> <span class="pre">}</span></code> and <code class="docutils literal notranslate"><span class="pre">valid_items</span></code>
+is <code class="docutils literal notranslate"><span class="pre">4</span></code>. The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in thread0 is <code class="docutils literal notranslate"><span class="pre">3</span></code> (and is
+undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction operator type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>reduction_op</strong> – <strong>[in]</strong> Binary reduction operator</p></li>
+<li><p><strong>valid_items</strong> – <strong>[in]</strong> Total number of valid items in the calling thread’s logical warp (may be less than <code class="docutils literal notranslate"><span class="pre">LogicalWarpThreads</span></code>) </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub10WarpReduce19HeadSegmentedReduceE1T1T5FlagT11ReductionOp">
+<span id="_CPPv3I00EN3cub10WarpReduce19HeadSegmentedReduceE1T5FlagT11ReductionOp"></span><span id="_CPPv2I00EN3cub10WarpReduce19HeadSegmentedReduceE1T5FlagT11ReductionOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FlagT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1a0c0c101589b8f5b629c4fc6476467d49"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HeadSegmentedReduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub10WarpReduce19HeadSegmentedReduceE1T1T5FlagT11ReductionOp" title="cub::WarpReduce::HeadSegmentedReduce::FlagT"><span class="n"><span class="pre">FlagT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">head_flag</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub10WarpReduce19HeadSegmentedReduceE1T1T5FlagT11ReductionOp" title="cub::WarpReduce::HeadSegmentedReduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub10WarpReduce19HeadSegmentedReduceE1T1T5FlagT11ReductionOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a segmented reduction in the calling warp where segments are defined by head-flags.
+The reduction of each segment is returned to the first lane in that segment
+(which always includes <em>lane</em><sub>0</sub>).</p>
+<p>Supports non-commutative reduction operators</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="id6">
+<h2>Snippet<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a head-segmented warp max
+reduction within a block of 32 threads (one warp).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for one warp</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain one input item and flag per thread</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">head_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Return the warp-wide reductions to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">HeadSegmentedReduce</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">head_flag</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{});</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> and <code class="docutils literal notranslate"><span class="pre">head_flag</span></code> across the block of threads
+is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">31}</span></code> and is <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">...,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0}</span></code>,
+respectively. The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in threads 0, 4, 8, etc. will be
+<code class="docutils literal notranslate"><span class="pre">3</span></code>, <code class="docutils literal notranslate"><span class="pre">7</span></code>, <code class="docutils literal notranslate"><span class="pre">11</span></code>, etc. (and is undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction operator type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>head_flag</strong> – <strong>[in]</strong> Head flag denoting whether or not <code class="docutils literal notranslate"><span class="pre">input</span></code> is the start of a new segment</p></li>
+<li><p><strong>reduction_op</strong> – <strong>[in]</strong> Reduction operator </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3cub10WarpReduce19TailSegmentedReduceE1T1T5FlagT11ReductionOp">
+<span id="_CPPv3I00EN3cub10WarpReduce19TailSegmentedReduceE1T5FlagT11ReductionOp"></span><span id="_CPPv2I00EN3cub10WarpReduce19TailSegmentedReduceE1T5FlagT11ReductionOp"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReductionOp</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FlagT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpreduce_1ac86a41f00ffb325ce78877abe32b34d0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TailSegmentedReduce</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub10WarpReduce19TailSegmentedReduceE1T1T5FlagT11ReductionOp" title="cub::WarpReduce::TailSegmentedReduce::FlagT"><span class="n"><span class="pre">FlagT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tail_flag</span></span>, <a class="reference internal" href="#_CPPv4I00EN3cub10WarpReduce19TailSegmentedReduceE1T1T5FlagT11ReductionOp" title="cub::WarpReduce::TailSegmentedReduce::ReductionOp"><span class="n"><span class="pre">ReductionOp</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">reduction_op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub10WarpReduce19TailSegmentedReduceE1T1T5FlagT11ReductionOp" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a segmented reduction in the calling warp where segments are defined by tail-flags.
+The reduction of each segment is returned to the first lane in that segment
+(which always includes <em>lane</em><sub>0</sub>).</p>
+<p>Supports non-commutative reduction operators</p>
+<p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
+<section id="id7">
+<h2>Snippet<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a tail-segmented warp max
+reduction within a block of 32 threads (one warp).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="cp"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Specialize WarpReduce for type int</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpReduce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpReduce</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate WarpReduce shared memory for one warp</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpReduce</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain one input item and flag per thread</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tail_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Return the warp-wide reductions to each lane0</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">aggregate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WarpReduce</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">).</span><span class="n">TailSegmentedReduce</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">thread_data</span><span class="p">,</span><span class="w"> </span><span class="n">tail_flag</span><span class="p">,</span><span class="w"> </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="o">&lt;&gt;</span><span class="p">{});</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_data</span></code> and <code class="docutils literal notranslate"><span class="pre">tail_flag</span></code> across the block of threads
+is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">31}</span></code> and is <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">...,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">1}</span></code>,
+respectively. The corresponding output <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> in threads 0, 4, 8, etc. will be
+<code class="docutils literal notranslate"><span class="pre">3</span></code>, <code class="docutils literal notranslate"><span class="pre">7</span></code>, <code class="docutils literal notranslate"><span class="pre">11</span></code>, etc. (and is undefined in other threads).</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>ReductionOp</strong> – <strong>[inferred]</strong> Binary reduction operator type having member <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">operator()(const</span> <span class="pre">T</span> <span class="pre">&amp;a,</span> <span class="pre">const</span> <span class="pre">T</span> <span class="pre">&amp;b)</span></code></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – <strong>[in]</strong> Calling thread’s input</p></li>
+<li><p><strong>tail_flag</strong> – <strong>[in]</strong> Tail flag denoting whether or not <code class="docutils literal notranslate"><span class="pre">input</span></code> is the end of the current segment</p></li>
+<li><p><strong>reduction_op</strong> – <strong>[in]</strong> Reduction operator </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub10WarpReduce11TempStorageE">
+<span id="_CPPv3N3cub10WarpReduce11TempStorageE"></span><span id="_CPPv2N3cub10WarpReduce11TempStorageE"></span><span id="cub::WarpReduce::TempStorage"></span><span class="target" id="structcub_1_1warpreduce_1_1tempstorage"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TempStorage</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">Uninitialized</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">_TempStorage</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce11TempStorageE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The operations exposed by WarpReduce require a temporary memory allocation of this nested type for thread communication. This opaque storage can be allocated directly using the <code class="docutils literal notranslate"><span class="pre">__shared__</span></code> keyword. Alternatively, it can be aliased to externally allocated memory (shared or global) or <code class="docutils literal notranslate"><span class="pre">union</span></code>’d with other storage allocation types to facilitate memory reuse. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

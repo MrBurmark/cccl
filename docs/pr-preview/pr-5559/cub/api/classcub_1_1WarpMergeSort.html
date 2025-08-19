@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::WarpMergeSort &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::WarpReduce" href="classcub_1_1WarpReduce.html" />
+    <link rel="prev" title="cub::WarpLoad" href="classcub_1_1WarpLoad.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpExchange.html">cub::WarpExchange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpLoad.html">cub::WarpLoad</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::WarpMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpReduce.html">cub::WarpReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpScan.html">cub::WarpScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classcub_1_1WarpStore.html">cub::WarpStore</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../warp_wide.html">Warp-Wide “Collective” Primitives</a> &raquo;</li>
+      <li>cub::WarpMergeSort</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-warpmergesort">
+<h1>cub::WarpMergeSort<a class="headerlink" href="#cub-warpmergesort" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_warp_warp_merge_sort.cuh.html#warp-merge-sort-8cuh"><span class="std std-ref">cub/warp/warp_merge_sort.cuh</span></a></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0_i_i0EN3cub13WarpMergeSortE">
+<span id="_CPPv3I0_i_i0EN3cub13WarpMergeSortE"></span><span id="_CPPv2I0_i_i0EN3cub13WarpMergeSortE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeyT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LOGICAL_WARP_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">warp_threads</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">NullType</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcub_1_1warpmergesort"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WarpMergeSort</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="namespace_cub.html#_CPPv43cub" title="cub"><span class="n"><span class="pre">cub</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classcub_1_1BlockMergeSortStrategy.html#_CPPv4I00_i_i0EN3cub22BlockMergeSortStrategyE" title="cub::BlockMergeSortStrategy"><span class="n"><span class="pre">BlockMergeSortStrategy</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_i_i0EN3cub13WarpMergeSortE" title="cub::WarpMergeSort::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">NullType</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">warp_threads</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_i0EN3cub13WarpMergeSortE" title="cub::WarpMergeSort::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_i0EN3cub13WarpMergeSortE" title="cub::WarpMergeSort"><span class="n"><span class="pre">WarpMergeSort</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_i_i0EN3cub13WarpMergeSortE" title="cub::WarpMergeSort::KeyT"><span class="n"><span class="pre">KeyT</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_i0EN3cub13WarpMergeSortE" title="cub::WarpMergeSort::ITEMS_PER_THREAD"><span class="n"><span class="pre">ITEMS_PER_THREAD</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">warp_threads</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">NullType</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0_i_i0EN3cub13WarpMergeSortE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>The WarpMergeSort class provides methods for sorting items partitioned across a CUDA warp
+using a merge sorting method.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><p>WarpMergeSort arranges items into ascending order using a comparison
+functor with less-than semantics. Merge sort can handle arbitrary types
+and comparison functors.</p>
+</div></blockquote>
+</section>
+<section id="a-simple-example">
+<h2>A Simple Example<a class="headerlink" href="#a-simple-example" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates a sort of 64 integer keys that are
+partitioned across 16 threads where each thread owns 4 consecutive items.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1">  // or equivalently &lt;cub/warp/warp_merge_sort.cuh&gt;</span><span class="cp"></span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">CustomLess</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">DataType</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="n">__device__</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="p">()(</span><span class="k">const</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">DataType</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rhs</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">ExampleKernel</span><span class="p">(...)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">warp_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">block_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">items_per_thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">warps_per_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_threads</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">warp_threads</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">warp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">warp_threads</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Specialize WarpMergeSort for a virtual warp of 16 threads</span>
+<span class="w">    </span><span class="c1">// owning 4 integer items each</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">WarpMergeSortT</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="n">cub</span><span class="o">::</span><span class="n">WarpMergeSort</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">items_per_thread</span><span class="p">,</span><span class="w"> </span><span class="n">warp_threads</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Allocate shared memory for WarpMergeSort</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">WarpMergeSortT</span><span class="o">::</span><span class="n">TempStorage</span><span class="w"> </span><span class="n">temp_storage</span><span class="p">[</span><span class="n">warps_per_block</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Obtain a segment of consecutive items that are blocked across threads</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">thread_keys</span><span class="p">[</span><span class="n">items_per_thread</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="n">WarpMergeSortT</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">[</span><span class="n">warp_id</span><span class="p">]).</span><span class="n">Sort</span><span class="p">(</span><span class="n">thread_keys</span><span class="p">,</span><span class="w"> </span><span class="n">CustomLess</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Suppose the set of input <code class="docutils literal notranslate"><span class="pre">thread_keys</span></code> across a warp of threads is
+<code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">[0,64,1,63],</span> <span class="pre">[2,62,3,61],</span> <span class="pre">[4,60,5,59],</span> <span class="pre">...,</span> <span class="pre">[31,34,32,33]</span> <span class="pre">}</span></code>.
+The corresponding output <code class="docutils literal notranslate"><span class="pre">thread_keys</span></code> in those threads will be
+<code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">[0,1,2,3],</span> <span class="pre">[4,5,6,7],</span> <span class="pre">[8,9,10,11],</span> <span class="pre">...,</span> <span class="pre">[31,32,33,34]</span> <span class="pre">}</span></code>.</p>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KeyT</strong> – Key type</p></li>
+<li><p><strong>ITEMS_PER_THREAD</strong> – The number of items per thread</p></li>
+<li><p><strong>LOGICAL_WARP_THREADS</strong> – <strong>[optional]</strong> The number of threads per “logical” warp (may be less than the number of hardware warp threads). Default is the warp size of the targeted CUDA compute-capability (e.g., 32 threads for SM86). Must be a power of two.</p></li>
+<li><p><strong>ValueT</strong> – <strong>[optional]</strong> Value type (default: cub::NullType, which indicates a keys-only sort) </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub13WarpMergeSort13WarpMergeSortEv">
+<span id="_CPPv3N3cub13WarpMergeSort13WarpMergeSortEv"></span><span id="_CPPv2N3cub13WarpMergeSort13WarpMergeSortEv"></span><span id="cub::WarpMergeSort::WarpMergeSort"></span><span class="target" id="classcub_1_1warpmergesort_1a9c8ed1e67ebbd3467f918f68e6fb7437"></span><span class="sig-name descname"><span class="n"><span class="pre">WarpMergeSort</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N3cub13WarpMergeSort13WarpMergeSortEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub13WarpMergeSort13WarpMergeSortERN23BlockMergeSortStrategyT11TempStorageE">
+<span id="_CPPv3N3cub13WarpMergeSort13WarpMergeSortERN23BlockMergeSortStrategyT11TempStorageE"></span><span id="_CPPv2N3cub13WarpMergeSort13WarpMergeSortERN23BlockMergeSortStrategyT11TempStorageE"></span><span id="cub::WarpMergeSort::WarpMergeSort__BlockMergeSortStrategyT::TempStorageR"></span><span class="target" id="classcub_1_1warpmergesort_1a602172ec7c968879ce29bedf44549965"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WarpMergeSort</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">BlockMergeSortStrategyT</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TempStorage</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub13WarpMergeSort13WarpMergeSortERN23BlockMergeSortStrategyT11TempStorageE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3cub13WarpMergeSort15get_member_maskEv">
+<span id="_CPPv3NK3cub13WarpMergeSort15get_member_maskEv"></span><span id="_CPPv2NK3cub13WarpMergeSort15get_member_maskEv"></span><span id="cub::WarpMergeSort::get_member_maskC"></span><span class="target" id="classcub_1_1warpmergesort_1ad0b711b2f177de3045dcbff08df74028"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_member_mask</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3cub13WarpMergeSort15get_member_maskEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,3735 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classcub_1_1BlockScan" kind="class" language="C++" prot="public">
+    <compoundname>cub::BlockScan</compoundname>
+    <innerclass refid="structcub_1_1BlockScan_1_1TempStorage" prot="public">cub::BlockScan::TempStorage</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_X</declname>
+        <defname>BLOCK_DIM_X</defname>
+      </param>
+      <param>
+        <type><ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23ab" kindref="member">BlockScanAlgorithm</ref></type>
+        <declname>ALGORITHM</declname>
+        <defname>ALGORITHM</defname>
+        <defval><ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba0fa6cac57b7df2f475a67af053b9371c" kindref="member">BLOCK_SCAN_RAKING</ref></defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Y</declname>
+        <defname>BLOCK_DIM_Y</defname>
+        <defval>1</defval>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BLOCK_DIM_Z</declname>
+        <defname>BLOCK_DIM_Z</defname>
+        <defval>1</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="user-defined">
+      <header>Collective constructors</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1ada44ca8b80a097993c4e0132d1110203" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockScan</definition>
+        <argsstring>()</argsstring>
+        <name>BlockScan</name>
+        <briefdescription>
+<para>Collective constructor using a private static allocation of shared memory as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="282" column="5" bodyfile="cub/block/block_scan.cuh" bodystart="282" bodyend="285"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a627804cacd6985da4382fbf4471bd1d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::BlockScan</definition>
+        <argsstring>(TempStorage &amp;temp_storage)</argsstring>
+        <name>BlockScan</name>
+        <param>
+          <type><ref refid="structcub_1_1BlockScan_1_1TempStorage" kindref="compound">TempStorage</ref> &amp;</type>
+          <declname>temp_storage</declname>
+        </param>
+        <briefdescription>
+<para>Collective constructor using the specified memory allocation as temporary storage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to memory allocation having layout type <ref refid="structcub_1_1BlockScan_1_1TempStorage" kindref="compound">TempStorage</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="293" column="5" bodyfile="cub/block/block_scan.cuh" bodystart="293" bodyend="296"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Exclusive prefix sum operations</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a8a15b903aec866ff80436011b6060fb7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveSum</definition>
+        <argsstring>(T input, T &amp;output)</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes one input element. The value of 0 is applied as the initial value, and is assigned
+to ``output`` in *thread*\ :sub:`0`.
+
+- This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix sum of 128 integer items that
+are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;  // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide exclusive prefix sum
+       BlockScan(temp_storage).ExclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is ``1, 1, ..., 1``.
+The corresponding output ``thread_data`` in those threads will be ``0, 1, ..., 127``.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="346" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="346" bodyend="351"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a0914feb534d51bca5a127c0a1f4b481d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveSum</definition>
+        <argsstring>(T input, T &amp;output, T &amp;block_aggregate)</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes one input element.
+The value of 0 is applied as the initial value, and is assigned to ``output`` in *thread*\ :sub:`0`.
+Also provides every thread with the block-wide ``block_aggregate`` of all inputs.
+
+- This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix sum of 128 integer items that
+are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide exclusive prefix sum
+       int block_aggregate;
+       BlockScan(temp_storage).ExclusiveSum(thread_data, thread_data, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is ``1, 1, ..., 1``.
+The corresponding output ``thread_data`` in those threads will be ``0, 1, ..., 127``.
+Furthermore the value ``128`` will be stored in ``block_aggregate`` for all threads.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="403" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="403" bodyend="408"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1ae1d0d8c861e7ffe0e6764c5eb64e4d53" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveSum</definition>
+        <argsstring>(T input, T &amp;output, BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes one input element.  Instead of using 0 as the block-wide prefix, the call-back functor
+``block_prefix_callback_op`` is invoked by the first warp in the block, and the value returned by
+*lane*\ :sub:`0` in that warp is used as the &quot;seed&quot; value that logically prefixes the thread block&apos;s
+scan inputs.
+
+- This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+- The ``block_prefix_callback_op`` functor must implement a member function
+  ``T operator()(T block_aggregate)``. The functor will be invoked by the first warp of threads in the block,
+  however only the return value from *lane*\ :sub:`0` is applied as the block-wide prefix. Can be stateful.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an exclusive prefix sum over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans.  Each tile consists
+of 128 integer items that are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt; // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total += block_aggregate;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(0);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data = d_data[block_offset + threadIdx.x];
+
+           // Collectively compute the block-wide exclusive prefix sum
+           BlockScan(temp_storage).ExclusiveSum(
+               thread_data, thread_data, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           d_data[block_offset + threadIdx.x] = thread_data;
+       }
+
+Suppose the input ``d_data`` is ``1, 1, 1, 1, 1, 1, 1, 1, ...``.
+The corresponding output for the first segment will be ``0, 1, ..., 127``.
+The output for the second segment will be ``128, 129, ..., 255``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied to
+  the logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="503" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="503" bodyend="506"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Exclusive prefix sum operations (multiple data per thread)</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1af9e7746cff6a836ffce7ba23e99aebee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveSum</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD])</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes an array of consecutive input elements.
+The value of 0 is applied as the initial value, and is assigned to ``output[0]`` in *thread*\ :sub:`0`.
+
+- This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix sum of 512 integer items that
+are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 128 threads
+where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide exclusive prefix sum
+       BlockScan(temp_storage).ExclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [1,1,1,1], [1,1,1,1], ..., [1,1,1,1] }``.
+The corresponding output ``thread_data`` in those threads will be
+``{ [0,1,2,3], [4,5,6,7], ..., [508,509,510,511] }``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="564" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="564" bodyend="569"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a758a1367bc772b6b4e1b8b3d0172200a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveSum</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], T &amp;block_aggregate)</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes an array of consecutive input elements.
+The value of 0 is applied as the initial value, and is assigned to ``output[0]`` in *thread*\ :sub:`0`.
+Also provides every thread with the block-wide ``block_aggregate`` of all inputs.
+
+- This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix sum of 512 integer items that are partitioned in
+a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 128 threads where each thread owns
+4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt; // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide exclusive prefix sum
+       int block_aggregate;
+       BlockScan(temp_storage).ExclusiveSum(thread_data, thread_data, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [1,1,1,1], [1,1,1,1], ..., [1,1,1,1] }``.
+The corresponding output ``thread_data`` in those threads will be
+``{ [0,1,2,3], [4,5,6,7], ..., [508,509,510,511] }``.
+Furthermore the value ``512`` will be stored in ``block_aggregate`` for all threads.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="630" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="630" bodyend="636"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a51536a9062af08abf42e6b5b99a41a76" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveSum</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>ExclusiveSum</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes an array of consecutive input elements.
+Instead of using 0 as the block-wide prefix, the call-back functor ``block_prefix_callback_op`` is invoked by
+the first warp in the block, and the value returned by *lane*\ :sub:`0` in that warp is used as the &quot;seed&quot;
+value that logically prefixes the thread block&apos;s scan inputs.
+
+- This operation assumes the value of obtained by the ``T``&apos;s default constructor (or by zero-initialization if no user-defined default constructor exists) is suitable as the identity value  zero for addition.
+- The ``block_prefix_callback_op`` functor must implement a member function ``T operator()(T block_aggregate)``.
+  The functor will be invoked by the first warp of threads in the block, however only the return value from
+  *lane*\ :sub:`0` is applied as the block-wide prefix. Can be stateful.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an exclusive prefix sum over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans.  Each tile consists
+of 512 integer items that are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;`
+across 128 threads where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total += block_aggregate;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockLoad, BlockStore, and BlockScan for a 1D block of 128 threads, 4 ints per thread
+       using BlockLoad  = cub::BlockLoad&lt;int*, 128, 4, BLOCK_LOAD_TRANSPOSE&gt;;
+       using BlockStore = cub::BlockStore&lt;int, 128, 4, BLOCK_STORE_TRANSPOSE&gt;;
+       using BlockScan  = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate aliased shared memory for BlockLoad, BlockStore, and BlockScan
+       __shared__ union {
+           typename BlockLoad::TempStorage     load;
+           typename BlockScan::TempStorage     scan;
+           typename BlockStore::TempStorage    store;
+       } temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(0);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128 * 4)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data[4];
+           BlockLoad(temp_storage.load).Load(d_data + block_offset, thread_data);
+           __syncthreads();
+
+           // Collectively compute the block-wide exclusive prefix sum
+           int block_aggregate;
+           BlockScan(temp_storage.scan).ExclusiveSum(
+               thread_data, thread_data, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           BlockStore(temp_storage.store).Store(d_data + block_offset, thread_data);
+           __syncthreads();
+       }
+
+Suppose the input ``d_data`` is ``1, 1, 1, 1, 1, 1, 1, 1, ...``.
+The corresponding output for the first segment will be ``0, 1, 2, 3, ..., 510, 511``.
+The output for the second segment will be ``512, 513, 514, 515, ..., 1022, 1023``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied to
+  the logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="748" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="748" bodyend="752"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Exclusive prefix scan operations</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a701cfd787a6b5240d9018d96b5c62b6c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveScan</definition>
+        <argsstring>(T input, T &amp;output, T initial_value, ScanOp scan_op)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes one input element.
+
+- Supports non-commutative scan operators.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix max scan of 128 integer items that
+are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide exclusive prefix max scan
+       BlockScan(temp_storage).ExclusiveScan(thread_data, thread_data, INT_MIN, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is ``0, -1, 2, -3, ..., 126, -127``.
+The corresponding output ``thread_data`` in those threads will be ``INT_MIN, 0, 0, 2, ..., 124, 126``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  Initial value to seed the exclusive scan (and is assigned to `output[0]` in *thread*\ :sub:`0`)</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="813" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="813" bodyend="816"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a79cc6430d64147b7b71efa5473cc995a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveScan</definition>
+        <argsstring>(T input, T &amp;output, T initial_value, ScanOp scan_op, T &amp;block_aggregate)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes one input element.
+Also provides every thread with the block-wide ``block_aggregate`` of all inputs.
+
+- Supports non-commutative scan operators.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix max scan of 128 integer items that
+are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide exclusive prefix max scan
+       int block_aggregate;
+       BlockScan(temp_storage).ExclusiveScan(
+           thread_data, thread_data, INT_MIN, cuda::maximum&lt;&gt;{}, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is ``0, -1, 2, -3, ..., 126, -127``.
+The corresponding output ``thread_data`` in those threads will be ``INT_MIN, 0, 0, 2, ..., 124, 126``.
+Furthermore the value ``126`` will be stored in ``block_aggregate`` for all threads.
+
+.. note::
+
+   ``initial_value`` is not applied to the block-wide aggregate.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  Initial value to seed the exclusive scan (and is assigned to ``output[0]`` in *thread*\ :sub:`0`). It is not
+  taken into account for ``block_aggregate``.</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="887" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="887" bodyend="890"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1adb62b3823a2fd3fa3b94c9ff9fb43b8d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveScan</definition>
+        <argsstring>(T input, T &amp;output, ScanOp scan_op, BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes one input element. The call-back functor ``block_prefix_callback_op`` is invoked by
+the first warp in the block, and the value returned by *lane*\ :sub:`0` in that warp is used as
+the &quot;seed&quot; value that logically prefixes the thread block&apos;s scan inputs.
+
+- The ``block_prefix_callback_op`` functor must implement a member function ``T operator()(T block_aggregate)``.
+  The functor will be invoked by the first warp of threads in the block, however only the return value from
+  *lane*\ :sub:`0` is applied as the block-wide prefix. Can be stateful.
+- Supports non-commutative scan operators.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an exclusive prefix max scan over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans.
+Each tile consists of 128 integer items that are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total = (block_aggregate &gt; old_prefix) ? block_aggregate : old_prefix;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(INT_MIN);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data = d_data[block_offset + threadIdx.x];
+
+           // Collectively compute the block-wide exclusive prefix max scan
+           BlockScan(temp_storage).ExclusiveScan(
+               thread_data, thread_data, INT_MIN, cuda::maximum&lt;&gt;{}, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           d_data[block_offset + threadIdx.x] = thread_data;
+       }
+
+Suppose the input ``d_data`` is ``0, -1, 2, -3, 4, -5, ...``.
+The corresponding output for the first segment will be ``INT_MIN, 0, 0, 2, ..., 124, 126``.
+The output for the second segment will be ``126, 128, 128, 130, ..., 252, 254``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied to
+  the logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="991" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="991" bodyend="994"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Exclusive prefix scan operations (multiple data per thread)</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1af7af014e2d992e0cf3a4e62051928a0d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], T initial_value, ScanOp scan_op)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements.
+
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix max scan of 512 integer
+items that are partitioned in a [&lt;em&gt;blocked arrangement&lt;/em&gt;](../index.html#sec5sec3)
+across 128 threads where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide exclusive prefix max scan
+       BlockScan(temp_storage).ExclusiveScan(thread_data, thread_data, INT_MIN, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [0,-1,2,-3], [4,-5,6,-7], ..., [508,-509,510,-511] }``.
+The corresponding output ``thread_data`` in those threads will be
+``{ [INT_MIN,0,0,2], [2,4,4,6], ..., [506,508,508,510] }``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  Initial value to seed the exclusive scan (and is assigned to `output[0]` in *thread*\ :sub:`0`)</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1064" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="1064" bodyend="1074"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a574bcca16035b8126a0be2aa2d40de02" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], T initial_value, ScanOp scan_op, T &amp;block_aggregate)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements.
+Also provides every thread with the block-wide ``block_aggregate`` of all inputs.
+
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an exclusive prefix max scan of 512 integer items that are partitioned in
+a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 128 threads where each thread owns
+4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide exclusive prefix max scan
+       int block_aggregate;
+       BlockScan(temp_storage).ExclusiveScan(
+           thread_data, thread_data, INT_MIN, cuda::maximum&lt;&gt;{}, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [0,-1,2,-3], [4,-5,6,-7], ..., [508,-509,510,-511] }``.
+The corresponding output ``thread_data`` in those threads will be
+``{ [INT_MIN,0,0,2], [2,4,4,6], ..., [506,508,508,510] }``.
+Furthermore the value ``510`` will be stored in ``block_aggregate`` for all threads.
+
+.. note::
+
+   ``initial_value`` is not applied to the block-wide aggregate.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  Initial value to seed the exclusive scan (and is assigned to `output[0]` in *thread*\ :sub:`0`). It is not taken
+  into account for ``block_aggregate``.</verbatim></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1150" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1150" bodyend="1161"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a454e4ee3d73428c7201a74d47fc4b23a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::ExclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], ScanOp scan_op, BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>ExclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an exclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements.
+The call-back functor ``block_prefix_callback_op`` is invoked by the first warp in the block, and the value
+returned by *lane*\ :sub:`0` in that warp is used as the &quot;seed&quot; value that logically prefixes the thread
+block&apos;s scan inputs.
+
+- The ``block_prefix_callback_op`` functor must implement a member function
+  ``T operator()(T block_aggregate)``. The functor will be invoked by the
+  first warp of threads in the block, however only the return value from
+  *lane*\ :sub:`0` is applied as the block-wide prefix. Can be stateful.
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an exclusive prefix max scan over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans. Each tile consists
+of 128 integer items that are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total = (block_aggregate &gt; old_prefix) ? block_aggregate : old_prefix;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockLoad, BlockStore, and BlockScan for a 1D block of 128 threads, 4 ints per thread
+       using BlockLoad = cub::BlockLoad&lt;int*, 128, 4, BLOCK_LOAD_TRANSPOSE&gt;  ;
+       using BlockStore = cub::BlockStore&lt;int, 128, 4, BLOCK_STORE_TRANSPOSE&gt; ;
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;                            ;
+
+       // Allocate aliased shared memory for BlockLoad, BlockStore, and BlockScan
+       __shared__ union {
+           typename BlockLoad::TempStorage     load;
+           typename BlockScan::TempStorage     scan;
+           typename BlockStore::TempStorage    store;
+       } temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(0);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128 * 4)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data[4];
+           BlockLoad(temp_storage.load).Load(d_data + block_offset, thread_data);
+           __syncthreads();
+
+           // Collectively compute the block-wide exclusive prefix max scan
+           BlockScan(temp_storage.scan).ExclusiveScan(
+               thread_data, thread_data, INT_MIN, cuda::maximum&lt;&gt;{}, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           BlockStore(temp_storage.store).Store(d_data + block_offset, thread_data);
+           __syncthreads();
+       }
+
+Suppose the input ``d_data`` is ``0, -1, 2, -3, 4, -5, ...``.
+The corresponding output for the first segment will be
+``INT_MIN, 0, 0, 2, 2, 4, ..., 508, 510``.
+The output for the second segment will be
+``510, 512, 512, 514, 514, 516, ..., 1020, 1022``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied to
+  the logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1278" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1278" bodyend="1292"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Inclusive prefix sum operations</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1aa80f3cd1692cf7c343b2a68bd684e8be" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveSum</definition>
+        <argsstring>(T input, T &amp;output)</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using addition (+)
+as the scan operator. Each thread contributes one input element.
+
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix sum of 128 integer items that
+are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide inclusive prefix sum
+       BlockScan(temp_storage).InclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is ``1, 1, ..., 1``.
+The corresponding output ``thread_data`` in those threads will be ``1, 2, ..., 128``.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1496" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1496" bodyend="1499"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a2b4c02286134a016c2a485c58df9ab23" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveSum</definition>
+        <argsstring>(T input, T &amp;output, T &amp;block_aggregate)</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes one input element.
+Also provides every thread with the block-wide ``block_aggregate`` of all inputs.
+
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix sum of 128 integer items that
+are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide inclusive prefix sum
+       int block_aggregate;
+       BlockScan(temp_storage).InclusiveSum(thread_data, thread_data, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is ``1, 1, ..., 1``.
+The corresponding output ``thread_data`` in those threads will be ``1, 2, ..., 128``.
+Furthermore the value ``128`` will be stored in ``block_aggregate`` for all threads.</verbatim></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1549" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1549" bodyend="1552"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1aebab425cd24adda41f0036237cedfbd7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveSum</definition>
+        <argsstring>(T input, T &amp;output, BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes one input element. Instead of using 0 as the block-wide prefix, the call-back functor
+``block_prefix_callback_op`` is invoked by the first warp in the block, and the value returned by
+*lane*\ :sub:`0` in that warp is used as the &quot;seed&quot; value that logically prefixes the thread block&apos;s
+scan inputs.
+
+- The ``block_prefix_callback_op`` functor must implement a member function
+  ``T operator()(T block_aggregate)``. The functor will be invoked by the first warp of threads in the block,
+  however only the return value from *lane*\ :sub:`0` is applied as the block-wide prefix. Can be stateful.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an inclusive prefix sum over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans.
+Each tile consists of 128 integer items that are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total += block_aggregate;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(0);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data = d_data[block_offset + threadIdx.x];
+
+           // Collectively compute the block-wide inclusive prefix sum
+           BlockScan(temp_storage).InclusiveSum(
+               thread_data, thread_data, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           d_data[block_offset + threadIdx.x] = thread_data;
+       }
+
+Suppose the input ``d_data`` is ``1, 1, 1, 1, 1, 1, 1, 1, ...``.
+The corresponding output for the first segment will be ``1, 2, ..., 128``.
+The output for the second segment will be ``129, 130, ..., 256``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied
+  to the logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1646" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1646" bodyend="1649"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Inclusive prefix sum operations (multiple data per thread)</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a9ea76549a26ea3cb3149a51168bc669d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveSum</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD])</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes an array of consecutive input elements.
+
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix sum of 512 integer items that
+are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 128 threads
+where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide inclusive prefix sum
+       BlockScan(temp_storage).InclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [1,1,1,1], [1,1,1,1], ..., [1,1,1,1] }``. The corresponding output
+``thread_data`` in those threads will be ``{ [1,2,3,4], [5,6,7,8], ..., [509,510,511,512] }``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1704" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1704" bodyend="1722"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a63b40ab8a20a43fd0fbe26d984f52d57" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveSum</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], T &amp;block_aggregate)</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes an array of consecutive input elements.
+Also provides every thread with the block-wide ``block_aggregate`` of all inputs.
+
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix sum of 512 integer items that
+are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 128 threads
+where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt; // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide inclusive prefix sum
+       int block_aggregate;
+       BlockScan(temp_storage).InclusiveSum(thread_data, thread_data, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [1,1,1,1], [1,1,1,1], ..., [1,1,1,1] }``. The
+corresponding output ``thread_data`` in those threads will be
+``{ [1,2,3,4], [5,6,7,8], ..., [509,510,511,512] }``.
+Furthermore the value ``512`` will be stored in ``block_aggregate`` for all threads.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1781" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="1781" bodyend="1799"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a72fd48900d289cebc9a46f116ca3bf37" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveSum</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>InclusiveSum</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using addition (+) as the scan operator.
+Each thread contributes an array of consecutive input elements.
+Instead of using 0 as the block-wide prefix, the call-back functor ``block_prefix_callback_op`` is invoked by
+the first warp in the block, and the value returned by *lane*\ :sub:`0` in that warp is used as the &quot;seed&quot;
+value that logically prefixes the thread block&apos;s scan inputs.
+
+- The ``block_prefix_callback_op`` functor must implement a member function
+  ``T operator()(T block_aggregate)``. The functor will be invoked by the first warp of threads in the block,
+  however only the return value from *lane*\ :sub:`0` is applied as the block-wide prefix. Can be stateful.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an inclusive prefix sum over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans.  Each tile consists
+of 512 integer items that are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;`
+across 128 threads where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total += block_aggregate;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockLoad, BlockStore, and BlockScan for a 1D block of 128 threads, 4 ints per thread
+       using BlockLoad = cub::BlockLoad&lt;int*, 128, 4, BLOCK_LOAD_TRANSPOSE&gt;  ;
+       using BlockStore = cub::BlockStore&lt;int, 128, 4, BLOCK_STORE_TRANSPOSE&gt; ;
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;                            ;
+
+       // Allocate aliased shared memory for BlockLoad, BlockStore, and BlockScan
+       __shared__ union {
+           typename BlockLoad::TempStorage     load;
+           typename BlockScan::TempStorage     scan;
+           typename BlockStore::TempStorage    store;
+       } temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(0);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128 * 4)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data[4];
+           BlockLoad(temp_storage.load).Load(d_data + block_offset, thread_data);
+           __syncthreads();
+
+           // Collectively compute the block-wide inclusive prefix sum
+           BlockScan(temp_storage.scan).IncluisveSum(
+               thread_data, thread_data, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           BlockStore(temp_storage.store).Store(d_data + block_offset, thread_data);
+           __syncthreads();
+       }
+
+Suppose the input ``d_data`` is ``1, 1, 1, 1, 1, 1, 1, 1, ...``.
+The corresponding output for the first segment will be
+``1, 2, 3, 4, ..., 511, 512``. The output for the second segment will be
+``513, 514, 515, 516, ..., 1023, 1024``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied to the
+  logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1908" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1908" bodyend="1927"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Inclusive prefix scan operations</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a1da1b6cc53f00820ddb756a223571ac0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T input, T &amp;output, ScanOp scan_op)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes one input element.
+
+- Supports non-commutative scan operators.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix max scan of 128 integer items that
+are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide inclusive prefix max scan
+       BlockScan(temp_storage).InclusiveScan(thread_data, thread_data, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``0, -1, 2, -3, ..., 126, -127``. The corresponding output ``thread_data``
+in those threads will be ``0, 0, 2, 2, ..., 126, 126``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="1984" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="1984" bodyend="1987"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1af195b1aedabfb3a11d30e7dd69267488" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T input, T &amp;output, ScanOp scan_op, T &amp;block_aggregate)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes one input element. Also provides every thread with the block-wide
+``block_aggregate`` of all inputs.
+
+- Supports non-commutative scan operators.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix max scan of 128
+integer items that are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain input item for each thread
+       int thread_data;
+       ...
+
+       // Collectively compute the block-wide inclusive prefix max scan
+       int block_aggregate;
+       BlockScan(temp_storage).InclusiveScan(thread_data, thread_data, cuda::maximum&lt;&gt;{}, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``0, -1, 2, -3, ..., 126, -127``. The corresponding output ``thread_data``
+in those threads will be ``0, 0, 2, 2, ..., 126, 126``. Furthermore the value
+``126`` will be stored in ``block_aggregate`` for all threads.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="2046" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="2046" bodyend="2049"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a637494e668573194fe3ecb4f002af91b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T input, T &amp;output, ScanOp scan_op, BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T</type>
+          <declname>input</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes one input element. The call-back functor ``block_prefix_callback_op``
+is invoked by the first warp in the block, and the value returned by *lane*\ :sub:`0` in that warp is used as
+the &quot;seed&quot; value that logically prefixes the thread block&apos;s scan inputs.
+
+- The ``block_prefix_callback_op`` functor must implement a member function
+  ``T operator()(T block_aggregate)``. The functor&apos;s input parameter
+  The functor will be invoked by the first warp of threads in the block,
+  however only the return value from *lane*\ :sub:`0` is applied
+  as the block-wide prefix. Can be stateful.
+- Supports non-commutative scan operators.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an inclusive prefix max scan over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans.  Each tile consists
+of 128 integer items that are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total = (block_aggregate &gt; old_prefix) ? block_aggregate : old_prefix;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(INT_MIN);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data = d_data[block_offset + threadIdx.x];
+
+           // Collectively compute the block-wide inclusive prefix max scan
+           BlockScan(temp_storage).InclusiveScan(
+               thread_data, thread_data, cuda::maximum&lt;&gt;{}, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           d_data[block_offset + threadIdx.x] = thread_data;
+       }
+
+Suppose the input ``d_data`` is ``0, -1, 2, -3, 4, -5, ...``.
+The corresponding output for the first segment will be
+``0, 0, 2, 2, ..., 126, 126``. The output for the second segment
+will be ``128, 128, 130, 130, ..., 254, 254``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input item</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output item (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied to
+  the logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="2153" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="2153" bodyend="2156"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="user-defined">
+      <header>Inclusive prefix scan operations (multiple data per thread)</header>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a008c3c8b0f01d6fded88a59f4cdd94c6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], ScanOp scan_op)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements.
+
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix max scan of 512 integer items that
+are partitioned in a [&lt;em&gt;blocked arrangement&lt;/em&gt;](../index.html#sec5sec3) across 128 threads
+where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide inclusive prefix max scan
+       BlockScan(temp_storage).InclusiveScan(thread_data, thread_data, cuda::maximum&lt;&gt;{});
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [0,-1,2,-3], [4,-5,6,-7], ..., [508,-509,510,-511] }``.
+The corresponding output ``thread_data`` in those threads will be
+``{ [0,0,2,2], [4,4,6,6], ..., [508,508,510,510] }``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="2220" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="2220" bodyend="2237"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a5b095f48c4d5daeba05b0e511f5054d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], T initial_value, ScanOp scan_op)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements.
+
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix max scan of 128 integer items that
+are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 64 threads
+where each thread owns 2 consecutive items.
+
+.. literalinclude:: ../../../cub/test/catch2_test_block_scan_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin inclusive-scan-array-init-value
+    :end-before: example-end inclusive-scan-array-init-value</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value to seed the inclusive scan (uniform across block)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="2283" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="2283" bodyend="2293"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a264844472e14c365d853ea037c22d819" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], ScanOp scan_op, T &amp;block_aggregate)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements. Also provides every thread
+with the block-wide ``block_aggregate`` of all inputs.
+
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix max scan of 512 integer items that
+are partitioned in a [&lt;em&gt;blocked arrangement&lt;/em&gt;](../index.html#sec5sec3) across 128 threads
+where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide inclusive prefix max scan
+       int block_aggregate;
+       BlockScan(temp_storage).InclusiveScan(thread_data, thread_data, cuda::maximum&lt;&gt;{}, block_aggregate);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{ [0,-1,2,-3], [4,-5,6,-7], ..., [508,-509,510,-511] }``.
+The corresponding output ``thread_data`` in those threads will be
+``{ [0,0,2,2], [4,4,6,6], ..., [508,508,510,510] }``.
+Furthermore the value ``510`` will be stored in ``block_aggregate`` for all threads.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="2359" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="2359" bodyend="2376"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1acb9a54e2545b52aa3efd879c13eeac79" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], T initial_value, ScanOp scan_op, T &amp;block_aggregate)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>initial_value</declname>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>block_aggregate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements. Also provides every thread
+with the block-wide ``block_aggregate`` of all inputs.
+
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates an inclusive prefix max scan of 128 integer items that
+are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 64 threads
+where each thread owns 2 consecutive items.
+
+.. literalinclude:: ../../../cub/test/catch2_test_block_scan_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin inclusive-scan-array-aggregate-init-value
+    :end-before: example-end inclusive-scan-array-aggregate-init-value
+
+The value ``126`` will be stored in ``block_aggregate`` for all threads.
+
+.. note::
+
+   ``initial_value`` is not applied to the block-wide aggregate.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initial_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value to seed the inclusive scan (uniform across block). It is not taken into account for <computeroutput>block_aggregate</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">block_aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Block-wide aggregate reduction of input items </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="2431" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="2431" bodyend="2442"/>
+      </memberdef>
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a8c6026062438805110e01820dbbbcbe0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ITEMS_PER_THREAD</declname>
+            <defname>ITEMS_PER_THREAD</defname>
+          </param>
+          <param>
+            <type>typename ScanOp</type>
+          </param>
+          <param>
+            <type>typename BlockPrefixCallbackOp</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InclusiveScan</definition>
+        <argsstring>(T(&amp;input)[ITEMS_PER_THREAD], T(&amp;output)[ITEMS_PER_THREAD], ScanOp scan_op, BlockPrefixCallbackOp &amp;block_prefix_callback_op)</argsstring>
+        <name>InclusiveScan</name>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>input</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>T(&amp;)</type>
+          <declname>output</declname>
+          <array>[ITEMS_PER_THREAD]</array>
+        </param>
+        <param>
+          <type>ScanOp</type>
+          <declname>scan_op</declname>
+        </param>
+        <param>
+          <type>BlockPrefixCallbackOp &amp;</type>
+          <declname>block_prefix_callback_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Computes an inclusive block-wide prefix scan using the specified binary ``scan_op`` functor.
+Each thread contributes an array of consecutive input elements.
+The call-back functor ``block_prefix_callback_op`` is invoked by the first warp in the block,
+and the value returned by *lane*\ :sub:`0` in that warp is used as the &quot;seed&quot; value that logically prefixes the
+thread block&apos;s scan inputs.
+
+- The ``block_prefix_callback_op`` functor must implement a member function ``T operator()(T block_aggregate)``.
+  The functor will be invoked by the first warp of threads in the block, however only the return value
+  from *lane*\ :sub:`0` is applied as the block-wide prefix. Can be stateful.
+- Supports non-commutative scan operators.
+- Assumes a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of (*block-threads* * *items-per-thread*) items across the thread block, where *thread*\ :sub:`i` owns the *i*\ :sup:`th` range of *items-per-thread* contiguous items. For multi-dimensional thread blocks, a row-major thread ordering is assumed.
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- A subsequent ``__syncthreads()`` threadblock barrier should be invoked after calling this method if the collective&apos;s temporary storage (e.g., ``temp_storage``) is to be reused or repurposed.
+
+Snippet
++++++++
+
+The code snippet below illustrates a single thread block that progressively
+computes an inclusive prefix max scan over multiple &quot;tiles&quot; of input using a
+prefix functor to maintain a running total between block-wide scans.  Each tile consists
+of 128 integer items that are partitioned across 128 threads.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   // A stateful callback functor that maintains a running prefix to be applied
+   // during consecutive scan operations.
+   struct BlockPrefixCallbackOp
+   {
+       // Running prefix
+       int running_total;
+
+       // Constructor
+       __device__ BlockPrefixCallbackOp(int running_total) : running_total(running_total) {}
+
+       // Callback operator to be entered by the first warp of threads in the block.
+       // Thread-0 is responsible for returning a value for seeding the block-wide scan.
+       __device__ int operator()(int block_aggregate)
+       {
+           int old_prefix = running_total;
+           running_total = (block_aggregate &gt; old_prefix) ? block_aggregate : old_prefix;
+           return old_prefix;
+       }
+   };
+
+   __global__ void ExampleKernel(int *d_data, int num_items, ...)
+   {
+       // Specialize BlockLoad, BlockStore, and BlockScan for a 1D block of 128 threads, 4 ints per thread
+       using BlockLoad = cub::BlockLoad&lt;int*, 128, 4, BLOCK_LOAD_TRANSPOSE&gt;  ;
+       using BlockStore = cub::BlockStore&lt;int, 128, 4, BLOCK_STORE_TRANSPOSE&gt; ;
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;                            ;
+
+       // Allocate aliased shared memory for BlockLoad, BlockStore, and BlockScan
+       __shared__ union {
+           typename BlockLoad::TempStorage     load;
+           typename BlockScan::TempStorage     scan;
+           typename BlockStore::TempStorage    store;
+       } temp_storage;
+
+       // Initialize running total
+       BlockPrefixCallbackOp prefix_op(0);
+
+       // Have the block iterate over segments of items
+       for (int block_offset = 0; block_offset &lt; num_items; block_offset += 128 * 4)
+       {
+           // Load a segment of consecutive items that are blocked across threads
+           int thread_data[4];
+           BlockLoad(temp_storage.load).Load(d_data + block_offset, thread_data);
+           __syncthreads();
+
+           // Collectively compute the block-wide inclusive prefix max scan
+           BlockScan(temp_storage.scan).InclusiveScan(
+               thread_data, thread_data, cuda::maximum&lt;&gt;{}, prefix_op);
+           __syncthreads();
+
+           // Store scanned items to output segment
+           BlockStore(temp_storage.store).Store(d_data + block_offset, thread_data);
+           __syncthreads();
+       }
+
+Suppose the input ``d_data`` is ``0, -1, 2, -3, 4, -5, ...``.
+The corresponding output for the first segment will be
+``0, 0, 2, 2, 4, 4, ..., 510, 510``. The output for the second
+segment will be ``512, 512, 514, 514, 516, 516, ..., 1022, 1022``.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>ITEMS_PER_THREAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> The number of consecutive items partitioned onto each thread.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ScanOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Binary scan functor type having member <computeroutput>T operator()(const T &amp;a, const T &amp;b)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BlockPrefixCallbackOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Call-back functor type having member <computeroutput>T operator()(T block_aggregate)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">input</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s input items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">output</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Calling thread&apos;s output items (may be aliased to <computeroutput>input</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">scan_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary scan functor</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">block_prefix_callback_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  *warp*\ :sub:`0` only call-back functor for specifying a block-wide prefix to be applied to
+  the logical input sequence.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="2557" column="10" bodyfile="cub/block/block_scan.cuh" bodystart="2557" bodyend="2578"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classcub_1_1BlockScan_1abb0889cdc58786d1f6945f10b39f65b7" prot="private" static="no" strong="no">
+        <type></type>
+        <name>@1</name>
+        <enumvalue id="classcub_1_1BlockScan_1abb0889cdc58786d1f6945f10b39f65b7a9e40ee6a060b8827af8b6d2800057bb8" prot="private">
+          <name>BLOCK_THREADS</name>
+          <initializer>= BLOCK_DIM_X * BLOCK_DIM_Y * BLOCK_DIM_Z</initializer>
+          <briefdescription>
+<para>The thread block size in threads. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Constants. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="233" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="234" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockScan_1ad407d5ebf4bb4b479308b50a3d3a5f98" prot="private" static="no">
+        <type>detail::BlockScanWarpScans&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;</type>
+        <definition>using cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::WarpScans =  detail::BlockScanWarpScans&lt;T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z&gt;</definition>
+        <argsstring></argsstring>
+        <name>WarpScans</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="250" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="250" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockScan_1a9fb4916c15b2f48f45471b096b50aea4" prot="private" static="no">
+        <type>detail::BlockScanRaking&lt; T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z,(SAFE_ALGORITHM==<ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23abadc8dfe7760ac97ddde467ecf1070674f" kindref="member">BLOCK_SCAN_RAKING_MEMOIZE</ref>)&gt;</type>
+        <definition>using cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::Raking =  detail::BlockScanRaking&lt;T, BLOCK_DIM_X, BLOCK_DIM_Y, BLOCK_DIM_Z, (SAFE_ALGORITHM == BLOCK_SCAN_RAKING_MEMOIZE)&gt;</definition>
+        <argsstring></argsstring>
+        <name>Raking</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="251" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="252" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockScan_1a3711bc2167f31296a6663334fcc2812f" prot="private" static="no">
+        <type>::cuda::std::_If&lt; SAFE_ALGORITHM==<ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba7f51e58246eb53f1a97bd1bc8c0f400f" kindref="member">BLOCK_SCAN_WARP_SCANS</ref>, WarpScans, Raking &gt;</type>
+        <definition>using cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::InternalBlockScan =  ::cuda::std::_If&lt;SAFE_ALGORITHM == BLOCK_SCAN_WARP_SCANS, WarpScans, Raking&gt;</definition>
+        <argsstring></argsstring>
+        <name>InternalBlockScan</name>
+        <briefdescription>
+<para>Define the delegate type for the desired algorithm. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="255" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="255" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classcub_1_1BlockScan_1a631a5fb1effc3cad02eb0f655527219c" prot="private" static="no">
+        <type>typename InternalBlockScan::TempStorage</type>
+        <definition>using cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::_TempStorage =  typename InternalBlockScan::TempStorage</definition>
+        <argsstring></argsstring>
+        <name>_TempStorage</name>
+        <briefdescription>
+<para>Shared memory storage layout type for <ref refid="classcub_1_1BlockScan" kindref="compound">BlockScan</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="258" column="3" bodyfile="cub/block/block_scan.cuh" bodystart="258" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockScan_1a4f7c615acf79f08ad368d8d994d6ee9c" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr <ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23ab" kindref="member">BlockScanAlgorithm</ref></type>
+        <definition>constexpr BlockScanAlgorithm cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::SAFE_ALGORITHM</definition>
+        <argsstring></argsstring>
+        <name>SAFE_ALGORITHM</name>
+        <initializer>=
+    ((ALGORITHM == <ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba7f51e58246eb53f1a97bd1bc8c0f400f" kindref="member">BLOCK_SCAN_WARP_SCANS</ref>) &amp;&amp; (BLOCK_THREADS % detail::warp_threads != 0))
+      ? <ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba0fa6cac57b7df2f475a67af053b9371c" kindref="member">BLOCK_SCAN_RAKING</ref>
+      : ALGORITHM</initializer>
+        <briefdescription>
+<para>Ensure the template parameterization meets the requirements of the specified algorithm. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Currently, the BLOCK_SCAN_WARP_SCANS policy cannot be used with thread block sizes not a multiple of the architectural warp size. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="245" column="39" bodyfile="cub/block/block_scan.cuh" bodystart="245" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classcub_1_1BlockScan_1a13724ec6bfac91e658fdf07253203149" prot="private" static="no" mutable="no">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::temp_storage</definition>
+        <argsstring></argsstring>
+        <name>temp_storage</name>
+        <briefdescription>
+<para>Shared storage reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="261" column="16" bodyfile="cub/block/block_scan.cuh" bodystart="261" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcub_1_1BlockScan_1a528d4d544b339eea8f8208c3df90e61d" prot="private" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::linear_tid</definition>
+        <argsstring></argsstring>
+        <name>linear_tid</name>
+        <briefdescription>
+<para>Linear thread-id. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="264" column="16" bodyfile="cub/block/block_scan.cuh" bodystart="264" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classcub_1_1BlockScan_1a7930418a9dd102832332ec6a30396967" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>_TempStorage &amp;</type>
+        <definition>_TempStorage&amp; cub::BlockScan&lt; T, BLOCK_DIM_X, ALGORITHM, BLOCK_DIM_Y, BLOCK_DIM_Z &gt;::PrivateStorage</definition>
+        <argsstring>()</argsstring>
+        <name>PrivateStorage</name>
+        <briefdescription>
+<para>Internal storage allocator. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/block/block_scan.cuh" line="267" column="18" bodyfile="cub/block/block_scan.cuh" bodystart="267" bodyend="271"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+The BlockScan class provides :ref:`collective &lt;collective-primitives&gt;` methods for computing a parallel prefix
+sum/scan of items partitioned across a CUDA thread block.
+
+Overview
++++++++++++++++++++++++++++++++++++++++++++++
+
+- Given a list of input elements and a binary reduction operator, a
+  `prefix scan &lt;http://en.wikipedia.org/wiki/Prefix_sum&gt;`_ produces an output list where each element is computed
+  to be the reduction of the elements occurring earlier in the input list. *Prefix sum* connotes a prefix scan with
+  the addition operator. The term *inclusive indicates* that the *i*\ :sup:`th` output reduction incorporates
+  the *i*\ :sup:`th` input. The term *exclusive* indicates the *i*\ :sup:`th` input is not incorporated into
+  the *i*\ :sup:`th` output reduction.
+- For multi-dimensional blocks, threads are linearly ranked in row-major order.
+- BlockScan can be optionally specialized by algorithm to accommodate different workload profiles:
+
+  #. :cpp:enumerator:`cub::BLOCK_SCAN_RAKING`:
+     An efficient (high throughput) &quot;raking reduce-then-scan&quot; prefix scan algorithm.
+  #. :cpp:enumerator:`cub::BLOCK_SCAN_RAKING_MEMOIZE`:
+     Similar to cub::BLOCK_SCAN_RAKING, but having higher throughput at the expense of additional
+     register pressure for intermediate storage.
+  #. :cpp:enumerator:`cub::BLOCK_SCAN_WARP_SCANS`:
+     A quick (low latency) &quot;tiled warpscans&quot; prefix scan algorithm.
+
+Performance Considerations
++++++++++++++++++++++++++++++++++++++++++++++
+
+- Efficiency is increased with increased granularity ``ITEMS_PER_THREAD``. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of ``cub::BlockLoad`` for efficiently gathering a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` of elements across threads.
+- Uses special instructions when applicable (e.g., warp ``SHFL``)
+- Uses synchronization-free communication between warp lanes when applicable
+- Invokes a minimal number of minimal block-wide synchronization barriers (only
+  one or two depending on algorithm selection)
+- Incurs zero bank conflicts for most types
+- Computation is slightly more efficient (i.e., having lower instruction overhead) for:
+
+  - Prefix sum variants (vs. generic scan)
+  - The number of threads in the block is a multiple of the architecture&apos;s warp size
+
+- See cub::BlockScanAlgorithm for performance details regarding algorithmic alternatives
+
+A Simple Example
++++++++++++++++++++++++++++++++++++++++++++++
+
+Every thread in the block uses the BlockScan class by first specializing the BlockScan type, then instantiating an instance with parameters for communication, and finally invoking one or more collective member functions.
+
+The code snippet below illustrates an exclusive prefix sum of 512 integer items that
+are partitioned in a :ref:`blocked arrangement &lt;flexible-data-arrangement&gt;` across 128 threads
+where each thread owns 4 consecutive items.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/block/block_scan.cuh&gt;
+
+   __global__ void ExampleKernel(...)
+   {
+       // Specialize BlockScan for a 1D block of 128 threads of type int
+       using BlockScan = cub::BlockScan&lt;int, 128&gt;;
+
+       // Allocate shared memory for BlockScan
+       __shared__ typename BlockScan::TempStorage temp_storage;
+
+       // Obtain a segment of consecutive items that are blocked across threads
+       int thread_data[4];
+       ...
+
+       // Collectively compute the block-wide exclusive prefix sum
+       BlockScan(temp_storage).ExclusiveSum(thread_data, thread_data);
+
+Suppose the set of input ``thread_data`` across the block of threads is
+``{[1,1,1,1], [1,1,1,1], ..., [1,1,1,1]}``.
+The corresponding output ``thread_data`` in those threads will be
+``{[0,1,2,3], [4,5,6,7], ..., [508,509,510,511]}``.
+
+Re-using dynamically allocating shared memory
++++++++++++++++++++++++++++++++++++++++++++++
+
+The ``block/example_block_reduce_dyn_smem.cu`` example illustrates usage of dynamically shared memory with
+BlockReduce and how to re-purpose the same memory region.
+This example can be easily adapted to the storage required by BlockScan.</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Data type being scanned</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thread block length in threads along the X dimension</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ALGORITHM</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> <ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23ab" kindref="member">cub::BlockScanAlgorithm</ref> enumerator specifying the underlying algorithm to use (default: <ref refid="namespacecub_1abec44bba36037c547e7e84906d0d23aba0fa6cac57b7df2f475a67af053b9371c" kindref="member">cub::BLOCK_SCAN_RAKING</ref>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Y dimension (default: 1)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BLOCK_DIM_Z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[optional]</bold> The thread block length in threads along the Z dimension (default: 1) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="cub/block/block_scan.cuh" line="229" column="1" bodyfile="cub/block/block_scan.cuh" bodystart="230" bodyend="2581"/>
+    <listofallmembers>
+      <member refid="classcub_1_1BlockScan_1a631a5fb1effc3cad02eb0f655527219c" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>_TempStorage</name></member>
+      <member refid="classcub_1_1BlockScan_1abb0889cdc58786d1f6945f10b39f65b7a9e40ee6a060b8827af8b6d2800057bb8" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>BLOCK_THREADS</name></member>
+      <member refid="classcub_1_1BlockScan_1ada44ca8b80a097993c4e0132d1110203" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>BlockScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a627804cacd6985da4382fbf4471bd1d5" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>BlockScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a701cfd787a6b5240d9018d96b5c62b6c" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a79cc6430d64147b7b71efa5473cc995a" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1adb62b3823a2fd3fa3b94c9ff9fb43b8d" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1af7af014e2d992e0cf3a4e62051928a0d" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a574bcca16035b8126a0be2aa2d40de02" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a454e4ee3d73428c7201a74d47fc4b23a" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a8a15b903aec866ff80436011b6060fb7" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a0914feb534d51bca5a127c0a1f4b481d" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1ae1d0d8c861e7ffe0e6764c5eb64e4d53" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1af9e7746cff6a836ffce7ba23e99aebee" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a758a1367bc772b6b4e1b8b3d0172200a" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a51536a9062af08abf42e6b5b99a41a76" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>ExclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a1da1b6cc53f00820ddb756a223571ac0" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1af195b1aedabfb3a11d30e7dd69267488" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a637494e668573194fe3ecb4f002af91b" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a008c3c8b0f01d6fded88a59f4cdd94c6" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a5b095f48c4d5daeba05b0e511f5054d5" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a264844472e14c365d853ea037c22d819" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1acb9a54e2545b52aa3efd879c13eeac79" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a8c6026062438805110e01820dbbbcbe0" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveScan</name></member>
+      <member refid="classcub_1_1BlockScan_1aa80f3cd1692cf7c343b2a68bd684e8be" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a2b4c02286134a016c2a485c58df9ab23" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1aebab425cd24adda41f0036237cedfbd7" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a9ea76549a26ea3cb3149a51168bc669d" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a63b40ab8a20a43fd0fbe26d984f52d57" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a72fd48900d289cebc9a46f116ca3bf37" prot="public" virt="non-virtual"><scope>cub::BlockScan</scope><name>InclusiveSum</name></member>
+      <member refid="classcub_1_1BlockScan_1a3711bc2167f31296a6663334fcc2812f" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>InternalBlockScan</name></member>
+      <member refid="classcub_1_1BlockScan_1a528d4d544b339eea8f8208c3df90e61d" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>linear_tid</name></member>
+      <member refid="classcub_1_1BlockScan_1a7930418a9dd102832332ec6a30396967" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>PrivateStorage</name></member>
+      <member refid="classcub_1_1BlockScan_1a9fb4916c15b2f48f45471b096b50aea4" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>Raking</name></member>
+      <member refid="classcub_1_1BlockScan_1a4f7c615acf79f08ad368d8d994d6ee9c" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>SAFE_ALGORITHM</name></member>
+      <member refid="classcub_1_1BlockScan_1a13724ec6bfac91e658fdf07253203149" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>temp_storage</name></member>
+      <member refid="classcub_1_1BlockScan_1ad407d5ebf4bb4b479308b50a3d3a5f98" prot="private" virt="non-virtual"><scope>cub::BlockScan</scope><name>WarpScans</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

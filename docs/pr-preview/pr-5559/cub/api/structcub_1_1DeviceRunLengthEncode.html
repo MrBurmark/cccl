@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cub::DeviceRunLengthEncode &mdash; cub 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cub::DeviceScan" href="structcub_1_1DeviceScan.html" />
+    <link rel="prev" title="cub::DeviceReduce" href="structcub_1_1DeviceReduce.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">CUB Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../thread_level.html">Thread-level Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../warp_wide.html">Warp-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block_wide.html">Block-Wide “Collective” Primitives</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../device_wide.html">Device-Wide Primitives</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1CachingDeviceAllocator.html">cub::CachingDeviceAllocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceAdjacentDifference.html">cub::DeviceAdjacentDifference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceCopy.html">cub::DeviceCopy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceFor.html">cub::DeviceFor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceHistogram.html">cub::DeviceHistogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMemcpy.html">cub::DeviceMemcpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMerge.html">cub::DeviceMerge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceMergeSort.html">cub::DeviceMergeSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DevicePartition.html">cub::DevicePartition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceRadixSort.html">cub::DeviceRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceReduce.html">cub::DeviceReduce</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cub::DeviceRunLengthEncode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceScan.html">cub::DeviceScan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedRadixSort.html">cub::DeviceSegmentedRadixSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedReduce.html">cub::DeviceSegmentedReduce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSegmentedSort.html">cub::DeviceSegmentedSort</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceSelect.html">cub::DeviceSelect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="structcub_1_1DeviceTransform.html">cub::DeviceTransform</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_overview.html">CUB Developer Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_overview.html">CUB Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">CUB Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuning.html">CUB Tunings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">CUB Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cub_api.html">CUB API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cub</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">CUB Modules</a> &raquo;</li>
+          <li><a href="../device_wide.html">Device-Wide Primitives</a> &raquo;</li>
+      <li>cub::DeviceRunLengthEncode</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cub-devicerunlengthencode">
+<h1>cub::DeviceRunLengthEncode<a class="headerlink" href="#cub-devicerunlengthencode" title="Permalink to this headline"></a></h1>
+<p>Defined in <a class="reference internal" href="file_cub_device_device_run_length_encode.cuh.html#device-run-length-encode-8cuh"><span class="std std-ref">cub/device/device_run_length_encode.cuh</span></a></p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3cub21DeviceRunLengthEncodeE">
+<span id="_CPPv3N3cub21DeviceRunLengthEncodeE"></span><span id="_CPPv2N3cub21DeviceRunLengthEncodeE"></span><span id="cub::DeviceRunLengthEncode"></span><span class="target" id="structcub_1_1devicerunlengthencode"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeviceRunLengthEncode</span></span></span><a class="headerlink" href="#_CPPv4N3cub21DeviceRunLengthEncodeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p><p>DeviceRunLengthEncode provides device-wide, parallel operations for
+demarcating “runs” of same-valued items within a sequence residing
+within device-accessible memory.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<p>A <a class="reference external" href="http://en.wikipedia.org/wiki/Run-length_encoding">run-length encoding</a>
+computes a simple compressed representation of a sequence of input elements
+such that each maximal “run” of consecutive same-valued data items is
+encoded as a single data value along with a count of the elements in that
+run.</p>
+</section>
+<section id="usage-considerations">
+<h2>Usage Considerations<a class="headerlink" href="#usage-considerations" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Dynamic parallelism. DeviceRunLengthEncode methods can be called within kernel code on devices in which CUDA dynamic parallelism is supported.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Permalink to this headline"></a></h2>
+<p>The work-complexity of run-length encode as a function of input size is linear, resulting in performance throughput that plateaus with problem sizes large enough to saturate the GPU.</p>
+</section>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric-h3 rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t">
+<span id="_CPPv3I00000EN3cub21DeviceRunLengthEncode6EncodeEPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t"></span><span id="_CPPv2I00000EN3cub21DeviceRunLengthEncode6EncodeEPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UniqueOutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LengthsOutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumRunsOutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicerunlengthencode_1a6f78318718b6e3876f0051e2c4403b6c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Encode</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::Encode::InputIteratorT"><span class="n"><span class="pre">InputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_in</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::Encode::UniqueOutputIteratorT"><span class="n"><span class="pre">UniqueOutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_unique_out</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::Encode::LengthsOutputIteratorT"><span class="n"><span class="pre">LengthsOutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_counts_out</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::Encode::NumRunsOutputIteratorT"><span class="n"><span class="pre">NumRunsOutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_num_runs_out</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::Encode::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Computes a run-length encoding of the sequence <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<ul class="simple">
+<li><p>For the <em>i</em><sup>th</sup> run encountered, the first key of the run and
+its length are written to <code class="docutils literal notranslate"><span class="pre">d_unique_out[i]</span></code> and <code class="docutils literal notranslate"><span class="pre">d_counts_out[i]</span></code>, respectively.</p></li>
+<li><p>The total number of runs encountered is written to <code class="docutils literal notranslate"><span class="pre">d_num_runs_out</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">==</span></code> equality operator is used to determine whether values are equivalent</p></li>
+<li><p>In-place operations are not supported. There must be no overlap between any of the provided ranges:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_unique_out,</span> <span class="pre">d_unique_out</span> <span class="pre">+</span> <span class="pre">*d_num_runs_out)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_counts_out,</span> <span class="pre">d_counts_out</span> <span class="pre">+</span> <span class="pre">*d_num_runs_out)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_num_runs_out,</span> <span class="pre">d_num_runs_out</span> <span class="pre">+</span> <span class="pre">1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_in,</span> <span class="pre">d_in</span> <span class="pre">+</span> <span class="pre">num_items)</span></code></p></li>
+</ul>
+</li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="snippet">
+<h2>Snippet<a class="headerlink" href="#snippet" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the run-length encoding of a sequence of <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1"> // or equivalently &lt;cub/device/device_run_length_encode.cuh&gt;</span><span class="cp"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers for</span>
+<span class="c1">// input and output</span>
+<span class="kt">int</span><span class="w">          </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 8</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_in</span><span class="p">;</span><span class="w">              </span><span class="c1">// e.g., [0, 2, 2, 9, 5, 5, 5, 8]</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_unique_out</span><span class="p">;</span><span class="w">      </span><span class="c1">// e.g., [ ,  ,  ,  ,  ,  ,  ,  ]</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_counts_out</span><span class="p">;</span><span class="w">      </span><span class="c1">// e.g., [ ,  ,  ,  ,  ,  ,  ,  ]</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_num_runs_out</span><span class="p">;</span><span class="w">    </span><span class="c1">// e.g., [ ]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceRunLengthEncode</span><span class="o">::</span><span class="n">Encode</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_unique_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_counts_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_num_runs_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run encoding</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceRunLengthEncode</span><span class="o">::</span><span class="n">Encode</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_unique_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_counts_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_num_runs_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_unique_out      &lt;-- [0, 2, 9, 5, 8]</span>
+<span class="c1">// d_counts_out      &lt;-- [1, 2, 1, 3, 1]</span>
+<span class="c1">// d_num_runs_out    &lt;-- [5]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>InputIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading input items (may be a simple pointer type)</p></li>
+<li><p><strong>UniqueOutputIteratorT</strong> – <strong>[inferred]</strong> Random-access output iterator type for writing unique output items (may be a simple pointer type)</p></li>
+<li><p><strong>LengthsOutputIteratorT</strong> – <strong>[inferred]</strong> Random-access output iterator type for writing output counts (may be a simple pointer type)</p></li>
+<li><p><strong>NumRunsOutputIteratorT</strong> – <strong>[inferred]</strong> Output iterator type for recording the number of runs encountered (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_in</strong> – <strong>[in]</strong> Pointer to the input sequence of keys</p></li>
+<li><p><strong>d_unique_out</strong> – <strong>[out]</strong> Pointer to the output sequence of unique keys (one key per run)</p></li>
+<li><p><strong>d_counts_out</strong> – <strong>[out]</strong> Pointer to the output sequence of run-lengths (one count per run)</p></li>
+<li><p><strong>d_num_runs_out</strong> – <strong>[out]</strong> Pointer to total number of runs</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Total number of associated key+value pairs (i.e., the length of <code class="docutils literal notranslate"><span class="pre">d_in_keys</span></code> and <code class="docutils literal notranslate"><span class="pre">d_in_values</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t">
+<span id="_CPPv3I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsEPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t"></span><span id="_CPPv2I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsEPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OffsetsOutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LengthsOutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumRunsOutputIteratorT</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NumItemsT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structcub_1_1devicerunlengthencode_1a88070196f263fbf1282e2b33c62d9638"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">cudaError_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NonTrivialRuns</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d_temp_storage</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage_bytes</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::NonTrivialRuns::InputIteratorT"><span class="n"><span class="pre">InputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_in</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::NonTrivialRuns::OffsetsOutputIteratorT"><span class="n"><span class="pre">OffsetsOutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_offsets_out</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::NonTrivialRuns::LengthsOutputIteratorT"><span class="n"><span class="pre">LengthsOutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_lengths_out</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::NonTrivialRuns::NumRunsOutputIteratorT"><span class="n"><span class="pre">NumRunsOutputIteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">d_num_runs_out</span></span>, <a class="reference internal" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="cub::DeviceRunLengthEncode::NonTrivialRuns::NumItemsT"><span class="n"><span class="pre">NumItemsT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_items</span></span>, <span class="n"><span class="pre">cudaStream_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stream</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p><p>Enumerates the starting offsets and lengths of all non-trivial runs
+(of <code class="docutils literal notranslate"><span class="pre">length</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>) of same-valued keys in the sequence <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<ul class="simple">
+<li><p>For the <em>i</em><sup>th</sup> non-trivial run, the run’s starting offset and
+its length are written to <code class="docutils literal notranslate"><span class="pre">d_offsets_out[i]</span></code> and <code class="docutils literal notranslate"><span class="pre">d_lengths_out[i]</span></code>, respectively.</p></li>
+<li><p>The total number of runs encountered is written to <code class="docutils literal notranslate"><span class="pre">d_num_runs_out</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">==</span></code> equality operator is used to determine whether values are equivalent</p></li>
+<li><p>In-place operations are not supported. There must be no overlap between any of the provided ranges:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_offsets_out,</span> <span class="pre">d_offsets_out</span> <span class="pre">+</span> <span class="pre">*d_num_runs_out)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_lengths_out,</span> <span class="pre">d_lengths_out</span> <span class="pre">+</span> <span class="pre">*d_num_runs_out)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_num_runs_out,</span> <span class="pre">d_num_runs_out</span> <span class="pre">+</span> <span class="pre">1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[d_in,</span> <span class="pre">d_in</span> <span class="pre">+</span> <span class="pre">num_items)</span></code></p></li>
+</ul>
+</li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>.</p></li>
+</ul>
+<section id="id1">
+<h2>Snippet<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>The code snippet below illustrates the identification of non-trivial runs
+within a sequence of <code class="docutils literal notranslate"><span class="pre">int</span></code> values.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cub/cub.cuh&gt;</span><span class="c1"> // or equivalently &lt;cub/device/device_run_length_encode.cuh&gt;</span><span class="cp"></span>
+
+<span class="c1">// Declare, allocate, and initialize device-accessible pointers</span>
+<span class="c1">// for input and output</span>
+<span class="kt">int</span><span class="w">          </span><span class="n">num_items</span><span class="p">;</span><span class="w">          </span><span class="c1">// e.g., 8</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_in</span><span class="p">;</span><span class="w">              </span><span class="c1">// e.g., [0, 2, 2, 9, 5, 5, 5, 8]</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_offsets_out</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., [ ,  ,  ,  ,  ,  ,  ,  ]</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_lengths_out</span><span class="p">;</span><span class="w">     </span><span class="c1">// e.g., [ ,  ,  ,  ,  ,  ,  ,  ]</span>
+<span class="kt">int</span><span class="w">          </span><span class="o">*</span><span class="n">d_num_runs_out</span><span class="p">;</span><span class="w">    </span><span class="c1">// e.g., [ ]</span>
+<span class="p">...</span><span class="w"></span>
+
+<span class="c1">// Determine temporary device storage requirements</span>
+<span class="kt">void</span><span class="w">     </span><span class="o">*</span><span class="n">d_temp_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="kt">size_t</span><span class="w">   </span><span class="n">temp_storage_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceRunLengthEncode</span><span class="o">::</span><span class="n">NonTrivialRuns</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_lengths_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_num_runs_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Allocate temporary storage</span>
+<span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// Run encoding</span>
+<span class="n">cub</span><span class="o">::</span><span class="n">DeviceRunLengthEncode</span><span class="o">::</span><span class="n">NonTrivialRuns</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_temp_storage</span><span class="p">,</span><span class="w"> </span><span class="n">temp_storage_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">d_in</span><span class="p">,</span><span class="w"> </span><span class="n">d_offsets_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_lengths_out</span><span class="p">,</span><span class="w"> </span><span class="n">d_num_runs_out</span><span class="p">,</span><span class="w"> </span><span class="n">num_items</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// d_offsets_out         &lt;-- [1, 4]</span>
+<span class="c1">// d_lengths_out         &lt;-- [2, 3]</span>
+<span class="c1">// d_num_runs_out        &lt;-- [2]</span>
+</pre></div>
+</div>
+</section>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>InputIteratorT</strong> – <strong>[inferred]</strong> Random-access input iterator type for reading input items (may be a simple pointer type)</p></li>
+<li><p><strong>OffsetsOutputIteratorT</strong> – <strong>[inferred]</strong> Random-access output iterator type for writing run-offset values (may be a simple pointer type)</p></li>
+<li><p><strong>LengthsOutputIteratorT</strong> – <strong>[inferred]</strong> Random-access output iterator type for writing run-length values (may be a simple pointer type)</p></li>
+<li><p><strong>NumRunsOutputIteratorT</strong> – <strong>[inferred]</strong> Output iterator type for recording the number of runs encountered (may be a simple pointer type)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d_temp_storage</strong> – <strong>[in]</strong> Device-accessible allocation of temporary storage. When <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the required allocation size is written to <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code> and no work is done.</p></li>
+<li><p><strong>temp_storage_bytes</strong> – <strong>[inout]</strong> Reference to size in bytes of <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> allocation</p></li>
+<li><p><strong>d_in</strong> – <strong>[in]</strong> Pointer to input sequence of data items</p></li>
+<li><p><strong>d_offsets_out</strong> – <strong>[out]</strong> Pointer to output sequence of run-offsets (one offset per non-trivial run)</p></li>
+<li><p><strong>d_lengths_out</strong> – <strong>[out]</strong> Pointer to output sequence of run-lengths (one count per non-trivial run)</p></li>
+<li><p><strong>d_num_runs_out</strong> – <strong>[out]</strong> Pointer to total number of runs (i.e., length of <code class="docutils literal notranslate"><span class="pre">d_offsets_out</span></code>)</p></li>
+<li><p><strong>num_items</strong> – <strong>[in]</strong> Total number of associated key+value pairs (i.e., the length of <code class="docutils literal notranslate"><span class="pre">d_in_keys</span></code> and <code class="docutils literal notranslate"><span class="pre">d_in_values</span></code>)</p></li>
+<li><p><strong>stream</strong> – <strong>[in]</strong> <p><p><strong>[optional]</strong> CUDA stream to launch kernels within. Default is stream<sub>0</sub>.</p>
+</p>
+ </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1021 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="group__gathering" kind="group">
+    <compoundname>gathering</compoundname>
+    <title>Gathering</title>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__gathering_1ga9e0862c6d03cd02b9b47083043cdb129" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename RandomAccessIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::gather</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator map_first, InputIterator map_last, RandomAccessIterator input_first, OutputIterator result)</argsstring>
+        <name>gather</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>map_first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>map_last</declname>
+        </param>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>input_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>gather</computeroutput> copies elements from a source array into a destination range according to a map. For each input iterator <computeroutput>i</computeroutput> in the range <computeroutput>[map_first, map_last)</computeroutput>, the value <computeroutput>input_first[*i]</computeroutput> is assigned to <computeroutput>*(result + (i - map_first))</computeroutput>. <computeroutput>RandomAccessIterator</computeroutput> must permit random access.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>input_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the source range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the destination range.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>difference_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RandomAccessIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</ulink> and <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[map_first, map_last)</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The input data shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>.</para>
+</simplesect>
+<simplesect kind="remark"><para><computeroutput>gather</computeroutput> is the inverse of thrust::scatter.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>gather</computeroutput> to reorder a range using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/gather.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>mark<sp/>even<sp/>indices<sp/>with<sp/>a<sp/>1;<sp/>odd<sp/>indices<sp/>with<sp/>a<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>values[10]<sp/>=<sp/>{1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_values(values,<sp/>values<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>gather<sp/>all<sp/>even<sp/>indices<sp/>into<sp/>the<sp/>first<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>and<sp/>odd<sp/>indices<sp/>to<sp/>the<sp/>last<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>map[10]<sp/><sp/><sp/>=<sp/>{0,<sp/>2,<sp/>4,<sp/>6,<sp/>8,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_map(map,<sp/>map<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_output(10);</highlight></codeline>
+<codeline><highlight class="normal">thrust::gather(thrust::device,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_map.begin(),<sp/>d_map.end(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_values.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_output.begin());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>d_output<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>1,<sp/>1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/>0}</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/gather.h" line="93" column="17" declfile="thrust/gather.h" declline="93" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__gathering_1ga6fdb1fe3ff0d9ce01f41a72fa94c56df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator</type>
+          </param>
+          <param>
+            <type>typename RandomAccessIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::gather</definition>
+        <argsstring>(InputIterator map_first, InputIterator map_last, RandomAccessIterator input_first, OutputIterator result)</argsstring>
+        <name>gather</name>
+        <param>
+          <type>InputIterator</type>
+          <declname>map_first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>map_last</declname>
+        </param>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>input_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>gather</computeroutput> copies elements from a source array into a destination range according to a map. For each input iterator <computeroutput>i</computeroutput> in the range <computeroutput>[map_first, map_last)</computeroutput>, the value <computeroutput>input_first[*i]</computeroutput> is assigned to <computeroutput>*(result + (i - map_first))</computeroutput>. <computeroutput>RandomAccessIterator</computeroutput> must permit random access.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>input_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the source range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the destination range.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>difference_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RandomAccessIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access Iterator</ulink> and <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[map_first, map_last)</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The input data shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>.</para>
+</simplesect>
+<simplesect kind="remark"><para><computeroutput>gather</computeroutput> is the inverse of thrust::scatter.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>gather</computeroutput> to reorder a range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/gather.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>mark<sp/>even<sp/>indices<sp/>with<sp/>a<sp/>1;<sp/>odd<sp/>indices<sp/>with<sp/>a<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>values[10]<sp/>=<sp/>{1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_values(values,<sp/>values<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>gather<sp/>all<sp/>even<sp/>indices<sp/>into<sp/>the<sp/>first<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>and<sp/>odd<sp/>indices<sp/>to<sp/>the<sp/>last<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>map[10]<sp/><sp/><sp/>=<sp/>{0,<sp/>2,<sp/>4,<sp/>6,<sp/>8,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_map(map,<sp/>map<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_output(10);</highlight></codeline>
+<codeline><highlight class="normal">thrust::gather(d_map.begin(),<sp/>d_map.end(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_values.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_output.begin());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>d_output<sp/>is<sp/>now<sp/>{1,<sp/>1,<sp/>1,<sp/>1,<sp/>1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/>0}</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/gather.h" line="147" column="1" declfile="thrust/gather.h" declline="147" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="group__gathering_1gabe7fcb9789daffbdb2be995be1494240" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename RandomAccessIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::gather_if</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 map_first, InputIterator1 map_last, InputIterator2 stencil, RandomAccessIterator input_first, OutputIterator result)</argsstring>
+        <name>gather_if</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>input_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>gather_if</computeroutput> conditionally copies elements from a source array into a destination range according to a map. For each input iterator <computeroutput>i</computeroutput> in the range <computeroutput>[map_first, map_last)</computeroutput>, such that the value of <computeroutput>*(stencil + (i - map_first))</computeroutput> is <computeroutput>true</computeroutput>, the value <computeroutput>input_first[*i]</computeroutput> is assigned to <computeroutput>*(result + (i - map_first))</computeroutput>. <computeroutput>RandomAccessIterator</computeroutput> must permit random access.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of predicate values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>input_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the source range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the destination range.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>difference_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>bool</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RandomAccessIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access iterator</ulink> and <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[map_first, map_last)</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The range <computeroutput>[stencil, stencil + (map_last - map_first))</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The input data shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>.</para>
+</simplesect>
+<simplesect kind="remark"><para><computeroutput>gather_if</computeroutput> is the inverse of <computeroutput>scatter_if</computeroutput>.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>gather_if</computeroutput> to gather selected values from an input range using the <computeroutput>thrust::device</computeroutput> execution policy:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/gather.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>values[10]<sp/>=<sp/>{0,<sp/>1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_values(values,<sp/>values<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>select<sp/>elements<sp/>at<sp/>even-indexed<sp/>locations</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>stencil[10]<sp/>=<sp/>{1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_stencil(stencil,<sp/>stencil<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>map<sp/>all<sp/>even<sp/>indices<sp/>into<sp/>the<sp/>first<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>and<sp/>odd<sp/>indices<sp/>to<sp/>the<sp/>last<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>map[10]<sp/><sp/><sp/>=<sp/>{0,<sp/>2,<sp/>4,<sp/>6,<sp/>8,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_map(map,<sp/>map<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_output(10,<sp/>7);</highlight></codeline>
+<codeline><highlight class="normal">thrust::gather_if(thrust::device,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_map.begin(),<sp/>d_map.end(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_stencil.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_values.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_output.begin());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>d_output<sp/>is<sp/>now<sp/>{0,<sp/>7,<sp/>4,<sp/>7,<sp/>8,<sp/>7,<sp/>3,<sp/>7,<sp/>7,<sp/>7}</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/gather.h" line="216" column="17" declfile="thrust/gather.h" declline="216" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__gathering_1gaf7acd33a67b2313a651ee19f3ac5cd04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename RandomAccessIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::gather_if</definition>
+        <argsstring>(InputIterator1 map_first, InputIterator1 map_last, InputIterator2 stencil, RandomAccessIterator input_first, OutputIterator result)</argsstring>
+        <name>gather_if</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>input_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>gather_if</computeroutput> conditionally copies elements from a source array into a destination range according to a map. For each input iterator <computeroutput>i</computeroutput> in the range <computeroutput>[map_first, map_last)</computeroutput>, such that the value of <computeroutput>*(stencil + (i - map_first))</computeroutput> is <computeroutput>true</computeroutput>, the value <computeroutput>input_first[*i]</computeroutput> is assigned to <computeroutput>*(result + (i - map_first))</computeroutput>. <computeroutput>RandomAccessIterator</computeroutput> must permit random access.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of predicate values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>input_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the source range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the destination range.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>difference_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>bool</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RandomAccessIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access iterator</ulink> and <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[map_first, map_last)</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The range <computeroutput>[stencil, stencil + (map_last - map_first))</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The input data shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>.</para>
+</simplesect>
+<simplesect kind="remark"><para><computeroutput>gather_if</computeroutput> is the inverse of <computeroutput>scatter_if</computeroutput>.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>gather_if</computeroutput> to gather selected values from an input range.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/gather.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>values[10]<sp/>=<sp/>{0,<sp/>1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_values(values,<sp/>values<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>select<sp/>elements<sp/>at<sp/>even-indexed<sp/>locations</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>stencil[10]<sp/>=<sp/>{1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/>0};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_stencil(stencil,<sp/>stencil<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>map<sp/>all<sp/>even<sp/>indices<sp/>into<sp/>the<sp/>first<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>and<sp/>odd<sp/>indices<sp/>to<sp/>the<sp/>last<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>map[10]<sp/><sp/><sp/>=<sp/>{0,<sp/>2,<sp/>4,<sp/>6,<sp/>8,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_map(map,<sp/>map<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_output(10,<sp/>7);</highlight></codeline>
+<codeline><highlight class="normal">thrust::gather_if(d_map.begin(),<sp/>d_map.end(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_stencil.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_values.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_output.begin());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>d_output<sp/>is<sp/>now<sp/>{0,<sp/>7,<sp/>4,<sp/>7,<sp/>8,<sp/>7,<sp/>3,<sp/>7,<sp/>7,<sp/>7}</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/gather.h" line="281" column="16" declfile="thrust/gather.h" declline="281" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="group__gathering_1ga826a4fe88363c1558017dbb6f1de4752" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DerivedPolicy</type>
+          </param>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename RandomAccessIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::gather_if</definition>
+        <argsstring>(const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;exec, InputIterator1 map_first, InputIterator1 map_last, InputIterator2 stencil, RandomAccessIterator input_first, OutputIterator result, Predicate pred)</argsstring>
+        <name>gather_if</name>
+        <param>
+          <type>const thrust::detail::execution_policy_base&lt; DerivedPolicy &gt; &amp;</type>
+          <declname>exec</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>input_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>gather_if</computeroutput> conditionally copies elements from a source array into a destination range according to a map. For each input iterator <computeroutput>i</computeroutput> in the range <computeroutput>[map_first, map_last)</computeroutput> such that the value of <computeroutput>pred(*(stencil + (i - map_first)))</computeroutput> is <computeroutput>true</computeroutput>, the value <computeroutput>input_first[*i]</computeroutput> is assigned to <computeroutput>*(result + (i - map_first))</computeroutput>. <computeroutput>RandomAccessIterator</computeroutput> must permit random access.</para>
+<para>The algorithm&apos;s execution is parallelized as determined by <computeroutput>exec</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The execution policy to use for parallelization. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of predicate values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>input_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the source range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the destination range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predicate to apply to the stencil values.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DerivedPolicy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the derived execution policy. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>difference_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RandomAccessIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access iterator</ulink> and <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[map_first, map_last)</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The range <computeroutput>[stencil, stencil + (map_last - map_first))</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The input data shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>.</para>
+</simplesect>
+<simplesect kind="remark"><para><computeroutput>gather_if</computeroutput> is the inverse of <computeroutput>scatter_if</computeroutput>.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>gather_if</computeroutput> to gather selected values from an input range based on an arbitrary selection function using the <computeroutput>thrust::device</computeroutput> execution policy for parallelization:</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/gather.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/execution_policy.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>values[10]<sp/>=<sp/>{0,<sp/>1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_values(values,<sp/>values<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>we<sp/>will<sp/>select<sp/>an<sp/>element<sp/>when<sp/>our<sp/>stencil<sp/>is<sp/>even</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>stencil[10]<sp/>=<sp/>{0,<sp/>3,<sp/>4,<sp/>1,<sp/>4,<sp/>1,<sp/>2,<sp/>7,<sp/>8,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_stencil(stencil,<sp/>stencil<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>map<sp/>all<sp/>even<sp/>indices<sp/>into<sp/>the<sp/>first<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>and<sp/>odd<sp/>indices<sp/>to<sp/>the<sp/>last<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>map[10]<sp/><sp/><sp/>=<sp/>{0,<sp/>2,<sp/>4,<sp/>6,<sp/>8,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_map(map,<sp/>map<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_output(10,<sp/>7);</highlight></codeline>
+<codeline><highlight class="normal">thrust::gather_if(thrust::device,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_map.begin(),<sp/>d_map.end(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_stencil.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_values.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_output.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>d_output<sp/>is<sp/>now<sp/>{0,<sp/>7,<sp/>4,<sp/>7,<sp/>8,<sp/>7,<sp/>3,<sp/>7,<sp/>7,<sp/>7}</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/gather.h" line="369" column="17" declfile="thrust/gather.h" declline="369" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__gathering_1ga99684dec614e14ccc4b2b6b896324b81" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIterator1</type>
+          </param>
+          <param>
+            <type>typename InputIterator2</type>
+          </param>
+          <param>
+            <type>typename RandomAccessIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIterator</type>
+          </param>
+          <param>
+            <type>typename Predicate</type>
+          </param>
+        </templateparamlist>
+        <type>OutputIterator</type>
+        <definition>OutputIterator thrust::gather_if</definition>
+        <argsstring>(InputIterator1 map_first, InputIterator1 map_last, InputIterator2 stencil, RandomAccessIterator input_first, OutputIterator result, Predicate pred)</argsstring>
+        <name>gather_if</name>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_first</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>map_last</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>stencil</declname>
+        </param>
+        <param>
+          <type>RandomAccessIterator</type>
+          <declname>input_first</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>Predicate</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>gather_if</computeroutput> conditionally copies elements from a source array into a destination range according to a map. For each input iterator <computeroutput>i</computeroutput> in the range <computeroutput>[map_first, map_last)</computeroutput> such that the value of <computeroutput>pred(*(stencil + (i - map_first)))</computeroutput> is <computeroutput>true</computeroutput>, the value <computeroutput>input_first[*i]</computeroutput> is assigned to <computeroutput>*(result + (i - map_first))</computeroutput>. <computeroutput>RandomAccessIterator</computeroutput> must permit random access.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map_last</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End of the range of gather locations. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stencil</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the range of predicate values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>input_first</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the source range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Beginning of the destination range. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pred</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predicate to apply to the stencil values.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIterator1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator1&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>difference_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>InputIterator2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/input_iterator">Input Iterator</ulink> and <computeroutput>InputIterator2&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>Predicate&apos;s</computeroutput> argument type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RandomAccessIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/random_access_iterator">Random Access iterator</ulink> and <computeroutput>RandomAccessIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput> must be convertible to <computeroutput>OutputIterator&apos;s</computeroutput> <computeroutput>value_type</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/iterator/output_iterator">Output Iterator</ulink>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be a model of <ulink url="https://en.cppreference.com/w/cpp/concepts/predicate">Predicate</ulink>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>The range <computeroutput>[map_first, map_last)</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The range <computeroutput>[stencil, stencil + (map_last - map_first))</computeroutput> shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>. </para>
+</simplesect>
+<simplesect kind="pre"><para>The input data shall not overlap the range <computeroutput>[result, result + (map_last - map_first))</computeroutput>.</para>
+</simplesect>
+<simplesect kind="remark"><para><computeroutput>gather_if</computeroutput> is the inverse of <computeroutput>scatter_if</computeroutput>.</para>
+</simplesect>
+The following code snippet demonstrates how to use <computeroutput>gather_if</computeroutput> to gather selected values from an input range based on an arbitrary selection function.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/gather.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>is_even</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>bool<sp/>operator()(const<sp/>int<sp/>x)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>(x<sp/>%<sp/>2)<sp/>==<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline><highlight class="normal">...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>values[10]<sp/>=<sp/>{0,<sp/>1,<sp/>2,<sp/>3,<sp/>4,<sp/>5,<sp/>6,<sp/>7,<sp/>8,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_values(values,<sp/>values<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>we<sp/>will<sp/>select<sp/>an<sp/>element<sp/>when<sp/>our<sp/>stencil<sp/>is<sp/>even</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>stencil[10]<sp/>=<sp/>{0,<sp/>3,<sp/>4,<sp/>1,<sp/>4,<sp/>1,<sp/>2,<sp/>7,<sp/>8,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_stencil(stencil,<sp/>stencil<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>map<sp/>all<sp/>even<sp/>indices<sp/>into<sp/>the<sp/>first<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>and<sp/>odd<sp/>indices<sp/>to<sp/>the<sp/>last<sp/>half<sp/>of<sp/>the<sp/>range</highlight></codeline>
+<codeline><highlight class="normal">int<sp/>map[10]<sp/><sp/><sp/>=<sp/>{0,<sp/>2,<sp/>4,<sp/>6,<sp/>8,<sp/>1,<sp/>3,<sp/>5,<sp/>7,<sp/>9};</highlight></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_map(map,<sp/>map<sp/>+<sp/>10);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">thrust::device_vector&lt;int&gt;<sp/>d_output(10,<sp/>7);</highlight></codeline>
+<codeline><highlight class="normal">thrust::gather_if(d_map.begin(),<sp/>d_map.end(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_stencil.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_values.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d_output.begin(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_even());</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>d_output<sp/>is<sp/>now<sp/>{0,<sp/>7,<sp/>4,<sp/>7,<sp/>8,<sp/>7,<sp/>3,<sp/>7,<sp/>7,<sp/>7}</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/gather.h" line="451" column="16" declfile="thrust/gather.h" declline="451" declcolumn="16"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

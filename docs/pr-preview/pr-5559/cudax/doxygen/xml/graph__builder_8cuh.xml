@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="graph__builder_8cuh" kind="file" language="C++">
+    <compoundname>graph_builder.cuh</compoundname>
+    <includes local="no">cuda/std/detail/__config</includes>
+    <includes local="no">cuda/std/__utility/exchange.h</includes>
+    <includes refid="graph__builder__ref_8cuh" local="no">cuda/experimental/__graph/graph_builder_ref.cuh</includes>
+    <includes local="no">cuda/std/__cccl/prologue.h</includes>
+    <includes local="no">cuda/std/__cccl/epilogue.h</includes>
+    <includedby refid="graph_8cuh" local="no">include/cuda/experimental/graph.cuh</includedby>
+    <includedby refid="path__builder_8cuh" local="no">include/cuda/experimental/__graph/path_builder.cuh</includedby>
+    <incdepgraph>
+      <node id="5">
+        <label>cuda/std/__cccl/epilogue.h</label>
+      </node>
+      <node id="4">
+        <label>cuda/std/__cccl/prologue.h</label>
+      </node>
+      <node id="3">
+        <label>cuda/std/__utility/exchange.h</label>
+      </node>
+      <node id="1">
+        <label>include/cuda/experimental/__graph/graph_builder.cuh</label>
+        <link refid="graph__builder_8cuh"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cuda/std/detail/__config</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="structcuda_1_1experimental_1_1graph__builder" prot="public">cuda::experimental::graph_builder</innerclass>
+    <innernamespace refid="namespacecuda">cuda</innernamespace>
+    <innernamespace refid="namespacecuda_1_1experimental">cuda::experimental</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//===----------------------------------------------------------------------===//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Part<sp/>of<sp/>CUDA<sp/>Experimental<sp/>in<sp/>CUDA<sp/>C++<sp/>Core<sp/>Libraries,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>under<sp/>the<sp/>Apache<sp/>License<sp/>v2.0<sp/>with<sp/>LLVM<sp/>Exceptions.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>https://llvm.org/LICENSE.txt<sp/>for<sp/>license<sp/>information.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>SPDX-License-Identifier:<sp/>Apache-2.0<sp/>WITH<sp/>LLVM-exception</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/>SPDX-FileCopyrightText:<sp/>Copyright<sp/>(c)<sp/>2025<sp/>NVIDIA<sp/>CORPORATION<sp/>&amp;<sp/>AFFILIATES.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//===----------------------------------------------------------------------===//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>__CUDAX_GRAPH_GRAPH_BUILDER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>__CUDAX_GRAPH_GRAPH_BUILDER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/detail/__config&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/__utility/exchange.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/experimental/__graph/graph_builder_ref.cuh&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/__cccl/prologue.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">cuda::experimental</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="62" refid="structcuda_1_1experimental_1_1graph__builder" refkind="compound"><highlight class="keyword">struct<sp/></highlight><highlight class="normal">_CCCL_TYPE_VISIBILITY_DEFAULT<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref><sp/>:<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref></highlight></codeline>
+<codeline lineno="63"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(device_ref<sp/>__dev)</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref>(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>__dev)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_TRY_CUDA_API(cudaGraphCreate,<sp/></highlight><highlight class="stringliteral">&quot;cudaGraphCreate<sp/>failed&quot;</highlight><highlight class="normal">,<sp/>&amp;__graph_,<sp/>0);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>()</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(device_ref{0})</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(_CUDA_VSTD::nullptr_t)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/>constexpr<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(no_init_t,<sp/>device_ref<sp/>__dev<sp/>=<sp/>device_ref{0})<sp/>noexcept</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref>(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>__dev)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/>constexpr<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(<ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>&amp;&amp;<sp/>__other)<sp/>noexcept</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref>(_CUDA_VSTD::exchange(__other.__graph_,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">),<sp/>__other.__dev_)</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/>constexpr<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(<ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref><sp/>__other)</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref>(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>__other.__dev_)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(__other.__graph_)</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_CCCL_TRY_CUDA_API(cudaGraphClone,<sp/></highlight><highlight class="stringliteral">&quot;cudaGraphClone<sp/>failed&quot;</highlight><highlight class="normal">,<sp/>&amp;__graph_,<sp/>__other.__graph_);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/>_CCCL_CONSTEXPR_CXX20<sp/>~<ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>()</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>reset();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>operator=(<ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>&amp;&amp;<sp/>__other)<sp/>noexcept<sp/>-&gt;<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>&amp;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>&amp;__other)</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>swap(__other);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>__other.reset();</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/>_CCCL_CONSTEXPR_CXX20<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>operator=(<ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref><sp/>__other)<sp/>-&gt;<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>&amp;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>!=<sp/>&amp;__other)</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>operator=(<ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(__other));</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/>[[nodiscard]]<sp/>_CCCL_TRIVIAL_HOST_API<sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>release()<sp/>noexcept<sp/>-&gt;<sp/>cudaGraph_t</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_CUDA_VSTD::exchange(__graph_,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>reset()<sp/>noexcept</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>__graph<sp/>=<sp/>_CUDA_VSTD::exchange(__graph_,<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_CCCL_ASSERT_CUDA_API(cudaGraphDestroy,<sp/></highlight><highlight class="stringliteral">&quot;cudaGraphDestroy<sp/>failed&quot;</highlight><highlight class="normal">,<sp/>__graph);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/>[[nodiscard]]<sp/>_CCCL_HOST_API<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>_CCCL_CONSTEXPR_CXX20<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/>from_native_handle(cudaGraph_t<sp/>__graph,<sp/>device_ref<sp/>__dev)<sp/>noexcept<sp/>-&gt;<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>{__graph,<sp/>__dev};</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>_CCCL_HOST_API<sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/>constexpr<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder" kindref="compound">graph_builder</ref>(cudaGraph_t<sp/>__graph,<sp/>device_ref<sp/>__dev)<sp/>noexcept</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structcuda_1_1experimental_1_1graph__builder__ref" kindref="compound">graph_builder_ref</ref>(__graph,<sp/>__dev)</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/>{}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="193"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>cuda::experimental</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/__cccl/epilogue.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>__CUDAX_GRAPH_GRAPH_BUILDER</highlight></codeline>
+    </programlisting>
+    <location file="include/cuda/experimental/__graph/graph_builder.cuh"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>thrust/mr/pool.h &mdash; thrust 3.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="../_static/version.js"></script>
+        <script src="../_static/social-media.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="thrust/mr/pool_options.h" href="file_thrust_mr_pool_options.h.html" />
+    <link rel="prev" title="thrust/mr/pool.h" href="file_thrust_mr_pool.h.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html">
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html#thrust-module">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_process.html">Release Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_build.html">Developer Build</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">Thrust API documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="thrust_api.html">Thrust: The C++ Parallel Algorithms Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="thrust_api.html#directory-hierarchy">Directory hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thrust_api.html#namespace-hierarchy">Namespace hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thrust_api.html#defines">Defines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="thrust_api.html#directories">Directories</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dir_thrust.html">thrust</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dir_thrust.html#directories">Directories</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="dir_thrust_detail.html">thrust/detail</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_thrust_iterator.html">thrust/iterator</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="dir_thrust_mr.html">thrust/mr</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="dir_thrust_mr.html#files">Files</a><ul class="current">
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_allocator.h.html">thrust/mr/allocator.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_device_memory_resource.h.html">thrust/mr/device_memory_resource.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_disjoint_pool.h.html">thrust/mr/disjoint_pool.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_disjoint_sync_pool.h.html">thrust/mr/disjoint_sync_pool.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_disjoint_tls_pool.h.html">thrust/mr/disjoint_tls_pool.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_fancy_pointer_resource.h.html">thrust/mr/fancy_pointer_resource.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_host_memory_resource.h.html">thrust/mr/host_memory_resource.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_memory_resource.h.html">thrust/mr/memory_resource.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_new.h.html">thrust/mr/new.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_polymorphic_adaptor.h.html">thrust/mr/polymorphic_adaptor.h</a></li>
+<li class="toctree-l7 current"><a class="reference internal" href="file_thrust_mr_pool.h.html">thrust/mr/pool.h</a><ul class="current">
+<li class="toctree-l8 current"><a class="current reference internal" href="#">Source file</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_thrust_mr_pool.h.html#classes">Classes</a></li>
+<li class="toctree-l8"><a class="reference internal" href="file_thrust_mr_pool.h.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_pool_options.h.html">thrust/mr/pool_options.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_sync_pool.h.html">thrust/mr/sync_pool.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_tls_pool.h.html">thrust/mr/tls_pool.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_universal_memory_resource.h.html">thrust/mr/universal_memory_resource.h</a></li>
+<li class="toctree-l7"><a class="reference internal" href="file_thrust_mr_validator.h.html">thrust/mr/validator.h</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="dir_thrust_random.html">thrust/random</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_thrust_system.html">thrust/system</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dir_thrust_type_traits.html">thrust/type_traits</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="dir_thrust.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="thrust_api.html#namespaces">Namespaces</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">thrust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="thrust_api.html">Thrust: The C++ Parallel Algorithms Library API</a> &raquo;</li>
+          <li><a href="dir_thrust.html">thrust</a> &raquo;</li>
+          <li><a href="dir_thrust_mr.html">thrust/mr</a> &raquo;</li>
+          <li><a href="file_thrust_mr_pool.h.html">thrust/mr/pool.h</a> &raquo;</li>
+      <li>thrust/mr/pool.h</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="thrust-mr-pool-h">
+<h1>thrust/mr/pool.h<a class="headerlink" href="#thrust-mr-pool-h" title="Permalink to this headline"></a></h1>
+<p>File members: <a class="reference internal" href="file_thrust_mr_pool.h.html#pool-8h"><span class="std std-ref">thrust/mr/pool.h</span></a></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> *  Copyright 2018 NVIDIA Corporation</span>
+<span class="cm"> *</span>
+<span class="cm"> *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="cm"> *  you may not use this file except in compliance with the License.</span>
+<span class="cm"> *  You may obtain a copy of the License at</span>
+<span class="cm"> *</span>
+<span class="cm"> *      http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="cm"> *</span>
+<span class="cm"> *  Unless required by applicable law or agreed to in writing, software</span>
+<span class="cm"> *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="cm"> *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="cm"> *  See the License for the specific language governing permissions and</span>
+<span class="cm"> *  limitations under the License.</span>
+<span class="cm"> */</span><span class="w"></span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thrust/detail/config.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#if defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</span>
+<span class="cp">#  pragma GCC system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</span>
+<span class="cp">#  pragma clang system_header</span>
+<span class="cp">#elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</span>
+<span class="cp">#  pragma system_header</span>
+<span class="cp">#endif </span><span class="c1">// no system header</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thrust/detail/algorithm_wrapper.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thrust/host_vector.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thrust/mr/allocator.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thrust/mr/memory_resource.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thrust/mr/pool_options.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/cassert&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cuda/std/cstdint&gt;</span><span class="cp"></span>
+
+<span class="n">THRUST_NAMESPACE_BEGIN</span><span class="w"></span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">mr</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Upstream</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span><span class="w"> </span><span class="nc">unsynchronized_pool_resource</span><span class="w"> </span><span class="k">final</span><span class="w"></span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">memory_resource</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Upstream</span><span class="o">::</span><span class="n">pointer</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="n">validator</span><span class="o">&lt;</span><span class="n">Upstream</span><span class="o">&gt;</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">pool_options</span><span class="w"> </span><span class="n">get_default_options</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool_options</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">min_blocks_per_chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">min_bytes_per_chunk</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">max_blocks_per_chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">max_bytes_per_chunk</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">smallest_block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">THRUST_MR_DEFAULT_ALIGNMENT</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">largest_block_size</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">THRUST_MR_DEFAULT_ALIGNMENT</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">cache_oversized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">cached_size_cutoff_factor</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">ret</span><span class="p">.</span><span class="n">cached_alignment_cutoff_factor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">unsynchronized_pool_resource</span><span class="p">(</span><span class="n">Upstream</span><span class="o">*</span><span class="w"> </span><span class="n">upstream</span><span class="p">,</span><span class="w"> </span><span class="n">pool_options</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_default_options</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">m_upstream</span><span class="p">(</span><span class="n">upstream</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_options</span><span class="p">(</span><span class="n">options</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_smallest_block_log2</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">log2_ri</span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">smallest_block_size</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_pools</span><span class="p">(</span><span class="n">upstream</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_allocated</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_oversized</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_cached_oversized</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">validate</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">pool</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">block_descriptor_ptr</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">m_pools</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">log2_ri</span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">largest_block_size</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m_smallest_block_log2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// TODO: C++11: use delegating constructors</span>
+
+<span class="w">  </span><span class="n">unsynchronized_pool_resource</span><span class="p">(</span><span class="n">pool_options</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_default_options</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">m_upstream</span><span class="p">(</span><span class="n">get_global_resource</span><span class="o">&lt;</span><span class="n">Upstream</span><span class="o">&gt;</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_options</span><span class="p">(</span><span class="n">options</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_smallest_block_log2</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">log2_ri</span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">smallest_block_size</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_pools</span><span class="p">(</span><span class="n">get_global_resource</span><span class="o">&lt;</span><span class="n">Upstream</span><span class="o">&gt;</span><span class="p">())</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_allocated</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_oversized</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="p">,</span><span class="w"> </span><span class="n">m_cached_oversized</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">validate</span><span class="p">());</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">pool</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">block_descriptor_ptr</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">};</span><span class="w"></span>
+<span class="w">    </span><span class="n">m_pools</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">log2_ri</span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">largest_block_size</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m_smallest_block_log2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">~</span><span class="n">unsynchronized_pool_resource</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">release</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">void_ptr</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Upstream</span><span class="o">::</span><span class="n">pointer</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">void_ptr_traits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">pointer_traits</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">char_ptr</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">void_ptr_traits</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">rebind</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;::</span><span class="n">other</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">block_descriptor</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">chunk_descriptor</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">oversized_block_descriptor</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">block_descriptor_ptr</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">void_ptr_traits</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">rebind</span><span class="o">&lt;</span><span class="n">block_descriptor</span><span class="o">&gt;::</span><span class="n">other</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">chunk_descriptor_ptr</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">void_ptr_traits</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">rebind</span><span class="o">&lt;</span><span class="n">chunk_descriptor</span><span class="o">&gt;::</span><span class="n">other</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">void_ptr_traits</span><span class="o">::</span><span class="k">template</span><span class="w"> </span><span class="n">rebind</span><span class="o">&lt;</span><span class="n">oversized_block_descriptor</span><span class="o">&gt;::</span><span class="n">other</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">oversized_block_ptr_traits</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">pointer_traits</span><span class="o">&lt;</span><span class="n">oversized_block_descriptor_ptr</span><span class="o">&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">block_descriptor</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_descriptor_ptr</span><span class="w"> </span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">chunk_descriptor</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">chunk_descriptor_ptr</span><span class="w"> </span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// this was originally a forward list, but I made it a doubly linked list</span>
+<span class="w">  </span><span class="c1">// because that way deallocation when not caching is faster and doesn&#39;t require</span>
+<span class="w">  </span><span class="c1">// traversal of a linked list (it&#39;s still a forward list for the cached list,</span>
+<span class="w">  </span><span class="c1">// because allocation from that list already traverses)</span>
+<span class="w">  </span><span class="c1">//</span>
+<span class="w">  </span><span class="c1">// TODO: investigate whether it&#39;s better to have this be a doubly-linked list</span>
+<span class="w">  </span><span class="c1">// with fast do_deallocate when !m_options.cache_oversized, or to have this be</span>
+<span class="w">  </span><span class="c1">// a forward list and require traversal in do_deallocate</span>
+<span class="w">  </span><span class="c1">//</span>
+<span class="w">  </span><span class="c1">// I assume that it is better this way, but the additional pointer could</span>
+<span class="w">  </span><span class="c1">// potentially hurt? these are supposed to be oversized and/or overaligned,</span>
+<span class="w">  </span><span class="c1">// so they are kinda memory intensive already</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">oversized_block_descriptor</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">alignment</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">prev</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">next_cached</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">current_size</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">pool</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">block_descriptor_ptr</span><span class="w"> </span><span class="n">free_list</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">previous_allocated_count</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">pool_vector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">host_vector</span><span class="o">&lt;</span><span class="n">pool</span><span class="p">,</span><span class="w"> </span><span class="n">allocator</span><span class="o">&lt;</span><span class="n">pool</span><span class="p">,</span><span class="w"> </span><span class="n">Upstream</span><span class="o">&gt;&gt;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Upstream</span><span class="o">*</span><span class="w"> </span><span class="n">m_upstream</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">pool_options</span><span class="w"> </span><span class="n">m_options</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">m_smallest_block_log2</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">pool_vector</span><span class="w"> </span><span class="n">m_pools</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">chunk_descriptor_ptr</span><span class="w"> </span><span class="n">m_allocated</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">m_oversized</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">m_cached_oversized</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">release</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// reset the buckets</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_pools</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="n">m_pools</span><span class="p">[</span><span class="n">i</span><span class="p">]).</span><span class="n">free_list</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="n">block_descriptor_ptr</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="n">m_pools</span><span class="p">[</span><span class="n">i</span><span class="p">]).</span><span class="n">previous_allocated_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// deallocate memory allocated for the buckets</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">pointer_traits</span><span class="o">&lt;</span><span class="n">chunk_descriptor_ptr</span><span class="o">&gt;::</span><span class="n">get</span><span class="p">(</span><span class="n">m_allocated</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">chunk_descriptor_ptr</span><span class="w"> </span><span class="n">alloc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_allocated</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">m_allocated</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">m_allocated</span><span class="p">).</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">void_ptr</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">alloc</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">alloc</span><span class="p">).</span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">m_upstream</span><span class="o">-&gt;</span><span class="n">do_deallocate</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">alloc</span><span class="p">).</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">chunk_descriptor</span><span class="p">),</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">alignment</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// deallocate cached oversized/overaligned memory</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">m_oversized</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">alloc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_oversized</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">m_oversized</span><span class="w">                          </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">m_oversized</span><span class="p">).</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">oversized_block_descriptor</span><span class="w"> </span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">alloc</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">void_ptr</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">alloc</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">current_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">m_upstream</span><span class="o">-&gt;</span><span class="n">do_deallocate</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">oversized_block_descriptor</span><span class="p">),</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">alignment</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">m_cached_oversized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oversized_block_descriptor_ptr</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">void_ptr</span><span class="w"></span>
+<span class="w">  </span><span class="n">do_allocate</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">THRUST_MR_DEFAULT_ALIGNMENT</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">smallest_block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">is_power_of_2</span><span class="p">(</span><span class="n">alignment</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// an oversized and/or overaligned allocation requested; needs to be allocated separately</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bytes</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">largest_block_size</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">alignment</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">cache_oversized</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">ptr</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">m_cached_oversized</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">oversized_block_descriptor_ptr</span><span class="o">*</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_cached_oversized</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">ptr</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">oversized_block_descriptor</span><span class="w"> </span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_good</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">alignment</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">alignment</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">          </span><span class="c1">// if the size is bigger than the requested size by a factor</span>
+<span class="w">          </span><span class="c1">// bigger than or equal to the specified cutoff for size,</span>
+<span class="w">          </span><span class="c1">// allocate a new block</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_good</span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">size_factor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">bytes</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size_factor</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">cached_size_cutoff_factor</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="n">is_good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">          </span><span class="c1">// if the alignment is bigger than the requested one by a factor</span>
+<span class="w">          </span><span class="c1">// bigger than or equal to the specified cutoff for alignment,</span>
+<span class="w">          </span><span class="c1">// allocate a new block</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_good</span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">alignment_factor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">alignment</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">alignment</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">alignment_factor</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">cached_alignment_cutoff_factor</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="n">is_good</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_good</span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">previous</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_cached_oversized</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="o">*</span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">next_cached</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="k">else</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="n">m_cached_oversized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">next_cached</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">desc</span><span class="p">.</span><span class="n">next_cached</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oversized_block_descriptor_ptr</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ptr</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bytes</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="n">desc</span><span class="p">.</span><span class="n">current_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">              </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">oversized_block_descriptor_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bytes</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">              </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="p">))</span><span class="w"></span>
+<span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="p">).</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="w">              </span><span class="k">else</span><span class="w"></span>
+<span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">m_oversized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">              </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">))</span><span class="w"></span>
+<span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">).</span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w"></span>
+<span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">            </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">          </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">ptr</span><span class="p">).</span><span class="n">next_cached</span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="n">ptr</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">previous</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="c1">// no fitting cached block found; allocate a new one that&#39;s just up to the specs</span>
+<span class="w">      </span><span class="n">void_ptr</span><span class="w"> </span><span class="n">allocated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_upstream</span><span class="o">-&gt;</span><span class="n">do_allocate</span><span class="p">(</span><span class="n">bytes</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">oversized_block_descriptor</span><span class="p">),</span><span class="w"> </span><span class="n">alignment</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">        </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">oversized_block_descriptor_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">allocated</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bytes</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">oversized_block_descriptor</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">desc</span><span class="p">.</span><span class="n">alignment</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">alignment</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">oversized_block_descriptor_ptr</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">m_oversized</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">desc</span><span class="p">.</span><span class="n">next_cached</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">oversized_block_descriptor_ptr</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="n">desc</span><span class="p">.</span><span class="n">current_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="o">*</span><span class="n">block</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">m_oversized</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">oversized_block_descriptor</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">next</span><span class="p">.</span><span class="n">prev</span><span class="w">                       </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="w">                      </span><span class="o">=</span><span class="w"> </span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">allocated</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// the request is NOT for oversized and/or overaligned memory</span>
+<span class="w">    </span><span class="c1">// allocate a block from an appropriate bucket</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">bytes_log2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">log2_ri</span><span class="p">(</span><span class="n">bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">bucket_idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes_log2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m_smallest_block_log2</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bucket</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="n">m_pools</span><span class="p">[</span><span class="n">bucket_idx</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">bytes_log2</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// if the free list of the bucket has no elements, allocate a new chunk</span>
+<span class="w">    </span><span class="c1">// and split it into blocks pushed to the free list</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">detail</span><span class="o">::</span><span class="n">pointer_traits</span><span class="o">&lt;</span><span class="n">block_descriptor_ptr</span><span class="o">&gt;::</span><span class="n">get</span><span class="p">(</span><span class="n">bucket</span><span class="p">.</span><span class="n">free_list</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bucket</span><span class="p">.</span><span class="n">previous_allocated_count</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">min_blocks_per_chunk</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">min_bytes_per_chunk</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bytes_log2</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">min_bytes_per_chunk</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bytes_log2</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">max_bytes_per_chunk</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bytes_log2</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">max_bytes_per_chunk</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bytes_log2</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">max_blocks_per_chunk</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">max_blocks_per_chunk</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">descriptor_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">block_descriptor</span><span class="p">),</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">alignment</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">block_size</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">descriptor_size</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">block_size</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">alignment</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">alignment</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">void_ptr</span><span class="w"> </span><span class="n">allocated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_upstream</span><span class="o">-&gt;</span><span class="n">do_allocate</span><span class="p">(</span><span class="n">chunk_size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">chunk_descriptor</span><span class="p">),</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">alignment</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">chunk_descriptor_ptr</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">        </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">chunk_descriptor_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">allocated</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">chunk_size</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">chunk_descriptor</span><span class="w"> </span><span class="n">chunk_desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">chunk_desc</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chunk_size</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">chunk_desc</span><span class="p">.</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_allocated</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="o">*</span><span class="n">chunk</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="n">chunk_desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">m_allocated</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">chunk</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">block_descriptor_ptr</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">block_descriptor_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<span class="w">          </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">allocated</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">block_size</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bytes</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">block_descriptor</span><span class="w"> </span><span class="n">block_desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">block_desc</span><span class="p">.</span><span class="n">next</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">bucket</span><span class="p">.</span><span class="n">free_list</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="o">*</span><span class="n">block</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">block_desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">bucket</span><span class="p">.</span><span class="n">free_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// allocate a block from the front of the bucket&#39;s free list</span>
+<span class="w">    </span><span class="n">block_descriptor_ptr</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bucket</span><span class="p">.</span><span class="n">free_list</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">bucket</span><span class="p">.</span><span class="n">free_list</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">block</span><span class="p">).</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">block</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">do_deallocate</span><span class="p">(</span><span class="n">void_ptr</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">THRUST_MR_DEFAULT_ALIGNMENT</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">smallest_block_size</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">detail</span><span class="o">::</span><span class="n">is_power_of_2</span><span class="p">(</span><span class="n">alignment</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// verify that the pointer is at least as aligned as claimed</span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;::</span><span class="n">cuda</span><span class="o">::</span><span class="n">std</span><span class="o">::</span><span class="kt">intmax_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">void_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">))</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// the deallocated block is oversized and/or overaligned</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">largest_block_size</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_options</span><span class="p">.</span><span class="n">alignment</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">oversized_block_descriptor_ptr</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">        </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">oversized_block_descriptor_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">oversized_block_descriptor</span><span class="w"> </span><span class="n">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">current_size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">assert</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">alignment</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">alignment</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_options</span><span class="p">.</span><span class="n">cache_oversized</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">desc</span><span class="p">.</span><span class="n">next_cached</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cached_oversized</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="n">desc</span><span class="p">.</span><span class="n">current_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="n">block</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">            </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">oversized_block_descriptor_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="p">));</span><span class="w"></span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="p">))</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="p">).</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="k">else</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">m_oversized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">))</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">).</span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">m_cached_oversized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="o">*</span><span class="n">block</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="p">).</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">m_oversized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oversized_block_ptr_traits</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="o">*</span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="p">).</span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">prev</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">m_upstream</span><span class="o">-&gt;</span><span class="n">do_deallocate</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">oversized_block_descriptor</span><span class="p">),</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="n">alignment</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// push the block to the front of the appropriate bucket&#39;s free list</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n_log2</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">detail</span><span class="o">::</span><span class="n">log2_ri</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">bucket_idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_log2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m_smallest_block_log2</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">pool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bucket</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">raw_reference_cast</span><span class="p">(</span><span class="n">m_pools</span><span class="p">[</span><span class="n">bucket_idx</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n_log2</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">block_descriptor_ptr</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">block_descriptor_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">void_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">char_ptr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">block_descriptor</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">desc</span><span class="p">.</span><span class="n">next</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">bucket</span><span class="p">.</span><span class="n">free_list</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="o">*</span><span class="n">block</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">bucket</span><span class="p">.</span><span class="n">free_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">block</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace mr</span>
+<span class="n">THRUST_NAMESPACE_END</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

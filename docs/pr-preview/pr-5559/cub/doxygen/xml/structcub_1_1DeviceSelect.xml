@@ -1,0 +1,1953 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structcub_1_1DeviceSelect" kind="struct" language="C++" prot="public">
+    <compoundname>cub::DeviceSelect</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1acddae8a57fedfec6e5885b37ebabfc79" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIteratorT</type>
+          </param>
+          <param>
+            <type>typename FlagIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::Flagged</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, InputIteratorT d_in, FlagIterator d_flags, OutputIteratorT d_out, NumSelectedIteratorT d_num_selected_out, ::cuda::std::int64_t num_items, cudaStream_t stream=0)</argsstring>
+        <name>Flagged</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>InputIteratorT</type>
+          <declname>d_in</declname>
+        </param>
+        <param>
+          <type>FlagIterator</type>
+          <declname>d_flags</declname>
+        </param>
+        <param>
+          <type>OutputIteratorT</type>
+          <declname>d_out</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Uses the ``d_flags`` sequence to selectively copy the corresponding items from ``d_in`` into ``d_out``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- The value type of ``d_flags`` must be castable to ``bool`` (e.g., ``bool``, ``char``, ``int``, etc.).
+- Copies of the selected items are compacted into ``d_out`` and maintain their original relative ordering.
+- | The range ``[d_out, d_out + *d_num_selected_out)`` shall not overlap ``[d_in, d_in + num_items)``,
+  | ``[d_flags, d_flags + num_items)`` nor ``d_num_selected_out`` in any way.
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;  // or equivalently &lt;cub/device/device_select.cuh&gt;
+
+   // Declare, allocate, and initialize device-accessible pointers for input,
+   // flags, and output
+   int  num_items;              // e.g., 8
+   int  *d_in;                  // e.g., [1, 2, 3, 4, 5, 6, 7, 8]
+   char *d_flags;               // e.g., [1, 0, 0, 1, 0, 1, 1, 0]
+   int  *d_out;                 // e.g., [ ,  ,  ,  ,  ,  ,  ,  ]
+   int  *d_num_selected_out;    // e.g., [ ]
+   ...
+
+   // Determine temporary device storage requirements
+   void     *d_temp_storage = nullptr;
+   size_t   temp_storage_bytes = 0;
+   cub::DeviceSelect::Flagged(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_flags, d_out, d_num_selected_out, num_items);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run selection
+   cub::DeviceSelect::Flagged(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_flags, d_out, d_num_selected_out, num_items);
+
+   // d_out                 &lt;-- [1, 4, 6, 7]
+   // d_num_selected_out    &lt;-- [4]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>FlagIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading selection flags (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of selection flags</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output total number of items selected (i.e., length of <computeroutput>d_out</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_in</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="163" column="24" bodyfile="cub/device/device_select.cuh" bodystart="163" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1ae2b2cfaf3b40cf812171975b4b6a3acb" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename IteratorT</type>
+          </param>
+          <param>
+            <type>typename FlagIterator</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::Flagged</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, IteratorT d_data, FlagIterator d_flags, NumSelectedIteratorT d_num_selected_out, ::cuda::std::int64_t num_items, cudaStream_t stream=0)</argsstring>
+        <name>Flagged</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>IteratorT</type>
+          <declname>d_data</declname>
+        </param>
+        <param>
+          <type>FlagIterator</type>
+          <declname>d_flags</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Uses the ``d_flags`` sequence to selectively compact the items in `d_data``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- The value type of ``d_flags`` must be castable to ``bool`` (e.g., ``bool``, ``char``, ``int``, etc.).
+- Copies of the selected items are compacted in-place and maintain their original relative ordering.
+- | The ``d_data`` may equal ``d_flags``. The range ``[d_data, d_data + num_items)`` shall not overlap
+  | ``[d_flags, d_flags + num_items)`` in any other way.
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;  // or equivalently &lt;cub/device/device_select.cuh&gt;
+
+   // Declare, allocate, and initialize device-accessible pointers for input,
+   // flags, and output
+   int  num_items;              // e.g., 8
+   int  *d_data;                // e.g., [1, 2, 3, 4, 5, 6, 7, 8]
+   char *d_flags;               // e.g., [1, 0, 0, 1, 0, 1, 1, 0]
+   int  *d_num_selected_out;    // e.g., [ ]
+   ...
+
+   // Determine temporary device storage requirements
+   void     *d_temp_storage = nullptr;
+   size_t   temp_storage_bytes = 0;
+   cub::DeviceSelect::Flagged(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_flags, d_num_selected_out, num_items);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run selection
+   cub::DeviceSelect::Flagged(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_flags, d_num_selected_out, num_items);
+
+   // d_data                &lt;-- [1, 4, 6, 7]
+   // d_num_selected_out    &lt;-- [4]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>IteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access iterator type for reading and writing selected items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>FlagIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading selection flags (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">d_data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the sequence of data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of selection flags</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output total number of items selected</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_data</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="279" column="24" bodyfile="cub/device/device_select.cuh" bodystart="279" bodyend="313"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1ad9f384ee7e17ae7c095f126cb5b1117a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIteratorT</type>
+          </param>
+          <param>
+            <type>typename OutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+          <param>
+            <type>typename SelectOp</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::If</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, InputIteratorT d_in, OutputIteratorT d_out, NumSelectedIteratorT d_num_selected_out, ::cuda::std::int64_t num_items, SelectOp select_op, cudaStream_t stream=0)</argsstring>
+        <name>If</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>InputIteratorT</type>
+          <declname>d_in</declname>
+        </param>
+        <param>
+          <type>OutputIteratorT</type>
+          <declname>d_out</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>SelectOp</type>
+          <declname>select_op</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Uses the ``select_op`` functor to selectively copy items from ``d_in`` into ``d_out``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- Copies of the selected items are compacted into ``d_out`` and maintain
+  their original relative ordering.
+- | The range ``[d_out, d_out + *d_num_selected_out)`` shall not overlap
+  | ``[d_in, d_in + num_items)`` nor ``d_num_selected_out`` in any way.
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/device/device_select.cuh&gt;
+
+   // Functor type for selecting values less than some criteria
+   struct LessThan
+   {
+       int compare;
+
+       __host__ __device__ __forceinline__
+       LessThan(int compare) : compare(compare) {}
+
+       __host__ __device__ __forceinline__
+       bool operator()(const int &amp;a) const {
+           return (a &lt; compare);
+       }
+   };
+
+   // Declare, allocate, and initialize device-accessible pointers
+   // for input and output
+   int      num_items;              // e.g., 8
+   int      *d_in;                  // e.g., [0, 2, 3, 9, 5, 2, 81, 8]
+   int      *d_out;                 // e.g., [ ,  ,  ,  ,  ,  ,  ,  ]
+   int      *d_num_selected_out;    // e.g., [ ]
+   LessThan select_op(7);
+   ...
+
+   // Determine temporary device storage requirements
+   void     *d_temp_storage = nullptr;
+   size_t   temp_storage_bytes = 0;
+   cub::DeviceSelect::If(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_out, d_num_selected_out, num_items, select_op);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run selection
+   cub::DeviceSelect::If(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_out, d_num_selected_out, num_items, select_op);
+
+   // d_out                 &lt;-- [0, 2, 3, 5, 2]
+   // d_num_selected_out    &lt;-- [5]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SelectOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Selection operator type having member <computeroutput>bool operator()(const T &amp;a)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output total number of items selected (i.e., length of <computeroutput>d_out</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_in</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">select_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unary selection operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="418" column="3" bodyfile="cub/device/device_select.cuh" bodystart="418" bodyend="451"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1aa80697a9fe91b83da173cb520c8b612c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename IteratorT</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+          <param>
+            <type>typename SelectOp</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::If</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, IteratorT d_data, NumSelectedIteratorT d_num_selected_out, ::cuda::std::int64_t num_items, SelectOp select_op, cudaStream_t stream=0)</argsstring>
+        <name>If</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>IteratorT</type>
+          <declname>d_data</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>SelectOp</type>
+          <declname>select_op</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Uses the ``select_op`` functor to selectively compact items in ``d_data``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- | Copies of the selected items are compacted in ``d_data`` and maintain
+  | their original relative ordering.
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/device/device_select.cuh&gt;
+
+   // Functor type for selecting values less than some criteria
+   struct LessThan
+   {
+       int compare;
+
+       __host__ __device__ __forceinline__
+       LessThan(int compare) : compare(compare) {}
+
+       __host__ __device__ __forceinline__
+       bool operator()(const int &amp;a) const {
+           return (a &lt; compare);
+       }
+   };
+
+   // Declare, allocate, and initialize device-accessible pointers
+   // for input and output
+   int      num_items;              // e.g., 8
+   int      *d_data;                // e.g., [0, 2, 3, 9, 5, 2, 81, 8]
+   int      *d_num_selected_out;    // e.g., [ ]
+   LessThan select_op(7);
+   ...
+
+   // Determine temporary device storage requirements
+   void     *d_temp_storage = nullptr;
+   size_t   temp_storage_bytes = 0;
+   cub::DeviceSelect::If(
+     d_temp_storage, temp_storage_bytes,
+     d_data, d_num_selected_out, num_items, select_op);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run selection
+   cub::DeviceSelect::If(
+     d_temp_storage, temp_storage_bytes,
+     d_data, d_num_selected_out, num_items, select_op);
+
+   // d_data                &lt;-- [0, 2, 3, 5, 2]
+   // d_num_selected_out    &lt;-- [5]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>IteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading and writing items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SelectOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Selection operator type having member <computeroutput>bool operator()(const T &amp;a)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">d_data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the sequence of data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output total number of items selected</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_data</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">select_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unary selection operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="546" column="3" bodyfile="cub/device/device_select.cuh" bodystart="546" bodyend="579"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1a6af2f1156bc18ce49ffe464a92a085c4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIteratorT</type>
+          </param>
+          <param>
+            <type>typename FlagIterator</type>
+          </param>
+          <param>
+            <type>typename OutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+          <param>
+            <type>typename SelectOp</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::FlaggedIf</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, InputIteratorT d_in, FlagIterator d_flags, OutputIteratorT d_out, NumSelectedIteratorT d_num_selected_out, ::cuda::std::int64_t num_items, SelectOp select_op, cudaStream_t stream=0)</argsstring>
+        <name>FlaggedIf</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>InputIteratorT</type>
+          <declname>d_in</declname>
+        </param>
+        <param>
+          <type>FlagIterator</type>
+          <declname>d_flags</declname>
+        </param>
+        <param>
+          <type>OutputIteratorT</type>
+          <declname>d_out</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>SelectOp</type>
+          <declname>select_op</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Uses the ``select_op`` functor applied to ``d_flags`` to selectively copy the
+corresponding items from ``d_in`` into ``d_out``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- The expression ``select_op(flag)`` must be convertible to ``bool``,
+  where the type of ``flag`` corresponds to the value type of ``FlagIterator``.
+- Copies of the selected items are compacted into ``d_out`` and maintain
+  their original relative ordering.
+- | The range ``[d_out, d_out + *d_num_selected_out)`` shall not overlap
+  | ``[d_in, d_in + num_items)`` nor ``d_num_selected_out`` in any way.
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. literalinclude:: ../../../cub/test/catch2_test_device_select_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin segmented-select-iseven
+    :end-before: example-end segmented-select-iseven
+
+.. literalinclude:: ../../../cub/test/catch2_test_device_select_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin segmented-select-flaggedif
+    :end-before: example-end segmented-select-flaggedif</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>FlagIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading selection flags (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SelectOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Selection operator type having member <computeroutput>bool operator()(const T &amp;a)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of selection flags</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output total number of items selected (i.e., length of <computeroutput>d_out</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_in</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">select_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unary selection operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="663" column="24" bodyfile="cub/device/device_select.cuh" bodystart="663" bodyend="697"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1a15990a2dd6ab95340aad266d78a6cf14" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename IteratorT</type>
+          </param>
+          <param>
+            <type>typename FlagIterator</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+          <param>
+            <type>typename SelectOp</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::FlaggedIf</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, IteratorT d_data, FlagIterator d_flags, NumSelectedIteratorT d_num_selected_out, ::cuda::std::int64_t num_items, SelectOp select_op, cudaStream_t stream=0)</argsstring>
+        <name>FlaggedIf</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>IteratorT</type>
+          <declname>d_data</declname>
+        </param>
+        <param>
+          <type>FlagIterator</type>
+          <declname>d_flags</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>SelectOp</type>
+          <declname>select_op</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Uses the ``select_op`` functor applied to ``d_flags`` to selectively compact the
+corresponding items in ``d_data``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- The expression ``select_op(flag)`` must be convertible to ``bool``,
+  where the type of ``flag`` corresponds to the value type of ``FlagIterator``.
+- Copies of the selected items are compacted in-place and maintain their original relative ordering.
+- | The ``d_data`` may equal ``d_flags``. The range ``[d_data, d_data + num_items)`` shall not overlap
+  | ``[d_flags, d_flags + num_items)`` in any other way.
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. literalinclude:: ../../../cub/test/catch2_test_device_select_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin segmented-select-iseven
+    :end-before: example-end segmented-select-iseven
+
+.. literalinclude:: ../../../cub/test/catch2_test_device_select_api.cu
+    :language: c++
+    :dedent:
+    :start-after: example-begin segmented-select-flaggedif-inplace
+    :end-before: example-end segmented-select-flaggedif-inplace</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>IteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access iterator type for reading and writing selected items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>FlagIterator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading selection flags (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>SelectOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Selection operator type having member <computeroutput>bool operator()(const T &amp;a)</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">d_data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the sequence of data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of selection flags</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output total number of items selected</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_data</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">select_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unary selection operator</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="769" column="24" bodyfile="cub/device/device_select.cuh" bodystart="769" bodyend="803"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1a4db37ca4214bb7b41df5218e8b559ba4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename InputIteratorT</type>
+          </param>
+          <param>
+            <type>typename OutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::Unique</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, InputIteratorT d_in, OutputIteratorT d_out, NumSelectedIteratorT d_num_selected_out, ::cuda::std::int64_t num_items, cudaStream_t stream=0)</argsstring>
+        <name>Unique</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>InputIteratorT</type>
+          <declname>d_in</declname>
+        </param>
+        <param>
+          <type>OutputIteratorT</type>
+          <declname>d_out</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>::cuda::std::int64_t</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Given an input sequence ``d_in`` having runs of consecutive equal-valued keys,
+only the first key from each run is selectively copied to ``d_out``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- The ``==`` equality operator is used to determine whether keys are equivalent
+- Copies of the selected items are compacted into ``d_out`` and maintain their original relative ordering.
+- | The range ``[d_out, d_out + *d_num_selected_out)`` shall not overlap
+  | ``[d_in, d_in + num_items)`` nor ``d_num_selected_out`` in any way.
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/device/device_select.cuh&gt;
+
+   // Declare, allocate, and initialize device-accessible pointers
+   // for input and output
+   int  num_items;              // e.g., 8
+   int  *d_in;                  // e.g., [0, 2, 2, 9, 5, 5, 5, 8]
+   int  *d_out;                 // e.g., [ ,  ,  ,  ,  ,  ,  ,  ]
+   int  *d_num_selected_out;    // e.g., [ ]
+   ...
+
+   // Determine temporary device storage requirements
+   void     *d_temp_storage = nullptr;
+   size_t   temp_storage_bytes = 0;
+   cub::DeviceSelect::Unique(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_out, d_num_selected_out, num_items);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run selection
+   cub::DeviceSelect::Unique(
+     d_temp_storage, temp_storage_bytes,
+     d_in, d_out, d_num_selected_out, num_items);
+
+   // d_out                 &lt;-- [0, 2, 9, 5, 8]
+   // d_num_selected_out    &lt;-- [5]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>InputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>OutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected items (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected data items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output total number of items selected (i.e., length of <computeroutput>d_out</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_in</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="887" column="24" bodyfile="cub/device/device_select.cuh" bodystart="887" bodyend="921"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1ae29aa008b265fa192e5a9564f7568933" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename KeyInputIteratorT</type>
+          </param>
+          <param>
+            <type>typename ValueInputIteratorT</type>
+          </param>
+          <param>
+            <type>typename KeyOutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename ValueOutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumItemsT</type>
+          </param>
+          <param>
+            <type>typename EqualityOpT</type>
+          </param>
+        </templateparamlist>
+        <type>::cuda::std::enable_if_t&lt; !::cuda::std::is_convertible_v&lt; EqualityOpT, cudaStream_t &gt;, cudaError_t &gt;</type>
+        <definition>static ::cuda::std::enable_if_t&lt; !::cuda::std::is_convertible_v&lt;EqualityOpT, cudaStream_t&gt;, cudaError_t&gt; cub::DeviceSelect::UniqueByKey</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, KeyInputIteratorT d_keys_in, ValueInputIteratorT d_values_in, KeyOutputIteratorT d_keys_out, ValueOutputIteratorT d_values_out, NumSelectedIteratorT d_num_selected_out, NumItemsT num_items, EqualityOpT equality_op, cudaStream_t stream=0)</argsstring>
+        <name>UniqueByKey</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>KeyInputIteratorT</type>
+          <declname>d_keys_in</declname>
+        </param>
+        <param>
+          <type>ValueInputIteratorT</type>
+          <declname>d_values_in</declname>
+        </param>
+        <param>
+          <type>KeyOutputIteratorT</type>
+          <declname>d_keys_out</declname>
+        </param>
+        <param>
+          <type>ValueOutputIteratorT</type>
+          <declname>d_values_out</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>NumItemsT</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>EqualityOpT</type>
+          <declname>equality_op</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Given an input sequence ``d_keys_in`` and ``d_values_in`` with runs of key-value pairs with consecutive
+equal-valued keys, only the first key and its value from each run is selectively copied
+to ``d_keys_out`` and ``d_values_out``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- The user-provided equality operator, `equality_op`, is used to determine whether keys are equivalent
+- Copies of the selected items are compacted into ``d_out`` and maintain
+  their original relative ordering.
+- In-place operations are not supported. There must be no overlap between
+  any of the provided ranges:
+
+  - ``[d_keys_in,          d_keys_in    + num_items)``
+  - ``[d_keys_out,         d_keys_out   + *d_num_selected_out)``
+  - ``[d_values_in,        d_values_in  + num_items)``
+  - ``[d_values_out,       d_values_out + *d_num_selected_out)``
+  - ``[d_num_selected_out, d_num_selected_out + 1)``
+
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/device/device_select.cuh&gt;
+
+   // Declare, allocate, and initialize device-accessible pointers
+   // for input and output
+   int  num_items;              // e.g., 8
+   int  *d_keys_in;             // e.g., [0, 2, 2, 9, 5, 5, 5, 8]
+   int  *d_values_in;           // e.g., [1, 2, 3, 4, 5, 6, 7, 8]
+   int  *d_keys_out;            // e.g., [ ,  ,  ,  ,  ,  ,  ,  ]
+   int  *d_values_out;          // e.g., [ ,  ,  ,  ,  ,  ,  ,  ]
+   int  *d_num_selected_out;    // e.g., [ ]
+   ...
+
+   // Determine temporary device storage requirements
+   void     *d_temp_storage = nullptr;
+   size_t   temp_storage_bytes = 0;
+   cub::DeviceSelect::UniqueByKey(
+     d_temp_storage, temp_storage_bytes,
+     d_keys_in, d_values_in,
+     d_keys_out, d_values_out, d_num_selected_out, num_items);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run selection
+   cub::DeviceSelect::UniqueByKey(
+     d_temp_storage, temp_storage_bytes,
+     d_keys_in, d_values_in,
+     d_keys_out, d_values_out, d_num_selected_out, num_items);
+
+   // d_keys_out            &lt;-- [0, 2, 9, 5, 8]
+   // d_values_out          &lt;-- [1, 2, 4, 5, 8]
+   // d_num_selected_out    &lt;-- [5]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>KeyInputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input keys (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ValueInputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input values (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>KeyOutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected keys (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ValueOutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected values (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumItemsT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Type of num_items</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>EqualityOpT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Type of equality_op</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_keys_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of keys</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_values_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of values</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_keys_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected keys</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_values_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected values</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the total number of items selected (i.e., length of <computeroutput>d_keys_out</computeroutput> or <computeroutput>d_values_out</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_keys_in</computeroutput> or <computeroutput>d_values_in</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">equality_op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Binary predicate to determine equality</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="1049" column="5" bodyfile="cub/device/device_select.cuh" bodystart="1049" bodyend="1082"/>
+      </memberdef>
+      <memberdef kind="function" id="structcub_1_1DeviceSelect_1a9b30b0ea0bbaf3df64779fde1e0b9537" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename KeyInputIteratorT</type>
+          </param>
+          <param>
+            <type>typename ValueInputIteratorT</type>
+          </param>
+          <param>
+            <type>typename KeyOutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename ValueOutputIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumSelectedIteratorT</type>
+          </param>
+          <param>
+            <type>typename NumItemsT</type>
+          </param>
+        </templateparamlist>
+        <type>cudaError_t</type>
+        <definition>static cudaError_t cub::DeviceSelect::UniqueByKey</definition>
+        <argsstring>(void *d_temp_storage, size_t &amp;temp_storage_bytes, KeyInputIteratorT d_keys_in, ValueInputIteratorT d_values_in, KeyOutputIteratorT d_keys_out, ValueOutputIteratorT d_values_out, NumSelectedIteratorT d_num_selected_out, NumItemsT num_items, cudaStream_t stream=0)</argsstring>
+        <name>UniqueByKey</name>
+        <param>
+          <type>void *</type>
+          <declname>d_temp_storage</declname>
+        </param>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>temp_storage_bytes</declname>
+        </param>
+        <param>
+          <type>KeyInputIteratorT</type>
+          <declname>d_keys_in</declname>
+        </param>
+        <param>
+          <type>ValueInputIteratorT</type>
+          <declname>d_values_in</declname>
+        </param>
+        <param>
+          <type>KeyOutputIteratorT</type>
+          <declname>d_keys_out</declname>
+        </param>
+        <param>
+          <type>ValueOutputIteratorT</type>
+          <declname>d_values_out</declname>
+        </param>
+        <param>
+          <type>NumSelectedIteratorT</type>
+          <declname>d_num_selected_out</declname>
+        </param>
+        <param>
+          <type>NumItemsT</type>
+          <declname>num_items</declname>
+        </param>
+        <param>
+          <type>cudaStream_t</type>
+          <declname>stream</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst
+Given an input sequence ``d_keys_in`` and ``d_values_in`` with runs of key-value pairs with consecutive
+equal-valued keys, only the first key and its value from each run is selectively copied
+to ``d_keys_out`` and ``d_values_out``.
+The total number of items selected is written to ``d_num_selected_out``.
+
+- The ``==`` equality operator is used to determine whether keys are equivalent
+- Copies of the selected items are compacted into ``d_out`` and maintain
+  their original relative ordering.
+- In-place operations are not supported. There must be no overlap between
+  any of the provided ranges:
+
+  - ``[d_keys_in,          d_keys_in    + num_items)``
+  - ``[d_keys_out,         d_keys_out   + *d_num_selected_out)``
+  - ``[d_values_in,        d_values_in  + num_items)``
+  - ``[d_values_out,       d_values_out + *d_num_selected_out)``
+  - ``[d_num_selected_out, d_num_selected_out + 1)``
+
+- When ``d_temp_storage`` is ``nullptr``, no work is done and the required allocation size is returned in ``temp_storage_bytes``.
+
+Snippet
++++++++++++++++++++++++++++++++++++++++++++++
+
+The code snippet below illustrates the compaction of items selected from an ``int`` device vector.
+
+.. code-block:: c++
+
+   #include &lt;cub/cub.cuh&gt;   // or equivalently &lt;cub/device/device_select.cuh&gt;
+
+   // Declare, allocate, and initialize device-accessible pointers
+   // for input and output
+   int  num_items;              // e.g., 8
+   int  *d_keys_in;             // e.g., [0, 2, 2, 9, 5, 5, 5, 8]
+   int  *d_values_in;           // e.g., [1, 2, 3, 4, 5, 6, 7, 8]
+   int  *d_keys_out;            // e.g., [ ,  ,  ,  ,  ,  ,  ,  ]
+   int  *d_values_out;          // e.g., [ ,  ,  ,  ,  ,  ,  ,  ]
+   int  *d_num_selected_out;    // e.g., [ ]
+   ...
+
+   // Determine temporary device storage requirements
+   void     *d_temp_storage = nullptr;
+   size_t   temp_storage_bytes = 0;
+   cub::DeviceSelect::UniqueByKey(
+     d_temp_storage, temp_storage_bytes,
+     d_keys_in, d_values_in,
+     d_keys_out, d_values_out, d_num_selected_out, num_items);
+
+   // Allocate temporary storage
+   cudaMalloc(&amp;d_temp_storage, temp_storage_bytes);
+
+   // Run selection
+   cub::DeviceSelect::UniqueByKey(
+     d_temp_storage, temp_storage_bytes,
+     d_keys_in, d_values_in,
+     d_keys_out, d_values_out, d_num_selected_out, num_items);
+
+   // d_keys_out            &lt;-- [0, 2, 9, 5, 8]
+   // d_values_out          &lt;-- [1, 2, 4, 5, 8]
+   // d_num_selected_out    &lt;-- [5]</verbatim></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>KeyInputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input keys (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ValueInputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access input iterator type for reading input values (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>KeyOutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected keys (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ValueOutputIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Random-access output iterator type for writing selected values (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumSelectedIteratorT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Output iterator type for recording the number of items selected (may be a simple pointer type)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>NumItemsT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><bold>[inferred]</bold> Type of num_items</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d_temp_storage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Device-accessible allocation of temporary storage. When <computeroutput>nullptr</computeroutput>, the required allocation size is written to <computeroutput>temp_storage_bytes</computeroutput> and no work is done.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">temp_storage_bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to size in bytes of <computeroutput>d_temp_storage</computeroutput> allocation</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_keys_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of keys</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d_values_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the input sequence of values</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_keys_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected keys</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_values_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output sequence of selected values</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">d_num_selected_out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the total number of items selected (i.e., length of <computeroutput>d_keys_out</computeroutput> or <computeroutput>d_values_out</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">num_items</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of input items (i.e., length of <computeroutput>d_keys_in</computeroutput> or <computeroutput>d_values_in</computeroutput>)</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><verbatim>embed:rst
+  **[optional]** CUDA stream to launch kernels within. Default is stream\ :sub:`0`.</verbatim> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cub/device/device_select.cuh" line="1199" column="24" bodyfile="cub/device/device_select.cuh" bodystart="1199" bodyend="1221"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><verbatim>embed:rst
+DeviceSelect provides device-wide, parallel operations for compacting selected items from sequences of data items
+residing within device-accessible memory. It is similar to DevicePartition, except that non-selected items are
+discarded, whereas DevicePartition retains them.
+
+Overview
++++++++++++++++++++++++++++++++++++++++++++++
+
+These operations apply a selection criterion to selectively copy
+items from a specified input sequence to a compact output sequence.
+
+Usage Considerations
++++++++++++++++++++++++++++++++++++++++++++++
+
+ - Dynamic parallelism. DeviceSelect methods can be called within kernel code on devices in which CUDA dynamic parallelism is supported.
+
+Performance
++++++++++++++++++++++++++++++++++++++++++++++
+
+The work-complexity of select-flagged, select-if, and select-unique as a function of input size is linear, resulting in performance throughput that plateaus with problem sizes large enough to saturate the GPU.</verbatim> </para>
+    </detaileddescription>
+    <location file="cub/device/device_select.cuh" line="74" column="1" bodyfile="cub/device/device_select.cuh" bodystart="75" bodyend="1222"/>
+    <listofallmembers>
+      <member refid="structcub_1_1DeviceSelect_1acddae8a57fedfec6e5885b37ebabfc79" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>Flagged</name></member>
+      <member refid="structcub_1_1DeviceSelect_1ae2b2cfaf3b40cf812171975b4b6a3acb" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>Flagged</name></member>
+      <member refid="structcub_1_1DeviceSelect_1a6af2f1156bc18ce49ffe464a92a085c4" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>FlaggedIf</name></member>
+      <member refid="structcub_1_1DeviceSelect_1a15990a2dd6ab95340aad266d78a6cf14" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>FlaggedIf</name></member>
+      <member refid="structcub_1_1DeviceSelect_1ad9f384ee7e17ae7c095f126cb5b1117a" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>If</name></member>
+      <member refid="structcub_1_1DeviceSelect_1aa80697a9fe91b83da173cb520c8b612c" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>If</name></member>
+      <member refid="structcub_1_1DeviceSelect_1a4db37ca4214bb7b41df5218e8b559ba4" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>Unique</name></member>
+      <member refid="structcub_1_1DeviceSelect_1ae29aa008b265fa192e5a9564f7568933" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>UniqueByKey</name></member>
+      <member refid="structcub_1_1DeviceSelect_1a9b30b0ea0bbaf3df64779fde1e0b9537" prot="public" virt="non-virtual"><scope>cub::DeviceSelect</scope><name>UniqueByKey</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

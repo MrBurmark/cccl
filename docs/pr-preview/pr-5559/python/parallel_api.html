@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cuda.cccl.parallel API Reference &mdash; python 3.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="https://unpkg.com/mermaid@9.1.5/dist/mermaid.min.js"></script>
+        <script>initMermaid();</script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cuda.cccl.cooperative API Reference" href="cooperative_api.html" />
+    <link rel="prev" title="API Reference" href="api_reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallel.html"><code class="docutils literal notranslate"><span class="pre">parallel</span></code>: Device-Level Parallel Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cooperative.html"><code class="docutils literal notranslate"><span class="pre">cooperative</span></code>: Cooperative Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Resources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">cuda.cccl.parallel</span></code> API Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-cuda.cccl.parallel.experimental.algorithms">Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cuda.cccl.parallel.experimental.iterators">Iterators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cuda.cccl.parallel.experimental.struct">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cooperative_api.html"><code class="docutils literal notranslate"><span class="pre">cuda.cccl.cooperative</span></code> API Reference</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="api_reference.html">API Reference</a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">cuda.cccl.parallel</span></code> API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cuda-cccl-parallel-api-reference">
+<span id="cuda-parallel-module"></span><h1><code class="docutils literal notranslate"><span class="pre">cuda.cccl.parallel</span></code> API Reference<a class="headerlink" href="#cuda-cccl-parallel-api-reference" title="Permalink to this headline"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Python exposure of parallel algorithms is in public beta.
+The API is subject to change without notice.</p>
+</div>
+<section id="module-cuda.cccl.parallel.experimental.algorithms">
+<span id="algorithms"></span><h2>Algorithms<a class="headerlink" href="#module-cuda.cccl.parallel.experimental.algorithms" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.DoubleBuffer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">DoubleBuffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_alternate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.DoubleBuffer" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.DoubleBuffer.alternate">
+<span class="sig-name descname"><span class="pre">alternate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.DoubleBuffer.alternate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.DoubleBuffer.current">
+<span class="sig-name descname"><span class="pre">current</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.DoubleBuffer.current" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.SortOrder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">SortOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.SortOrder" title="Permalink to this definition"></a></dt>
+<dd><p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.SortOrder.ASCENDING">
+<span class="sig-name descname"><span class="pre">ASCENDING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.SortOrder.ASCENDING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.SortOrder.DESCENDING">
+<span class="sig-name descname"><span class="pre">DESCENDING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.SortOrder.DESCENDING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.binary_transform">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">binary_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.binary_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Create a binary transform object that can be called to apply a transformation
+to the given pair of input sequences according to the binary operation <code class="docutils literal notranslate"><span class="pre">op</span></code>.</p>
+<p>This is the two-phase API that returns a transform object for execution.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">d_in1</span> <span class="o">=</span> <span class="n">input_array</span>
+<span class="n">d_in2</span> <span class="o">=</span> <span class="n">input_array</span>
+<span class="n">d_out</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in1</span><span class="p">)</span>
+
+<span class="n">binary_transform_device</span><span class="p">(</span><span class="n">d_in1</span><span class="p">,</span> <span class="n">d_in2</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_in1</span><span class="p">),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">got</span> <span class="o">=</span> <span class="n">d_out</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">binary_transform_host</span><span class="p">(</span><span class="n">d_in1</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">d_in2</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in1</strong> – Device array or iterator containing the first input sequence of data items.</p></li>
+<li><p><strong>d_in2</strong> – Device array or iterator containing the second input sequence of data items.</p></li>
+<li><p><strong>d_out</strong> – Device array or iterator to store the result of the transformation.</p></li>
+<li><p><strong>op</strong> – Binary operation to apply to each pair of items from the input sequences.</p></li>
+<li><p><strong>num_items</strong> – Number of items to transform.</p></li>
+<li><p><strong>stream</strong> – CUDA stream to use for the operation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.exclusive_scan">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">exclusive_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.exclusive_scan" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.histogram_even">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">histogram_even</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_histogram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_output_levels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.floating</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.integer</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.floating</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.integer</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.histogram_even" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.inclusive_scan">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">inclusive_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.inclusive_scan" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_binary_transform">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_binary_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_binary_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Create a binary transform object that can be called to apply a transformation
+to the given pair of input sequences according to the binary operation <code class="docutils literal notranslate"><span class="pre">op</span></code>.</p>
+<p>This is the object-oriented API that allows explicit control over temporary
+storage allocation. For simpler usage, consider using <a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.binary_transform" title="cuda.cccl.parallel.experimental.algorithms.binary_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">binary_transform()</span></code></a>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">d_in1</span> <span class="o">=</span> <span class="n">input_array</span>
+<span class="n">d_in2</span> <span class="o">=</span> <span class="n">input_array</span>
+<span class="n">d_out</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in1</span><span class="p">)</span>
+
+<span class="n">binary_transform_device</span><span class="p">(</span><span class="n">d_in1</span><span class="p">,</span> <span class="n">d_in2</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_in1</span><span class="p">),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">got</span> <span class="o">=</span> <span class="n">d_out</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">binary_transform_host</span><span class="p">(</span><span class="n">d_in1</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">d_in2</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in1</strong> – Device array or iterator containing the first input sequence of data items.</p></li>
+<li><p><strong>d_in2</strong> – Device array or iterator containing the second input sequence of data items.</p></li>
+<li><p><strong>d_out</strong> – Device array or iterator to store the result of the transformation.</p></li>
+<li><p><strong>op</strong> – Binary operation to apply to each pair of items from the input sequences.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that performs the transformation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_exclusive_scan">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_exclusive_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_exclusive_scan" title="Permalink to this definition"></a></dt>
+<dd><p>Computes a device-wide scan using the specified binary <code class="docutils literal notranslate"><span class="pre">op</span></code> and initial value <code class="docutils literal notranslate"><span class="pre">init</span></code>.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">scan</span></code> is used to compute an exclusive scan of a sequence of integers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span> <span class="nf">max_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_input</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run exclusive scan with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">exclusive_scan</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">max_op</span><span class="p">,</span> <span class="n">h_init</span><span class="p">,</span> <span class="n">d_input</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">d_output</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">expected</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> – Device array or iterator containing the input sequence of data items</p></li>
+<li><p><strong>d_out</strong> – Device array that will store the result of the scan</p></li>
+<li><p><strong>op</strong> – Callable representing the binary operator to apply</p></li>
+<li><p><strong>init</strong> – Numpy array storing initial value of the scan</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform the scan</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_histogram_even">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_histogram_even</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_histogram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_num_output_levels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_lower_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_upper_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_histogram_even" title="Permalink to this definition"></a></dt>
+<dd><p>Implements a device-wide histogram that places <code class="docutils literal notranslate"><span class="pre">d_samples</span></code> into evenly-spaced bins.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">histogram</span></code> is used to bin a sequence of samples.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="n">num_samples</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">h_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="mf">2.2</span><span class="p">,</span> <span class="mf">6.1</span><span class="p">,</span> <span class="mf">7.1</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">6.1</span><span class="p">,</span> <span class="mf">999.5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span>
+<span class="p">)</span>
+<span class="n">d_samples</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_samples</span><span class="p">)</span>
+<span class="n">num_levels</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">d_histogram</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">lower_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">upper_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Run histogram with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">histogram_even</span><span class="p">(</span>
+    <span class="n">d_samples</span><span class="p">,</span>
+    <span class="n">d_histogram</span><span class="p">,</span>
+    <span class="n">num_levels</span><span class="p">,</span>
+    <span class="n">lower_level</span><span class="p">,</span>
+    <span class="n">upper_level</span><span class="p">,</span>
+    <span class="n">num_samples</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">h_actual_histogram</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_histogram</span><span class="p">)</span>
+<span class="c1"># Calculate expected histogram using numpy</span>
+<span class="n">h_expected_histogram</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span>
+    <span class="n">h_samples</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">num_levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="n">lower_level</span><span class="p">,</span> <span class="n">upper_level</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">h_expected_histogram</span> <span class="o">=</span> <span class="n">h_expected_histogram</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_actual_histogram</span><span class="p">,</span> <span class="n">h_expected_histogram</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_samples</strong> – Device array or iterator containing the input samples to be histogrammed</p></li>
+<li><p><strong>d_histogram</strong> – Device array to store the histogram</p></li>
+<li><p><strong>h_num_output_levels</strong> – Host array containing the number of output levels</p></li>
+<li><p><strong>h_lower_level</strong> – Host array containing the lower level</p></li>
+<li><p><strong>h_upper_level</strong> – Host array containing the upper level</p></li>
+<li><p><strong>num_samples</strong> – Number of samples to be histogrammed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform the histogram</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_inclusive_scan">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_inclusive_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_inclusive_scan" title="Permalink to this definition"></a></dt>
+<dd><p>Computes a device-wide scan using the specified binary <code class="docutils literal notranslate"><span class="pre">op</span></code> and initial value <code class="docutils literal notranslate"><span class="pre">init</span></code>.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">scan</span></code> is used to compute an inclusive scan of a sequence of integers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span> <span class="nf">add_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_input</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run inclusive scan with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">inclusive_scan</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">add_op</span><span class="p">,</span> <span class="n">h_init</span><span class="p">,</span> <span class="n">d_input</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">d_output</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">expected</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> – Device array or iterator containing the input sequence of data items</p></li>
+<li><p><strong>d_out</strong> – Device array that will store the result of the scan</p></li>
+<li><p><strong>op</strong> – Callable representing the binary operator to apply</p></li>
+<li><p><strong>init</strong> – Numpy array storing initial value of the scan</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform the scan</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_merge_sort">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_merge_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_merge_sort" title="Permalink to this definition"></a></dt>
+<dd><p>Implements a device-wide merge sort using <code class="docutils literal notranslate"><span class="pre">d_in_keys</span></code> and the comparison operator <code class="docutils literal notranslate"><span class="pre">op</span></code>.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">merge_sort</span></code> is used to sort a sequence of keys inplace. It also rearranges the items according to the keys’ order.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="k">def</span> <span class="nf">compare_op</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">lhs</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">)</span>
+
+<span class="n">h_in_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">h_in_items</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.9</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">8.3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span>
+<span class="p">)</span>
+
+<span class="n">d_in_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">)</span>
+<span class="n">d_in_items</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_items</span><span class="p">)</span>
+
+<span class="c1"># Run merge_sort with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">merge_sort</span><span class="p">(</span>
+    <span class="n">d_in_keys</span><span class="p">,</span> <span class="n">d_in_items</span><span class="p">,</span> <span class="n">d_in_keys</span><span class="p">,</span> <span class="n">d_in_items</span><span class="p">,</span> <span class="n">compare_op</span><span class="p">,</span> <span class="n">d_in_keys</span><span class="o">.</span><span class="n">size</span>
+<span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">h_out_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_in_keys</span><span class="p">)</span>
+<span class="n">h_out_items</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_in_items</span><span class="p">)</span>
+
+<span class="n">argsort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">,</span> <span class="n">stable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">h_in_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">)[</span><span class="n">argsort</span><span class="p">]</span>
+<span class="n">h_in_items</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h_in_items</span><span class="p">)[</span><span class="n">argsort</span><span class="p">]</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_keys</span><span class="p">,</span> <span class="n">h_in_keys</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_items</span><span class="p">,</span> <span class="n">h_in_items</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in_keys</strong> – Device array or iterator containing the input keys to be sorted</p></li>
+<li><p><strong>d_in_items</strong> – Optional device array or iterator that contains each key’s corresponding item</p></li>
+<li><p><strong>d_out_keys</strong> – Device array to store the sorted keys</p></li>
+<li><p><strong>d_out_items</strong> – Device array to store the sorted items</p></li>
+<li><p><strong>op</strong> – Callable representing the comparison operator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform the merge sort</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_radix_sort">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_radix_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.DoubleBuffer" title="cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer"><span class="pre">cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.DoubleBuffer" title="cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer"><span class="pre">cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.SortOrder" title="cuda.cccl.parallel.experimental.algorithms._radix_sort.SortOrder"><span class="pre">cuda.cccl.parallel.experimental.algorithms._radix_sort.SortOrder</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_radix_sort" title="Permalink to this definition"></a></dt>
+<dd><p>Implements a device-wide radix sort using <code class="docutils literal notranslate"><span class="pre">d_in_keys</span></code> in the requested order.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">radix_sort</span></code> is used to sort a sequence of keys. It also rearranges the values according to the keys’ order.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="n">h_in_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">h_in_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.9</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">8.3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span>
+<span class="p">)</span>
+
+<span class="n">d_in_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">)</span>
+<span class="n">d_in_values</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_values</span><span class="p">)</span>
+
+<span class="n">d_out_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in_keys</span><span class="p">)</span>
+<span class="n">d_out_values</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in_values</span><span class="p">)</span>
+
+<span class="c1"># Call single-phase API directly with num_items parameter</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">radix_sort</span><span class="p">(</span>
+    <span class="n">d_in_keys</span><span class="p">,</span>
+    <span class="n">d_out_keys</span><span class="p">,</span>
+    <span class="n">d_in_values</span><span class="p">,</span>
+    <span class="n">d_out_values</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">.</span><span class="n">SortOrder</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">,</span>
+    <span class="n">d_in_keys</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">h_out_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_out_keys</span><span class="p">)</span>
+<span class="n">h_out_items</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_out_values</span><span class="p">)</span>
+
+<span class="n">argsort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">,</span> <span class="n">stable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">h_in_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">)[</span><span class="n">argsort</span><span class="p">]</span>
+<span class="n">h_in_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h_in_values</span><span class="p">)[</span><span class="n">argsort</span><span class="p">]</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_keys</span><span class="p">,</span> <span class="n">h_in_keys</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_items</span><span class="p">,</span> <span class="n">h_in_values</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Instead of passing in arrays directly, we can use a <code class="docutils literal notranslate"><span class="pre">DoubleBuffer</span></code>, which requires less temporary storage but could overwrite the input arrays</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="n">h_in_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">h_in_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.9</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">8.3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span>
+<span class="p">)</span>
+
+<span class="n">d_in_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">)</span>
+<span class="n">d_in_values</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_values</span><span class="p">)</span>
+
+<span class="n">d_out_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in_keys</span><span class="p">)</span>
+<span class="n">d_out_values</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in_values</span><span class="p">)</span>
+
+<span class="n">keys_double_buffer</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">DoubleBuffer</span><span class="p">(</span><span class="n">d_in_keys</span><span class="p">,</span> <span class="n">d_out_keys</span><span class="p">)</span>
+<span class="n">values_double_buffer</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">DoubleBuffer</span><span class="p">(</span><span class="n">d_in_values</span><span class="p">,</span> <span class="n">d_out_values</span><span class="p">)</span>
+
+<span class="c1"># Call single-phase API directly with num_items parameter</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">radix_sort</span><span class="p">(</span>
+    <span class="n">keys_double_buffer</span><span class="p">,</span>
+    <span class="kc">None</span><span class="p">,</span>
+    <span class="n">values_double_buffer</span><span class="p">,</span>
+    <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="o">.</span><span class="n">SortOrder</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">,</span>
+    <span class="n">d_in_keys</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">h_out_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">keys_double_buffer</span><span class="o">.</span><span class="n">current</span><span class="p">())</span>
+<span class="n">h_out_values</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">values_double_buffer</span><span class="o">.</span><span class="n">current</span><span class="p">())</span>
+
+<span class="n">argsort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">,</span> <span class="n">stable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">h_in_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">)[</span><span class="n">argsort</span><span class="p">]</span>
+<span class="n">h_in_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h_in_values</span><span class="p">)[</span><span class="n">argsort</span><span class="p">]</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_keys</span><span class="p">,</span> <span class="n">h_in_keys</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_values</span><span class="p">,</span> <span class="n">h_in_values</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in_keys</strong> – Device array or DoubleBuffer containing the input keys to be sorted</p></li>
+<li><p><strong>d_out_keys</strong> – Device array to store the sorted keys</p></li>
+<li><p><strong>d_in_values</strong> – Optional Device array or DoubleBuffer containing the input keys to be sorted</p></li>
+<li><p><strong>d_out_values</strong> – Device array to store the sorted values</p></li>
+<li><p><strong>op</strong> – Callable representing the comparison operator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform the merge sort</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_reduce_into">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_reduce_into</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_reduce_into" title="Permalink to this definition"></a></dt>
+<dd><p>Computes a device-wide reduction using the specified binary <code class="docutils literal notranslate"><span class="pre">op</span></code> and initial value <code class="docutils literal notranslate"><span class="pre">init</span></code>.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">reduce_into</span></code> is used to compute the minimum value of a sequence of integers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="k">def</span> <span class="nf">min_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="k">else</span> <span class="n">b</span>
+
+<span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span>
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">42</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">d_input</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># Run reduction</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">reduce_into</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">min_op</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_input</span><span class="p">),</span> <span class="n">h_init</span><span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">expected_output</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">d_output</span> <span class="o">==</span> <span class="n">expected_output</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> – Device array or iterator containing the input sequence of data items</p></li>
+<li><p><strong>d_out</strong> – Device array (of size 1) that will store the result of the reduction</p></li>
+<li><p><strong>op</strong> – Callable representing the binary operator to apply</p></li>
+<li><p><strong>init</strong> – Numpy array storing initial value of the reduction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform the reduction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_segmented_reduce">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_segmented_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_offsets_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_offsets_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_segmented_reduce" title="Permalink to this definition"></a></dt>
+<dd><p>Computes a device-wide segmented reduction using the specified binary <code class="docutils literal notranslate"><span class="pre">op</span></code> and initial value <code class="docutils literal notranslate"><span class="pre">init</span></code>.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">segmented_reduce</span></code> is used to compute the minimum value of a sequence of integers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span> <span class="nf">min_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="k">else</span> <span class="n">b</span>
+
+<span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">max_val</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="n">offsets</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+<span class="n">first_segment</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">second_segment</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">third_segment</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">d_input</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="o">*</span><span class="n">first_segment</span><span class="p">,</span> <span class="o">*</span><span class="n">second_segment</span><span class="p">,</span> <span class="o">*</span><span class="n">third_segment</span><span class="p">],</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">start_o</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">end_o</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">n_segments</span> <span class="o">=</span> <span class="n">start_o</span><span class="o">.</span><span class="n">size</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_segments</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># Run segmented reduction with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">segmented_reduce</span><span class="p">(</span>
+    <span class="n">d_input</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">start_o</span><span class="p">,</span> <span class="n">end_o</span><span class="p">,</span> <span class="n">min_op</span><span class="p">,</span> <span class="n">h_init</span><span class="p">,</span> <span class="n">n_segments</span>
+<span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">expected_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">d_output</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">d_output</span> <span class="o">==</span> <span class="n">expected_output</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> – Device array or iterator containing the input sequence of data items</p></li>
+<li><p><strong>d_out</strong> – Device array that will store the result of the reduction</p></li>
+<li><p><strong>start_offsets_in</strong> – Device array or iterator containing offsets to start of segments</p></li>
+<li><p><strong>end_offsets_in</strong> – Device array or iterator containing offsets to end of segments</p></li>
+<li><p><strong>op</strong> – Callable representing the binary operator to apply</p></li>
+<li><p><strong>init</strong> – Numpy array storing initial value of the reduction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform the reduction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_unary_transform">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_unary_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_unary_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Create a unary transform object that can be called to apply a transformation
+to each element of the input according to the unary operation <code class="docutils literal notranslate"><span class="pre">op</span></code>.</p>
+<p>This is the object-oriented API that allows explicit control over temporary
+storage allocation. For simpler usage, consider using <a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.unary_transform" title="cuda.cccl.parallel.experimental.algorithms.unary_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">unary_transform()</span></code></a>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">d_in</span> <span class="o">=</span> <span class="n">input_array</span>
+<span class="n">d_out</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in</span><span class="p">)</span>
+
+<span class="n">unary_transform_device</span><span class="p">(</span><span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_in</span><span class="p">),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">got</span> <span class="o">=</span> <span class="n">d_out</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">unary_transform_host</span><span class="p">(</span><span class="n">d_in</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> – Device array or iterator containing the input sequence of data items.</p></li>
+<li><p><strong>d_out</strong> – Device array or iterator to store the result of the transformation.</p></li>
+<li><p><strong>op</strong> – Unary operation to apply to each element of the input.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that performs the transformation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.make_unique_by_key">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">make_unique_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_num_selected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.make_unique_by_key" title="Permalink to this definition"></a></dt>
+<dd><p>Implements a device-wide unique by key operation using <code class="docutils literal notranslate"><span class="pre">d_in_keys</span></code> and the comparison operator <code class="docutils literal notranslate"><span class="pre">op</span></code>. Only the first key and its value from each run is selected and the total number of items selected is also reported.</p>
+<p class="rubric">Example</p>
+<p>Below, <code class="docutils literal notranslate"><span class="pre">unique_by_key</span></code> is used to populate the arrays of output keys and items with the first key and its corresponding item from each sequence of equal keys. It also outputs the number of items selected.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="k">def</span> <span class="nf">compare_op</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">lhs</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">)</span>
+
+<span class="n">h_in_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">h_in_items</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+
+<span class="n">d_in_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">)</span>
+<span class="n">d_in_items</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">h_in_items</span><span class="p">)</span>
+<span class="n">d_out_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in_keys</span><span class="p">)</span>
+<span class="n">d_out_items</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in_items</span><span class="p">)</span>
+<span class="n">d_out_num_selected</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="c1"># Run unique_by_key with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">unique_by_key</span><span class="p">(</span>
+    <span class="n">d_in_keys</span><span class="p">,</span>
+    <span class="n">d_in_items</span><span class="p">,</span>
+    <span class="n">d_out_keys</span><span class="p">,</span>
+    <span class="n">d_out_items</span><span class="p">,</span>
+    <span class="n">d_out_num_selected</span><span class="p">,</span>
+    <span class="n">compare_op</span><span class="p">,</span>
+    <span class="n">d_in_keys</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">num_selected</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_out_num_selected</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">h_out_keys</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_out_keys</span><span class="p">)[:</span><span class="n">num_selected</span><span class="p">]</span>
+<span class="n">h_out_items</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="n">d_out_items</span><span class="p">)[:</span><span class="n">num_selected</span><span class="p">]</span>
+
+<span class="n">prev_key</span> <span class="o">=</span> <span class="n">h_in_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">expected_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">prev_key</span><span class="p">]</span>
+<span class="n">expected_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">h_in_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">previous</span><span class="p">,</span> <span class="nb">next</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">h_in_keys</span><span class="p">,</span> <span class="n">h_in_keys</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+    <span class="k">if</span> <span class="n">previous</span> <span class="o">!=</span> <span class="nb">next</span><span class="p">:</span>
+        <span class="n">expected_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">next</span><span class="p">)</span>
+
+        <span class="c1"># add 1 since we are enumerating over pairs</span>
+        <span class="n">expected_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h_in_items</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_keys</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expected_keys</span><span class="p">))</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">h_out_items</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expected_items</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in_keys</strong> – Device array or iterator containing the input sequence of keys</p></li>
+<li><p><strong>d_in_items</strong> – Device array or iterator that contains each key’s corresponding item</p></li>
+<li><p><strong>d_out_keys</strong> – Device array or iterator to store the outputted keys</p></li>
+<li><p><strong>d_out_items</strong> – Device array or iterator to store each outputted key’s item</p></li>
+<li><p><strong>d_out_num_selected</strong> – Device array to store how many items were selected</p></li>
+<li><p><strong>op</strong> – Callable representing the equality operator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A callable object that can be used to perform unique by key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.merge_sort">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">merge_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.merge_sort" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.radix_sort">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">radix_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.DoubleBuffer" title="cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer"><span class="pre">cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.DoubleBuffer" title="cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer"><span class="pre">cuda.cccl.parallel.experimental.algorithms._radix_sort.DoubleBuffer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#cuda.cccl.parallel.experimental.algorithms.SortOrder" title="cuda.cccl.parallel.experimental.algorithms._radix_sort.SortOrder"><span class="pre">cuda.cccl.parallel.experimental.algorithms._radix_sort.SortOrder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">begin_bit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_bit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.radix_sort" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.reduce_into">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">reduce_into</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.reduce_into" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.segmented_reduce">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">segmented_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_offsets_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_offsets_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.segmented_reduce" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.unary_transform">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">unary_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.unary_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Create a unary transform object that can be called to apply a transformation
+to each element of the input according to the unary operation <code class="docutils literal notranslate"><span class="pre">op</span></code>.</p>
+<p>This is the two-phase API that returns a transform object for execution.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">d_in</span> <span class="o">=</span> <span class="n">input_array</span>
+<span class="n">d_out</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_in</span><span class="p">)</span>
+
+<span class="n">unary_transform_device</span><span class="p">(</span><span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_in</span><span class="p">),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">got</span> <span class="o">=</span> <span class="n">d_out</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">unary_transform_host</span><span class="p">(</span><span class="n">d_in</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">op</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in</strong> – Device array or iterator containing the input sequence of data items.</p></li>
+<li><p><strong>d_out</strong> – Device array or iterator to store the result of the transformation.</p></li>
+<li><p><strong>op</strong> – Unary operation to apply to each element of the input.</p></li>
+<li><p><strong>num_items</strong> – Number of items to transform.</p></li>
+<li><p><strong>stream</strong> – CUDA stream to use for the operation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.algorithms.unique_by_key">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.algorithms.</span></span><span class="sig-name descname"><span class="pre">unique_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d_in_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_in_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">cuda.cccl.parallel.experimental.iterators._iterators.IteratorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_out_num_selected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cuda.cccl.parallel.experimental.typing.DeviceArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.algorithms.unique_by_key" title="Permalink to this definition"></a></dt>
+<dd><p>Performs device-wide unique by key operation using the single-phase API.</p>
+<p>This function automatically handles temporary storage allocation and execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d_in_keys</strong> – Device array or iterator containing the input sequence of keys</p></li>
+<li><p><strong>d_in_items</strong> – Device array or iterator that contains each key’s corresponding item</p></li>
+<li><p><strong>d_out_keys</strong> – Device array or iterator to store the outputted keys</p></li>
+<li><p><strong>d_out_items</strong> – Device array or iterator to store each outputted key’s item</p></li>
+<li><p><strong>d_out_num_selected</strong> – Device array to store how many items were selected</p></li>
+<li><p><strong>op</strong> – Callable representing the equality operator</p></li>
+<li><p><strong>num_items</strong> – Number of items to process</p></li>
+<li><p><strong>stream</strong> – CUDA stream for the operation (optional)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cuda.cccl.parallel.experimental.iterators">
+<span id="iterators"></span><h2>Iterators<a class="headerlink" href="#module-cuda.cccl.parallel.experimental.iterators" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.iterators.CacheModifiedInputIterator">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.iterators.</span></span><span class="sig-name descname"><span class="pre">CacheModifiedInputIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.iterators.CacheModifiedInputIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Random Access Cache Modified Iterator that wraps a native device pointer.</p>
+<p>Similar to <a class="reference external" href="https://nvidia.github.io/cccl/cub/api/classcub_1_1CacheModifiedInputIterator.html">https://nvidia.github.io/cccl/cub/api/classcub_1_1CacheModifiedInputIterator.html</a></p>
+<p>Currently the only supported modifier is “stream” (LOAD_CS).</p>
+<p class="rubric">Example</p>
+<p>The code snippet below demonstrates the usage of a <code class="docutils literal notranslate"><span class="pre">CacheModifiedInputIterator</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="k">def</span> <span class="nf">add_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="n">d_input</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="n">iterator</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">CacheModifiedInputIterator</span><span class="p">(</span>
+    <span class="n">d_input</span><span class="p">,</span> <span class="n">modifier</span><span class="o">=</span><span class="s2">&quot;stream&quot;</span>
+<span class="p">)</span>  <span class="c1"># Input sequence</span>
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Initial value for the reduction</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Storage for output</span>
+
+<span class="c1"># Run reduction</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">reduce_into</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">add_op</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">h_init</span><span class="p">)</span>
+
+<span class="n">expected_output</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">d_output</span> <span class="o">==</span> <span class="n">expected_output</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_array</strong> – CUDA device array storing the input sequence of data items</p></li>
+<li><p><strong>modifier</strong> – The PTX cache load modifier</p></li>
+<li><p><strong>prefix</strong> – An optional prefix added to the iterator’s methods to prevent name collisions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">CacheModifiedInputIterator</span></code> object initialized with <code class="docutils literal notranslate"><span class="pre">device_array</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.iterators.ConstantIterator">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.iterators.</span></span><span class="sig-name descname"><span class="pre">ConstantIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.iterators.ConstantIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an Iterator representing a sequence of constant values.</p>
+<p>Similar to <a class="reference external" href="https://nvidia.github.io/cccl/thrust/api/classthrust_1_1constant__iterator.html">https://nvidia.github.io/cccl/thrust/api/classthrust_1_1constant__iterator.html</a></p>
+<p class="rubric">Example</p>
+<p>The code snippet below demonstrates the usage of a <code class="docutils literal notranslate"><span class="pre">ConstantIterator</span></code>
+representing the sequence <code class="docutils literal notranslate"><span class="pre">[10,</span> <span class="pre">10,</span> <span class="pre">10]</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="k">def</span> <span class="nf">add_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">num_items</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">constant_it</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">ConstantIterator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>  <span class="c1"># Input sequence</span>
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Initial value for the reduction</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Storage for output</span>
+
+<span class="c1"># Run reduction</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">reduce_into</span><span class="p">(</span><span class="n">constant_it</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">add_op</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
+
+<span class="n">expected_output</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_items</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">d_output</span> <span class="o">==</span> <span class="n">expected_output</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – The value of every item in the sequence</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">ConstantIterator</span></code> object initialized to <code class="docutils literal notranslate"><span class="pre">value</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.iterators.CountingIterator">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.iterators.</span></span><span class="sig-name descname"><span class="pre">CountingIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.iterators.CountingIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an Iterator representing a sequence of incrementing values.</p>
+<p>Similar to <a class="reference external" href="https://nvidia.github.io/cccl/thrust/api/classthrust_1_1counting__iterator.html">https://nvidia.github.io/cccl/thrust/api/classthrust_1_1counting__iterator.html</a></p>
+<p class="rubric">Example</p>
+<p>The code snippet below demonstrates the usage of a <code class="docutils literal notranslate"><span class="pre">CountingIterator</span></code>
+representing the sequence <code class="docutils literal notranslate"><span class="pre">[10,</span> <span class="pre">11,</span> <span class="pre">12]</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="k">def</span> <span class="nf">add_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">first_item</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">num_items</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">first_it</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">CountingIterator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">(</span><span class="n">first_item</span><span class="p">))</span>  <span class="c1"># Input sequence</span>
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Initial value for the reduction</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Storage for output</span>
+
+<span class="c1"># Run reduction</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">reduce_into</span><span class="p">(</span><span class="n">first_it</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">add_op</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
+
+<span class="n">expected_output</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">first_item</span><span class="p">,</span> <span class="n">first_item</span> <span class="o">+</span> <span class="n">num_items</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">d_output</span> <span class="o">==</span> <span class="n">expected_output</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>offset</strong> – The initial value of the sequence</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">CountingIterator</span></code> object initialized to <code class="docutils literal notranslate"><span class="pre">offset</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.iterators.ReverseInputIterator">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.iterators.</span></span><span class="sig-name descname"><span class="pre">ReverseInputIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.iterators.ReverseInputIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an input Iterator over an array in reverse.</p>
+<p>Similar to [std::reverse_iterator](https://en.cppreference.com/w/cpp/iterator/reverse_iterator)</p>
+<p class="rubric">Example</p>
+<p>The code snippet below demonstrates the usage of a <code class="docutils literal notranslate"><span class="pre">ReverseInputIterator</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span> <span class="nf">add_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_input</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">reverse_it</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">ReverseInputIterator</span><span class="p">(</span><span class="n">d_input</span><span class="p">)</span>
+
+<span class="c1"># Run scan with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">inclusive_scan</span><span class="p">(</span><span class="n">reverse_it</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">add_op</span><span class="p">,</span> <span class="n">h_init</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_input</span><span class="p">))</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">d_output</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">expected</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sequence</strong> – The iterator or CUDA device array to be reversed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">ReverseIterator</span></code> object initialized with <code class="docutils literal notranslate"><span class="pre">sequence</span></code> to use as an input</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.iterators.ReverseOutputIterator">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.iterators.</span></span><span class="sig-name descname"><span class="pre">ReverseOutputIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.iterators.ReverseOutputIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an output Iterator over an array in reverse.</p>
+<p>Similar to [std::reverse_iterator](https://en.cppreference.com/w/cpp/iterator/reverse_iterator)</p>
+<p class="rubric">Example</p>
+<p>The code snippet below demonstrates the usage of a <code class="docutils literal notranslate"><span class="pre">ReverseIterator</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span> <span class="nf">add_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_input</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+<span class="n">reverse_it</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">ReverseOutputIterator</span><span class="p">(</span><span class="n">d_output</span><span class="p">)</span>
+
+<span class="c1"># Run scan with automatic temp storage allocation</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">inclusive_scan</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span> <span class="n">reverse_it</span><span class="p">,</span> <span class="n">add_op</span><span class="p">,</span> <span class="n">h_init</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_input</span><span class="p">))</span>
+
+<span class="c1"># Check the result is correct</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">d_output</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">expected</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sequence</strong> – The iterator or CUDA device array to be reversed to use as an output</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">ReverseIterator</span></code> object initialized with <code class="docutils literal notranslate"><span class="pre">sequence</span></code> to use as an output</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.iterators.TransformIterator">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.iterators.</span></span><span class="sig-name descname"><span class="pre">TransformIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">it</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cuda.cccl.parallel.experimental.iterators.TransformIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an Iterator representing a transformed sequence of values.</p>
+<p>Similar to <a class="reference external" href="https://nvidia.github.io/cccl/thrust/api/classthrust_1_1transform__iterator.html">https://nvidia.github.io/cccl/thrust/api/classthrust_1_1transform__iterator.html</a></p>
+<p class="rubric">Example</p>
+<p>The code snippet below demonstrates the usage of a <code class="docutils literal notranslate"><span class="pre">TransformIterator</span></code>
+composed with a <code class="docutils literal notranslate"><span class="pre">CountingIterator</span></code>, transforming the sequence <code class="docutils literal notranslate"><span class="pre">[10,</span> <span class="pre">11,</span> <span class="pre">12]</span></code>
+by squaring each item before reducing the output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="k">def</span> <span class="nf">add_op</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="k">def</span> <span class="nf">square_op</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">first_item</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">num_items</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">transform_it</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">TransformIterator</span><span class="p">(</span>
+    <span class="n">parallel</span><span class="o">.</span><span class="n">CountingIterator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">(</span><span class="n">first_item</span><span class="p">)),</span> <span class="n">square_op</span>
+<span class="p">)</span>  <span class="c1"># Input sequence</span>
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Initial value for the reduction</span>
+<span class="n">d_output</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>  <span class="c1"># Storage for output</span>
+
+<span class="c1"># Run reduction</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">reduce_into</span><span class="p">(</span><span class="n">transform_it</span><span class="p">,</span> <span class="n">d_output</span><span class="p">,</span> <span class="n">add_op</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
+
+<span class="n">expected_output</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">first_item</span><span class="p">,</span> <span class="n">first_item</span> <span class="o">+</span> <span class="n">num_items</span><span class="p">)]</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">d_output</span> <span class="o">==</span> <span class="n">expected_output</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>it</strong> – The iterator object to be transformed</p></li>
+<li><p><strong>op</strong> – The transform operation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">TransformIterator</span></code> object to transform the items in <code class="docutils literal notranslate"><span class="pre">it</span></code> using <code class="docutils literal notranslate"><span class="pre">op</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cuda.cccl.parallel.experimental.struct">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-cuda.cccl.parallel.experimental.struct" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="cuda.cccl.parallel.experimental.struct.gpu_struct">
+<span class="sig-prename descclassname"><span class="pre">cuda.cccl.parallel.experimental.struct.</span></span><span class="sig-name descname"><span class="pre">gpu_struct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">this</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cuda.cccl.parallel.experimental.struct.gpu_struct" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the given class as being a GpuStruct.</p>
+<p>A GpuStruct represents a value composed of one or more other
+values, and is defined as a class with annotated fields (similar
+to a dataclass). The type of each field must be a subclass of
+<cite>np.number</cite>, like <cite>np.int32</cite> or <cite>np.float64</cite>.</p>
+<p>Arrays of GPUStruct objects can be used as inputs to cuda.cccl.parallel
+algorithms.</p>
+<p class="rubric">Example</p>
+<p>The code snippet below shows how to use <cite>gpu_struct</cite> to define
+a <cite>MinMax</cite> type (composed of <cite>min_val</cite>, <cite>max_val</cite> values), and perform
+a reduction on an input array of floating point values to compute its
+the smallest and the largest absolute values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">cuda.cccl.parallel.experimental</span> <span class="k">as</span> <span class="nn">parallel</span>
+
+<span class="nd">@parallel</span><span class="o">.</span><span class="n">gpu_struct</span>
+<span class="k">class</span> <span class="nc">MinMax</span><span class="p">:</span>
+    <span class="n">min_val</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="n">max_val</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+
+<span class="k">def</span> <span class="nf">minmax_op</span><span class="p">(</span><span class="n">v1</span><span class="p">:</span> <span class="n">MinMax</span><span class="p">,</span> <span class="n">v2</span><span class="p">:</span> <span class="n">MinMax</span><span class="p">):</span>
+    <span class="n">c_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">v1</span><span class="o">.</span><span class="n">min_val</span><span class="p">,</span> <span class="n">v2</span><span class="o">.</span><span class="n">min_val</span><span class="p">)</span>
+    <span class="n">c_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">v1</span><span class="o">.</span><span class="n">max_val</span><span class="p">,</span> <span class="n">v2</span><span class="o">.</span><span class="n">max_val</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MinMax</span><span class="p">(</span><span class="n">c_min</span><span class="p">,</span> <span class="n">c_max</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">transform_op</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="n">av</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MinMax</span><span class="p">(</span><span class="n">av</span><span class="p">,</span> <span class="n">av</span><span class="p">)</span>
+
+<span class="n">nelems</span> <span class="o">=</span> <span class="mi">4096</span>
+
+<span class="n">d_in</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nelems</span><span class="p">)</span>
+<span class="c1"># input values must be transformed to MinMax structures</span>
+<span class="c1"># in-place to map computation to data-parallel reduction</span>
+<span class="c1"># algorithm that requires commutative binary operation</span>
+<span class="c1"># with both operands having the same type.</span>
+<span class="n">tr_it</span> <span class="o">=</span> <span class="n">parallel</span><span class="o">.</span><span class="n">TransformIterator</span><span class="p">(</span><span class="n">d_in</span><span class="p">,</span> <span class="n">transform_op</span><span class="p">)</span>
+
+<span class="n">d_out</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">MinMax</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># initial value set with identity elements of</span>
+<span class="c1"># minimum and maximum operators</span>
+<span class="n">h_init</span> <span class="o">=</span> <span class="n">MinMax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+
+<span class="c1"># run the reduction algorithm</span>
+<span class="n">parallel</span><span class="o">.</span><span class="n">reduce_into</span><span class="p">(</span><span class="n">tr_it</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="n">minmax_op</span><span class="p">,</span> <span class="n">nelems</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
+
+<span class="c1"># display values computed on the device</span>
+<span class="n">actual</span> <span class="o">=</span> <span class="n">d_out</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">d_in</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([(</span><span class="n">h</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">h</span><span class="o">.</span><span class="n">max</span><span class="p">())],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">MinMax</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">actual</span> <span class="o">==</span> <span class="n">expected</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NVIDIA.
+      <span class="lastupdated">Last updated on Aug 19, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

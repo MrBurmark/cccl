@@ -1,0 +1,871 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="device__segmented__sort_8cuh" kind="file" language="C++">
+    <compoundname>device_segmented_sort.cuh</compoundname>
+    <includes refid="config_8cuh" local="no">cub/config.cuh</includes>
+    <includes local="no">cub/detail/choose_offset.cuh</includes>
+    <includes local="no">cub/device/dispatch/dispatch_segmented_sort.cuh</includes>
+    <includes refid="util__namespace_8cuh" local="no">cub/util_namespace.cuh</includes>
+    <includes local="no">cuda/std/cstdint</includes>
+    <includedby refid="cub_8cuh" local="no">cub/cub.cuh</includedby>
+    <incdepgraph>
+      <node id="6">
+        <label>cub/util_namespace.cuh</label>
+        <link refid="util__namespace_8cuh"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>cuda/__nvtx/nvtx.h</label>
+      </node>
+      <node id="8">
+        <label>cuda/version</label>
+      </node>
+      <node id="1">
+        <label>cub/device/device_segmented_sort.cuh</label>
+        <link refid="device__segmented__sort_8cuh"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>cub/version.cuh</label>
+        <link refid="version_8cuh"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>cub/util_cpp_dialect.cuh</label>
+        <link refid="util__cpp__dialect_8cuh"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>cuda/std/__algorithm/max.h</label>
+      </node>
+      <node id="15">
+        <label>cub/device/dispatch/dispatch_segmented_sort.cuh</label>
+      </node>
+      <node id="16">
+        <label>cuda/std/cstdint</label>
+      </node>
+      <node id="9">
+        <label>cub/detail/detect_cuda_runtime.cuh</label>
+      </node>
+      <node id="3">
+        <label>cuda/__cccl_config</label>
+      </node>
+      <node id="2">
+        <label>cub/config.cuh</label>
+        <link refid="config_8cuh"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>cub/util_arch.cuh</label>
+        <link refid="util__arch_8cuh"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>cuda/cmath</label>
+      </node>
+      <node id="12">
+        <label>cuda/std/__algorithm/min.h</label>
+      </node>
+      <node id="14">
+        <label>cub/detail/choose_offset.cuh</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>cub/device/device_segmented_sort.cuh</label>
+        <link refid="device__segmented__sort_8cuh"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cub/cub.cuh</label>
+        <link refid="cub_8cuh"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structcub_1_1DeviceSegmentedSort" prot="public">cub::DeviceSegmentedSort</innerclass>
+    <innernamespace refid="namespacecub">cub</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="structcub_1_1DeviceSegmentedSort" kindref="compound">cub::DeviceSegmentedSort</ref> provides device-wide, parallel operations for computing a batched sort across multiple, non-overlapping sequences of data items residing within device-accessible memory. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/******************************************************************************</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2011-2022,<sp/>NVIDIA<sp/>CORPORATION.<sp/><sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/>*<sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/>*<sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>notice,<sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>documentation<sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/>*<sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>the<sp/>NVIDIA<sp/>CORPORATION<sp/>nor<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>names<sp/>of<sp/>its<sp/>contributors<sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>derived<sp/>from<sp/>this<sp/>software<sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&quot;AS<sp/>IS&quot;<sp/>AND</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,<sp/>THE<sp/>IMPLIED</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE<sp/>ARE</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>NVIDIA<sp/>CORPORATION<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL<sp/>DAMAGES</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR<sp/>SERVICES;</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER<sp/>CAUSED<sp/>AND</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,<sp/>OR<sp/>TORT</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE<sp/>OF<sp/>THIS</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>SOFTWARE,<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>******************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="config_8cuh" kindref="compound">cub/config.cuh</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_GCC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>GCC<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_CLANG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>clang<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/>pragma<sp/>system_header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>no<sp/>system<sp/>header</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cub/detail/choose_offset.cuh&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cub/device/dispatch/dispatch_segmented_sort.cuh&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="util__namespace_8cuh" kindref="compound">cub/util_namespace.cuh</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cuda/std/cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><ref refid="util__namespace_8cuh_1a4159c0878cc0b22304b8af3d7d234c57" kindref="member">CUB_NAMESPACE_BEGIN</ref></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="structcub_1_1DeviceSegmentedSort" refkind="compound"><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structcub_1_1DeviceSegmentedSort" kindref="compound">DeviceSegmentedSort</ref></highlight></codeline>
+<codeline lineno="130"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Name<sp/>reported<sp/>for<sp/>NVTX<sp/>ranges</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/>_CCCL_HOST_DEVICE<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>GetName()<sp/>-&gt;<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;cub::DeviceSegmentedSort&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeysNoNVTX(</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Ascending,<sp/>KeyT,<sp/>cub::NullType,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;<sp/>d_keys(</highlight><highlight class="keyword">const_cast&lt;</highlight><highlight class="normal">KeyT*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(d_keys_in),<sp/>d_keys_out);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;NullType&gt;<sp/>d_values;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="177"></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeys(</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysNoNVTX(</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"></highlight></codeline>
+<codeline lineno="312"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeysDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Descending,<sp/>KeyT,<sp/>cub::NullType,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;<sp/>d_keys(</highlight><highlight class="keyword">const_cast&lt;</highlight><highlight class="normal">KeyT*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(d_keys_in),<sp/>d_keys_out);</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;NullType&gt;<sp/>d_values;</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="458"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeysDescending(</highlight></codeline>
+<codeline lineno="459"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="460"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="461"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="462"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="463"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="464"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="465"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="466"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="467"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="468"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="469"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="470"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="471"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="472"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="474"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="475"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="476"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="479"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="480"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="481"><highlight class="normal"></highlight></codeline>
+<codeline lineno="482"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="483"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="484"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="485"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeysNoNVTX(</highlight></codeline>
+<codeline lineno="486"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="487"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="488"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="489"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="490"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="491"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="493"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="494"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="495"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="496"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="498"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="499"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Ascending,<sp/>KeyT,<sp/>cub::NullType,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="500"><highlight class="normal"></highlight></codeline>
+<codeline lineno="501"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;NullType&gt;<sp/>d_values;</highlight></codeline>
+<codeline lineno="502"><highlight class="normal"></highlight></codeline>
+<codeline lineno="503"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="504"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="505"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="506"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="507"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="508"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="509"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="510"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="511"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="512"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="513"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="514"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="515"><highlight class="normal"></highlight></codeline>
+<codeline lineno="516"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="636"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="637"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeys(</highlight></codeline>
+<codeline lineno="638"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="639"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="640"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="641"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="642"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="643"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="644"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="645"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="646"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="647"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="648"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysNoNVTX(</highlight></codeline>
+<codeline lineno="649"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,<sp/>temp_storage_bytes,<sp/>d_keys,<sp/>num_items,<sp/>num_segments,<sp/>d_begin_offsets,<sp/>d_end_offsets,<sp/>stream);</highlight></codeline>
+<codeline lineno="650"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="651"><highlight class="normal"></highlight></codeline>
+<codeline lineno="652"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="653"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="654"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="655"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeysDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="656"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="657"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="658"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="659"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="660"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="661"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="662"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="663"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="664"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="665"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="666"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="667"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="668"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="669"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Descending,<sp/>KeyT,<sp/>cub::NullType,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="670"><highlight class="normal"></highlight></codeline>
+<codeline lineno="671"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;NullType&gt;<sp/>d_values;</highlight></codeline>
+<codeline lineno="672"><highlight class="normal"></highlight></codeline>
+<codeline lineno="673"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="674"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="675"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="676"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="677"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="678"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="679"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="680"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="681"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="682"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="683"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="684"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="685"><highlight class="normal"></highlight></codeline>
+<codeline lineno="686"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="807"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="808"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortKeysDescending(</highlight></codeline>
+<codeline lineno="809"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="810"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="811"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="812"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="813"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="814"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="815"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="816"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="817"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="818"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="819"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="820"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,<sp/>temp_storage_bytes,<sp/>d_keys,<sp/>num_items,<sp/>num_segments,<sp/>d_begin_offsets,<sp/>d_end_offsets,<sp/>stream);</highlight></codeline>
+<codeline lineno="821"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="822"><highlight class="normal"></highlight></codeline>
+<codeline lineno="934"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="935"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortKeys(</highlight></codeline>
+<codeline lineno="936"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="937"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="938"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="939"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="940"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="941"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="942"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="943"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="944"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="945"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="946"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="947"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysNoNVTX&lt;KeyT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="948"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="949"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="950"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="951"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="952"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="953"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="954"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="955"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="956"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="957"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="958"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1070"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1071"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortKeysDescending(</highlight></codeline>
+<codeline lineno="1072"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1073"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1074"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1075"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1076"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1077"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1078"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1079"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1080"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1081"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1082"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="1083"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysDescendingNoNVTX&lt;KeyT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="1084"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1085"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1086"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1087"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1088"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1089"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1090"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1091"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1092"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="1093"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1094"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1217"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1218"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortKeys(</highlight></codeline>
+<codeline lineno="1219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1221"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="1222"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1223"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1224"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1225"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1226"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1227"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1228"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="1229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysNoNVTX&lt;KeyT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="1230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,<sp/>temp_storage_bytes,<sp/>d_keys,<sp/>num_items,<sp/>num_segments,<sp/>d_begin_offsets,<sp/>d_end_offsets,<sp/>stream);</highlight></codeline>
+<codeline lineno="1231"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1354"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1355"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortKeysDescending(</highlight></codeline>
+<codeline lineno="1356"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1357"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1358"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="1359"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1360"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1361"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1362"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1363"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1364"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1365"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="1366"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortKeysDescendingNoNVTX&lt;KeyT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="1367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,<sp/>temp_storage_bytes,<sp/>d_keys,<sp/>num_items,<sp/>num_segments,<sp/>d_begin_offsets,<sp/>d_end_offsets,<sp/>stream);</highlight></codeline>
+<codeline lineno="1368"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1369"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1370"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="1371"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="1372"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1373"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairsNoNVTX(</highlight></codeline>
+<codeline lineno="1374"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1375"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1376"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1377"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1378"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueT*<sp/>d_values_in,</highlight></codeline>
+<codeline lineno="1379"><highlight class="normal"><sp/><sp/><sp/><sp/>ValueT*<sp/>d_values_out,</highlight></codeline>
+<codeline lineno="1380"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1381"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1382"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1383"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1384"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1385"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1386"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1387"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="1389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="1390"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="1391"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Ascending,<sp/>KeyT,<sp/>ValueT,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="1392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1393"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;<sp/>d_keys(</highlight><highlight class="keyword">const_cast&lt;</highlight><highlight class="normal">KeyT*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(d_keys_in),<sp/>d_keys_out);</highlight></codeline>
+<codeline lineno="1394"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;<sp/>d_values(</highlight><highlight class="keyword">const_cast&lt;</highlight><highlight class="normal">ValueT*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(d_values_in),<sp/>d_values_out);</highlight></codeline>
+<codeline lineno="1395"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1396"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="1397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1398"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1399"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="1400"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="1401"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1402"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1403"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1404"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1405"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="1406"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="1407"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1408"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1409"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="1413"></codeline>
+<codeline lineno="1543"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1544"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairs(</highlight></codeline>
+<codeline lineno="1545"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1546"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1547"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1548"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1549"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueT*<sp/>d_values_in,</highlight></codeline>
+<codeline lineno="1550"><highlight class="normal"><sp/><sp/><sp/><sp/>ValueT*<sp/>d_values_out,</highlight></codeline>
+<codeline lineno="1551"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1552"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1553"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1554"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1555"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1556"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1557"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="1558"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsNoNVTX(</highlight></codeline>
+<codeline lineno="1559"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1560"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1561"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1562"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1563"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_in,</highlight></codeline>
+<codeline lineno="1564"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_out,</highlight></codeline>
+<codeline lineno="1565"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1566"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1567"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1568"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1569"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="1570"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1571"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1572"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="1573"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="1574"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1575"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairsDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="1576"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1577"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1578"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1579"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1580"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueT*<sp/>d_values_in,</highlight></codeline>
+<codeline lineno="1581"><highlight class="normal"><sp/><sp/><sp/><sp/>ValueT*<sp/>d_values_out,</highlight></codeline>
+<codeline lineno="1582"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1583"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1584"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1585"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1586"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1587"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1588"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1589"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1590"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="1591"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="1592"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="1593"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Descending,<sp/>KeyT,<sp/>ValueT,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="1594"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1595"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;<sp/>d_keys(</highlight><highlight class="keyword">const_cast&lt;</highlight><highlight class="normal">KeyT*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(d_keys_in),<sp/>d_keys_out);</highlight></codeline>
+<codeline lineno="1596"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;<sp/>d_values(</highlight><highlight class="keyword">const_cast&lt;</highlight><highlight class="normal">ValueT*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(d_values_in),<sp/>d_values_out);</highlight></codeline>
+<codeline lineno="1597"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1598"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="1599"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1600"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1601"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="1602"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="1603"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1604"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1605"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1606"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1607"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="1608"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="1609"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1610"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1611"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="1741"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1742"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairsDescending(</highlight></codeline>
+<codeline lineno="1743"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1744"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1745"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1746"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1747"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueT*<sp/>d_values_in,</highlight></codeline>
+<codeline lineno="1748"><highlight class="normal"><sp/><sp/><sp/><sp/>ValueT*<sp/>d_values_out,</highlight></codeline>
+<codeline lineno="1749"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1750"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1751"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1752"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1753"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1754"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1755"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="1756"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="1757"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1758"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1759"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="1760"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="1761"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_in,</highlight></codeline>
+<codeline lineno="1762"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_out,</highlight></codeline>
+<codeline lineno="1763"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1764"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1765"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1766"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1767"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="1768"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1769"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1770"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="1771"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="1772"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1773"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairsNoNVTX(</highlight></codeline>
+<codeline lineno="1774"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1775"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1776"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="1777"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;&amp;<sp/>d_values,</highlight></codeline>
+<codeline lineno="1778"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1779"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1780"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1781"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1782"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1783"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1784"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1785"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1786"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="1787"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="1788"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="1789"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Ascending,<sp/>KeyT,<sp/>ValueT,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="1790"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1791"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="1792"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1793"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1794"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="1795"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="1796"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1797"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1798"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1799"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1800"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="1801"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="1802"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1803"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1804"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="1943"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1944"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairs(</highlight></codeline>
+<codeline lineno="1945"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1946"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1947"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="1948"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;&amp;<sp/>d_values,</highlight></codeline>
+<codeline lineno="1949"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1950"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1951"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1952"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1953"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1954"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1955"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="1956"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsNoNVTX(</highlight></codeline>
+<codeline lineno="1957"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1958"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1959"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="1960"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="1961"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1962"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1963"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1964"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1965"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="1966"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="1967"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1968"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="1969"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>version<sp/>without<sp/>NVTX<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="1970"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="1971"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairsDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="1972"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1973"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1974"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="1975"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;&amp;<sp/>d_values,</highlight></codeline>
+<codeline lineno="1976"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="1977"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="1978"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1979"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1980"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="1981"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="1982"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_overwrite_okay<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="1983"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1984"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>OffsetT<sp/>=</highlight></codeline>
+<codeline lineno="1985"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>detail::choose_signed_offset_t&lt;detail::common_iterator_value_t&lt;BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;&gt;;</highlight></codeline>
+<codeline lineno="1986"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>DispatchT<sp/>=</highlight></codeline>
+<codeline lineno="1987"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>DispatchSegmentedSort&lt;SortOrder::Descending,<sp/>KeyT,<sp/>ValueT,<sp/>OffsetT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;;</highlight></codeline>
+<codeline lineno="1988"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1989"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>DispatchT::Dispatch(</highlight></codeline>
+<codeline lineno="1990"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="1991"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="1992"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="1993"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="1994"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="1995"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="1996"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="1997"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="1998"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>is_overwrite_okay,</highlight></codeline>
+<codeline lineno="1999"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="2000"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="2001"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2002"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="2140"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="2141"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>SortPairsDescending(</highlight></codeline>
+<codeline lineno="2142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2144"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="2145"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;&amp;<sp/>d_values,</highlight></codeline>
+<codeline lineno="2146"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="2147"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="2148"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2149"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2150"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="2151"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="2152"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="2153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsDescendingNoNVTX(</highlight></codeline>
+<codeline lineno="2154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="2157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="2158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="2159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="2160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="2163"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="2164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2294"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="2295"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortPairs(</highlight></codeline>
+<codeline lineno="2296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="2299"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="2300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueT*<sp/>d_values_in,</highlight></codeline>
+<codeline lineno="2301"><highlight class="normal"><sp/><sp/><sp/><sp/>ValueT*<sp/>d_values_out,</highlight></codeline>
+<codeline lineno="2302"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="2303"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="2304"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2305"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2306"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="2307"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="2308"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="2309"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsNoNVTX&lt;KeyT,<sp/>ValueT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="2310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="2313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="2314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_in,</highlight></codeline>
+<codeline lineno="2315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_out,</highlight></codeline>
+<codeline lineno="2316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="2317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="2318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="2321"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="2322"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2452"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="2453"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortPairsDescending(</highlight></codeline>
+<codeline lineno="2454"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2455"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2456"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>KeyT*<sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="2457"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyT*<sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="2458"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueT*<sp/>d_values_in,</highlight></codeline>
+<codeline lineno="2459"><highlight class="normal"><sp/><sp/><sp/><sp/>ValueT*<sp/>d_values_out,</highlight></codeline>
+<codeline lineno="2460"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="2461"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="2462"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2463"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2464"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="2465"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="2466"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="2467"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsDescendingNoNVTX&lt;KeyT,<sp/>ValueT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="2468"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2469"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2470"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_in,</highlight></codeline>
+<codeline lineno="2471"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys_out,</highlight></codeline>
+<codeline lineno="2472"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_in,</highlight></codeline>
+<codeline lineno="2473"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values_out,</highlight></codeline>
+<codeline lineno="2474"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="2475"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="2476"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2477"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2478"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="2479"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="2480"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2620"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="2621"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortPairs(</highlight></codeline>
+<codeline lineno="2622"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2623"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2624"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="2625"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;&amp;<sp/>d_values,</highlight></codeline>
+<codeline lineno="2626"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="2627"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="2628"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2629"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2630"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="2631"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="2632"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="2633"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsNoNVTX&lt;KeyT,<sp/>ValueT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="2634"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2635"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2636"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="2637"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="2638"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="2639"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="2640"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2641"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2642"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="2643"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="2644"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2783"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>KeyT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>BeginOffsetIteratorT,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>EndOffsetIteratorT&gt;</highlight></codeline>
+<codeline lineno="2784"><highlight class="normal"><sp/><sp/>CUB_RUNTIME_FUNCTION<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>cudaError_t<sp/>StableSortPairsDescending(</highlight></codeline>
+<codeline lineno="2785"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2786"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">&amp;<sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2787"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;KeyT&gt;&amp;<sp/>d_keys,</highlight></codeline>
+<codeline lineno="2788"><highlight class="normal"><sp/><sp/><sp/><sp/>DoubleBuffer&lt;ValueT&gt;&amp;<sp/>d_values,</highlight></codeline>
+<codeline lineno="2789"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_items,</highlight></codeline>
+<codeline lineno="2790"><highlight class="normal"><sp/><sp/><sp/><sp/>::cuda::std::int64_t<sp/>num_segments,</highlight></codeline>
+<codeline lineno="2791"><highlight class="normal"><sp/><sp/><sp/><sp/>BeginOffsetIteratorT<sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2792"><highlight class="normal"><sp/><sp/><sp/><sp/>EndOffsetIteratorT<sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2793"><highlight class="normal"><sp/><sp/><sp/><sp/>cudaStream_t<sp/>stream<sp/>=<sp/>0)</highlight></codeline>
+<codeline lineno="2794"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="2795"><highlight class="normal"><sp/><sp/><sp/><sp/>_CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage,<sp/>GetName());</highlight></codeline>
+<codeline lineno="2796"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SortPairsDescendingNoNVTX&lt;KeyT,<sp/>ValueT,<sp/>BeginOffsetIteratorT,<sp/>EndOffsetIteratorT&gt;(</highlight></codeline>
+<codeline lineno="2797"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_temp_storage,</highlight></codeline>
+<codeline lineno="2798"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>temp_storage_bytes,</highlight></codeline>
+<codeline lineno="2799"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_keys,</highlight></codeline>
+<codeline lineno="2800"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_values,</highlight></codeline>
+<codeline lineno="2801"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_items,</highlight></codeline>
+<codeline lineno="2802"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>num_segments,</highlight></codeline>
+<codeline lineno="2803"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_begin_offsets,</highlight></codeline>
+<codeline lineno="2804"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>d_end_offsets,</highlight></codeline>
+<codeline lineno="2805"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stream);</highlight></codeline>
+<codeline lineno="2806"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="2807"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2809"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="2810"><highlight class="normal"></highlight></codeline>
+<codeline lineno="2811"><highlight class="normal"><ref refid="util__namespace_8cuh_1ad0c50062c393b6f693088aba672221d5" kindref="member">CUB_NAMESPACE_END</ref></highlight></codeline>
+    </programlisting>
+    <location file="cub/device/device_segmented_sort.cuh"/>
+  </compounddef>
+</doxygen>

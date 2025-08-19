@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classthrust_1_1transform__output__iterator" kind="class" language="C++" prot="public">
+    <compoundname>thrust::transform_output_iterator</compoundname>
+    <includes refid="transform__output__iterator_8h" local="no">/home/runner/work/cccl/cccl/thrust/thrust/iterator/transform_output_iterator.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename UnaryFunction</type>
+      </param>
+      <param>
+        <type>typename OutputIterator</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classthrust_1_1transform__output__iterator_1ac2d4f47fdcdf539f9cd08a2c4b409bc7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>thrust::transform_output_iterator&lt; UnaryFunction, OutputIterator &gt;::transform_output_iterator</definition>
+        <argsstring>()=default</argsstring>
+        <name>transform_output_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/iterator/transform_output_iterator.h" line="148" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classthrust_1_1transform__output__iterator_1a00da6edefeaa20aec055e12a03ec1d3d" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>thrust::transform_output_iterator&lt; UnaryFunction, OutputIterator &gt;::transform_output_iterator</definition>
+        <argsstring>(OutputIterator const &amp;out, UnaryFunction fun)</argsstring>
+        <name>transform_output_iterator</name>
+        <param>
+          <type>OutputIterator const &amp;</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>fun</declname>
+        </param>
+        <briefdescription>
+<para>This constructor takes as argument an <computeroutput>OutputIterator</computeroutput> and an <computeroutput>UnaryFunction</computeroutput> and copies them to a new <computeroutput><ref refid="classthrust_1_1transform__output__iterator" kindref="compound">transform_output_iterator</ref></computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <computeroutput>OutputIterator</computeroutput> pointing to the output range whereto the result of <computeroutput><ref refid="classthrust_1_1transform__output__iterator" kindref="compound">transform_output_iterator</ref>&apos;s</computeroutput> <computeroutput>UnaryFunction</computeroutput> will be written. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fun</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An <computeroutput>UnaryFunction</computeroutput> used to transform the objects assigned to this <computeroutput><ref refid="classthrust_1_1transform__output__iterator" kindref="compound">transform_output_iterator</ref></computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="thrust/iterator/transform_output_iterator.h" line="156" column="4" bodyfile="thrust/iterator/transform_output_iterator.h" bodystart="156" bodyend="159"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para><computeroutput><ref refid="classthrust_1_1transform__output__iterator" kindref="compound">transform_output_iterator</ref></computeroutput> is a special kind of output iterator which transforms a value written upon dereference. This iterator is useful for transforming an output from algorithms without explicitly storing the intermediate result in the memory and applying subsequent transformation, thereby avoiding wasting memory capacity and bandwidth. Using <computeroutput><ref refid="classthrust_1_1transform__iterator" kindref="compound">transform_iterator</ref></computeroutput> facilitates kernel fusion by deferring execution of transformation until the value is written while saving both memory capacity and bandwidth. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The following code snippet demonstrated how to create a <computeroutput><ref refid="classthrust_1_1transform__output__iterator" kindref="compound">transform_output_iterator</ref></computeroutput> which applies <computeroutput>sqrtf</computeroutput> to the assigning value.</para>
+<para><programlisting><codeline><highlight class="normal">#include<sp/>&lt;thrust/iterator/transform_output_iterator.h&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;thrust/device_vector.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>square_root</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>__host__<sp/>__device__</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>float<sp/>operator()(float<sp/>x)<sp/>const</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>sqrtf(x);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">int<sp/>main()</highlight></codeline>
+<codeline><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>thrust::device_vector&lt;float&gt;<sp/>v(4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>using<sp/>FloatIterator<sp/>=<sp/>thrust::device_vector&lt;float&gt;::iterator;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>thrust::transform_output_iterator&lt;square_root,<sp/>FloatIterator&gt;<sp/>iter(v.begin(),<sp/>square_root());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>iter[0]<sp/>=<sp/><sp/>1.0f;<sp/><sp/><sp/><sp/>//<sp/>stores<sp/>sqrtf(<sp/>1.0f)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>iter[1]<sp/>=<sp/><sp/>4.0f;<sp/><sp/><sp/><sp/>//<sp/>stores<sp/>sqrtf(<sp/>4.0f)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>iter[2]<sp/>=<sp/><sp/>9.0f;<sp/><sp/><sp/><sp/>//<sp/>stores<sp/>sqrtf(<sp/>9.0f)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>iter[3]<sp/>=<sp/>16.0f;<sp/><sp/><sp/><sp/>//<sp/>stores<sp/>sqrtf(16.0f)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>//<sp/>iter[4]<sp/>is<sp/>an<sp/>out-of-bounds<sp/>error</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>v[0];<sp/>//<sp/>returns<sp/>1.0f;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>v[1];<sp/>//<sp/>returns<sp/>2.0f;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>v[2];<sp/>//<sp/>returns<sp/>3.0f;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>v[3];<sp/>//<sp/>returns<sp/>4.0f;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para>make_transform_output_iterator </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="thrust/iterator/transform_output_iterator.h" line="39" column="1" bodyfile="thrust/iterator/transform_output_iterator.h" bodystart="39" bodyend="-1"/>
+    <listofallmembers>
+      <member refid="classthrust_1_1transform__output__iterator_1ac2d4f47fdcdf539f9cd08a2c4b409bc7" prot="private" virt="non-virtual"><scope>thrust::transform_output_iterator</scope><name>transform_output_iterator</name></member>
+      <member refid="classthrust_1_1transform__output__iterator_1a00da6edefeaa20aec055e12a03ec1d3d" prot="private" virt="non-virtual"><scope>thrust::transform_output_iterator</scope><name>transform_output_iterator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
