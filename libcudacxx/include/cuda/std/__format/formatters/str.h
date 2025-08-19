@@ -39,36 +39,8 @@ _CCCL_BEGIN_NAMESPACE_CUDA_STD
 //! @tparam _CharT The character type used for formatting.
 //!
 template <class _CharT>
-struct __fmt_formatter_str
+class __fmt_formatter_str
 {
-  //!
-  //! @brief Parses the formatting specifications for string types.
-  //!
-  //! @param __ctx The parsing context containing the format specification.
-  //! @return An iterator pointing to the end of the parsed format specification.
-  //!
-  template <class _ParseCtx>
-  _CCCL_API constexpr typename _ParseCtx::iterator parse(_ParseCtx& __ctx)
-  {
-    typename _ParseCtx::iterator __result = __parser_.__parse(__ctx, ::cuda::std::__fmt_spec_fields_str());
-    ::cuda::std::__fmt_process_display_type_str(__parser_.__type_);
-    return __result;
-  }
-
-  //!
-  //! @brief Formats a string value according to the parsed specifications.
-  //!
-  //! @param __value The string value to format.
-  //! @param __ctx The formatting context where the formatted output will be stored.
-  //! @return An iterator pointing to the end of the formatted output.
-  //!
-  template <class _Tp, class _FmtCtx>
-  _CCCL_API typename _FmtCtx::iterator format(_Tp __value, _FmtCtx& __ctx) const
-  {
-    return __format(__value, __ctx);
-  }
-
-private:
   //!
   //! @brief Creates a parser for string formatting specifications.
   //!
@@ -120,6 +92,34 @@ private:
   {
     basic_string_view __str2{__str.data(), __str.size()};
     return ::cuda::std::__fmt_write_string(__str2, __ctx.out(), __parser_.__get_parsed_std_spec(__ctx));
+  }
+
+public:
+  //!
+  //! @brief Parses the formatting specifications for string types.
+  //!
+  //! @param __ctx The parsing context containing the format specification.
+  //! @return An iterator pointing to the end of the parsed format specification.
+  //!
+  template <class _ParseCtx>
+  _CCCL_API constexpr typename _ParseCtx::iterator parse(_ParseCtx& __ctx)
+  {
+    typename _ParseCtx::iterator __result = __parser_.__parse(__ctx, ::cuda::std::__fmt_spec_fields_str());
+    ::cuda::std::__fmt_process_display_type_str(__parser_.__type_);
+    return __result;
+  }
+
+  //!
+  //! @brief Formats a string value according to the parsed specifications.
+  //!
+  //! @param __value The string value to format.
+  //! @param __ctx The formatting context where the formatted output will be stored.
+  //! @return An iterator pointing to the end of the formatted output.
+  //!
+  template <class _Tp, class _FmtCtx>
+  _CCCL_API typename _FmtCtx::iterator format(_Tp __value, _FmtCtx& __ctx) const
+  {
+    return __format(__value, __ctx);
   }
 
   __fmt_spec_parser<_CharT> __parser_ = __make_parser(); //!< The parser for format specifications.
