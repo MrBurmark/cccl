@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-from typing import Callable
+from typing import TYPE_CHECKING, Callable, Union
 
 from .. import _bindings
 from .. import _cccl_interop as cccl
@@ -12,7 +12,11 @@ from .._cccl_interop import set_cccl_iterator_state
 from .._utils import protocols
 from ..iterators._iterators import IteratorBase, scrub_duplicate_ltoirs
 from ..numba_utils import get_inferred_return_type
+from ..op import OpKind
 from ..typing import DeviceArrayLike
+
+if TYPE_CHECKING:
+    from .._bindings import IntEnumerationMember
 
 
 class _UnaryTransform:
@@ -27,16 +31,21 @@ class _UnaryTransform:
         self,
         d_in: DeviceArrayLike | IteratorBase,
         d_out: DeviceArrayLike | IteratorBase,
-        op: Callable,
+        op: Callable | OpKind,
     ):
         self.d_in_cccl = cccl.to_cccl_iter(d_in)
         self.d_out_cccl = cccl.to_cccl_iter(d_out)
         in_value_type = cccl.get_value_type(d_in)
         out_value_type = cccl.get_value_type(d_out)
-        if not out_value_type.is_internal:
-            out_value_type = get_inferred_return_type(op, (in_value_type,))
-        sig = out_value_type(in_value_type)
-        self.op_wrapper = cccl.to_cccl_op(op, sig=sig)
+
+        # For well-known operations, we don't need a signature
+        if isinstance(op, OpKind):
+            self.op_wrapper = cccl.to_cccl_op(op, None)
+        else:
+            if not out_value_type.is_internal:
+                out_value_type = get_inferred_return_type(op, (in_value_type,))
+            sig = out_value_type(in_value_type)
+            self.op_wrapper = cccl.to_cccl_op(op, sig=sig)
         self.build_result = cccl.call_build(
             _bindings.DeviceUnaryTransform,
             self.d_in_cccl,
@@ -78,7 +87,7 @@ class _BinaryTransform:
         d_in1: DeviceArrayLike | IteratorBase,
         d_in2: DeviceArrayLike | IteratorBase,
         d_out: DeviceArrayLike | IteratorBase,
-        op: Callable,
+        op: Callable | OpKind,
     ):
         d_in1, d_in2 = scrub_duplicate_ltoirs(d_in1, d_in2)
 
@@ -88,12 +97,17 @@ class _BinaryTransform:
         in1_value_type = cccl.get_value_type(d_in1)
         in2_value_type = cccl.get_value_type(d_in2)
         out_value_type = cccl.get_value_type(d_out)
-        if not out_value_type.is_internal:
-            out_value_type = get_inferred_return_type(
-                op, (in1_value_type, in2_value_type)
-            )
-        sig = out_value_type(in1_value_type, in2_value_type)
-        self.op_wrapper = cccl.to_cccl_op(op, sig=sig)
+
+        # For well-known operations, we don't need a signature
+        if isinstance(op, OpKind):
+            self.op_wrapper = cccl.to_cccl_op(op, None)
+        else:
+            if not out_value_type.is_internal:
+                out_value_type = get_inferred_return_type(
+                    op, (in1_value_type, in2_value_type)
+                )
+            sig = out_value_type(in1_value_type, in2_value_type)
+            self.op_wrapper = cccl.to_cccl_op(op, sig=sig)
         self.build_result = cccl.call_build(
             _bindings.DeviceBinaryTransform,
             self.d_in1_cccl,
@@ -128,13 +142,20 @@ class _BinaryTransform:
 def make_unary_transform_cache_key(
     d_in: DeviceArrayLike | IteratorBase,
     d_out: DeviceArrayLike,
-    op: Callable,
+    op: Callable | OpKind,
 ):
     d_in_key = (
         d_in.kind if isinstance(d_in, IteratorBase) else protocols.get_dtype(d_in)
     )
     d_out_key = protocols.get_dtype(d_out)
-    op_key = CachableFunction(op)
+
+    # Handle well-known operations differently
+    op_key: Union[tuple[str, IntEnumerationMember], CachableFunction]
+    if isinstance(op, OpKind):
+        op_key = (op.name, op.value)
+    else:
+        op_key = CachableFunction(op)
+
     return (d_in_key, d_out_key, op_key)
 
 
@@ -142,7 +163,7 @@ def make_binary_transform_cache_key(
     d_in1: DeviceArrayLike | IteratorBase,
     d_in2: DeviceArrayLike | IteratorBase,
     d_out: DeviceArrayLike,
-    op: Callable,
+    op: Callable | OpKind,
 ):
     d_in1_key = (
         d_in1.kind if isinstance(d_in1, IteratorBase) else protocols.get_dtype(d_in1)
@@ -151,7 +172,14 @@ def make_binary_transform_cache_key(
         d_in2.kind if isinstance(d_in2, IteratorBase) else protocols.get_dtype(d_in2)
     )
     d_out_key = protocols.get_dtype(d_out)
-    op_key = CachableFunction(op)
+
+    # Handle well-known operations differently
+    op_key: Union[tuple[str, IntEnumerationMember], CachableFunction]
+    if isinstance(op, OpKind):
+        op_key = (op.name, op.value)
+    else:
+        op_key = CachableFunction(op)
+
     return (d_in1_key, d_in2_key, d_out_key, op_key)
 
 
@@ -159,7 +187,7 @@ def make_binary_transform_cache_key(
 def make_unary_transform(
     d_in: DeviceArrayLike | IteratorBase,
     d_out: DeviceArrayLike | IteratorBase,
-    op: Callable,
+    op: Callable | OpKind,
 ):
     """
     Create a unary transform object that can be called to apply a transformation
@@ -178,7 +206,7 @@ def make_unary_transform(
     Args:
         d_in: Device array or iterator containing the input sequence of data items.
         d_out: Device array or iterator to store the result of the transformation.
-        op: Unary operation to apply to each element of the input.
+        op: Callable or OpKind representing the unary operation to apply to each element of the input.
 
     Returns:
         A callable object that performs the transformation.
@@ -191,7 +219,7 @@ def make_binary_transform(
     d_in1: DeviceArrayLike | IteratorBase,
     d_in2: DeviceArrayLike | IteratorBase,
     d_out: DeviceArrayLike | IteratorBase,
-    op: Callable,
+    op: Callable | OpKind,
 ):
     """
     Create a binary transform object that can be called to apply a transformation
@@ -211,7 +239,7 @@ def make_binary_transform(
         d_in1: Device array or iterator containing the first input sequence of data items.
         d_in2: Device array or iterator containing the second input sequence of data items.
         d_out: Device array or iterator to store the result of the transformation.
-        op: Binary operation to apply to each pair of items from the input sequences.
+        op: Callable or OpKind representing the binary operation to apply to each pair of items from the input sequences.
 
     Returns:
         A callable object that performs the transformation.
@@ -222,7 +250,7 @@ def make_binary_transform(
 def unary_transform(
     d_in: DeviceArrayLike | IteratorBase,
     d_out: DeviceArrayLike | IteratorBase,
-    op: Callable,
+    op: Callable | OpKind,
     num_items: int,
     stream=None,
 ):
@@ -242,7 +270,7 @@ def unary_transform(
     Args:
         d_in: Device array or iterator containing the input sequence of data items.
         d_out: Device array or iterator to store the result of the transformation.
-        op: Unary operation to apply to each element of the input.
+        op: Callable or OpKind representing the unary operation to apply to each element of the input.
         num_items: Number of items to transform.
         stream: CUDA stream to use for the operation.
     """
@@ -254,7 +282,7 @@ def binary_transform(
     d_in1: DeviceArrayLike | IteratorBase,
     d_in2: DeviceArrayLike | IteratorBase,
     d_out: DeviceArrayLike | IteratorBase,
-    op: Callable,
+    op: Callable | OpKind,
     num_items: int,
     stream=None,
 ):
@@ -275,7 +303,7 @@ def binary_transform(
         d_in1: Device array or iterator containing the first input sequence of data items.
         d_in2: Device array or iterator containing the second input sequence of data items.
         d_out: Device array or iterator to store the result of the transformation.
-        op: Binary operation to apply to each pair of items from the input sequences.
+        op: Callable or OpKind representing the binary operation to apply to each pair of items from the input sequences.
         num_items: Number of items to transform.
         stream: CUDA stream to use for the operation.
     """
