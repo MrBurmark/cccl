@@ -47,7 +47,8 @@
 #include <c2h/extended_types.h>
 #include <c2h/test_util_vec.h>
 
-#if TEST_HALF_T()
+// Compiler bug in < 12.2 prevents the `cuda::minimum/maximum` __half specializations from being used.
+#if TEST_HALF_T() && _CCCL_CTK_AT_LEAST(12, 2)
 // Half support is provided by SM53+. We currently test against a few older architectures.
 // The specializations below can be removed once we drop these architectures.
 
@@ -57,10 +58,11 @@ template <>
 _CCCL_API inline __half minimum<void>::operator()<__half, __half>(const __half& a, const __half& b) const
 {
 #  if defined(__CUDA_NO_HALF_OPERATORS__)
-  return ::cuda::std::min(__half2float(a), __half2float(b));
+  return __float2half(::cuda::std::min(__half2float(a), __half2float(b)));
 #  else // ^^^ __CUDA_NO_HALF_OPERATORS__ ^^^ / vvv !__CUDA_NO_HALF_OPERATORS__ vvv
-  NV_IF_TARGET(
-    NV_PROVIDES_SM_53, (return ::cuda::std::min(a, b);), (return ::cuda::std::min(__half2float(a), __half2float(b));));
+  NV_IF_TARGET(NV_PROVIDES_SM_53,
+               (return ::cuda::std::min(a, b);),
+               (return __float2half(::cuda::std::min(__half2float(a), __half2float(b)));));
 #  endif // !__CUDA_NO_HALF_OPERATORS__
 }
 
@@ -68,10 +70,11 @@ template <>
 _CCCL_API inline __half maximum<void>::operator()<__half, __half>(const __half& a, const __half& b) const
 {
 #  if defined(__CUDA_NO_HALF_OPERATORS__)
-  return ::cuda::std::max(__half2float(a), __half2float(b));
+  return __float2half(::cuda::std::max(__half2float(a), __half2float(b)));
 #  else // ^^^ __CUDA_NO_HALF_OPERATORS__ ^^^ / vvv !__CUDA_NO_HALF_OPERATORS__ vvv
-  NV_IF_TARGET(
-    NV_PROVIDES_SM_53, (return ::cuda::std::max(a, b);), (return ::cuda::std::max(__half2float(a), __half2float(b));));
+  NV_IF_TARGET(NV_PROVIDES_SM_53,
+               (return ::cuda::std::max(a, b);),
+               (return __float2half(::cuda::std::max(__half2float(a), __half2float(b)));));
 #  endif // !__CUDA_NO_HALF_OPERATORS__
 }
 

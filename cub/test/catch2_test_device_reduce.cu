@@ -78,7 +78,8 @@ using full_type_list =
 // clang-format off
 using full_type_list = c2h::type_list<
 type_pair<custom_t>
-#if TEST_HALF_T()
+// Compiler bug in < 12.2 prevents the `cuda::minimum/maximum` __half specializations from being used.
+#if TEST_HALF_T() && _CCCL_CTK_AT_LEAST(12, 2)
 , type_pair<half_t>
 #endif // TEST_HALF_T()
 #if TEST_BF_T()
