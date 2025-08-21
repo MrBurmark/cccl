@@ -5,9 +5,28 @@ set -euo pipefail
 ci_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$ci_dir/pyenv_helper.sh"
 
-# Get the Python version from the command line arguments -py-version=3.10
-py_version=${2#*=}
+# Parse command line arguments
+py_version=""
+cuda_version=""
+
+for arg in "$@"; do
+  case $arg in
+    -py-version=*)
+      py_version="${arg#*=}"
+      ;;
+    -cuda-version=*)
+      cuda_version="${arg#*=}"
+      ;;
+    *)
+      # Unknown argument, ignore
+      ;;
+  esac
+done
+
 echo "Python version: ${py_version}"
+if [[ -n "${cuda_version}" ]]; then
+  echo "CUDA version: ${cuda_version}"
+fi
 
 # Setup Python environment
 setup_python_env "${py_version}"
@@ -22,7 +41,7 @@ fi
 
 # Install cuda_cccl
 CUDA_CCCL_WHEEL_PATH="$(ls /home/coder/cccl/wheelhouse/cuda_cccl-*.whl)"
-python -m pip install "${CUDA_CCCL_WHEEL_PATH}[test]"
+python -m pip install "${CUDA_CCCL_WHEEL_PATH}[test-${cuda_version}]"
 
 # Run tests for parallel module
 cd "/home/coder/cccl/python/cuda_cccl/tests/"
