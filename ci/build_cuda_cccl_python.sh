@@ -3,14 +3,43 @@ set -euo pipefail
 
 ci_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-usage="Usage: $0 -py-version <python_version>"
+usage="Usage: $0 -py-version <python_version> [additional options...]"
 
-if [[ $# -ne 2 || "$1" != "-py-version" ]]; then
+# Parse arguments to find -py-version
+py_version=""
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -py-version)
+      if [[ $# -lt 2 ]]; then
+        echo "Error: -py-version requires a value"
+        echo "$usage"
+        exit 1
+      fi
+      py_version="$2"
+      shift 2
+      ;;
+    -cuda-version)
+      # Ignore this option and its value if provided
+      if [[ $# -gt 1 && ! "$2" =~ ^- ]]; then
+        shift 2  # Skip both the option and its value
+      else
+        shift 1  # Skip just the option
+      fi
+      ;;
+    *)
+      # Ignore any other options
+      shift
+      ;;
+  esac
+done
+
+# Check if py_version was provided
+if [[ -z "$py_version" ]]; then
+  echo "Error: -py-version is required"
   echo "$usage"
   exit 1
 fi
 
-py_version=$2
 echo "Docker socket: " $(ls /var/run/docker.sock)
 
 if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
