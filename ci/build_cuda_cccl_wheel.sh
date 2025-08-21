@@ -74,16 +74,3 @@ done
 # Move repaired wheels to output directory
 mkdir -p /workspace/wheelhouse
 mv wheelhouse/cuda_cccl-*.cu*.whl /workspace/wheelhouse/ 2>/dev/null || mv dist/cuda_cccl-*.cu*.whl /workspace/wheelhouse/
-
-cd /workspace
-if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
-  # This env var is set by the build_cuda_parallel_python.sh script to avoid having to
-  # pass the GitHub auth token into the container as required for the util/workflow scripts.
-  if [[ -z "${WHEEL_ARTIFACT_NAME:-}" ]]; then
-    echo "Warning: WHEEL_ARTIFACT_NAME is not set. Falling back to querying workflow metadata..." >&2
-    wheel_artifact_name="$(ci/util/workflow/get_wheel_artifact_name.sh)"
-  else
-    wheel_artifact_name="${WHEEL_ARTIFACT_NAME}"
-  fi
-  ci/util/artifacts/upload.sh $wheel_artifact_name 'wheelhouse/.*'
-fi

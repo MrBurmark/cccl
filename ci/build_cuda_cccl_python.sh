@@ -26,13 +26,9 @@ if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
 EOF
 )
 
-  # Create the wheel artifact here and pass it in as an environment variable.
-  # This avoids the need to pass the github auth token into the nested container.
-  wheel_artifact_name=$("$ci_dir/util/workflow/get_wheel_artifact_name.sh")
 else
   # If not running in GitHub Actions, we don't need to set up artifact mounts.
   action_mounts=""
-  wheel_artifact_name=""
 fi
 
 # Build wheels for both CUDA 12 and CUDA 13 using separate containers
@@ -50,7 +46,6 @@ echo "Building CUDA 12 wheel..."
       --env GITHUB_ACTIONS=${GITHUB_ACTIONS:-} \
       --env GITHUB_RUN_ID=${GITHUB_RUN_ID:-} \
       --env JOB_ID=${JOB_ID:-} \
-      --env WHEEL_ARTIFACT_NAME=${wheel_artifact_name:-} \
       rapidsai/ci-wheel:25.10-cuda12.9.1-rockylinux8-py${py_version} \
       /workspace/ci/build_cuda_cccl_wheel.sh
 )
@@ -66,7 +61,6 @@ echo "Building CUDA 13 wheel..."
       --env GITHUB_ACTIONS=${GITHUB_ACTIONS:-} \
       --env GITHUB_RUN_ID=${GITHUB_RUN_ID:-} \
       --env JOB_ID=${JOB_ID:-} \
-      --env WHEEL_ARTIFACT_NAME=${wheel_artifact_name:-} \
       rapidsai/ci-wheel:25.10-cuda13.0.0-rockylinux8-py${py_version} \
       /workspace/ci/build_cuda_cccl_wheel.sh
 )
@@ -129,3 +123,8 @@ rm -rf wheelhouse_merged wheelhouse_final
 
 echo "Final wheels in wheelhouse:"
 ls -la wheelhouse/
+
+if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+  wheel_artifact_name="$(ci/util/workflow/get_wheel_artifact_name.sh)"
+  ci/util/artifacts/upload.sh $wheel_artifact_name 'wheelhouse/.*'
+fi
