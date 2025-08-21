@@ -5,20 +5,39 @@ set -euo pipefail
 ci_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$ci_dir/pyenv_helper.sh"
 
-# Parse command line arguments
+# Parse arguments to find -py-version
 py_version=""
 cuda_version=""
 
-for arg in "$@"; do
-  case $arg in
+while [[ $# -gt 0 ]]; do
+  case $1 in
     -py-version=*)
-      py_version="${arg#*=}"
+      py_version="${1#*=}"
+      shift
+      ;;
+    -py-version)
+      if [[ $# -lt 2 ]]; then
+        echo "Error: -py-version requires a value"
+        exit 1
+      fi
+      py_version="$2"
+      shift 2
       ;;
     -cuda-version=*)
-      cuda_version="${arg#*=}"
+      cuda_version="${1#*=}"
+      shift
+      ;;
+    -cuda-version)
+      if [[ $# -gt 1 && ! "$2" =~ ^- ]]; then
+        cuda_version="$2"
+        shift 2
+      else
+        shift 1
+      fi
       ;;
     *)
       # Unknown argument, ignore
+      shift
       ;;
   esac
 done

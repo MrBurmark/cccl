@@ -5,9 +5,47 @@ ci_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "$ci_dir/pyenv_helper.sh"
 
-# Get the Python version from the command line arguments -py-version=3.10
-py_version=${2#*=}
+# Parse arguments to find -py-version
+py_version=""
+cuda_version=""
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -py-version=*)
+      py_version="${1#*=}"
+      shift
+      ;;
+    -py-version)
+      if [[ $# -lt 2 ]]; then
+        echo "Error: -py-version requires a value"
+        exit 1
+      fi
+      py_version="$2"
+      shift 2
+      ;;
+    -cuda-version=*)
+      cuda_version="${1#*=}"
+      shift
+      ;;
+    -cuda-version)
+      if [[ $# -gt 1 && ! "$2" =~ ^- ]]; then
+        cuda_version="$2"
+        shift 2
+      else
+        shift 1
+      fi
+      ;;
+    *)
+      # Unknown argument, ignore
+      shift
+      ;;
+  esac
+done
+
 echo "Python version: ${py_version}"
+if [[ -n "${cuda_version}" ]]; then
+  echo "CUDA version: ${cuda_version}"
+fi
 
 # Setup Python environment
 setup_python_env "${py_version}"
