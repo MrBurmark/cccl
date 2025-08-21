@@ -12,6 +12,23 @@ project(
 
 find_package(CUDAToolkit)
 
+# Detect CUDA version and set up version-specific build
+if(CUDAToolkit_VERSION)
+    string(REGEX MATCH "^([0-9]+)" CUDA_VERSION_MAJOR "${CUDAToolkit_VERSION}")
+    message(STATUS "Detected CUDA version: ${CUDAToolkit_VERSION} (major: ${CUDA_VERSION_MAJOR})")
+
+    if(NOT CUDA_VERSION_MAJOR MATCHES "^(12|13)$")
+        message(FATAL_ERROR "Unsupported CUDA version: ${CUDA_VERSION_MAJOR}. Only CUDA 12 and 13 are supported.")
+    endif()
+else()
+    message(WARNING "Could not detect CUDA version, defaulting to CUDA 12")
+    set(CUDA_VERSION_MAJOR "12")
+endif()
+
+# Set version-specific output directory
+set(CUDA_VERSION_DIR "cu${CUDA_VERSION_MAJOR}")
+message(STATUS "Building for CUDA ${CUDA_VERSION_MAJOR}, output directory: ${CUDA_VERSION_DIR}")
+
 set(_cccl_root ../..)
 
 include(${_cccl_root}/cmake/AppendOptionIfAvailable.cmake)
@@ -30,7 +47,7 @@ find_package(CUB REQUIRED)
 find_package(Thrust REQUIRED)
 find_package(libcudacxx REQUIRED)
 
-# Install headers
+# Install headers (shared across all CUDA versions)
 set(_dest_incl_dir cuda/cccl/headers/include)
 
 # No end slash: create ${_dest_inc_dir}/cub
@@ -50,9 +67,10 @@ install(
     DESTINATION ${_dest_incl_dir}
 )
 
+# Install version-specific binaries
 install(
     TARGETS cccl.c.parallel
-    DESTINATION cuda/cccl/parallel/experimental/cccl
+    DESTINATION cuda/cccl/parallel/experimental/${CUDA_VERSION_DIR}/cccl
 )
 
 # Build and install Cython extension
@@ -62,27 +80,25 @@ get_filename_component(_python_path "${Python3_EXECUTABLE}" PATH)
 
 set(CYTHON_version_command "${Python3_EXECUTABLE}" -m cython --version)
 execute_process(COMMAND ${CYTHON_version_command}
-    OUTPUT_VARIABLE CYTHON_version_output
-    ERROR_VARIABLE CYTHON_version_error
-    RESULT_VARIABLE CYTHON_version_result
+    RESULT_VARIABLE _cython_version_result
+    OUTPUT_VARIABLE _cython_version_output
+    ERROR_VARIABLE _cython_version_error
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_STRIP_TRAILING_WHITESPACE
 )
 
-if(NOT ${CYTHON_version_result} EQUAL 0)
-    set(_error_msg "Command \"${CYTHON_version_command}\" failed with")
-    set(_error_msg "${_error_msg} output:\n${CYTHON_version_error}")
-    message(FATAL_ERROR "${_error_msg}")
-else()
-    if("${CYTHON_version_output}" MATCHES "^[Cc]ython version ([^,]+)")
-        set(CYTHON_VERSION "${CMAKE_MATCH_1}")
-    else()
-        if("${CYTHON_version_error}" MATCHES "^[Cc]ython version ([^,]+)")
-            set(CYTHON_VERSION "${CMAKE_MATCH_1}")
-        endif()
-    endif()
+if(NOT _cython_version_result EQUAL 0)
+    message(FATAL_ERROR
+        "Failed to run cython version command:\n"
+        "Command:  ${CYTHON_version_command}\n"
+        "Output:   ${_cython_version_output}\n"
+        "Error:    ${_cython_version_error}"
+    )
 endif()
 
+message(STATUS "Cython version: ${_cython_version_output}")
+
+# Set up Cython compilation flags
 # -3 generates source for Python 3
 # -M generates depfile
 # -t cythonizes if PYX is newer than preexisting output
@@ -90,25 +106,96 @@ endif()
 set(CYTHON_FLAGS "-3 -M -t -w \"${cuda_cccl_SOURCE_DIR}\"")
 string(REGEX REPLACE " " ";" CYTHON_FLAGS_LIST "${CYTHON_FLAGS}")
 
-message(STATUS "Using Cython ${CYTHON_VERSION}")
 set(pyx_source_file "${cuda_cccl_SOURCE_DIR}/cuda/cccl/parallel/experimental/_bindings_impl.pyx")
-set(_generated_extension_src "${cuda_cccl_BINARY_DIR}/_bindings_impl.c")
-set(_depfile "${cuda_cccl_BINARY_DIR}/_bindings_impl.c.dep")
+
+# Create version-specific generated source files and targets
+set(_generated_extension_src_${CUDA_VERSION_MAJOR} "${cuda_cccl_BINARY_DIR}/_bindings_impl_${CUDA_VERSION_MAJOR}.c")
+set(_depfile_${CUDA_VERSION_MAJOR} "${cuda_cccl_BINARY_DIR}/_bindings_impl_${CUDA_VERSION_MAJOR}.c.dep")
+
+# Custom Cython compilation command for version-specific target
 add_custom_command(
-    OUTPUT "${_generated_extension_src}"
+    OUTPUT "${_generated_extension_src_${CUDA_VERSION_MAJOR}}"
     COMMAND "${Python3_EXECUTABLE}" -m cython
-    ARGS ${CYTHON_FLAGS_LIST} "${pyx_source_file}" --output-file ${_generated_extension_src}
+    ARGS ${CYTHON_FLAGS_LIST} "${pyx_source_file}" --output-file "${_generated_extension_src_${CUDA_VERSION_MAJOR}}"
     DEPENDS "${pyx_source_file}"
-    DEPFILE "${_depfile}"
-)
-set_source_files_properties("${_generated_extension_src}" PROPERTIES GENERATED TRUE)
-add_custom_target(cythonize_bindings_impl ALL
-    DEPENDS "${_generated_extension_src}"
+    DEPFILE "${_depfile_${CUDA_VERSION_MAJOR}}"
+    COMMENT "Cythonizing ${pyx_source_file} for CUDA ${CUDA_VERSION_MAJOR}"
 )
 
-Python3_add_library(_bindings_impl MODULE WITH_SOABI "${_generated_extension_src}")
-add_dependencies(_bindings_impl cythonize_bindings_impl)
-target_link_libraries(_bindings_impl PRIVATE cccl.c.parallel CUDA::cuda_driver)
-set_target_properties(_bindings_impl PROPERTIES INSTALL_RPATH "$ORIGIN/cccl")
+# Mark the generated source as generated
+set_source_files_properties("${_generated_extension_src_${CUDA_VERSION_MAJOR}}" PROPERTIES GENERATED TRUE)
 
-install(TARGETS _bindings_impl DESTINATION cuda/cccl/parallel/experimental)
+# Create custom target for Cython compilation
+add_custom_target(cythonize_bindings_impl_${CUDA_VERSION_MAJOR} ALL
+    DEPENDS "${_generated_extension_src_${CUDA_VERSION_MAJOR}}"
+)
+
+# Create the Python extension using the generated C source
+# Use consistent target name "_bindings_impl" to ensure correct Python init function
+Python3_add_library(_bindings_impl MODULE WITH_SOABI "${_generated_extension_src_${CUDA_VERSION_MAJOR}}")
+
+# Add dependency on the Cython compilation
+add_dependencies(_bindings_impl cythonize_bindings_impl_${CUDA_VERSION_MAJOR})
+
+target_include_directories(_bindings_impl PRIVATE
+    ${_cccl_root}
+    ${_cccl_root}/c/parallel/include
+)
+
+target_link_libraries(_bindings_impl PRIVATE
+    cccl.c.parallel
+    CUDA::cuda_driver
+)
+
+# Set rpath so the extension can find the library at runtime
+set_target_properties(_bindings_impl PROPERTIES
+    INSTALL_RPATH_USE_LINK_PATH TRUE
+    BUILD_WITH_INSTALL_RPATH TRUE
+    INSTALL_RPATH "\$ORIGIN/cccl"
+)
+
+# Configure compile options for the CUDA version
+if(CUDA_VERSION_MAJOR EQUAL 13)
+    target_compile_definitions(_bindings_impl PRIVATE
+        CCCL_CUDA_VERSION_MAJOR=13
+    )
+elseif(CUDA_VERSION_MAJOR EQUAL 12)
+    target_compile_definitions(_bindings_impl PRIVATE
+        CCCL_CUDA_VERSION_MAJOR=12
+    )
+endif()
+
+# Note: without this, I found that for editable installs, no `cu12` or `cu13` directory
+# is created in the source directory.
+# For editable installs, copy the extension to the source directory
+set(_source_version_dir "${CMAKE_CURRENT_SOURCE_DIR}/cuda/cccl/parallel/experimental/${CUDA_VERSION_DIR}")
+add_custom_command(TARGET _bindings_impl POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${_source_version_dir}"
+    COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:_bindings_impl>" "${_source_version_dir}/"
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/cuda_version_info.txt" "${_source_version_dir}/"
+    COMMENT "Copying extension to source directory for editable install"
+)
+
+# Install version-specific Cython extension
+# For editable installs, we need to ensure the directory exists
+set(_version_specific_dest "cuda/cccl/parallel/experimental/${CUDA_VERSION_DIR}")
+install(CODE "
+    file(MAKE_DIRECTORY \"\${CMAKE_INSTALL_PREFIX}/${_version_specific_dest}\")
+")
+
+install(
+    TARGETS _bindings_impl
+    DESTINATION ${_version_specific_dest}
+)
+
+# Install version detection information
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cuda_version_info.txt.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cuda_version_info.txt"
+    @ONLY
+)
+
+install(
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/cuda_version_info.txt"
+    DESTINATION cuda/cccl/parallel/experimental/${CUDA_VERSION_DIR}
+)
