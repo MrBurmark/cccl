@@ -751,13 +751,13 @@ struct DoubleBuffer
   {}
 
   /// \brief Return pointer to the currently valid buffer
-  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE T* Current()
+  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE T* Current() const
   {
     return d_buffers[selector];
   }
 
   /// \brief Return pointer to the currently invalid buffer
-  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE T* Alternate()
+  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE T* Alternate() const
   {
     return d_buffers[selector ^ 1];
   }
